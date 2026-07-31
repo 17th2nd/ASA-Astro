@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/observation.schema.json",
+  "title": "Observation Record",
+  "x-governing-document": "ASTRO-ONTOLOGY-0001",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "id", "provenance_record_id", "observation_source_id", "acquisition_time", "instrument", "observing_band", "coordinate_frame", "calibration_references", "quality_flags", "use_authority"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
+    "epistemic_classification": {"enum": ["observed", "externally_supplied"]},
+    "id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "provenance_record_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "observation_source_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "acquisition_time": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "instrument": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "observing_band": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "coordinate_frame": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "calibration_references": {"type": "array", "items": {"type": "string"}},
+    "quality_flags": {"type": "array", "items": {"type": "string"}},
+    "use_authority": {"$ref": "common.schema.json#/$defs/declared_value"}
+  }
+}

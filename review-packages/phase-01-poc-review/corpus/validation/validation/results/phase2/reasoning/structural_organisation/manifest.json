@@ -1,0 +1,36 @@
+{
+  "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+  "artifacts": [
+    {
+      "content_sha256": "47e9c92f01a635bcbfe9e6653dee54d27e6d9abdc38f49a7fa9f558e6bd28c28",
+      "path": "analysis.json"
+    },
+    {
+      "content_sha256": "009263ce4fb6c4f35427823b432a45f1135c90f5e33db7ba70e74026581f6774",
+      "path": "baselines.json"
+    },
+    {
+      "content_sha256": "1d095f977de73bcff9161320848ba890db18de836968d831f9b0821d08a1eee5",
+      "path": "context.json"
+    },
+    {
+      "content_sha256": "683fb541a238aa2f0cb06f6bec216e3bceba5817d9a59f275e8824e4aaeb2b34",
+      "path": "explanation-traces.json"
+    },
+    {
+      "content_sha256": "0260a38df854c7d49d7ca7d8bcf0a1cca9438082bc5ffee8e3d14cce369c2b51",
+      "path": "ranked-results.json"
+    },
+    {
+      "content_sha256": "c69cc5bc805dcc36532b634cb82f81376c91b4a44f1b6ac2ce440191393a475f",
+      "path": "significance-results.json"
+    },
+    {
+      "content_sha256": "be888c7aeca1fe06fb1f8bcb7087ec34d36e1f044a8357c1dc5a4e72a02bb0d4",
+      "path": "standing-results.json"
+    }
+  ],
+  "context_sha256": "1d095f977de73bcff9161320848ba890db18de836968d831f9b0821d08a1eee5",
+  "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+  "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59"
+}

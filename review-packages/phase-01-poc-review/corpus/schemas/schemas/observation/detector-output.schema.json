@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/detector-output.schema.json",
+  "title": "Detector Output",
+  "x-governing-document": "ASTRO-ONTOLOGY-0001",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "id", "provenance_record_id", "observation_id", "observation_source_id", "shape", "encoded_units", "calibration_state", "detector_geometry", "mask_state", "quality_flags", "processing_method", "uncertainty"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
+    "epistemic_classification": {"const": "computed"},
+    "id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "provenance_record_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "observation_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "observation_source_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "shape": {"type": "object", "additionalProperties": false, "required": ["width", "height", "channels"], "properties": {"width": {"type": "integer", "minimum": 1}, "height": {"type": "integer", "minimum": 1}, "channels": {"type": "integer", "minimum": 1}}},
+    "encoded_units": {"const": "encoded_rgb_8bit"},
+    "calibration_state": {"enum": ["unavailable", "provided_unverified", "verified"]},
+    "detector_geometry": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "mask_state": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "quality_flags": {"type": "array", "items": {"type": "string"}},
+    "processing_method": {"type": "object", "additionalProperties": false, "required": ["name", "version"], "properties": {"name": {"const": "pillow-rgb-decode"}, "version": {"type": "string"}}},
+    "uncertainty": {"$ref": "uncertainty.schema.json"}
+  }
+}

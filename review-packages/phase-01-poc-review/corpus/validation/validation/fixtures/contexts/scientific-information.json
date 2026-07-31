@@ -1,0 +1,42 @@
+{
+  "assumptions": [
+    "Information value means admitted evidence quality in this provisional engine, not novelty or importance.",
+    "Weights are frozen test hypotheses."
+  ],
+  "authority": {
+    "decision_register_dependencies": ["DR-0001", "DR-0008", "DR-0010", "DR-0012"],
+    "status": "provisional_non_canonical"
+  },
+  "baseline_configuration": {"manual_class_priorities": {}},
+  "context_id": "context-scientific-information-value-0001",
+  "context_version": "0.1.0",
+  "eligible_relationship_types": ["observational"],
+  "epistemic_classification": "externally_supplied",
+  "excluded_relationship_types": ["containment", "occlusion", "spatial", "structural"],
+  "explanation_requirements": {
+    "include_excluded_evidence": true,
+    "include_warnings": true,
+    "maximum_pathways": 8
+  },
+  "normalization_method": "max",
+  "objective": "Compare relative admitted evidence information within the synthetic run",
+  "ontology_version": "ASTRO-ONTOLOGY-0001",
+  "propagation_rules": {
+    "decay": 0.5,
+    "eligible_relationship_types": [],
+    "enabled": false,
+    "maximum_depth": 0
+  },
+  "record_status": "active",
+  "schema_version": "0.1.0",
+  "uncertainty_tolerance": 0.15,
+  "weights": {
+    "component_weights": {
+      "direct_relationships": 0.2,
+      "information_value": 0.7,
+      "propagated_relationships": 0.0,
+      "standing": 0.1
+    },
+    "relationship_type_weights": {"observational": 1.0}
+  }
+}

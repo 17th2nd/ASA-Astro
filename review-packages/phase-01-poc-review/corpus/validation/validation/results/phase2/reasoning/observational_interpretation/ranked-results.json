@@ -1,0 +1,68 @@
+[
+  {
+    "rank": 1,
+    "score": 0.515527875493,
+    "significance_result_id": "significance-64e8957af67fcfffd322",
+    "subject_id": "candidate-34c0fd618ec5c3c27d4b"
+  },
+  {
+    "rank": 2,
+    "score": 0.432181860345,
+    "significance_result_id": "significance-03d490947228dfa10ef5",
+    "subject_id": "candidate-7df86962ac96a3c56165"
+  },
+  {
+    "rank": 3,
+    "score": 0.395196165301,
+    "significance_result_id": "significance-db3c3a63cb9d234d9ccb",
+    "subject_id": "candidate-e58c39876750226628df"
+  },
+  {
+    "rank": 4,
+    "score": 0.241908962003,
+    "significance_result_id": "significance-bffd3255b69d094d7d78",
+    "subject_id": "candidate-b628cd20cf7f99857fbb"
+  },
+  {
+    "rank": 5,
+    "score": 0.183403490676,
+    "significance_result_id": "significance-54c1e976c5841c6941c1",
+    "subject_id": "candidate-29e9d7286a893289246a"
+  },
+  {
+    "rank": 6,
+    "score": 0.164260150912,
+    "significance_result_id": "significance-22d80fdf409993f01674",
+    "subject_id": "candidate-0ccc75b8cc6c67f7ea59"
+  },
+  {
+    "rank": 7,
+    "score": 0.16364698888,
+    "significance_result_id": "significance-c0a4a323f356ed9763b6",
+    "subject_id": "candidate-2f6a47701ae8215947db"
+  },
+  {
+    "rank": 8,
+    "score": 0.162279983268,
+    "significance_result_id": "significance-8d50245954626a2dd10e",
+    "subject_id": "candidate-5234ea6f804ae6cd7932"
+  },
+  {
+    "rank": 9,
+    "score": 0.15480887851,
+    "significance_result_id": "significance-1e67b1276a6591e9bcf7",
+    "subject_id": "candidate-56ad565e7a1d1b1b8350"
+  },
+  {
+    "rank": 10,
+    "score": 0.130287682581,
+    "significance_result_id": "significance-9296deedd60dc73dc43d",
+    "subject_id": "candidate-7250c5f89d9de17c4cec"
+  },
+  {
+    "rank": 11,
+    "score": 0.096097386913,
+    "significance_result_id": "significance-02924c60d4d6569582ff",
+    "subject_id": "candidate-07b1065c39228d6d1340"
+  }
+]

@@ -1,0 +1,69 @@
+{
+  "artifacts": [
+    {
+      "byte_size": 202165,
+      "media_type": "application/graphml+xml",
+      "path": "graph.graphml",
+      "role": "graph_exchange",
+      "sha256": "48673867431f7687c931ca07340166df0c3a591cf496aed1f50a15f71a0452f1"
+    },
+    {
+      "byte_size": 201159,
+      "media_type": "application/json",
+      "path": "graph.json",
+      "role": "canonical_candidate_graph",
+      "sha256": "0ff9dc94c797cb8701db73b8495634b5312b69f5593a9b5db75c588c9b201471"
+    },
+    {
+      "byte_size": 5692,
+      "media_type": "image/png",
+      "path": "overlay.png",
+      "role": "diagnostic_overlay",
+      "sha256": "5fd1b2e8c1d342c30092aa945923194ebe763665315ea14169ceeda57b82e5c2"
+    },
+    {
+      "byte_size": 282094,
+      "media_type": "application/json",
+      "path": "provenance.json",
+      "role": "provenance_bundle",
+      "sha256": "81336e2fc1259d3934ebb6949608b5072d5a8d7d95aced90c58ecc4de639a687"
+    },
+    {
+      "byte_size": 27661,
+      "media_type": "image/x-portable-anymap",
+      "path": "source/fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a.ppm",
+      "role": "immutable_source_copy",
+      "sha256": "fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a"
+    },
+    {
+      "byte_size": 428,
+      "media_type": "application/json",
+      "path": "source/metadata-703200a548f151b31123eb21d496577fe5cb4f44022da267b4bd21ba7793b894.json",
+      "role": "immutable_metadata_copy",
+      "sha256": "703200a548f151b31123eb21d496577fe5cb4f44022da267b4bd21ba7793b894"
+    },
+    {
+      "byte_size": 7473,
+      "media_type": "text/markdown",
+      "path": "summary.md",
+      "role": "human_readable_summary",
+      "sha256": "04aa25c675292d4ce2161aa20dc7c505dd58e9898d7a3c5bd988d23a478f671c"
+    }
+  ],
+  "epistemic_classification": "computed",
+  "manifest_self_digest": "excluded_to_avoid_recursive_digest",
+  "ontology_version": "ASTRO-ONTOLOGY-0001",
+  "parameters_sha256": "fb7a86d66058634c5eb3de3c7707ee2f63cbecc887e2774e31c14367ae8d3b1a",
+  "processing_run_id": "run-d835245d6645c4394ff4",
+  "record_status": "active",
+  "schema_version": "0.1.0",
+  "software": {
+    "code_sha256": "cc913507a2e0e8fe52b03a3ffd14e74c6dc6f90478a9fc6a46bdc6a0dc620bb9",
+    "pillow": "10.2.0",
+    "pipeline": "asa-astro-observation-to-graph",
+    "pipeline_version": "0.1.0",
+    "python": "3.12.3",
+    "schema_bundle_sha256": "0ab95060a2e332db043f23f3f1e7bdde450594f86109566842451a633b5de838"
+  },
+  "source_sha256": "fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a"
+}

@@ -1,0 +1,10 @@
+{
+  "byte_identical_file_count": 54,
+  "compared_file_count": 54,
+  "context_and_reasoning_artifacts_identical": true,
+  "deterministic_execution": true,
+  "differing_files": [],
+  "graph_identity": "0ff9dc94c797cb8701db73b8495634b5312b69f5593a9b5db75c588c9b201471",
+  "overlay_identity": "5fd1b2e8c1d342c30092aa945923194ebe763665315ea14169ceeda57b82e5c2",
+  "provenance_identity": "81336e2fc1259d3934ebb6949608b5072d5a8d7d95aced90c58ecc4de639a687"
+}

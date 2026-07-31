@@ -1,0 +1,2572 @@
+{
+  "entries": [
+    {
+      "classifications": [
+        "generated packaging",
+        "evidence index"
+      ],
+      "must_read": true,
+      "origin": "generated_packaging",
+      "owner": "Codex A — packaging only",
+      "path": "LARGE-EVIDENCE.md",
+      "role": "Large/binary source purpose and checksum register.",
+      "sha256": "8cfd89d016ea3d66fb6f2c7b81ef029c468beeb4e6496e8637066291b90e3104",
+      "size_bytes": 3426,
+      "source_commit": null,
+      "source_path": null
+    },
+    {
+      "classifications": [
+        "generated packaging",
+        "orientation"
+      ],
+      "must_read": true,
+      "origin": "generated_packaging",
+      "owner": "Codex A — packaging only",
+      "path": "README.md",
+      "role": "Non-authoritative package orientation and review boundary.",
+      "sha256": "c4fe9e4cb552442de90fe54ee765bb561ff5c997d792ca1a71488a20e4d25dc3",
+      "size_bytes": 8485,
+      "source_commit": null,
+      "source_path": null
+    },
+    {
+      "classifications": [
+        "generated packaging",
+        "orientation"
+      ],
+      "must_read": true,
+      "origin": "generated_packaging",
+      "owner": "Codex A — packaging only",
+      "path": "REVIEW-SCOPE.md",
+      "role": "Non-authoritative package orientation and review boundary.",
+      "sha256": "833fcf1a53e5d32adb5e2cd2ad50f94aca98b627bddbb14cc599ec134f4613f9",
+      "size_bytes": 6579,
+      "source_commit": null,
+      "source_path": null
+    },
+    {
+      "classifications": [
+        "generated packaging",
+        "orientation"
+      ],
+      "must_read": true,
+      "origin": "generated_packaging",
+      "owner": "Codex A — packaging only",
+      "path": "REVIEWER-GUIDANCE.md",
+      "role": "Non-authoritative package orientation and review boundary.",
+      "sha256": "a40cfaa0b3bda786406f08a881aa5d742927e6330f15288ee2f8a1ad0d3e7d1a",
+      "size_bytes": 4314,
+      "source_commit": null,
+      "source_path": null
+    },
+    {
+      "classifications": [
+        "generated packaging",
+        "source index"
+      ],
+      "must_read": true,
+      "origin": "generated_packaging",
+      "owner": "Codex A — packaging only",
+      "path": "SOURCE-INDEX.md",
+      "role": "Path-level ownership, status, dependency, and reading index.",
+      "sha256": "101024b228b19f8876c43f8ce788218a5b73fd79c50a5b5e9a2a1cf14b370542",
+      "size_bytes": 43090,
+      "source_commit": null,
+      "source_path": null
+    },
+    {
+      "classifications": [
+        "generated packaging",
+        "model-specific review prompt"
+      ],
+      "must_read": true,
+      "origin": "generated_packaging",
+      "owner": "Codex A — packaging only",
+      "path": "claude/CLAUDE-INDEPENDENT-REVIEW-PROMPT.md",
+      "role": "Model-specific independent review instruction.",
+      "sha256": "f13cba70f6b4eab29884edfe1fc24b3caf04fe6ae3ce2ae559442835d7824c2a",
+      "size_bytes": 4708,
+      "source_commit": null,
+      "source_path": null
+    },
+    {
+      "classifications": [
+        "historical"
+      ],
+      "git_blob": "1ddc6e7b6ed17b3a252ee862308594c89b23c216",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/architecture/.gitignore",
+      "role": "Repository hygiene exclusions for generated and machine-local files.",
+      "sha256": "28018adce431eec7a1138e8a66432051eb69844e9465d721c86e152a3038ade5",
+      "size_bytes": 85,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": ".gitignore"
+    },
+    {
+      "classifications": [
+        "historical"
+      ],
+      "git_blob": "723ff2a836d75af45f6908bd7f9d2b823f9ee513",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/architecture/README.md",
+      "role": "Current repository entry point and bounded executable quick start.",
+      "sha256": "482a323286b8bbb466c3f4063729ab657a8fc437ca141b4a5ce418301b00e437",
+      "size_bytes": 1992,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "README.md"
+    },
+    {
+      "classifications": [
+        "provisional"
+      ],
+      "git_blob": "3e9b3bdb986d3e40d0c95b7212c68ea85b1358bb",
+      "last_commit": "351cc578d3ad94fca87038a077419eb84458d7d4",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex A",
+      "path": "corpus/architecture/docs/architecture/REPOSITORY-STRUCTURE-0001.md",
+      "role": "Proposed minimal repository structure and operator collision boundaries.",
+      "sha256": "0f9ac6c8504cdad5e78adaa11bd26efcb26c2cf3b9ddc9641e4ac3a80a234a62",
+      "size_bytes": 12491,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/architecture/REPOSITORY-STRUCTURE-0001.md"
+    },
+    {
+      "classifications": [
+        "executable configuration"
+      ],
+      "git_blob": "f6ad4358ace8ff05a7f96f3271818c2eace2f4a6",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/environment/examples/parameters.json",
+      "role": "Declared deterministic observation-pipeline parameters.",
+      "sha256": "5f5a94590544aad4908268d8b93a4290abf99db84df43a18279e3ac81ce3a8e4",
+      "size_bytes": 601,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "examples/parameters.json"
+    },
+    {
+      "classifications": [
+        "executable configuration"
+      ],
+      "git_blob": "eb6c0ab6451937609a56b11dc2266b05d4cffde4",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/environment/pyproject.toml",
+      "role": "Python package metadata, runtime range, dependencies, and entry point.",
+      "sha256": "3beb2c88625cf8da6d0460b8300d3fcb46dd4d931534ec67cb525e81a3738505",
+      "size_bytes": 475,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "pyproject.toml"
+    },
+    {
+      "classifications": [
+        "executable configuration"
+      ],
+      "git_blob": "0791557343c36a10c1756c9e1c49b14cfbf029d0",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/environment/requirements.lock",
+      "role": "Exact tested Python dependency versions.",
+      "sha256": "4925ac0a1610ff8c0d13b164001a358b44999ce966638c87c9c10d2167e0bb32",
+      "size_bytes": 166,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "requirements.lock"
+    },
+    {
+      "classifications": [
+        "normative"
+      ],
+      "git_blob": "b03609e7769efd74047d863e216fe3194dfe36b6",
+      "last_commit": "351cc578d3ad94fca87038a077419eb84458d7d4",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex A",
+      "path": "corpus/foundation/docs/foundation/ASA-ASTRO-0001-foundational-definition.md",
+      "role": "Foundational identity, scope, ASA boundary, evidence obligations, and falsification conditions.",
+      "sha256": "05ffb47a3e8b5bcd66a0d2756e078bc5f45bd2c1290e4cd7f1258850658e6828",
+      "size_bytes": 20226,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/foundation/ASA-ASTRO-0001-foundational-definition.md"
+    },
+    {
+      "classifications": [
+        "normative"
+      ],
+      "git_blob": "d163480546886a518d0b7a2e05b28cdc9a3f0862",
+      "last_commit": "351cc578d3ad94fca87038a077419eb84458d7d4",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex A",
+      "path": "corpus/governance/governance/decision-register.md",
+      "role": "Open human-authority architectural, scientific, validation, and integration decisions.",
+      "sha256": "b7fe19cfee9e426209e2440251c3f9ced94f257ec2a7428be2861311e5003eb7",
+      "size_bytes": 18543,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "governance/decision-register.md"
+    },
+    {
+      "classifications": [
+        "evidentiary",
+        "historical"
+      ],
+      "git_blob": "e60b18c01a846004ba62774715c6504f07bc4246",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/governance/governance/integration-issues.md",
+      "role": "Current integration defect register with severity, evidence, remedy, and status.",
+      "sha256": "a68cb21e7c7be717a2e5edac21284e5cc2f2f4e653526cb8c643c0980ed0d2c5",
+      "size_bytes": 12069,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "governance/integration-issues.md"
+    },
+    {
+      "classifications": [
+        "evidentiary",
+        "historical"
+      ],
+      "git_blob": "d2924fc9fd3635735dbdaaf00757dc0732f5cdac",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/integration/docs/integration/INTEGRATION-CONTRACT-REVIEW-0001.md",
+      "role": "Historical and Phase II integration-contract review across A, B, C, and D interfaces.",
+      "sha256": "c2f79bbf271408d44ac05d50ced9e14c42f053d620a687329f268c42b59bb376",
+      "size_bytes": 21068,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/integration/INTEGRATION-CONTRACT-REVIEW-0001.md"
+    },
+    {
+      "classifications": [
+        "normative"
+      ],
+      "git_blob": "fb13df518c2ce354c74fa0c55af7f10914d75da5",
+      "last_commit": "351cc578d3ad94fca87038a077419eb84458d7d4",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex A",
+      "path": "corpus/models/docs/models/ASTRO-CONTEXT-MODEL-0001.md",
+      "role": "Normative astronomy-domain Context declaration model and required fields.",
+      "sha256": "6b26a6f28d8c005c30fc420987e1be00ed334de550c677def8487e99d45274ce",
+      "size_bytes": 16679,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/models/ASTRO-CONTEXT-MODEL-0001.md"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable specification"
+      ],
+      "git_blob": "ed8123957ecf2b20d2cda5be4faf62966487ff76",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/models/docs/models/ASTRO-SIGNIFICANCE-MODEL-0001.md",
+      "role": "Provisional executable Standing and Significance formulas, weights, recursion, and limitations.",
+      "sha256": "fd26d13284167bb5afb6ceef0a14dc5ebf9f074442c537b6389166e50f8ae363",
+      "size_bytes": 12158,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/models/ASTRO-SIGNIFICANCE-MODEL-0001.md"
+    },
+    {
+      "classifications": [
+        "normative"
+      ],
+      "git_blob": "f869b3466186c3dbb4ed1512d9766a7ec65abf8a",
+      "last_commit": "351cc578d3ad94fca87038a077419eb84458d7d4",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex A",
+      "path": "corpus/ontology/docs/ontology/ASTRO-ONTOLOGY-0001.md",
+      "role": "Core ontology and lifecycle/epistemic separations.",
+      "sha256": "ac5ba533d1a818b55c7daf3986e10f6b1198209244b86e3ecab918e2e728377b",
+      "size_bytes": 35119,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/ontology/ASTRO-ONTOLOGY-0001.md"
+    },
+    {
+      "classifications": [
+        "normative"
+      ],
+      "git_blob": "13e565f9648272e71e372d1f7c9277982ec5d804",
+      "last_commit": "351cc578d3ad94fca87038a077419eb84458d7d4",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex A",
+      "path": "corpus/ontology/docs/ontology/ASTRO-RELATIONSHIP-TAXONOMY-0001.md",
+      "role": "Relationship type semantics, evidence rules, directionality, and propagation limits.",
+      "sha256": "81803715f46401ddd3b72f42c6b7ad1d673c9d8ce45d7358cce9b6f3a847d712",
+      "size_bytes": 29734,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/ontology/ASTRO-RELATIONSHIP-TAXONOMY-0001.md"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "evidentiary"
+      ],
+      "git_blob": "07548517178994ffce2f14a448849a687483a8c0",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/pipeline/docs/pipeline/CODEX-B-HANDOFF-0001.md",
+      "role": "Codex B observation-to-candidate-graph interface and integration handoff.",
+      "sha256": "9986b778f9fabf955959b0c565c459126cbdd94112f9a5e3ec165247f50690b9",
+      "size_bytes": 5330,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/pipeline/CODEX-B-HANDOFF-0001.md"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "evidentiary"
+      ],
+      "git_blob": "185d490f91d144c6d513ccd7fc0e541e814c2e18",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/pipeline/docs/pipeline/OBSERVATION-TO-GRAPH-PIPELINE-0001.md",
+      "role": "Observation/evidence pipeline contract, algorithms, outputs, and scientific limits.",
+      "sha256": "1d3056e9c217a8d6adbc998b35a2218ce58d3949de9d391b278ddd2aabd1a614",
+      "size_bytes": 16598,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/pipeline/OBSERVATION-TO-GRAPH-PIPELINE-0001.md"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "d1895e51acf7a6447b181ec63afcf7414ef7d575",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/pipeline/src/asa_astro/__init__.py",
+      "role": "Repository source artefact:   init  .",
+      "sha256": "61cdd9632eb0ac6ab5356b18411f6019f3791310d52511583ede9604aa85276d",
+      "size_bytes": 144,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/__init__.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "acd9fdf36307150d19c468dff927ba3cdb46dfee",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/pipeline/src/asa_astro/cli.py",
+      "role": "Repository source artefact: cli.",
+      "sha256": "753bd297f99f2e17ed7e88ae1e8ac6e84769b623ed86669b2893e0f62dd650d7",
+      "size_bytes": 1884,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/cli.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "ac12062148c2c74b281af9443dee522c1e90cecc",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/pipeline/src/asa_astro/evidence/__init__.py",
+      "role": "Executable Codex B evidence-pipeline module:   init  .",
+      "sha256": "87b5265ee3e2e902d73b3008606f79915173e505a9a265941db5a90563230342",
+      "size_bytes": 219,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/evidence/__init__.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "a70bd92d350ad644c6e42b6b6bf845acc700d8e5",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/pipeline/src/asa_astro/evidence/detection.py",
+      "role": "Executable Codex B evidence-pipeline module: detection.",
+      "sha256": "418b651419ef3627fa062440a74d2f1ac269494b686fed001ee861fcafb4ce92",
+      "size_bytes": 19395,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/evidence/detection.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "5fd44680118bf104310fbff66f4b39814145b2ae",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/pipeline/src/asa_astro/evidence/graph.py",
+      "role": "Executable Codex B evidence-pipeline module: graph.",
+      "sha256": "79f1e41e5ec916943f6cbd3565c4bf59af4c6b70d0f1954f3809bfb9eb7c9a04",
+      "size_bytes": 21944,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/evidence/graph.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "48760810fb5e1c3ddbcd6b04ce6cfac289522bd7",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/pipeline/src/asa_astro/evidence/models.py",
+      "role": "Executable Codex B evidence-pipeline module: models.",
+      "sha256": "39fcf79caf017a87918a0ebd945a8eecb5218041e03b32a871d11532d40d8f3f",
+      "size_bytes": 6069,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/evidence/models.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "967135e442dc35491df4878f7f52e85befaaaa76",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/pipeline/src/asa_astro/evidence/pipeline.py",
+      "role": "Executable Codex B evidence-pipeline module: pipeline.",
+      "sha256": "d3e2bc873acc1f7de36958711b3297b7fa1afbbcffb3e0d5a6dcf25ca5e5fc0c",
+      "size_bytes": 24407,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/evidence/pipeline.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "920be06a35f5592042ea53c1eae94ea45b2cccce",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/pipeline/src/asa_astro/evidence/validation.py",
+      "role": "Executable Codex B evidence-pipeline module: validation.",
+      "sha256": "ebe1a0b6ce0a46e1072453f760808cfe39cd23cf475e4eb7458c4d87d494c664",
+      "size_bytes": 6740,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/evidence/validation.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "evidentiary"
+      ],
+      "git_blob": "5005c4183e14b050331f2b929d842de21fe97e4c",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/reasoning/docs/reasoning/CODEX-C-HANDOFF-0001.md",
+      "role": "Codex C Standing/Significance interface and integration handoff.",
+      "sha256": "704f1c2709f6d7ce99064a4a2cdcbe3b60e031f3fec08c7a440c5f3008092545",
+      "size_bytes": 4460,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/reasoning/CODEX-C-HANDOFF-0001.md"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "efdcee9e8ab1b4007f6b0c1be43c8287db636a6e",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/reasoning/src/asa_astro/reasoning/__init__.py",
+      "role": "Executable Codex C reasoning module:   init  .",
+      "sha256": "359540980c2db64bfabf2d5d1f06a8dd953189285d3a1abf5d358b5ede3f736b",
+      "size_bytes": 321,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/reasoning/__init__.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "597325fefaff47e7bc5160aa543ae040f0f1d500",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/reasoning/src/asa_astro/reasoning/cli.py",
+      "role": "Executable Codex C reasoning module: cli.",
+      "sha256": "5f076a9f18cb2ba2002ee06978be94635082d0883253bd85ea4bd637b07614b9",
+      "size_bytes": 4086,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/reasoning/cli.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "be9aa4ac4d8760cf7b0b5715487bcb9870ca5430",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/reasoning/src/asa_astro/reasoning/engine.py",
+      "role": "Executable Codex C reasoning module: engine.",
+      "sha256": "dc6670dd8759502f63e1a9bc1f5277dccd42f26af57c62df70ec6640ba8e938b",
+      "size_bytes": 28780,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/reasoning/engine.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "b98a39287f1ae9c81cf731bb2a75197c942c1985",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/reasoning/src/asa_astro/reasoning/models.py",
+      "role": "Executable Codex C reasoning module: models.",
+      "sha256": "ac168946044851a2e94ec78746e19ce92b48cd2bec6cf32e16054110b42c1c53",
+      "size_bytes": 3338,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/reasoning/models.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "1e80a9055cb63e21520299e110ca278097094b78",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/reasoning/src/asa_astro/reasoning/validation.py",
+      "role": "Executable Codex C reasoning module: validation.",
+      "sha256": "9ef0b124e9b4188453079ca19124e48d5d25ff580887e50cf3feaf8838d5a333",
+      "size_bytes": 7212,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "src/asa_astro/reasoning/validation.py"
+    },
+    {
+      "classifications": [
+        "evidentiary",
+        "historical"
+      ],
+      "git_blob": "e3822ac1087134e5d4d08d470a54f9e1bd3f0dff",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/reports/docs/reports/CODEX-B-MANUFACTURING-REPORT-0001.md",
+      "role": "Codex B manufacturing evidence, tests, limitations, and ownership.",
+      "sha256": "209dd42181e7becacb0d4628c8a96ffc6aefd4f516f9f7af036f338de9ce7a27",
+      "size_bytes": 16691,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/reports/CODEX-B-MANUFACTURING-REPORT-0001.md"
+    },
+    {
+      "classifications": [
+        "evidentiary",
+        "historical"
+      ],
+      "git_blob": "423e30ae3a6e50c07960424c9a30aa157fa306e5",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/reports/docs/reports/CODEX-C-MANUFACTURING-REPORT-0001.md",
+      "role": "Codex C manufacturing evidence, tests, limitations, and ownership.",
+      "sha256": "bbc83baa355a6c8fb82e2dfe2a11354884bb3bf5ebb4047a7ac683e5cecc175f",
+      "size_bytes": 3988,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/reports/CODEX-C-MANUFACTURING-REPORT-0001.md"
+    },
+    {
+      "classifications": [
+        "evidentiary",
+        "historical"
+      ],
+      "git_blob": "91107a5ec484e76c887f0c832502f2c9f8e7bdf5",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/reports/reports/ASA-ASTRO-POC-VALIDATION-REPORT-0001.md",
+      "role": "Historical and Phase II POC evidence, falsification disposition, and Insufficient evidence conclusion.",
+      "sha256": "4ef52412ad3af2ba4ce145e544477664bdae30b0c3bc5089d5a6abdab6de8c6f",
+      "size_bytes": 25630,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "reports/ASA-ASTRO-POC-VALIDATION-REPORT-0001.md"
+    },
+    {
+      "classifications": [
+        "evidentiary",
+        "historical"
+      ],
+      "git_blob": "83abb003f976a462575ed8ffaff78bece839f889",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/reports/reports/CODEX-D-MANUFACTURING-REPORT-0001.md",
+      "role": "Codex D integration/validation manufacturing history, tests, and limitations.",
+      "sha256": "36e7899790e72ee2f180dd9f9103090893f8fd068924c065d85755342f42db35",
+      "size_bytes": 17322,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "reports/CODEX-D-MANUFACTURING-REPORT-0001.md"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "6d6e7d4f6b7fcaca4a2571f9efab7f520d68586b",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/common.schema.json",
+      "role": "Machine-readable JSON Schema contract for common.schema.",
+      "sha256": "bcba35830f992073726817f1ec356510e9c4ac0326dc79b37a9bfcdc374416bc",
+      "size_bytes": 2204,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/common.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "d065101f957411b1b9a6237e099c09440bee7897",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/entity/candidate-entity.schema.json",
+      "role": "Machine-readable JSON Schema contract for candidate entity.schema.",
+      "sha256": "4e6bcab6867decf07b4bb39f0cd9928bb2f954d16c0a24c371862db325e82e6a",
+      "size_bytes": 2522,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/entity/candidate-entity.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "0418b52f5f6842c43917e9330f06f9b059bf1e73",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/candidate-graph/candidate-graph-edge.schema.json",
+      "role": "Machine-readable JSON Schema contract for candidate graph edge.schema.",
+      "sha256": "a40c4a0105c4ffc9029bf63f668f8e13ce96a096a23cfa105e9acd8648ae8165",
+      "size_bytes": 1030,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/candidate-graph/candidate-graph-edge.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "37a7b45f24d165b9094755209de5df7dae621d50",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/candidate-graph/candidate-graph-node.schema.json",
+      "role": "Machine-readable JSON Schema contract for candidate graph node.schema.",
+      "sha256": "d32685d0868f7989e5ac7fbd10f11074b6027d09f2430351b9e74d4a2e1d2dce",
+      "size_bytes": 1490,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/candidate-graph/candidate-graph-node.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "5de9f9ad6806ef39b975d70106b6465633c7488a",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/candidate-graph/candidate-graph.schema.json",
+      "role": "Machine-readable JSON Schema contract for candidate graph.schema.",
+      "sha256": "9ee64110c2ba2fb9cb5a9f19a62ef09c5fb388e3d31b161a59b0c9764d14488d",
+      "size_bytes": 1216,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/candidate-graph/candidate-graph.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "4896aa517a111097a79b77164ae4cd22e90bef28",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/candidate-graph/candidate-relationship-assertion.schema.json",
+      "role": "Machine-readable JSON Schema contract for candidate relationship assertion.schema.",
+      "sha256": "a51cfd1259fe8d718252b949c8d7c2959da90256f13652ba4d40322bc68a3afb",
+      "size_bytes": 3529,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/candidate-graph/candidate-relationship-assertion.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "1cc3dc963c523d327e8fc24113f53692d97d58e8",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/confidence.schema.json",
+      "role": "Machine-readable JSON Schema contract for confidence.schema.",
+      "sha256": "5bbf02d02d36d337a8b3fa46121f2e13036a633f235d399c378cf9941afe50d7",
+      "size_bytes": 1247,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/confidence.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "857b06e53ec981886f12baa484cc60713f7a6b6b",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/detection.schema.json",
+      "role": "Machine-readable JSON Schema contract for detection.schema.",
+      "sha256": "c07497f5bc83e3ce87f8306b1b9621ee2917c5f7d9219610e6b9ca4ea9c9fd20",
+      "size_bytes": 2091,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/detection.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "3a8c9167b8a95e3440b8d336d58f8a2fbf59c10b",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/detector-output.schema.json",
+      "role": "Machine-readable JSON Schema contract for detector output.schema.",
+      "sha256": "369a9101032b3098e88b098ff52e20ab5d48fd82200441c7bd6d0d9a8ce9cf7e",
+      "size_bytes": 2021,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/detector-output.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "1dd71331ea17ee9e43d583a12684cdac4bb8af55",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/evidence-record.schema.json",
+      "role": "Machine-readable JSON Schema contract for evidence record.schema.",
+      "sha256": "f32acb6d3016fd46d165c1ed41923a70b7a12683b9ff2ab0237d1257f991147c",
+      "size_bytes": 2502,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/evidence-record.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "21bb9649183db71da7d23845ca556ff83e4b2f65",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/observation-source.schema.json",
+      "role": "Machine-readable JSON Schema contract for observation source.schema.",
+      "sha256": "eb916b0007d0937f7cdb1edc9c9329fa6504e10698c90ccc491daabf62ef37f3",
+      "size_bytes": 1926,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/observation-source.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "36eaf3bb57b787bc51bf857e9091e7bd71b345e2",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/observation.schema.json",
+      "role": "Machine-readable JSON Schema contract for observation.schema.",
+      "sha256": "ae8dba65d90f2cb3d219858fe75c3ab7afcc0b9813af5b5f1f74e92b5e24d1f1",
+      "size_bytes": 1605,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/observation.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "2cbf03c1abe0c913f5a2b144991120897ec68529",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/provenance-record.schema.json",
+      "role": "Machine-readable JSON Schema contract for provenance record.schema.",
+      "sha256": "53c8d21357d4c56401d2d544e4c1f41cd96793b4e582df4c303a10c479a6789c",
+      "size_bytes": 3175,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/provenance-record.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "e37ccc3aa08a1051a3b7f75e41605d48ce36d9da",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/source-image-metadata.schema.json",
+      "role": "Machine-readable JSON Schema contract for source image metadata.schema.",
+      "sha256": "11264b7e57918837a55365c7022c666c72ba0d8b92777ebb27261520922bb9f5",
+      "size_bytes": 1888,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/source-image-metadata.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "1e1e7c989203519f09fb7cfb9f9859b03c16e7c5",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/schemas/schemas/observation/uncertainty.schema.json",
+      "role": "Machine-readable JSON Schema contract for uncertainty.schema.",
+      "sha256": "835f703ae0a394b0d49ed3fadddd5e1e9b6a563abcdc1b857244c5d1528c9f5d",
+      "size_bytes": 1343,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/observation/uncertainty.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "f38e981a24946f8f1eb51189b953d61c29b45421",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/schemas/schemas/reasoning/context.schema.json",
+      "role": "Machine-readable JSON Schema contract for context.schema.",
+      "sha256": "32e8631f7bb0fe353b0259865d3d5b9c30f35cdbd976e445088db7bd5c9d8118",
+      "size_bytes": 4083,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/reasoning/context.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "fd4c0548c503dc8abbea6300bdda62874f9365ea",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/schemas/schemas/reasoning/explanation-trace.schema.json",
+      "role": "Machine-readable JSON Schema contract for explanation trace.schema.",
+      "sha256": "7688c2e877563cc331a27e40038319b5195fd880cbf5712efa3b30b698f35de4",
+      "size_bytes": 2133,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/reasoning/explanation-trace.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "16e73434f1ed914415bb2e10117a0665632317e3",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/schemas/schemas/reasoning/significance-result.schema.json",
+      "role": "Machine-readable JSON Schema contract for significance result.schema.",
+      "sha256": "7a3ed1e59a6ce3602b17cca1012cae6f59f0d5a535335c8a6adcc0eab55aa15f",
+      "size_bytes": 2366,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/reasoning/significance-result.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable contract"
+      ],
+      "git_blob": "12e92bafe49d42d7e19fdac6caf716b6cafdc5cd",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/schemas/schemas/reasoning/standing-result.schema.json",
+      "role": "Machine-readable JSON Schema contract for standing result.schema.",
+      "sha256": "bcf3a2609be440e3a9cd592bb1d2348a9d8ec2e6c427a907f3bbac4ee24c9e33",
+      "size_bytes": 1991,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "schemas/reasoning/standing-result.schema.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/tests/tests/__init__.py",
+      "role": "Executable repository test support:   init  .",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_bytes": 1,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/__init__.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "4afd742ffad59b0ded680d06d0ed25d75b223c7b",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/tests/tests/fixtures/README.md",
+      "role": "Synthetic-fixture status and non-Ground-Truth warning.",
+      "sha256": "086f44d2f1858a1acb615d6a8123929c55f05d94a443b370eafb84ceb2cd0eac",
+      "size_bytes": 753,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/fixtures/README.md"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/tests/tests/fixtures/__init__.py",
+      "role": "Deterministic synthetic test fixture or fixture generator:   init  .",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_bytes": 1,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/fixtures/__init__.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "254a0b33486cca92af1fb5267365071cff7e145e",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/tests/tests/fixtures/expected_assertions.json",
+      "role": "Deterministic synthetic test fixture or fixture generator: expected assertions.",
+      "sha256": "d443b11777354609b520f851db8ad11748e5e6d71e1b90b0956e126de7971b87",
+      "size_bytes": 627,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/fixtures/expected_assertions.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "2eae0372017f6b0dc2002a357d07908602d3df08",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/tests/tests/fixtures/generate_fixture.py",
+      "role": "Deterministic synthetic test fixture or fixture generator: generate fixture.",
+      "sha256": "d29830ab0f9f2d45a8eb9c0bcf1eac0addfd533cddc58de539fbc29b59840d4c",
+      "size_bytes": 3175,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/fixtures/generate_fixture.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "d812b22bd01ee2e3bfdebc115d63d4a997ca3a42",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/tests/tests/fixtures/reasoning/structural-context.json",
+      "role": "Deterministic synthetic test fixture or fixture generator: structural context.",
+      "sha256": "064ed4d1ba554ced0512576f1b69a2395fbb07093535261f8b84392165deed2a",
+      "size_bytes": 1659,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/fixtures/reasoning/structural-context.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "18ac13e96bfcc9c376aef63b78d6416e518e18e8",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/tests/tests/fixtures/synthetic_observation.metadata.json",
+      "role": "Deterministic synthetic test fixture or fixture generator: synthetic observation.metadata.",
+      "sha256": "703200a548f151b31123eb21d496577fe5cb4f44022da267b4bd21ba7793b894",
+      "size_bytes": 428,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/fixtures/synthetic_observation.metadata.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/tests/tests/integration/__init__.py",
+      "role": "Executable repository test support:   init  .",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_bytes": 1,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/integration/__init__.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "1e36b01eca0235bd9f05c78e2f02fc4fcbf787c0",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/tests/tests/integration/test_phase2_validation.py",
+      "role": "Executable Phase II end-to-end, identity, failure-preservation, and archive-independent validation tests.",
+      "sha256": "3bcbc16be2f4a1c21cca1748a2bed8b3cbd432976316b689c49425e81c1dbb14",
+      "size_bytes": 3953,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/integration/test_phase2_validation.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "3d08e1e74cabdc30dac80b44a7b8334656ae17e0",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/tests/tests/integration/test_pipeline.py",
+      "role": "Executable observation-pipeline integration and determinism tests.",
+      "sha256": "557b0534f57d068331ec1edba458f276b6105078c0a5064d7f21717338a77c06",
+      "size_bytes": 5454,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/integration/test_pipeline.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "9ec6202bdbcdf81d0008ea457df0a58b62ee2a28",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/tests/tests/reasoning/__init__.py",
+      "role": "Executable repository test support:   init  .",
+      "sha256": "dea38faa2e2c69878df96be512810ed9abb97435b01506c4e3c5ab45724e6c59",
+      "size_bytes": 31,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/reasoning/__init__.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "98a0f331b585bf6d2f9143048772050a70421c39",
+      "last_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex C",
+      "path": "corpus/tests/tests/reasoning/test_engine.py",
+      "role": "Executable Standing, Context, Significance, uncertainty, recursion, baseline, and trace tests.",
+      "sha256": "cc3c82cb5f683437188245fa89ad18c8bdc5b69df9eaea11612b18a489fb5ad9",
+      "size_bytes": 14485,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/reasoning/test_engine.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/tests/tests/unit/__init__.py",
+      "role": "Executable repository test support:   init  .",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "size_bytes": 1,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/unit/__init__.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "3b7bf7696091ca74a41de60baec14dc708848953",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/tests/tests/unit/test_detection_and_relationships.py",
+      "role": "Executable detection and candidate-relationship unit tests.",
+      "sha256": "ee6aa13108a35669352a21ea5e6cc4f80ff58baca3aa9ba733f69ea7115118c2",
+      "size_bytes": 4935,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/unit/test_detection_and_relationships.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "9798a13fadcdf74be4bd9100d40e00c5b90f6eab",
+      "last_commit": "59b1817c07d3bc7e72d7353459c3177362e72a4e",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex B",
+      "path": "corpus/tests/tests/unit/test_models_and_schemas.py",
+      "role": "Executable model and JSON Schema contract tests.",
+      "sha256": "7682454587f57a7b45d89ea03a99e5e5318303f4a2a7733b91ba1d9db08084ee",
+      "size_bytes": 2458,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "tests/unit/test_models_and_schemas.py"
+    },
+    {
+      "classifications": [
+        "normative"
+      ],
+      "git_blob": "4ec78af527d35fc979a6c837d9730603ef495a81",
+      "last_commit": "351cc578d3ad94fca87038a077419eb84458d7d4",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex A",
+      "path": "corpus/validation/docs/validation/ASTRO-VALIDATION-FRAMEWORK-0001.md",
+      "role": "Normative benchmark, baseline, ablation, calibration, and falsification framework.",
+      "sha256": "dee3e3a7d31e90d714c478e6b86ee61b9c00c608d147622aa4b4e914e6009602",
+      "size_bytes": 21735,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "docs/validation/ASTRO-VALIDATION-FRAMEWORK-0001.md"
+    },
+    {
+      "classifications": [
+        "historical"
+      ],
+      "git_blob": "0d357a22ff77f8dc61f23f1c6ee79ed89de4f7f6",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/.gitattributes",
+      "role": "Git attribute declaration for generated validation content.",
+      "sha256": "b155002fccc62ae8fa86bdaec66580fa8734b7b6c38fcd70e0a976b049c4eeb1",
+      "size_bytes": 13,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/.gitattributes"
+    },
+    {
+      "classifications": [
+        "executable guidance",
+        "evidentiary"
+      ],
+      "git_blob": "96b85a7566fddbc0e6cc22f15f633ff2b8fe90a0",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/README.md",
+      "role": "Phase II harness execution, output, environment, and claim-boundary instructions.",
+      "sha256": "62017aa3f45f54b866024e485c07f61d8712081ab6cc79d6eae33a5f6e7b840a",
+      "size_bytes": 1141,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/README.md"
+    },
+    {
+      "classifications": [
+        "historical"
+      ],
+      "git_blob": "3ff7766575a56121ab953460e4b974e3a067036a",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/__init__.py",
+      "role": "Python package marker for the Phase II validation harness.",
+      "sha256": "72fbda9abdf7414a3e506bf35c5e0941faf390c07cf0bdccdf09a5b5396ab11b",
+      "size_bytes": 54,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/__init__.py"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "e5aad132856ee397cd7439805ec995858f9d0914",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/fixtures/contexts/gravitational.json",
+      "role": "Frozen Phase II Context fixture: gravitational.",
+      "sha256": "c5875af0f7e241ccf9bacfc23f0ef2caa3cc9c6b8da3164ca522624c5e449dd9",
+      "size_bytes": 1608,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/fixtures/contexts/gravitational.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "7774a75b26b31e395e45e010635d41801a60a41f",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/fixtures/contexts/observational.json",
+      "role": "Frozen Phase II Context fixture: observational.",
+      "sha256": "77b54a3ca705e3ca31e0af8957412f1bb9099a3957265c17340639c12d4df811",
+      "size_bytes": 1635,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/fixtures/contexts/observational.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "4b3f034b418fdd4e79b255f870c3c3bf171e3216",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/fixtures/contexts/scientific-information.json",
+      "role": "Frozen Phase II Context fixture: scientific information.",
+      "sha256": "c6a2db4b779ec580813604dbf7187225bc6cf46e016393fa9a18c6e82accf824",
+      "size_bytes": 1435,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/fixtures/contexts/scientific-information.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "3350d0a1a9631387b9e662855c17b38954593f55",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/fixtures/contexts/star-formation.json",
+      "role": "Frozen Phase II Context fixture: star formation.",
+      "sha256": "f6e1acb7b0339ca5c73637a745a515195e9d8612acf50db861651128f868fcd4",
+      "size_bytes": 1571,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/fixtures/contexts/star-formation.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable test evidence"
+      ],
+      "git_blob": "b6370e71e527b18fad6b0c67afe5ff2914fcb044",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/fixtures/manual-priority.json",
+      "role": "Generator-informed synthetic manual-priority comparator fixture; not Ground Truth.",
+      "sha256": "47494401895f93ddbcc535916f0dba4cae84b3016c8407f5e01990fe65f86e89",
+      "size_bytes": 683,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/fixtures/manual-priority.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "68c8010249b00d19a8a0e9137e4aadca2e5e6fb9",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/ablation-results.json",
+      "role": "Generated component-ablation evidence.",
+      "sha256": "917c47f58eacb9c9f676f882ce715196cf765979cc9b1844b59aea96cef91f56",
+      "size_bytes": 4479,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/ablation-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "0787f7c8800df810a3393ba86b06a188f8be0d7e",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/adversarial-results.json",
+      "role": "Generated adversarial case register with passes, failures, and limitation.",
+      "sha256": "33b55490bc1e3c9d451f90adacf7aafdb36143c07e950f2caeff44d79326eda2",
+      "size_bytes": 8151,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/adversarial-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "08da93ed5ade33269546d3ca280d7639bef88072",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/benchmark-results.json",
+      "role": "Generated Context, baseline, ranking, and stability comparisons.",
+      "sha256": "13c5bb3efa07e242e530b78310efbfd91db99565b03a3dfca1f57f94bb6b8d4b",
+      "size_bytes": 28718,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/benchmark-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "c7bb17d849c30b2726bebe167d69c1660cb6d214",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/contexts/gravitational_organisation.json",
+      "role": "Generated preserved Context input: gravitational organisation.",
+      "sha256": "1a04ffd135b3204b2e00d6faca560847c2d01f8e48dffa5aa046bd969d383f4b",
+      "size_bytes": 1710,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/contexts/gravitational_organisation.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "3abb4c45e39dbd06e090db0b699d0cedcedfa667",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/contexts/observational_interpretation.json",
+      "role": "Generated preserved Context input: observational interpretation.",
+      "sha256": "4e230bc68d4ce82f61313fa4205bc67d85eb5cf2e31b75632172e33509798f29",
+      "size_bytes": 1705,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/contexts/observational_interpretation.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "18b0296c0ad37c0e991fbdd61f74d27cef1b489e",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/contexts/scientific_information_value.json",
+      "role": "Generated preserved Context input: scientific information value.",
+      "sha256": "7fb826a4562b6953fd2ffe17231336d37c26ae8cc50cbe11630f341c6c09a195",
+      "size_bytes": 1513,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/contexts/scientific_information_value.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "c71aef5af218b46172ecde0ce46a80e1a02800c8",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/contexts/star_formation.json",
+      "role": "Generated preserved Context input: star formation.",
+      "sha256": "e1dc2bd2001dfda229a972ee9a10150adcaf5f1da58837311e420df65190fd38",
+      "size_bytes": 1673,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/contexts/star_formation.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "8cbbec475658ca5e0a2fb9e8efdc25e12c806732",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/contexts/structural_organisation.json",
+      "role": "Generated preserved Context input: structural organisation.",
+      "sha256": "32fd3efcf474ba8bf4e1c321d3e24def980c0c5d342c6b4581f925bc72cf3cf8",
+      "size_bytes": 1741,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/contexts/structural_organisation.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "89e1f8a7d909fd017e89367753a1fca28007f32d",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/evidence/graph.graphml",
+      "role": "Generated Codex B evidence-bundle artefact: graph.",
+      "sha256": "48673867431f7687c931ca07340166df0c3a591cf496aed1f50a15f71a0452f1",
+      "size_bytes": 202165,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/evidence/graph.graphml"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "f3453d045e7df7db7a4c0a95b81fcd9176a7412f",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/evidence/graph.json",
+      "role": "Generated Codex B evidence-bundle artefact: graph.",
+      "sha256": "0ff9dc94c797cb8701db73b8495634b5312b69f5593a9b5db75c588c9b201471",
+      "size_bytes": 201159,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/evidence/graph.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "c8a9f11e9c77e86ef556d6f17af84b68b5b15686",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/evidence/manifest.json",
+      "role": "Generated Codex B evidence-bundle artefact: manifest.",
+      "sha256": "6f92e594910afef46955db3bb66ed3ad785b01621694a14a5a50191b0d48fd6c",
+      "size_bytes": 2544,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/evidence/manifest.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "c0a4e5161173a1dc6fd39d3a38c08d03a1bce5c4",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/evidence/overlay.png",
+      "role": "Generated Codex B evidence-bundle artefact: overlay.",
+      "sha256": "5fd1b2e8c1d342c30092aa945923194ebe763665315ea14169ceeda57b82e5c2",
+      "size_bytes": 5692,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/evidence/overlay.png"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "5e73f96798cb6516f27fc65c9679284872085392",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/evidence/provenance.json",
+      "role": "Generated Codex B evidence-bundle artefact: provenance.",
+      "sha256": "81336e2fc1259d3934ebb6949608b5072d5a8d7d95aced90c58ecc4de639a687",
+      "size_bytes": 282094,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/evidence/provenance.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "24e3a5fc9189ef2c6f5f9afece513eeca31ce50a",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/evidence/source/fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a.ppm",
+      "role": "Content-addressed synthetic input or metadata copy retained in the evidence bundle.",
+      "sha256": "fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a",
+      "size_bytes": 27661,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/evidence/source/fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a.ppm"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "18ac13e96bfcc9c376aef63b78d6416e518e18e8",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/evidence/source/metadata-703200a548f151b31123eb21d496577fe5cb4f44022da267b4bd21ba7793b894.json",
+      "role": "Content-addressed synthetic input or metadata copy retained in the evidence bundle.",
+      "sha256": "703200a548f151b31123eb21d496577fe5cb4f44022da267b4bd21ba7793b894",
+      "size_bytes": 428,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/evidence/source/metadata-703200a548f151b31123eb21d496577fe5cb4f44022da267b4bd21ba7793b894.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "b5ae58b2001127cbcdb4d6cd73064894cd6c2779",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/evidence/summary.md",
+      "role": "Generated Codex B evidence-bundle artefact: summary.",
+      "sha256": "04aa25c675292d4ce2161aa20dc7c505dd58e9898d7a3c5bd988d23a478f671c",
+      "size_bytes": 7473,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/evidence/summary.md"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "adeae31a16e23dca41accd8c24104d5ecf7fd6ba",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/explanation-validation.json",
+      "role": "Generated Explanation Trace linkage and completeness checks.",
+      "sha256": "de01557530664615a2f777c4155982d4b2787b0439d82964bc8118b46e17c1e9",
+      "size_bytes": 2310,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/explanation-validation.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "318bc718e5226241fbb794b431d6ff2e94d491c1",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/explorer.html",
+      "role": "Self-contained lightweight visual inspection explorer.",
+      "sha256": "a689713e8b6cfeac210765e5b1db1ff651821b76a6409b05752a355602c00a33",
+      "size_bytes": 299784,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/explorer.html"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "24e3a5fc9189ef2c6f5f9afece513eeca31ce50a",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/input/synthetic-observation.ppm",
+      "role": "Synthetic Phase II input retained as the harness input; not astronomical Ground Truth.",
+      "sha256": "fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a",
+      "size_bytes": 27661,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/input/synthetic-observation.ppm"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "ab54d22e41f65ed0a9cc8b583d23a37cdae98319",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/input-manifest.json",
+      "role": "Generated identity and provenance manifest for Phase II input.",
+      "sha256": "fc3d6c4f25cac89df3728fbcf258486b709872beaf32348dd5b74adb1bfee9a8",
+      "size_bytes": 1283,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/input-manifest.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "66941928c34ce2646d7dd21af06898498d035e29",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/manifest.json",
+      "role": "Root generated SHA-256 manifest for Phase II artefacts.",
+      "sha256": "1aa75c8b75ebefe919643c450645a960707a41cafeae97e83d715f9711850ca7",
+      "size_bytes": 10000,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/manifest.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "4498781488921d5571be76638b69959b43edb1d7",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/gravitational_organisation/analysis.json",
+      "role": "Complete generated Standing/Significance analysis bundle.",
+      "sha256": "836f8e738cf01ea63783ff9d247ebb47ea152ba46894570d3169015c274c1616",
+      "size_bytes": 137087,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/gravitational_organisation/analysis.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "9299fdba6cf037082b5a1e8a4dbbad5a1711a4e6",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/gravitational_organisation/baselines.json",
+      "role": "Generated comparator rankings for one Context.",
+      "sha256": "298caa317fc4dfc1b418636d19d3c13df51fb839e53bf62655b5c4d234458c89",
+      "size_bytes": 7742,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/gravitational_organisation/baselines.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "c7bb17d849c30b2726bebe167d69c1660cb6d214",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/gravitational_organisation/context.json",
+      "role": "Exact Context copied into one reasoning bundle.",
+      "sha256": "1a04ffd135b3204b2e00d6faca560847c2d01f8e48dffa5aa046bd969d383f4b",
+      "size_bytes": 1710,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/gravitational_organisation/context.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "472c3f36aca1cfb0151d6b635c865163e728fc83",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/gravitational_organisation/explanation-traces.json",
+      "role": "Generated reasoning evidence: explanation traces.",
+      "sha256": "4969706865dbb2d863912a3b2738ad14fa39fdca996e3794ef79f5e35b88f0d6",
+      "size_bytes": 60714,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/gravitational_organisation/explanation-traces.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "b8d34af719497db4d314e0b945ea68c1fe09066b",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/gravitational_organisation/manifest.json",
+      "role": "Generated content-hash manifest for one reasoning bundle.",
+      "sha256": "85671a82accbf408663469cddc7b06de8f5ac4b23707bc22e932879b984b2e95",
+      "size_bytes": 1338,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/gravitational_organisation/manifest.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "c42c78a7fc313069416ff30da3d6ab50e249f3a3",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/gravitational_organisation/ranked-results.json",
+      "role": "Generated reasoning evidence: ranked results.",
+      "sha256": "031c64567c1466d3de0818da92c86152519bd077e63227a01f674c1899698555",
+      "size_bytes": 1854,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/gravitational_organisation/ranked-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "d5047edddbbd33bdd4daf98f4bc6107fe1caebec",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/gravitational_organisation/significance-results.json",
+      "role": "Generated reasoning evidence: significance results.",
+      "sha256": "02f9692395452ae8c820f9fa31503a8cb9a14ab6073e82a9427edffd0f65f68d",
+      "size_bytes": 18255,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/gravitational_organisation/significance-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "360e52a5eae2891fca1f8f68aa41a9ae29976d62",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/gravitational_organisation/standing-results.json",
+      "role": "Generated reasoning evidence: standing results.",
+      "sha256": "650c57cde735ea4c82db04b3ad2ec172ab4d5cf6ff5a15f6afe1b6b6885a7a10",
+      "size_bytes": 37588,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/gravitational_organisation/standing-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "847c6e69e8d8acaebdbca20bc2ba667a8fbf2c35",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/observational_interpretation/analysis.json",
+      "role": "Complete generated Standing/Significance analysis bundle.",
+      "sha256": "b3f16bff5271cb7d972a128998e2f6909ae4aff374278836e96295da88ae87ee",
+      "size_bytes": 462779,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/observational_interpretation/analysis.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "ba419a223ebe845dedee1bd8de6ff9493ca57ea9",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/observational_interpretation/baselines.json",
+      "role": "Generated comparator rankings for one Context.",
+      "sha256": "74eb108fc88473e995e40f04a8ff58b5ad3227403357561afdebc5610b3ddc91",
+      "size_bytes": 7742,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/observational_interpretation/baselines.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "3abb4c45e39dbd06e090db0b699d0cedcedfa667",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/observational_interpretation/context.json",
+      "role": "Exact Context copied into one reasoning bundle.",
+      "sha256": "4e230bc68d4ce82f61313fa4205bc67d85eb5cf2e31b75632172e33509798f29",
+      "size_bytes": 1705,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/observational_interpretation/context.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "83ee97117ce259e27bf153c54b4d06a094692c5a",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/observational_interpretation/explanation-traces.json",
+      "role": "Generated reasoning evidence: explanation traces.",
+      "sha256": "97381286a6e798545140493a9fca860947e23f67d4ab07c4d9c946e7fa0817ee",
+      "size_bytes": 366080,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/observational_interpretation/explanation-traces.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "106641038c7ba6468b7f6a62365b9a7541f22f55",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/observational_interpretation/manifest.json",
+      "role": "Generated content-hash manifest for one reasoning bundle.",
+      "sha256": "c088dba2ba41da9ecebe4bceb26c1ed9986db0aca7ab1f6a3f20de1b12ec74e7",
+      "size_bytes": 1338,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/observational_interpretation/manifest.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "e37e27b3b9700b46058530d8fac2b6ea74446971",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/observational_interpretation/ranked-results.json",
+      "role": "Generated reasoning evidence: ranked results.",
+      "sha256": "934a30086c9d66672c4968ea63a62c3cf1f16765781597768b40b186190a1f17",
+      "size_bytes": 1884,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/observational_interpretation/ranked-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "6d349d13a6b6bad543c35fc0a4dc0941020dcec4",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/observational_interpretation/significance-results.json",
+      "role": "Generated reasoning evidence: significance results.",
+      "sha256": "11d227d770c0fb05b71f3f61e73b4bc9725b2fb3c5d8d83e6c8ab623c2e84635",
+      "size_bytes": 17636,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/observational_interpretation/significance-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "360e52a5eae2891fca1f8f68aa41a9ae29976d62",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/observational_interpretation/standing-results.json",
+      "role": "Generated reasoning evidence: standing results.",
+      "sha256": "650c57cde735ea4c82db04b3ad2ec172ab4d5cf6ff5a15f6afe1b6b6885a7a10",
+      "size_bytes": 37588,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/observational_interpretation/standing-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "c658a1cbd65478f0f19530108c5d1230a5dc6519",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/scientific_information_value/analysis.json",
+      "role": "Complete generated Standing/Significance analysis bundle.",
+      "sha256": "6cb9a8a9c5db3ef03ec13b0d08fb74e87506725b76643d6f30bd4881df285adb",
+      "size_bytes": 134355,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/scientific_information_value/analysis.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "9299fdba6cf037082b5a1e8a4dbbad5a1711a4e6",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/scientific_information_value/baselines.json",
+      "role": "Generated comparator rankings for one Context.",
+      "sha256": "298caa317fc4dfc1b418636d19d3c13df51fb839e53bf62655b5c4d234458c89",
+      "size_bytes": 7742,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/scientific_information_value/baselines.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "18b0296c0ad37c0e991fbdd61f74d27cef1b489e",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/scientific_information_value/context.json",
+      "role": "Exact Context copied into one reasoning bundle.",
+      "sha256": "7fb826a4562b6953fd2ffe17231336d37c26ae8cc50cbe11630f341c6c09a195",
+      "size_bytes": 1513,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/scientific_information_value/context.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "9b8d2648326c526e4046b1ecf1b33c2caad6abd2",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/scientific_information_value/explanation-traces.json",
+      "role": "Generated reasoning evidence: explanation traces.",
+      "sha256": "ae186a81c806c897bed5d18bedb3ced6a9b35a7d524414feb55cb8d469cbde8a",
+      "size_bytes": 59129,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/scientific_information_value/explanation-traces.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "1c9ae5001ec042ca87facd79addf451bec1f36f7",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/scientific_information_value/manifest.json",
+      "role": "Generated content-hash manifest for one reasoning bundle.",
+      "sha256": "b820531f93d8bddddf7a1b86b09fb29b3d219736fd23bd4636aa0402e30b2e05",
+      "size_bytes": 1338,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/scientific_information_value/manifest.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "75eb1729de892a7a3f8eea3609c1d642fa8b2062",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/scientific_information_value/ranked-results.json",
+      "role": "Generated reasoning evidence: ranked results.",
+      "sha256": "c7d0754f6fe68dc7bebdc9bc864f07f7d3d6890d1f07c77601c148a28524b065",
+      "size_bytes": 1879,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/scientific_information_value/ranked-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "f6e18fae2e9968cb006daf0582f96023b98d5e77",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/scientific_information_value/significance-results.json",
+      "role": "Generated reasoning evidence: significance results.",
+      "sha256": "518b5a9ad936ba4f96fe9d331e419a8d9366da5225bebca3a20e7b975b8a009e",
+      "size_bytes": 17454,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/scientific_information_value/significance-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "360e52a5eae2891fca1f8f68aa41a9ae29976d62",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/scientific_information_value/standing-results.json",
+      "role": "Generated reasoning evidence: standing results.",
+      "sha256": "650c57cde735ea4c82db04b3ad2ec172ab4d5cf6ff5a15f6afe1b6b6885a7a10",
+      "size_bytes": 37588,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/scientific_information_value/standing-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "53a03d2630fbf5d3958ee5604e707b3b33f2e24a",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/star_formation/analysis.json",
+      "role": "Complete generated Standing/Significance analysis bundle.",
+      "sha256": "0ec36fb333c4a9f577ddeeb9b8c9090e8f215e726bbad23633426095560265c2",
+      "size_bytes": 136654,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/star_formation/analysis.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "9299fdba6cf037082b5a1e8a4dbbad5a1711a4e6",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/star_formation/baselines.json",
+      "role": "Generated comparator rankings for one Context.",
+      "sha256": "298caa317fc4dfc1b418636d19d3c13df51fb839e53bf62655b5c4d234458c89",
+      "size_bytes": 7742,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/star_formation/baselines.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "c71aef5af218b46172ecde0ce46a80e1a02800c8",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/star_formation/context.json",
+      "role": "Exact Context copied into one reasoning bundle.",
+      "sha256": "e1dc2bd2001dfda229a972ee9a10150adcaf5f1da58837311e420df65190fd38",
+      "size_bytes": 1673,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/star_formation/context.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "1273eba8d36f361672d6d34f3acd91955f54bcb1",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/star_formation/explanation-traces.json",
+      "role": "Generated reasoning evidence: explanation traces.",
+      "sha256": "48026561429279f093b4448d78911e321fd8871af34df586c354da32fcc63cff",
+      "size_bytes": 60307,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/star_formation/explanation-traces.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "6749f831b610b9845b59c67684eb72311d2051c1",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/star_formation/manifest.json",
+      "role": "Generated content-hash manifest for one reasoning bundle.",
+      "sha256": "9910ef5b72106f039578769a170cd6d33deb40a3acefb5a4d000781ba2340872",
+      "size_bytes": 1338,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/star_formation/manifest.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "00d26da10a76569980789754fc5066d4c7f0e11b",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/star_formation/ranked-results.json",
+      "role": "Generated reasoning evidence: ranked results.",
+      "sha256": "bee0b56dd1544ab7f9251f254f87327a5c9de0c786b765c7884470223293cf1d",
+      "size_bytes": 1854,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/star_formation/ranked-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "8c84ce0e8a38a047f5316dd2f76212f1e50697bf",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/star_formation/significance-results.json",
+      "role": "Generated reasoning evidence: significance results.",
+      "sha256": "c62c75d74fbccb574fd54c246c2dd2f2a6d10f5b1056670eb2edd75e5703221c",
+      "size_bytes": 18266,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/star_formation/significance-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "360e52a5eae2891fca1f8f68aa41a9ae29976d62",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/star_formation/standing-results.json",
+      "role": "Generated reasoning evidence: standing results.",
+      "sha256": "650c57cde735ea4c82db04b3ad2ec172ab4d5cf6ff5a15f6afe1b6b6885a7a10",
+      "size_bytes": 37588,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/star_formation/standing-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "bcbe296d8d9cd04c4306b87d9c7749a1bfdfcbaa",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/structural_organisation/analysis.json",
+      "role": "Complete generated Standing/Significance analysis bundle.",
+      "sha256": "3479de58a3bc3876e87740f29dac99a4b14e37a85b5886245625c237b897f917",
+      "size_bytes": 941665,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/structural_organisation/analysis.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "7dd7fd1d0c8eb15df3ce9b6e94e75042a8746952",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/structural_organisation/baselines.json",
+      "role": "Generated comparator rankings for one Context.",
+      "sha256": "de28bdf57b9cefa3d894ae709286c696e913da5b7e3fdde91b235f9a31b895ba",
+      "size_bytes": 7748,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/structural_organisation/baselines.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "8cbbec475658ca5e0a2fb9e8efdc25e12c806732",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/structural_organisation/context.json",
+      "role": "Exact Context copied into one reasoning bundle.",
+      "sha256": "32fd3efcf474ba8bf4e1c321d3e24def980c0c5d342c6b4581f925bc72cf3cf8",
+      "size_bytes": 1741,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/structural_organisation/context.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "c87d855a6a7b052608e575126a99ab2a59a49af3",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/structural_organisation/explanation-traces.json",
+      "role": "Generated reasoning evidence: explanation traces.",
+      "sha256": "ad9939eacf23bbbb2d53774e5b0ed7bcf1ab27c2c7669eda1be6fefb10a2c48d",
+      "size_bytes": 814438,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/structural_organisation/explanation-traces.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "e453df7d910a90cd611d4133c760c7b616410931",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/structural_organisation/manifest.json",
+      "role": "Generated content-hash manifest for one reasoning bundle.",
+      "sha256": "3abe0747f1f31f5f53baf7e436bee94d2f959324d5dc96753f53575ef7d64372",
+      "size_bytes": 1338,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/structural_organisation/manifest.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "6c07a41a02ca796a14183b92d88cf6c7fb38097c",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/structural_organisation/ranked-results.json",
+      "role": "Generated reasoning evidence: ranked results.",
+      "sha256": "887f324f2e7536a64bfad85c55549be810e9451260b65b14625871e5fae20c00",
+      "size_bytes": 1885,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/structural_organisation/ranked-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "2f70d841da0b2cd29ad93a7391349e54d35a56d1",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/structural_organisation/significance-results.json",
+      "role": "Generated reasoning evidence: significance results.",
+      "sha256": "cdda1364da152e34c6a706a6cd49955b78605be255b559b684fe7f0019080649",
+      "size_bytes": 17517,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/structural_organisation/significance-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "360e52a5eae2891fca1f8f68aa41a9ae29976d62",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": false,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reasoning/structural_organisation/standing-results.json",
+      "role": "Generated reasoning evidence: standing results.",
+      "sha256": "650c57cde735ea4c82db04b3ad2ec172ab4d5cf6ff5a15f6afe1b6b6885a7a10",
+      "size_bytes": 37588,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reasoning/structural_organisation/standing-results.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "ed8e46a6b9b73f4e782ec9d7d3e64806856fdc46",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/reproducibility.json",
+      "role": "Generated repeat-run byte-identity and resource observations.",
+      "sha256": "5b05374ef4c5b993931cd54d3eb4bf19385ceba48831af99be9ed7857d5a2bee",
+      "size_bytes": 451,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/reproducibility.json"
+    },
+    {
+      "classifications": [
+        "generated",
+        "evidentiary"
+      ],
+      "git_blob": "45cbb70705c72b43cc409742fa91fb26df825bae",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/results/phase2/validation-summary.json",
+      "role": "Generated compact Phase II result counts and Insufficient evidence conclusion.",
+      "sha256": "e4a6bb907bad8630bb9a123b31d6e16c4b670b0cf6768e3412c9812f995a6a13",
+      "size_bytes": 2909,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/results/phase2/validation-summary.json"
+    },
+    {
+      "classifications": [
+        "provisional",
+        "executable"
+      ],
+      "git_blob": "72801317af807fda0c63ac20519925fa8608cb1c",
+      "last_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "must_read": true,
+      "origin": "copied_repository_source",
+      "owner": "Codex D",
+      "path": "corpus/validation/validation/run_phase2.py",
+      "role": "Executable Phase II integration, benchmark, adversarial, ablation, explorer, and manifest harness.",
+      "sha256": "ce751c8af00f422244a10fdaa3b23709c2561ce472932a95a915ca0d37751255",
+      "size_bytes": 59850,
+      "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+      "source_path": "validation/run_phase2.py"
+    },
+    {
+      "classifications": [
+        "generated packaging",
+        "model-specific review prompt"
+      ],
+      "must_read": true,
+      "origin": "generated_packaging",
+      "owner": "Codex A — packaging only",
+      "path": "gemini/GEMINI-INDEPENDENT-REVIEW-PROMPT.md",
+      "role": "Model-specific independent review instruction.",
+      "sha256": "d806dc23959841801936aa49743f41897118458ccd3f48c8ecf755eae99ee2dd",
+      "size_bytes": 4228,
+      "source_commit": null,
+      "source_path": null
+    },
+    {
+      "classifications": [
+        "generated packaging",
+        "executable packaging tool"
+      ],
+      "must_read": false,
+      "origin": "generated_packaging",
+      "owner": "Codex A — packaging only",
+      "path": "tooling/PACKAGING-CONFIG.json",
+      "role": "Deterministic package build, configuration, or validation tooling.",
+      "sha256": "d086e98c25625da22bf9cb950060058cdcccb51f74c3ebbd1228d414cfaff49e",
+      "size_bytes": 1599,
+      "source_commit": null,
+      "source_path": null
+    },
+    {
+      "classifications": [
+        "generated packaging",
+        "executable packaging tool"
+      ],
+      "must_read": false,
+      "origin": "generated_packaging",
+      "owner": "Codex A — packaging only",
+      "path": "tooling/build_review_packages.py",
+      "role": "Deterministic package build, configuration, or validation tooling.",
+      "sha256": "f20488040a9c1f267d97d0bc39d674301b52f72f738b6f129dbe087449261a72",
+      "size_bytes": 31714,
+      "source_commit": null,
+      "source_path": null
+    },
+    {
+      "classifications": [
+        "generated packaging",
+        "executable packaging tool"
+      ],
+      "must_read": false,
+      "origin": "generated_packaging",
+      "owner": "Codex A — packaging only",
+      "path": "tooling/validate_review_packages.py",
+      "role": "Deterministic package build, configuration, or validation tooling.",
+      "sha256": "c311177cef36f509e828fcb134030ee7474739841172d4fb1119022ca921f8f1",
+      "size_bytes": 10202,
+      "source_commit": null,
+      "source_path": null
+    }
+  ],
+  "excluded_classes": [
+    ".git object storage and repository metadata",
+    "untracked or ignored files",
+    "virtual environments and dependency caches",
+    "Python bytecode and test caches",
+    "temporary run directories",
+    "machine-local configuration, credentials, and secrets"
+  ],
+  "known_source_gaps": [
+    {
+      "evidence": "governance/integration-issues.md INT-0002",
+      "item": "Codex A manufacturing report",
+      "treatment": "not reconstructed; Codex A commit and owned source artefacts are included"
+    },
+    {
+      "evidence": "governance/integration-issues.md INT-0007 and INT-0008",
+      "item": "authorised astronomical input and independent Ground Truth",
+      "treatment": "absence preserved as part of the Insufficient evidence conclusion"
+    },
+    {
+      "evidence": "governance/decision-register.md DR-0001 and governance/integration-issues.md INT-0006",
+      "item": "immutable ASA dependency",
+      "treatment": "unavailable_not_consumed state preserved; no substitute is packaged"
+    }
+  ],
+  "manifest_scope": "committed shared review-package source tree excluding archives and this self-referential manifest",
+  "manifest_self_hash": null,
+  "manifest_self_hash_reason": "A manifest cannot contain its own stable cryptographic hash.",
+  "package_id": "asa-astro-phase-01-poc-review",
+  "payload_file_count": 151,
+  "schema_version": "1.0.0",
+  "source_bytes": 5200697,
+  "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+  "source_file_count": 141,
+  "source_repository": "https://github.com/17th2nd/ASA-Astro.git"
+}

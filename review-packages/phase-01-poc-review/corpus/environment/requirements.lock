@@ -1,0 +1,6 @@
+# Tested with CPython 3.12.3. Exact versions make the PoC environment explicit.
+attrs==23.2.0
+jsonschema==4.10.3
+Pillow==10.2.0
+pyrsistent==0.20.0
+setuptools==68.1.2

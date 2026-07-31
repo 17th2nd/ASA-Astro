@@ -1,0 +1,753 @@
+{
+  "context_isolation": {
+    "distinct_significance_orders": 2,
+    "ranking_orders": {
+      "gravitational_organisation": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-e58c39876750226628df",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-29e9d7286a893289246a",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-56ad565e7a1d1b1b8350",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340"
+      ],
+      "observational_interpretation": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-e58c39876750226628df",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-29e9d7286a893289246a",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-56ad565e7a1d1b1b8350",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340"
+      ],
+      "scientific_information_value": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-e58c39876750226628df",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-29e9d7286a893289246a",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-56ad565e7a1d1b1b8350",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340"
+      ],
+      "star_formation": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-e58c39876750226628df",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-29e9d7286a893289246a",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-56ad565e7a1d1b1b8350",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340"
+      ],
+      "structural_organisation": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-e58c39876750226628df",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-29e9d7286a893289246a",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-07b1065c39228d6d1340",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-56ad565e7a1d1b1b8350"
+      ]
+    },
+    "standing_identical_across_contexts": true
+  },
+  "contexts": {
+    "gravitational_organisation": {
+      "baseline_rankings": {
+        "brightness": [
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-7250c5f89d9de17c4cec"
+        ],
+        "centrality": [
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-e58c39876750226628df",
+          "candidate-29e9d7286a893289246a",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-56ad565e7a1d1b1b8350"
+        ],
+        "degree": [
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350"
+        ],
+        "image_centre": [
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-0ccc75b8cc6c67f7ea59"
+        ],
+        "manual_class_priority": [
+          "candidate-07b1065c39228d6d1340",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-29e9d7286a893289246a",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-e58c39876750226628df"
+        ]
+      },
+      "comparisons": {
+        "brightness": {
+          "mean_absolute_rank_delta": 4.0,
+          "pairwise_disagreement_fraction": 0.454545454545,
+          "pairwise_disagreements": 25,
+          "spearman_rho": 0.072727272727,
+          "top_subject_same": false
+        },
+        "centrality": {
+          "mean_absolute_rank_delta": 2.0,
+          "pairwise_disagreement_fraction": 0.272727272727,
+          "pairwise_disagreements": 15,
+          "spearman_rho": 0.572727272727,
+          "top_subject_same": true
+        },
+        "degree": {
+          "mean_absolute_rank_delta": 2.363636363636,
+          "pairwise_disagreement_fraction": 0.290909090909,
+          "pairwise_disagreements": 16,
+          "spearman_rho": 0.5,
+          "top_subject_same": true
+        },
+        "image_centre": {
+          "mean_absolute_rank_delta": 2.727272727273,
+          "pairwise_disagreement_fraction": 0.363636363636,
+          "pairwise_disagreements": 20,
+          "spearman_rho": 0.327272727273,
+          "top_subject_same": false
+        },
+        "manual_priority": {
+          "mean_absolute_rank_delta": 2.181818181818,
+          "pairwise_disagreement_fraction": 0.254545454545,
+          "pairwise_disagreements": 14,
+          "spearman_rho": 0.609090909091,
+          "top_subject_same": true
+        }
+      },
+      "manual_priority_ranking": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-29e9d7286a893289246a",
+        "candidate-e58c39876750226628df",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-56ad565e7a1d1b1b8350"
+      ],
+      "significance_ranking": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-e58c39876750226628df",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-29e9d7286a893289246a",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-56ad565e7a1d1b1b8350",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340"
+      ],
+      "top_subject": "candidate-34c0fd618ec5c3c27d4b"
+    },
+    "observational_interpretation": {
+      "baseline_rankings": {
+        "brightness": [
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-7250c5f89d9de17c4cec"
+        ],
+        "centrality": [
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-e58c39876750226628df",
+          "candidate-29e9d7286a893289246a",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-56ad565e7a1d1b1b8350"
+        ],
+        "degree": [
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350"
+        ],
+        "image_centre": [
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-0ccc75b8cc6c67f7ea59"
+        ],
+        "manual_class_priority": [
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-29e9d7286a893289246a",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-e58c39876750226628df"
+        ]
+      },
+      "comparisons": {
+        "brightness": {
+          "mean_absolute_rank_delta": 4.0,
+          "pairwise_disagreement_fraction": 0.454545454545,
+          "pairwise_disagreements": 25,
+          "spearman_rho": 0.072727272727,
+          "top_subject_same": false
+        },
+        "centrality": {
+          "mean_absolute_rank_delta": 2.0,
+          "pairwise_disagreement_fraction": 0.272727272727,
+          "pairwise_disagreements": 15,
+          "spearman_rho": 0.572727272727,
+          "top_subject_same": true
+        },
+        "degree": {
+          "mean_absolute_rank_delta": 2.363636363636,
+          "pairwise_disagreement_fraction": 0.290909090909,
+          "pairwise_disagreements": 16,
+          "spearman_rho": 0.5,
+          "top_subject_same": true
+        },
+        "image_centre": {
+          "mean_absolute_rank_delta": 2.727272727273,
+          "pairwise_disagreement_fraction": 0.363636363636,
+          "pairwise_disagreements": 20,
+          "spearman_rho": 0.327272727273,
+          "top_subject_same": false
+        },
+        "manual_priority": {
+          "mean_absolute_rank_delta": 2.181818181818,
+          "pairwise_disagreement_fraction": 0.254545454545,
+          "pairwise_disagreements": 14,
+          "spearman_rho": 0.609090909091,
+          "top_subject_same": true
+        }
+      },
+      "manual_priority_ranking": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-29e9d7286a893289246a",
+        "candidate-e58c39876750226628df",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-56ad565e7a1d1b1b8350"
+      ],
+      "significance_ranking": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-e58c39876750226628df",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-29e9d7286a893289246a",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-56ad565e7a1d1b1b8350",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340"
+      ],
+      "top_subject": "candidate-34c0fd618ec5c3c27d4b"
+    },
+    "scientific_information_value": {
+      "baseline_rankings": {
+        "brightness": [
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-7250c5f89d9de17c4cec"
+        ],
+        "centrality": [
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-e58c39876750226628df",
+          "candidate-29e9d7286a893289246a",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-56ad565e7a1d1b1b8350"
+        ],
+        "degree": [
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350"
+        ],
+        "image_centre": [
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-0ccc75b8cc6c67f7ea59"
+        ],
+        "manual_class_priority": [
+          "candidate-07b1065c39228d6d1340",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-29e9d7286a893289246a",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-e58c39876750226628df"
+        ]
+      },
+      "comparisons": {
+        "brightness": {
+          "mean_absolute_rank_delta": 4.0,
+          "pairwise_disagreement_fraction": 0.454545454545,
+          "pairwise_disagreements": 25,
+          "spearman_rho": 0.072727272727,
+          "top_subject_same": false
+        },
+        "centrality": {
+          "mean_absolute_rank_delta": 2.0,
+          "pairwise_disagreement_fraction": 0.272727272727,
+          "pairwise_disagreements": 15,
+          "spearman_rho": 0.572727272727,
+          "top_subject_same": true
+        },
+        "degree": {
+          "mean_absolute_rank_delta": 2.363636363636,
+          "pairwise_disagreement_fraction": 0.290909090909,
+          "pairwise_disagreements": 16,
+          "spearman_rho": 0.5,
+          "top_subject_same": true
+        },
+        "image_centre": {
+          "mean_absolute_rank_delta": 2.727272727273,
+          "pairwise_disagreement_fraction": 0.363636363636,
+          "pairwise_disagreements": 20,
+          "spearman_rho": 0.327272727273,
+          "top_subject_same": false
+        },
+        "manual_priority": {
+          "mean_absolute_rank_delta": 2.181818181818,
+          "pairwise_disagreement_fraction": 0.254545454545,
+          "pairwise_disagreements": 14,
+          "spearman_rho": 0.609090909091,
+          "top_subject_same": true
+        }
+      },
+      "manual_priority_ranking": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-29e9d7286a893289246a",
+        "candidate-e58c39876750226628df",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-56ad565e7a1d1b1b8350"
+      ],
+      "significance_ranking": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-e58c39876750226628df",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-29e9d7286a893289246a",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-56ad565e7a1d1b1b8350",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340"
+      ],
+      "top_subject": "candidate-34c0fd618ec5c3c27d4b"
+    },
+    "star_formation": {
+      "baseline_rankings": {
+        "brightness": [
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-7250c5f89d9de17c4cec"
+        ],
+        "centrality": [
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-e58c39876750226628df",
+          "candidate-29e9d7286a893289246a",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-56ad565e7a1d1b1b8350"
+        ],
+        "degree": [
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350"
+        ],
+        "image_centre": [
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-0ccc75b8cc6c67f7ea59"
+        ],
+        "manual_class_priority": [
+          "candidate-07b1065c39228d6d1340",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-29e9d7286a893289246a",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-e58c39876750226628df"
+        ]
+      },
+      "comparisons": {
+        "brightness": {
+          "mean_absolute_rank_delta": 4.0,
+          "pairwise_disagreement_fraction": 0.454545454545,
+          "pairwise_disagreements": 25,
+          "spearman_rho": 0.072727272727,
+          "top_subject_same": false
+        },
+        "centrality": {
+          "mean_absolute_rank_delta": 2.0,
+          "pairwise_disagreement_fraction": 0.272727272727,
+          "pairwise_disagreements": 15,
+          "spearman_rho": 0.572727272727,
+          "top_subject_same": true
+        },
+        "degree": {
+          "mean_absolute_rank_delta": 2.363636363636,
+          "pairwise_disagreement_fraction": 0.290909090909,
+          "pairwise_disagreements": 16,
+          "spearman_rho": 0.5,
+          "top_subject_same": true
+        },
+        "image_centre": {
+          "mean_absolute_rank_delta": 2.727272727273,
+          "pairwise_disagreement_fraction": 0.363636363636,
+          "pairwise_disagreements": 20,
+          "spearman_rho": 0.327272727273,
+          "top_subject_same": false
+        },
+        "manual_priority": {
+          "mean_absolute_rank_delta": 2.181818181818,
+          "pairwise_disagreement_fraction": 0.254545454545,
+          "pairwise_disagreements": 14,
+          "spearman_rho": 0.609090909091,
+          "top_subject_same": true
+        }
+      },
+      "manual_priority_ranking": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-29e9d7286a893289246a",
+        "candidate-e58c39876750226628df",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-56ad565e7a1d1b1b8350"
+      ],
+      "significance_ranking": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-e58c39876750226628df",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-29e9d7286a893289246a",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-56ad565e7a1d1b1b8350",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340"
+      ],
+      "top_subject": "candidate-34c0fd618ec5c3c27d4b"
+    },
+    "structural_organisation": {
+      "baseline_rankings": {
+        "brightness": [
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-7250c5f89d9de17c4cec"
+        ],
+        "centrality": [
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-e58c39876750226628df",
+          "candidate-29e9d7286a893289246a",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-56ad565e7a1d1b1b8350"
+        ],
+        "degree": [
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350"
+        ],
+        "image_centre": [
+          "candidate-7250c5f89d9de17c4cec",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-7df86962ac96a3c56165",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-29e9d7286a893289246a",
+          "candidate-e58c39876750226628df",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-0ccc75b8cc6c67f7ea59"
+        ],
+        "manual_class_priority": [
+          "candidate-7df86962ac96a3c56165",
+          "candidate-b628cd20cf7f99857fbb",
+          "candidate-e58c39876750226628df",
+          "candidate-34c0fd618ec5c3c27d4b",
+          "candidate-0ccc75b8cc6c67f7ea59",
+          "candidate-2f6a47701ae8215947db",
+          "candidate-56ad565e7a1d1b1b8350",
+          "candidate-07b1065c39228d6d1340",
+          "candidate-29e9d7286a893289246a",
+          "candidate-5234ea6f804ae6cd7932",
+          "candidate-7250c5f89d9de17c4cec"
+        ]
+      },
+      "comparisons": {
+        "brightness": {
+          "mean_absolute_rank_delta": 4.909090909091,
+          "pairwise_disagreement_fraction": 0.636363636364,
+          "pairwise_disagreements": 35,
+          "spearman_rho": -0.509090909091,
+          "top_subject_same": false
+        },
+        "centrality": {
+          "mean_absolute_rank_delta": 0.909090909091,
+          "pairwise_disagreement_fraction": 0.090909090909,
+          "pairwise_disagreements": 5,
+          "spearman_rho": 0.936363636364,
+          "top_subject_same": true
+        },
+        "degree": {
+          "mean_absolute_rank_delta": 1.090909090909,
+          "pairwise_disagreement_fraction": 0.109090909091,
+          "pairwise_disagreements": 6,
+          "spearman_rho": 0.881818181818,
+          "top_subject_same": true
+        },
+        "image_centre": {
+          "mean_absolute_rank_delta": 2.0,
+          "pairwise_disagreement_fraction": 0.218181818182,
+          "pairwise_disagreements": 12,
+          "spearman_rho": 0.745454545455,
+          "top_subject_same": false
+        },
+        "manual_priority": {
+          "mean_absolute_rank_delta": 0.909090909091,
+          "pairwise_disagreement_fraction": 0.109090909091,
+          "pairwise_disagreements": 6,
+          "spearman_rho": 0.890909090909,
+          "top_subject_same": true
+        }
+      },
+      "manual_priority_ranking": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-29e9d7286a893289246a",
+        "candidate-e58c39876750226628df",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-07b1065c39228d6d1340",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-56ad565e7a1d1b1b8350"
+      ],
+      "significance_ranking": [
+        "candidate-34c0fd618ec5c3c27d4b",
+        "candidate-7df86962ac96a3c56165",
+        "candidate-e58c39876750226628df",
+        "candidate-b628cd20cf7f99857fbb",
+        "candidate-7250c5f89d9de17c4cec",
+        "candidate-29e9d7286a893289246a",
+        "candidate-5234ea6f804ae6cd7932",
+        "candidate-07b1065c39228d6d1340",
+        "candidate-0ccc75b8cc6c67f7ea59",
+        "candidate-2f6a47701ae8215947db",
+        "candidate-56ad565e7a1d1b1b8350"
+      ],
+      "top_subject": "candidate-34c0fd618ec5c3c27d4b"
+    }
+  },
+  "manual_priority_basis": "Frozen synthetic-fixture construction priority derived from generator primitives before Phase II significance comparison; not astronomical Ground Truth.",
+  "ranking_stability": {
+    "comparison": {
+      "mean_absolute_rank_delta": 0.0,
+      "pairwise_disagreement_fraction": 0.0,
+      "pairwise_disagreements": 0,
+      "spearman_rho": 1.0,
+      "top_subject_same": true
+    },
+    "interpretation_limit": "One synthetic local perturbation is not a calibration or general stability claim.",
+    "perturbation": "multiply every relationship-assertion confidence by 0.999",
+    "score_l1_delta": 1.125503e-06
+  }
+}

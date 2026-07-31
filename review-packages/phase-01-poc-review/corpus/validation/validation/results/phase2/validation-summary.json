@@ -1,0 +1,99 @@
+{
+  "adversarial": {
+    "case_count": 19,
+    "fail_count": 5,
+    "limitation_count": 1,
+    "pass_count": 13
+  },
+  "bounded_hypothesis_outcome": "insufficient_evidence",
+  "candidate_count": 11,
+  "computational_cost_proxies": {
+    "propagated_path_count_by_context": {
+      "gravitational_organisation": 0,
+      "observational_interpretation": 642,
+      "scientific_information_value": 0,
+      "star_formation": 0,
+      "structural_organisation": 1682
+    },
+    "standing_centrality_converged": false,
+    "standing_centrality_iterations": 64
+  },
+  "contexts": {
+    "gravitational_organisation": {
+      "eligible_edge_count": 0,
+      "eligible_relationship_types": [
+        "gravitational",
+        "membership",
+        "orbital"
+      ],
+      "eligible_types_present": []
+    },
+    "observational_interpretation": {
+      "eligible_edge_count": 32,
+      "eligible_relationship_types": [
+        "observational",
+        "occlusion",
+        "spatial"
+      ],
+      "eligible_types_present": [
+        "observational",
+        "occlusion",
+        "spatial"
+      ]
+    },
+    "scientific_information_value": {
+      "eligible_edge_count": 11,
+      "eligible_relationship_types": [
+        "observational"
+      ],
+      "eligible_types_present": [
+        "observational"
+      ]
+    },
+    "star_formation": {
+      "eligible_edge_count": 0,
+      "eligible_relationship_types": [
+        "causal",
+        "energetic",
+        "radiative"
+      ],
+      "eligible_types_present": []
+    },
+    "structural_organisation": {
+      "eligible_edge_count": 31,
+      "eligible_relationship_types": [
+        "spatial",
+        "containment",
+        "structural"
+      ],
+      "eligible_types_present": [
+        "containment",
+        "spatial",
+        "structural"
+      ]
+    }
+  },
+  "distinct_significance_orders": 2,
+  "edge_count": 43,
+  "explanations_resolvable": true,
+  "harness_version": "asa-astro-validation-phase2-0.1.0",
+  "outcome_basis": [
+    "Significance differs from brightness and Context switching is reproducible on the synthetic fixture.",
+    "Contradictory evidence and assertion-level uncertainty do not affect edge support.",
+    "Evidence-absent star-formation and gravitational Contexts emit active non-zero rankings instead of abstaining.",
+    "Standing centrality is deterministic but did not converge within the declared 64-iteration cap.",
+    "Five declared Contexts produced only two distinct ranking orders on this fixture.",
+    "Weights are provisional and no astronomical Ground Truth or authorised ASA dependency exists."
+  ],
+  "processing_run_id": "run-d835245d6645c4394ff4",
+  "relationship_types": [
+    "containment",
+    "observational",
+    "occlusion",
+    "spatial",
+    "structural"
+  ],
+  "reproducibility_passed": true,
+  "standing_context_isolation_passed": true,
+  "upstream_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739"
+}

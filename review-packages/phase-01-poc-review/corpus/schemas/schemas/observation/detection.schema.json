@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/detection.schema.json",
+  "title": "Detection / Light Region",
+  "x-governing-document": "ASTRO-ONTOLOGY-0001 Light Region profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "id", "provenance_record_id", "observation_source_id", "detector_output_id", "evidence_record_id", "segmentation_kind", "bbox", "centroid", "features", "provisional_observation_class", "classification_status", "segmentation_confidence", "uncertainty", "flags"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
+    "epistemic_classification": {"const": "computed"},
+    "id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "provenance_record_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "observation_source_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "detector_output_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "evidence_record_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "segmentation_kind": {"enum": ["bright_low_threshold", "bright_core", "dark_local_deficit"]},
+    "bbox": {"$ref": "common.schema.json#/$defs/bbox"},
+    "centroid": {"$ref": "common.schema.json#/$defs/centroid"},
+    "features": {"type": "object", "minProperties": 10},
+    "provisional_observation_class": {"enum": ["bright_point_like_region", "extended_luminous_region", "diffuse_luminous_region", "internal_luminous_substructure", "dark_or_occluding_region", "unresolved_luminous_region"]},
+    "classification_status": {"enum": ["provisional", "hypothesis", "unknown"]},
+    "segmentation_confidence": {"$ref": "confidence.schema.json"},
+    "uncertainty": {"$ref": "uncertainty.schema.json"},
+    "flags": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+  }
+}

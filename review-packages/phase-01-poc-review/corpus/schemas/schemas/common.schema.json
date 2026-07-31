@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/common.schema.json",
+  "title": "ASA-Astro common schema definitions",
+  "$defs": {
+    "identifier": {"type": "string", "pattern": "^[a-z][a-z0-9-]{7,127}$"},
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "confidence_value": {"type": "number", "minimum": 0, "maximum": 1},
+    "record_status": {"enum": ["active", "admissible", "limited", "contested", "invalid", "rejected", "superseded", "unavailable", "uncalibrated"]},
+    "epistemic_classification": {"enum": ["observed", "inferred", "computed", "externally_supplied"]},
+    "ontology_version": {"const": "ASTRO-ONTOLOGY-0001"},
+    "declared_value": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "value"],
+      "properties": {
+        "status": {"enum": ["declared", "unknown", "unavailable", "not_applicable", "withheld", "contested", "estimated", "bounded"]},
+        "value": {"type": ["string", "number", "object", "array", "null"]},
+        "reason": {"type": "string"}
+      }
+    },
+    "bbox": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "width", "height", "unit"],
+      "properties": {
+        "x": {"type": "integer", "minimum": 0},
+        "y": {"type": "integer", "minimum": 0},
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1},
+        "unit": {"const": "pixel"}
+      }
+    },
+    "centroid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "unit"],
+      "properties": {
+        "x": {"type": "number", "minimum": 0},
+        "y": {"type": "number", "minimum": 0},
+        "unit": {"const": "pixel"}
+      }
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit", "derivation"],
+      "properties": {
+        "value": {"type": ["number", "integer", "null"]},
+        "unit": {"type": "string", "minLength": 1},
+        "derivation": {"type": "string", "minLength": 1},
+        "calibrated": {"type": "boolean"}
+      }
+    }
+  }
+}

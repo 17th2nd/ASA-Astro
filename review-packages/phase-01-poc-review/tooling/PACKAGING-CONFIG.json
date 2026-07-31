@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "package_id": "asa-astro-phase-01-poc-review",
+  "source_repository": "https://github.com/17th2nd/ASA-Astro.git",
+  "source_commit": "7fc6e97c6aee4da076750f3f7082bbcd82e7291b",
+  "source_commit_subject": "test: complete Phase II integration validation",
+  "inclusion_policy": "all tracked regular files at source_commit, copied exactly once",
+  "archive_epoch": "1980-01-01T00:00:00Z",
+  "archives": {
+    "gemini": "ASA-Astro-POC-Review-Package-Gemini.zip",
+    "claude": "ASA-Astro-POC-Review-Package-Claude.zip"
+  },
+  "known_source_gaps": [
+    {
+      "item": "Codex A manufacturing report",
+      "evidence": "governance/integration-issues.md INT-0002",
+      "treatment": "not reconstructed; Codex A commit and owned source artefacts are included"
+    },
+    {
+      "item": "authorised astronomical input and independent Ground Truth",
+      "evidence": "governance/integration-issues.md INT-0007 and INT-0008",
+      "treatment": "absence preserved as part of the Insufficient evidence conclusion"
+    },
+    {
+      "item": "immutable ASA dependency",
+      "evidence": "governance/decision-register.md DR-0001 and governance/integration-issues.md INT-0006",
+      "treatment": "unavailable_not_consumed state preserved; no substitute is packaged"
+    }
+  ],
+  "excluded_classes": [
+    ".git object storage and repository metadata",
+    "untracked or ignored files",
+    "virtual environments and dependency caches",
+    "Python bytecode and test caches",
+    "temporary run directories",
+    "machine-local configuration, credentials, and secrets"
+  ]
+}

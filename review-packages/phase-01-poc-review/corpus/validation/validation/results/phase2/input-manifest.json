@@ -1,0 +1,19 @@
+{
+  "astronomical_ground_truth_status": "unavailable",
+  "context_sha256": {
+    "gravitational_organisation": "ed5e1931c52e854b518260e074c2830f32e7cc8bebe7dae3aa8b7179945b9936",
+    "observational_interpretation": "50b6bcbad4d7d9e8ba0541833fe92d0ede08defa7147086b5c119406d462c7c9",
+    "scientific_information_value": "f8ad180b3c1cf96041c083b46bbededfe7d8ab6339c15517152269d69a2e48ed",
+    "star_formation": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "structural_organisation": "1d095f977de73bcff9161320848ba890db18de836968d831f9b0821d08a1eee5"
+  },
+  "fixture_status": "synthetic_software_validation_only",
+  "harness_version": "asa-astro-validation-phase2-0.1.0",
+  "manual_priority_sha256": "47494401895f93ddbcc535916f0dba4cae84b3016c8407f5e01990fe65f86e89",
+  "metadata_sha256": "703200a548f151b31123eb21d496577fe5cb4f44022da267b4bd21ba7793b894",
+  "parameters_sha256": "5f5a94590544aad4908268d8b93a4290abf99db84df43a18279e3ac81ce3a8e4",
+  "requirements_lock_sha256": "4925ac0a1610ff8c0d13b164001a358b44999ce966638c87c9c10d2167e0bb32",
+  "source_generator": "tests/fixtures/generate_fixture.py",
+  "source_sha256": "fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a",
+  "upstream_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739"
+}

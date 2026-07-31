@@ -1,0 +1,21 @@
+{
+  "background_blur_radius": 5.0,
+  "bright_min_delta": 18,
+  "bright_sigma": 2.5,
+  "core_min_delta": 42,
+  "core_sigma": 5.0,
+  "dark_local_delta": 16,
+  "dark_min_component_pixels": 4,
+  "diffraction_elongation_min": 5.0,
+  "diffraction_fill_ratio_max": 0.45,
+  "diffuse_min_pixels": 80,
+  "extended_min_pixels": 45,
+  "foreground_peak_min": 220,
+  "local_density_radius_pixels": 24.0,
+  "maximum_components_per_pass": 128,
+  "maximum_hypothesis_confidence": 0.45,
+  "min_component_pixels": 3,
+  "orientation_alignment_degrees": 15.0,
+  "point_max_pixels": 24,
+  "proximity_radius_pixels": 16.0
+}

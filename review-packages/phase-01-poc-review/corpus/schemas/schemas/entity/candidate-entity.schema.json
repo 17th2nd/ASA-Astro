@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/candidate-entity.schema.json",
+  "title": "Candidate Entity",
+  "x-governing-document": "ASTRO-ONTOLOGY-0001",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "id", "provenance_record_id", "candidate_type", "classification_status", "resolution_state", "representation_space", "source_representation_ids", "detection_ids", "supporting_evidence_ids", "contradicting_evidence_ids", "alternative_candidate_ids", "confidence", "uncertainty", "inference_basis"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
+    "epistemic_classification": {"const": "inferred"},
+    "id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "provenance_record_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "candidate_type": {"enum": ["likely_foreground_point_source", "primary_extended_object", "internal_substructure", "possible_companion_object", "background_extended_object", "diffuse_or_uncertain_region", "unresolved_background_object_candidate", "dark_or_occluding_region", "unknown_image_region"]},
+    "classification_status": {"enum": ["provisional", "hypothesis", "unknown"]},
+    "resolution_state": {"enum": ["unresolved", "contested", "rejected", "matched", "split", "merged"]},
+    "representation_space": {"const": "image_region"},
+    "source_representation_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/identifier"}},
+    "detection_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/identifier"}},
+    "supporting_evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/identifier"}},
+    "contradicting_evidence_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/identifier"}},
+    "alternative_candidate_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/identifier"}},
+    "confidence": {"$ref": "confidence.schema.json"},
+    "uncertainty": {"$ref": "uncertainty.schema.json"},
+    "inference_basis": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/confidence.schema.json",
+  "title": "Structured Confidence",
+  "x-governing-document": "ASTRO-ONTOLOGY-0001",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "record_status", "value", "scale_semantics", "target_proposition", "method", "calibration_status", "evidence_ids", "provenance_inherited_from_parent"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
+    "value": {"oneOf": [{"$ref": "common.schema.json#/$defs/confidence_value"}, {"type": "null"}]},
+    "scale_semantics": {"type": "string", "minLength": 1},
+    "target_proposition": {"type": "string", "minLength": 1},
+    "method": {"type": "string", "minLength": 1},
+    "calibration_status": {"enum": ["uncalibrated", "calibrated", "unavailable", "contested"]},
+    "evidence_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/identifier"}},
+    "provenance_inherited_from_parent": {"const": true}
+  }
+}

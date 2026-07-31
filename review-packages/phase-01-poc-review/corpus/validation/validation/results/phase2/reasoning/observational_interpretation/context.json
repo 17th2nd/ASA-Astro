@@ -1,0 +1,66 @@
+{
+  "assumptions": [
+    "Weights are frozen provisional test hypotheses.",
+    "Observational and image-space assertions are representations, not physical facts."
+  ],
+  "authority": {
+    "decision_register_dependencies": [
+      "DR-0001",
+      "DR-0008",
+      "DR-0010",
+      "DR-0012"
+    ],
+    "status": "provisional_non_canonical"
+  },
+  "baseline_configuration": {
+    "manual_class_priorities": {
+      "dark_or_occluding_region": 0.8,
+      "likely_foreground_point_source": 1.0,
+      "unknown_image_region": 0.9
+    }
+  },
+  "context_id": "context-observational-interpretation-0001",
+  "context_version": "0.1.0",
+  "eligible_relationship_types": [
+    "observational",
+    "occlusion",
+    "spatial"
+  ],
+  "epistemic_classification": "externally_supplied",
+  "excluded_relationship_types": [
+    "containment",
+    "structural"
+  ],
+  "explanation_requirements": {
+    "include_excluded_evidence": true,
+    "include_warnings": true,
+    "maximum_pathways": 8
+  },
+  "normalization_method": "max",
+  "objective": "Compare relevance to interpreting the encoded observation without physical inference",
+  "ontology_version": "ASTRO-ONTOLOGY-0001",
+  "propagation_rules": {
+    "decay": 0.5,
+    "eligible_relationship_types": [
+      "spatial"
+    ],
+    "enabled": true,
+    "maximum_depth": 3
+  },
+  "record_status": "active",
+  "schema_version": "0.1.0",
+  "uncertainty_tolerance": 0.1,
+  "weights": {
+    "component_weights": {
+      "direct_relationships": 0.35,
+      "information_value": 0.5,
+      "propagated_relationships": 0.05,
+      "standing": 0.1
+    },
+    "relationship_type_weights": {
+      "observational": 1.0,
+      "occlusion": 0.7,
+      "spatial": 0.2
+    }
+  }
+}
