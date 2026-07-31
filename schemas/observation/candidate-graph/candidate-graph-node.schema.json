@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/candidate-graph-node.schema.json",
+  "title": "Candidate Graph Node",
+  "x-governing-document": "ASTRO-ONTOLOGY-0001",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "id", "node_type", "payload"],
+      "properties": {"schema_version": {"const": "0.1.0"}, "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"}, "record_status": {"$ref": "common.schema.json#/$defs/record_status"}, "epistemic_classification": {"const": "computed"}, "id": {"$ref": "common.schema.json#/$defs/identifier"}, "node_type": {"const": "observation_source"}, "payload": {"$ref": "observation-source.schema.json"}}
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "id", "node_type", "payload"],
+      "properties": {"schema_version": {"const": "0.1.0"}, "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"}, "record_status": {"$ref": "common.schema.json#/$defs/record_status"}, "epistemic_classification": {"const": "computed"}, "id": {"$ref": "common.schema.json#/$defs/identifier"}, "node_type": {"const": "candidate_entity"}, "payload": {"$ref": "candidate-entity.schema.json"}}
+    }
+  ]
+}

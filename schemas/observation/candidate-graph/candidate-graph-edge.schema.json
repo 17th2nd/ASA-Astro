@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/candidate-graph-edge.schema.json",
+  "title": "Candidate Graph Edge",
+  "x-governing-document": "ASTRO-ONTOLOGY-0001",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "id", "edge_type", "source", "target", "assertion"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
+    "epistemic_classification": {"const": "computed"},
+    "id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "edge_type": {"type": "string", "minLength": 1},
+    "source": {"$ref": "common.schema.json#/$defs/identifier"},
+    "target": {"$ref": "common.schema.json#/$defs/identifier"},
+    "assertion": {"$ref": "candidate-relationship-assertion.schema.json"}
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/observation-source.schema.json",
+  "title": "Observation Source",
+  "x-governing-document": "ASTRO-ONTOLOGY-0001",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "id", "provenance_record_id", "source_type", "source_locator", "source_origin", "source_version", "retrieval_time", "use_authority", "original_filename", "media_type", "sha256", "byte_size", "registration_policy", "integrity_status"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
+    "epistemic_classification": {"$ref": "common.schema.json#/$defs/epistemic_classification"},
+    "id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "provenance_record_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "source_type": {"const": "image"},
+    "source_locator": {"type": "string", "minLength": 1},
+    "source_origin": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "source_version": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "retrieval_time": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "use_authority": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "original_filename": {"type": "string", "minLength": 1},
+    "media_type": {"type": "string", "minLength": 1},
+    "sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "byte_size": {"type": "integer", "minimum": 1},
+    "registration_policy": {"const": "content-addressed-copy"},
+    "integrity_status": {"const": "verified_sha256"},
+    "associated_metadata_sha256": {"oneOf": [{"$ref": "common.schema.json#/$defs/sha256"}, {"type": "null"}]}
+  }
+}

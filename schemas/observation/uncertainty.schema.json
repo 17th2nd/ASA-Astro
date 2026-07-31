@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/uncertainty.schema.json",
+  "title": "Structured Uncertainty",
+  "type": "object",
+  "additionalProperties": false,
+  "x-governing-document": "ASTRO-ONTOLOGY-0001",
+  "required": ["schema_version", "ontology_version", "record_status", "status", "target", "method", "notes", "provenance_inherited_from_parent"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
+    "status": {"enum": ["estimated", "unknown", "contested", "unavailable", "not_applicable", "withheld", "bounded"]},
+    "confidence": {"$ref": "common.schema.json#/$defs/confidence_value"},
+    "lower_bound": {"type": ["number", "null"]},
+    "upper_bound": {"type": ["number", "null"]},
+    "unit": {"type": ["string", "null"]},
+    "target": {"type": "string", "minLength": 1},
+    "method": {"type": "string", "minLength": 1},
+    "notes": {"type": "array", "items": {"type": "string"}},
+    "assumptions": {"type": "array", "items": {"type": "string"}},
+    "contested_alternatives": {"type": "array", "items": {"type": "object"}},
+    "provenance_inherited_from_parent": {"const": true}
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "forbidden_relationship_types": [
+    "causal",
+    "evolutionary",
+    "gravitational",
+    "orbital",
+    "physical_distance"
+  ],
+  "minimum_extended_candidates": 1,
+  "required_bundle_files": [
+    "graph.graphml",
+    "graph.json",
+    "manifest.json",
+    "overlay.png",
+    "provenance.json",
+    "summary.md"
+  ],
+  "required_invariants": [
+    "source hash is preserved",
+    "every edge cites evidence",
+    "bright point regions are not assigned system-central status",
+    "physical distance is not inferred without calibration",
+    "same input, software, and parameters produce byte-equivalent outputs"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/provenance-record.schema.json",
+  "title": "Provenance Record",
+  "x-governing-document": "ASTRO-ONTOLOGY-0001",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "id", "processing_run_id", "output_identifiers", "ordered_parent_identifiers", "input_artifacts", "operator_or_executable", "software", "version_context", "parameters", "deterministic_seed", "execution_time", "environment_identifier", "transformations", "warnings", "manual_interventions"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
+    "epistemic_classification": {"const": "computed"},
+    "id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "processing_run_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "output_identifiers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/identifier"}},
+    "ordered_parent_identifiers": {"type": "array", "minItems": 1, "items": {"$ref": "common.schema.json#/$defs/identifier"}},
+    "input_artifacts": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["role", "sha256"], "properties": {"role": {"type": "string"}, "sha256": {"$ref": "common.schema.json#/$defs/sha256"}}, "additionalProperties": false}},
+    "operator_or_executable": {"const": "asa-astro-observation-to-graph"},
+    "software": {"type": "object", "required": ["pipeline", "pipeline_version", "code_sha256", "schema_bundle_sha256", "python", "pillow"], "properties": {"pipeline": {"const": "asa-astro-observation-to-graph"}, "pipeline_version": {"type": "string"}, "code_sha256": {"$ref": "common.schema.json#/$defs/sha256"}, "schema_bundle_sha256": {"$ref": "common.schema.json#/$defs/sha256"}, "python": {"type": "string"}, "pillow": {"type": "string"}}, "additionalProperties": false},
+    "version_context": {"type": "object", "required": ["schema", "ontology", "relationship_taxonomy", "asa_dependency"], "properties": {"schema": {"const": "0.1.0"}, "ontology": {"const": "ASTRO-ONTOLOGY-0001"}, "relationship_taxonomy": {"const": "ASTRO-RELATIONSHIP-TAXONOMY-0001"}, "asa_dependency": {"const": "unavailable_not_consumed"}}, "additionalProperties": false},
+    "parameters": {"type": "object", "minProperties": 1},
+    "deterministic_seed": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "execution_time": {"$ref": "common.schema.json#/$defs/declared_value"},
+    "environment_identifier": {"type": "string", "minLength": 1},
+    "transformations": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["name", "description"], "properties": {"name": {"type": "string"}, "description": {"type": "string"}}, "additionalProperties": false}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "manual_interventions": {"type": "array", "items": {"type": "string"}}
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/candidate-graph.schema.json",
+  "title": "Canonical Candidate Graph",
+  "x-governing-document": "ASTRO-ONTOLOGY-0001",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "processing_run_id", "source_sha256", "coordinate_space", "nodes", "edges", "limitations"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
+    "epistemic_classification": {"const": "computed"},
+    "processing_run_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "source_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+    "coordinate_space": {"const": "image_pixel"},
+    "nodes": {"type": "array", "minItems": 1, "items": {"$ref": "candidate-graph-node.schema.json"}},
+    "edges": {"type": "array", "items": {"$ref": "candidate-graph-edge.schema.json"}},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}
