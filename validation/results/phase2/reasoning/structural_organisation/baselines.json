@@ -1,0 +1,342 @@
+{
+  "brightness": [
+    {
+      "rank": 1,
+      "raw_value": 252.0,
+      "score": 1.0,
+      "subject_id": "candidate-0ccc75b8cc6c67f7ea59"
+    },
+    {
+      "rank": 2,
+      "raw_value": 252.0,
+      "score": 1.0,
+      "subject_id": "candidate-2f6a47701ae8215947db"
+    },
+    {
+      "rank": 3,
+      "raw_value": 252.0,
+      "score": 1.0,
+      "subject_id": "candidate-56ad565e7a1d1b1b8350"
+    },
+    {
+      "rank": 4,
+      "raw_value": 238.0,
+      "score": 0.944444444444,
+      "subject_id": "candidate-5234ea6f804ae6cd7932"
+    },
+    {
+      "rank": 5,
+      "raw_value": 108.0,
+      "score": 0.428571428571,
+      "subject_id": "candidate-34c0fd618ec5c3c27d4b"
+    },
+    {
+      "rank": 6,
+      "raw_value": 108.0,
+      "score": 0.428571428571,
+      "subject_id": "candidate-7df86962ac96a3c56165"
+    },
+    {
+      "rank": 7,
+      "raw_value": 86.0,
+      "score": 0.34126984127,
+      "subject_id": "candidate-29e9d7286a893289246a"
+    },
+    {
+      "rank": 8,
+      "raw_value": 86.0,
+      "score": 0.34126984127,
+      "subject_id": "candidate-e58c39876750226628df"
+    },
+    {
+      "rank": 9,
+      "raw_value": 55.0,
+      "score": 0.218253968254,
+      "subject_id": "candidate-07b1065c39228d6d1340"
+    },
+    {
+      "rank": 10,
+      "raw_value": 55.0,
+      "score": 0.218253968254,
+      "subject_id": "candidate-b628cd20cf7f99857fbb"
+    },
+    {
+      "rank": 11,
+      "raw_value": 14.0,
+      "score": 0.055555555556,
+      "subject_id": "candidate-7250c5f89d9de17c4cec"
+    }
+  ],
+  "centrality": [
+    {
+      "rank": 1,
+      "raw_value": 1.0,
+      "score": 1.0,
+      "subject_id": "candidate-34c0fd618ec5c3c27d4b"
+    },
+    {
+      "rank": 2,
+      "raw_value": 0.947923697007,
+      "score": 0.947923697007,
+      "subject_id": "candidate-7df86962ac96a3c56165"
+    },
+    {
+      "rank": 3,
+      "raw_value": 0.661729699126,
+      "score": 0.661729699126,
+      "subject_id": "candidate-7250c5f89d9de17c4cec"
+    },
+    {
+      "rank": 4,
+      "raw_value": 0.193994146441,
+      "score": 0.193994146441,
+      "subject_id": "candidate-e58c39876750226628df"
+    },
+    {
+      "rank": 5,
+      "raw_value": 0.183932395109,
+      "score": 0.183932395109,
+      "subject_id": "candidate-29e9d7286a893289246a"
+    },
+    {
+      "rank": 6,
+      "raw_value": 0.060829188724,
+      "score": 0.060829188724,
+      "subject_id": "candidate-b628cd20cf7f99857fbb"
+    },
+    {
+      "rank": 7,
+      "raw_value": 0.05554056945,
+      "score": 0.05554056945,
+      "subject_id": "candidate-07b1065c39228d6d1340"
+    },
+    {
+      "rank": 8,
+      "raw_value": 0.036586461677,
+      "score": 0.036586461677,
+      "subject_id": "candidate-5234ea6f804ae6cd7932"
+    },
+    {
+      "rank": 9,
+      "raw_value": 0.001832457479,
+      "score": 0.001832457479,
+      "subject_id": "candidate-2f6a47701ae8215947db"
+    },
+    {
+      "rank": 10,
+      "raw_value": 0.00066220219,
+      "score": 0.00066220219,
+      "subject_id": "candidate-0ccc75b8cc6c67f7ea59"
+    },
+    {
+      "rank": 11,
+      "raw_value": 0.0,
+      "score": 0.0,
+      "subject_id": "candidate-56ad565e7a1d1b1b8350"
+    }
+  ],
+  "degree": [
+    {
+      "rank": 1,
+      "raw_value": 17.0,
+      "score": 1.0,
+      "subject_id": "candidate-34c0fd618ec5c3c27d4b"
+    },
+    {
+      "rank": 2,
+      "raw_value": 12.0,
+      "score": 0.705882352941,
+      "subject_id": "candidate-7df86962ac96a3c56165"
+    },
+    {
+      "rank": 3,
+      "raw_value": 8.0,
+      "score": 0.470588235294,
+      "subject_id": "candidate-7250c5f89d9de17c4cec"
+    },
+    {
+      "rank": 4,
+      "raw_value": 6.0,
+      "score": 0.352941176471,
+      "subject_id": "candidate-29e9d7286a893289246a"
+    },
+    {
+      "rank": 5,
+      "raw_value": 6.0,
+      "score": 0.352941176471,
+      "subject_id": "candidate-e58c39876750226628df"
+    },
+    {
+      "rank": 6,
+      "raw_value": 5.0,
+      "score": 0.294117647059,
+      "subject_id": "candidate-07b1065c39228d6d1340"
+    },
+    {
+      "rank": 7,
+      "raw_value": 5.0,
+      "score": 0.294117647059,
+      "subject_id": "candidate-b628cd20cf7f99857fbb"
+    },
+    {
+      "rank": 8,
+      "raw_value": 3.0,
+      "score": 0.176470588235,
+      "subject_id": "candidate-5234ea6f804ae6cd7932"
+    },
+    {
+      "rank": 9,
+      "raw_value": 1.0,
+      "score": 0.058823529412,
+      "subject_id": "candidate-0ccc75b8cc6c67f7ea59"
+    },
+    {
+      "rank": 10,
+      "raw_value": 1.0,
+      "score": 0.058823529412,
+      "subject_id": "candidate-2f6a47701ae8215947db"
+    },
+    {
+      "rank": 11,
+      "raw_value": 0.0,
+      "score": 0.0,
+      "subject_id": "candidate-56ad565e7a1d1b1b8350"
+    }
+  ],
+  "image_centre": [
+    {
+      "rank": 1,
+      "raw_value": 0.991564146321,
+      "score": 1.0,
+      "subject_id": "candidate-7250c5f89d9de17c4cec"
+    },
+    {
+      "rank": 2,
+      "raw_value": 0.981882030098,
+      "score": 0.990235511985,
+      "subject_id": "candidate-34c0fd618ec5c3c27d4b"
+    },
+    {
+      "rank": 3,
+      "raw_value": 0.978923380087,
+      "score": 0.987251690896,
+      "subject_id": "candidate-7df86962ac96a3c56165"
+    },
+    {
+      "rank": 4,
+      "raw_value": 0.551962225675,
+      "score": 0.556658112058,
+      "subject_id": "candidate-5234ea6f804ae6cd7932"
+    },
+    {
+      "rank": 5,
+      "raw_value": 0.54115101529,
+      "score": 0.545754923973,
+      "subject_id": "candidate-29e9d7286a893289246a"
+    },
+    {
+      "rank": 6,
+      "raw_value": 0.540540544738,
+      "score": 0.545139259768,
+      "subject_id": "candidate-e58c39876750226628df"
+    },
+    {
+      "rank": 7,
+      "raw_value": 0.397419170525,
+      "score": 0.400800262897,
+      "subject_id": "candidate-b628cd20cf7f99857fbb"
+    },
+    {
+      "rank": 8,
+      "raw_value": 0.395474244644,
+      "score": 0.398838790321,
+      "subject_id": "candidate-2f6a47701ae8215947db"
+    },
+    {
+      "rank": 9,
+      "raw_value": 0.394899770777,
+      "score": 0.398259429046,
+      "subject_id": "candidate-07b1065c39228d6d1340"
+    },
+    {
+      "rank": 10,
+      "raw_value": 0.333007891934,
+      "score": 0.335840997448,
+      "subject_id": "candidate-56ad565e7a1d1b1b8350"
+    },
+    {
+      "rank": 11,
+      "raw_value": 0.270535775,
+      "score": 0.272837391311,
+      "subject_id": "candidate-0ccc75b8cc6c67f7ea59"
+    }
+  ],
+  "manual_class_priority": [
+    {
+      "rank": 1,
+      "raw_value": 1.0,
+      "score": 1.0,
+      "subject_id": "candidate-7df86962ac96a3c56165"
+    },
+    {
+      "rank": 2,
+      "raw_value": 1.0,
+      "score": 1.0,
+      "subject_id": "candidate-b628cd20cf7f99857fbb"
+    },
+    {
+      "rank": 3,
+      "raw_value": 1.0,
+      "score": 1.0,
+      "subject_id": "candidate-e58c39876750226628df"
+    },
+    {
+      "rank": 4,
+      "raw_value": 0.8,
+      "score": 0.8,
+      "subject_id": "candidate-34c0fd618ec5c3c27d4b"
+    },
+    {
+      "rank": 5,
+      "raw_value": 0.05,
+      "score": 0.05,
+      "subject_id": "candidate-0ccc75b8cc6c67f7ea59"
+    },
+    {
+      "rank": 6,
+      "raw_value": 0.05,
+      "score": 0.05,
+      "subject_id": "candidate-2f6a47701ae8215947db"
+    },
+    {
+      "rank": 7,
+      "raw_value": 0.05,
+      "score": 0.05,
+      "subject_id": "candidate-56ad565e7a1d1b1b8350"
+    },
+    {
+      "rank": 8,
+      "raw_value": 0.0,
+      "score": 0.0,
+      "subject_id": "candidate-07b1065c39228d6d1340"
+    },
+    {
+      "rank": 9,
+      "raw_value": 0.0,
+      "score": 0.0,
+      "subject_id": "candidate-29e9d7286a893289246a"
+    },
+    {
+      "rank": 10,
+      "raw_value": 0.0,
+      "score": 0.0,
+      "subject_id": "candidate-5234ea6f804ae6cd7932"
+    },
+    {
+      "rank": 11,
+      "raw_value": 0.0,
+      "score": 0.0,
+      "subject_id": "candidate-7250c5f89d9de17c4cec"
+    }
+  ]
+}

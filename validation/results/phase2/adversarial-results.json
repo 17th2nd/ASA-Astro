@@ -1,0 +1,207 @@
+{
+  "case_count": 19,
+  "cases": [
+    {
+      "case": "standing_centrality_termination",
+      "metrics": {
+        "converged": false,
+        "iterations": 64,
+        "maximum_iterations": 64
+      },
+      "observation": "Base-fixture Standing centrality reached the declared iteration cap without satisfying the convergence tolerance; deterministic truncation is not convergence.",
+      "status": "FAIL"
+    },
+    {
+      "case": "extremely_bright_irrelevant_foreground_object",
+      "metrics": {
+        "brightness_top_after": "candidate-56ad565e7a1d1b1b8350",
+        "candidate_type": "likely_foreground_point_source",
+        "mutated_subject": "candidate-56ad565e7a1d1b1b8350",
+        "significance_scores_identical": true
+      },
+      "observation": "Changing encoded brightness alone changed the brightness comparator but not Significance scores.",
+      "status": "PASS"
+    },
+    {
+      "case": "image_centre_bias",
+      "metrics": {
+        "image_centre_top_after": "candidate-56ad565e7a1d1b1b8350",
+        "mutated_subject": "candidate-56ad565e7a1d1b1b8350",
+        "significance_scores_identical": true
+      },
+      "observation": "Changing only the encoded detection centroid made the foreground candidate first in the image-centre comparator but did not alter Significance scores.",
+      "status": "PASS"
+    },
+    {
+      "case": "dim_bridge_node",
+      "metrics": {
+        "betweenness_contribution": 0.12,
+        "bridge_subject": "candidate-0ccc75b8cc6c67f7ea59",
+        "brightness_top": "candidate-07b1065c39228d6d1340",
+        "significance_top": "candidate-0ccc75b8cc6c67f7ea59"
+      },
+      "observation": "The deliberately dim bridge ranked first under the frozen bridge Context and carried a positive betweenness contribution.",
+      "status": "PASS"
+    },
+    {
+      "case": "uncertain_evidence",
+      "metrics": {
+        "after": 0.113150853482,
+        "before": 0.386631898042,
+        "subject": "candidate-34c0fd618ec5c3c27d4b"
+      },
+      "observation": "Contested candidate and supporting evidence lowered the selected candidate's score.",
+      "status": "PASS"
+    },
+    {
+      "case": "disconnected_graph",
+      "metrics": {
+        "candidate_count": 11,
+        "propagated_paths_absent": true,
+        "result_count": 11
+      },
+      "observation": "The engine terminated deterministically for isolated candidate nodes; evidence/Standing terms still produced relative scores.",
+      "status": "PASS"
+    },
+    {
+      "case": "cyclic_graph",
+      "metrics": {
+        "maximum_depth": 2,
+        "path_count": 6
+      },
+      "observation": "Cycle-safe traversal terminated at the declared depth without revisiting a node within a path.",
+      "status": "PASS"
+    },
+    {
+      "case": "many_weak_edges_overwhelm_one_strong_edge",
+      "metrics": {
+        "aggregate_weak_nominal_strength": 0.96,
+        "best_strong_endpoint_rank": 1,
+        "significance_top": "candidate-07b1065c39228d6d1340",
+        "strong_hub": "candidate-07b1065c39228d6d1340",
+        "strong_nominal_strength": 0.95,
+        "weak_edge_count": 8,
+        "weak_hub": "candidate-29e9d7286a893289246a",
+        "weak_hub_rank": 3
+      },
+      "observation": "Eight distinct strength-0.12 edges were compared with one strength-0.95 edge under equal candidate certainty; the result records whether unbounded aggregation made the weak-edge hub rank first.",
+      "status": "PASS"
+    },
+    {
+      "case": "graph_size_increase",
+      "metrics": {
+        "base_edge_count": 43,
+        "candidate_count": 11,
+        "centrality_converged": true,
+        "dense_edge_count": 55,
+        "propagated_path_count": 990,
+        "repeat_output_identical": true
+      },
+      "observation": "A schema-valid complete candidate graph increased the base edge count and remained deterministic at the frozen depth-two propagation bound; this is a modest engineering stress test, not a scalability claim.",
+      "status": "PASS"
+    },
+    {
+      "case": "duplicated_entity",
+      "evidence": "ValueError: graph node identifiers must be unique",
+      "observation": "Duplicate node identity was rejected.",
+      "status": "PASS"
+    },
+    {
+      "case": "duplicated_edge",
+      "evidence": "ValueError: duplicate edge identifier: relation-02b375584b5219025c8b",
+      "observation": "Duplicate edge identity was rejected.",
+      "status": "PASS"
+    },
+    {
+      "case": "malformed_provenance",
+      "evidence": "ValueError: candidate cites unavailable supporting evidence: candidate-e58c39876750226628df",
+      "metrics": {
+        "removed_evidence_id": "evidence-0cd7005c4e7185f5e6c3"
+      },
+      "observation": "A bundle with a missing Evidence Record was rejected.",
+      "status": "PASS"
+    },
+    {
+      "case": "contradictory_relationship_assertions",
+      "metrics": {
+        "edge_id": "relation-02b375584b5219025c8b",
+        "scores_identical": true
+      },
+      "observation": "The engine accepted a relationship whose same evidence was both supporting and contradicting and applied no penalty.",
+      "status": "FAIL"
+    },
+    {
+      "case": "unsupported_relationship_type",
+      "evidence": "ValueError: candidate_graph schema validation failed: edges/0/assertion/relationship_type: 'invented_physical_relation' is not one of ['spatial', 'containment', 'structural', 'observational', 'occlusion']",
+      "observation": "A type outside the taxonomy/schema was rejected.",
+      "status": "PASS"
+    },
+    {
+      "case": "false_proximity",
+      "metrics": {
+        "edge_id": "relation-064c6eb70976cf71ff2a",
+        "maximum_direct_contribution": 3.0125937e-05
+      },
+      "observation": "A proximity assertion with confidence 0.001 remained below 0.001 direct contribution.",
+      "status": "PASS"
+    },
+    {
+      "case": "relationship_assertion_uncertainty",
+      "metrics": {
+        "edge_id": "relation-02b375584b5219025c8b",
+        "scores_identical": true
+      },
+      "observation": "Changing assertion uncertainty to contested did not change any score; the burden is traced but absent from supported edge weight.",
+      "status": "FAIL"
+    },
+    {
+      "case": "inferred_dark_region_excessive_certainty",
+      "metrics": {
+        "classification_status": "hypothesis",
+        "hypothesis_specific_warning": false,
+        "resolution_state": "unresolved",
+        "score_after": 0.719228201857,
+        "score_before": 0.100958528681,
+        "subject": "candidate-7250c5f89d9de17c4cec"
+      },
+      "observation": "The engine accepted confidence 1.0 and not-applicable uncertainty for an unresolved inferred dark/occluding image region without a hypothesis-specific warning. The repository makes no dark-matter identity claim.",
+      "status": "FAIL"
+    },
+    {
+      "case": "evidence_absent_context_abstention",
+      "metrics": [
+        {
+          "context": "star_formation",
+          "eligible_edge_count": 0,
+          "nonzero_result_count": 11,
+          "top_score": 0.052
+        },
+        {
+          "context": "gravitational_organisation",
+          "eligible_edge_count": 0,
+          "nonzero_result_count": 11,
+          "top_score": 0.052
+        }
+      ],
+      "observation": "Star-formation and gravitational Contexts had no eligible relationship evidence but emitted active non-zero rankings rather than indeterminate/abstaining.",
+      "status": "FAIL"
+    },
+    {
+      "case": "arbitrary_context_weighting",
+      "metrics": {
+        "distinct_top_subjects": 2,
+        "top_subject_by_single_component": {
+          "direct_relationships": "candidate-34c0fd618ec5c3c27d4b",
+          "information_value": "candidate-34c0fd618ec5c3c27d4b",
+          "propagated_relationships": "candidate-e58c39876750226628df",
+          "standing": "candidate-34c0fd618ec5c3c27d4b"
+        }
+      },
+      "observation": "All weights are explicit and traceable, but extreme admissible component weights changed the top-ranked subject; no authorised scientific basis selects among them.",
+      "status": "LIMITATION"
+    }
+  ],
+  "fail_count": 5,
+  "limitation_count": 1,
+  "pass_count": 13
+}

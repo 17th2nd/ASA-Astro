@@ -278,3 +278,235 @@ After the blockers are resolved:
 reproducibly into a typed candidate graph for a synthetic fixture. It supplies no evidence yet that
 typed relationships, Standing, Context, and uncertainty produce a more defensible ranking than
 naive visual prominence.
+
+## 18. Phase II superseding validation addendum
+
+**Addendum date:** 2026-07-31
+**Executable integration basis:** canonical upstream commit
+`520f790a363660bbd97abf7f0f45f73cacc2d739`
+**Addendum status:** COMPLETE SYNTHETIC ENGINEERING EXECUTION; SCIENTIFIC VALIDATION UNAVAILABLE
+**Historical treatment:** Sections 1–17 are retained as the correct pre-C record. This addendum
+supersedes only the earlier statements that the C pipeline and D execution artefacts did not exist.
+
+### 18.1 Research question and bounded hypothesis
+
+The executed question is whether this POC supplies evidence that evidence-backed typed
+relationships, separate Standing, explicit Context, represented uncertainty, and bounded recursive
+propagation yield reasoning more defensible than naive visual prominence on the available
+ASA-Astro material.
+
+“More defensible” requires more than a different ordering: inputs and transformations must be
+traceable, Context changes must be isolated, adverse evidence must affect the result correctly,
+and a reference capable of judging the ordering must exist. The test does not address whether ASA
+is correct, complete, domain-independent, or scientifically validated.
+
+### 18.2 System and datasets tested
+
+The complete repository-native B→C path was run without an adapter:
+
+```text
+Observation → Evidence → Candidate Graph → Standing → Context
+→ Significance → Explanation Trace
+```
+
+The run produced 11 Candidate Entities and 43 Relationship Assertions of types `containment`,
+`observational`, `occlusion`, `spatial`, and `structural`. It used C's provisional algorithm and
+its explicit `unavailable_not_consumed` ASA dependency state.
+
+The only input remains the deterministic generated PPM with SHA-256
+`fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a`. No authorised
+astronomical image, catalogue, instrument metadata, calibrated measurement, or independent Ground
+Truth was added. The frozen manual priority is a generator-informed synthetic comparator, not an
+astronomical truth label.
+
+### 18.3 Method and reproducibility package
+
+The D harness is `validation/run_phase2.py`; clean-run instructions and environment commands are
+in `validation/README.md`; exact dependencies remain in `requirements.lock`. A new output directory
+is mandatory, so existing evidence cannot be overwritten.
+
+The committed package includes:
+
+- source and input manifest;
+- B evidence bundle, overlay, graph JSON/GraphML, provenance, summary, and manifest;
+- five frozen Context inputs;
+- five C analysis bundles containing Standing, Significance, rankings, explanations, baselines,
+  and manifests;
+- benchmark, adversarial, ablation, explanation-validation, and reproducibility results;
+- self-contained local `explorer.html`;
+- a root SHA-256 artifact manifest.
+
+Two internal independent executions compared 54 input/evidence/Context/reasoning files. All 54
+were byte-identical. Stable identities were:
+
+| Artefact | SHA-256 |
+|---|---|
+| graph | `0ff9dc94c797cb8701db73b8495634b5312b69f5593a9b5db75c588c9b201471` |
+| provenance | `81336e2fc1259d3934ebb6949608b5072d5a8d7d95aced90c58ecc4de639a687` |
+| overlay | `5fd1b2e8c1d342c30092aa945923194ebe763665315ea14169ceeda57b82e5c2` |
+| D root manifest | `1aa75c8b75ebefe919643c450645a960707a41cafeae97e83d715f9711850ca7` |
+| validation summary | `e4a6bb907bad8630bb9a123b31d6e16c4b670b0cf6768e3412c9812f995a6a13` |
+
+Graph identity, artifact identity, Context hashes, result IDs, and Explanation Trace IDs were
+stable. Standing outputs were identical across Context runs. On the manufacturing environment the
+final harness run took 47.46 seconds and reached 80,968 KiB maximum resident memory; those
+wall-clock/resource observations are environment-specific, not deterministic expectations. The
+deterministic cost proxies were 1,682 structural propagated paths, 642 observational paths, and
+zero paths in the other three Contexts.
+
+### 18.4 Baseline results
+
+For structural organisation, Significance and brightness had different top subjects, 35 of 55
+pair orders disagreed, and Spearman rho was `-0.509090909091`. Brightness therefore does not merely
+reappear as Significance in this run.
+
+| Comparator | Same top as Significance | Pair disagreements / 55 | Spearman rho |
+|---|---:|---:|---:|
+| Brightness | No | 35 | -0.509090909091 |
+| Image centre | No | 12 | 0.745454545455 |
+| Degree centrality | Yes | 6 | 0.881818181818 |
+| Eigenvector centrality | Yes | 5 | 0.936363636364 |
+| Frozen manual priority | Yes | 6 | 0.890909090909 |
+
+The result strongly diverges from visual brightness, but closely resembles topology. In the
+absence of Ground Truth, that similarity cannot establish that the combined ranking is better than
+degree/eigenvector centrality or the synthetic manual comparator. Multiplying all relationship
+confidence values by `0.999` preserved the complete order (`rho=1.0`) and changed aggregate scores
+by `0.000001125503`; this is one local stability check, not general robustness or calibration.
+
+### 18.5 Context switching
+
+Five Context declarations were evaluated against the identical graph and provenance:
+
+| Context | Eligible input edges | Ranking observation |
+|---|---:|---|
+| Structural organisation | 31 | Distinct structural order |
+| Observational interpretation | 32 | Same order as the three rows below |
+| Scientific information value | 11 | Same order as observational interpretation |
+| Star formation | 0 | Improper active non-zero order |
+| Gravitational organisation | 0 | Improper active non-zero order |
+
+Standing remained byte-identical in all five runs, so Context did not contaminate Standing.
+Significance records and Context identities changed reproducibly, but only two distinct ordering
+sequences emerged. More importantly, the two evidence-absent Contexts produced 11 non-zero results
+with top score `0.052` rather than abstaining. Context isolation is supported; defensible
+missing-evidence behaviour is not.
+
+### 18.6 Adversarial results
+
+Nineteen cases yielded 13 passes, 5 failures, and 1 declared limitation.
+
+Bounded passes:
+
+- a foreground point source changed to encoded brightness `1,000,000` became the brightness leader
+  without changing any Significance score;
+- moving the same foreground detection to the image centre changed only the image-centre baseline;
+- a dim three-node bridge ranked first while contributing positive betweenness;
+- contesting the leading candidate and its evidence reduced its score from `0.386631898042` to
+  `0.113150853482`;
+- disconnected and cyclic graphs terminated at their declared path bounds;
+- eight distinct strength-`0.12` edges did not outrank the best endpoint of a single
+  strength-`0.95` edge under the frozen adversarial Context;
+- a 55-edge complete candidate graph emitted all 11 results, 990 bounded paths, converged in that
+  scenario, and repeated byte-identically;
+- duplicate node IDs, duplicate edge IDs, missing cited evidence, and unsupported relationship
+  types were rejected;
+- confidence `0.001` suppressed a false-proximity edge to maximum direct contribution
+  `0.000030125937`.
+
+Failures:
+
+1. Base Standing centrality was deterministic but did not converge before its 64-iteration cap.
+2. Putting the same evidence in supporting and contradicting lists was accepted and left every
+   score unchanged.
+3. Changing Relationship Assertion uncertainty to `contested` left every score unchanged.
+4. An unresolved inferred dark/occluding image-region hypothesis accepted confidence `1.0` and
+   `not_applicable` uncertainty, raising its score from `0.100958528681` to `0.719228201857`
+   without a classification-specific warning. No dark-matter identity is asserted.
+5. Evidence-absent star-formation and gravitational Contexts emitted active results instead of an
+   indeterminate/abstaining state.
+
+Extreme Context component weights selected two different top subjects. This is recorded as a
+limitation because all weights are visible and schema-valid, but the repository supplies no
+authorised scientific basis for choosing them.
+
+### 18.7 Ablation results
+
+| Ablation | Pair-order changes / 55 | Score L1 delta | Top changed | Interpretation |
+|---|---:|---:|---:|---|
+| Standing contribution removed | 1 | 0.228380453714 | No | Standing affects values and one pair, but is not decisive for the leader here |
+| Context removed | n/a | n/a | n/a | Rejected because Context is required |
+| Uncertainty penalties removed | 2 | 0.792943910784 | No | Largest numeric effect, modest order effect on this fixture |
+| Relationship typing collapsed | 4 | 0.067294325673 | No | Typing affects ordering, but not the leader |
+| Recursive propagation removed | 3 | 0.195795203323 | No | Propagation affects ordering and values, but not the leader |
+| Contextual weight differentiation removed | 3 | 0.370927112939 | No | Weighting affects ordering and values, but not the leader |
+| Explanation Trace removed | 0 | 0 | No | Numeric ranks survive, but all 11 result-to-explanation references become unresolved |
+
+The ablations show that the declared components affect behaviour. They do not establish that any
+component makes the ranking scientifically better: every numeric ablation retained the same top
+subject, and no independent expected astronomical ordering exists.
+
+### 18.8 Explanation and visual inspection
+
+All 55 result traces identify their Standing contribution, propagated contribution, Context
+adjustment, confidence effect, uncertainty penalty, excluded edges/evidence, graph/provenance
+hashes, and result identity. Direct and propagated Evidence Records are resolvable through edge IDs
+in the hash-bound graph. Included direct contributions do not carry Evidence IDs themselves, so a
+detached trace is incomplete and is rejected as an adequate standalone explanation.
+
+The static explorer displays the source image, detection overlay, graph nodes, typed edges,
+Standing, selected-Context Significance, brightness-rank differences, confidence, uncertainty,
+Evidence Records, exclusions, and top explanatory paths. It is an inspection instrument, not a UI
+or scientific result.
+
+### 18.9 Uncertainty, limitations, and falsification
+
+- All image evidence, confidence, candidate labels, manual priority, and expected cases are
+  synthetic or heuristic and explicitly uncalibrated.
+- No astronomical image-derived graph or independent expected hierarchy exists.
+- The sole fixture cannot estimate population robustness, scientific error, calibration, or
+  generality.
+- Context and model weights are provisional and not backed by an immutable ASA dependency.
+- The high correlation with topology prevents attributing the structural ordering specifically to
+  the combined architecture.
+- Nonconvergent Standing centrality and the three semantic failures involving contradictions,
+  assertion uncertainty, and evidence absence directly weaken the claimed defensibility.
+- Component-scoped artifact identity is unstable because B's run ID incorporates downstream schema
+  files.
+
+Falsification disposition:
+
+| Bounded claim | Disposition |
+|---|---|
+| Brightness is not simply reused as Significance | Supported on the synthetic fixture |
+| Image-centre position is not directly reused as Significance | Supported on the synthetic fixture |
+| Standing is Context-independent | Supported for the five executions |
+| Context can change ordering | Supported narrowly: two orders from five declarations |
+| Uncertainty can reduce candidate scores | Supported for candidate/evidence uncertainty |
+| Relationship Assertion uncertainty affects reasoning | Not supported |
+| Contradictory evidence affects reasoning | Not supported |
+| Evidence absence remains representable without invented relevance | Not supported by output behaviour |
+| Recursive propagation affects results | Supported behaviourally by ablation |
+| The combined ranking is more correct/defensible than topology or manual priority | Unresolved without independent reference evidence |
+| ASA is validated | Not assessed; prohibited conclusion |
+
+### 18.10 Remaining questions and next experiments
+
+1. Define and test contradiction aggregation and Relationship Assertion uncertainty semantics.
+2. Add an explicit Context missingness/abstention contract.
+3. Diagnose Standing centrality nonconvergence and freeze an acceptable termination rule.
+4. Reconcile A's full Context model with C's executable schema.
+5. Freeze scientifically justified weights and falsification thresholds before further evaluation.
+6. Supply an authorised astronomical source plus independent, uncertainty-bearing reference data.
+7. Test multiple graphs and held-out expected hierarchies, including cases where topology and the
+   combined model predict different leaders.
+8. Calibrate Confidence and uncertainty or keep all conclusions explicitly heuristic.
+
+### 18.11 Phase II final review answer
+
+**Insufficient evidence.** The POC now demonstrates deterministic, traceable divergence from naive
+brightness and bounded behavioural contributions from typed relationships, Standing, Context,
+uncertainty, and propagation. It does not demonstrate that the resulting reasoning is more
+defensible within an astronomy validation domain because the only graph is synthetic, no
+independent astronomical reference exists, the result largely tracks topology, centrality did not
+converge, and contradiction, assertion uncertainty, and missing-evidence behaviour fail.

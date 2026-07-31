@@ -1,0 +1,67 @@
+{
+  "assumptions": [
+    "No gravitational, membership, or orbital evidence exists in the input graph.",
+    "This Context is an adversarial evidence-absence test and must not produce a physical claim."
+  ],
+  "authority": {
+    "decision_register_dependencies": [
+      "DR-0001",
+      "DR-0008",
+      "DR-0010",
+      "DR-0012"
+    ],
+    "status": "provisional_non_canonical"
+  },
+  "baseline_configuration": {
+    "manual_class_priorities": {}
+  },
+  "context_id": "context-gravitational-evidence-absence-0001",
+  "context_version": "0.1.0",
+  "eligible_relationship_types": [
+    "gravitational",
+    "membership",
+    "orbital"
+  ],
+  "epistemic_classification": "externally_supplied",
+  "excluded_relationship_types": [
+    "containment",
+    "observational",
+    "occlusion",
+    "spatial",
+    "structural"
+  ],
+  "explanation_requirements": {
+    "include_excluded_evidence": true,
+    "include_warnings": true,
+    "maximum_pathways": 8
+  },
+  "normalization_method": "max",
+  "objective": "Test whether the engine abstains when gravitational evidence is unavailable",
+  "ontology_version": "ASTRO-ONTOLOGY-0001",
+  "propagation_rules": {
+    "decay": 0.5,
+    "eligible_relationship_types": [
+      "gravitational",
+      "membership",
+      "orbital"
+    ],
+    "enabled": true,
+    "maximum_depth": 3
+  },
+  "record_status": "active",
+  "schema_version": "0.1.0",
+  "uncertainty_tolerance": 0.0,
+  "weights": {
+    "component_weights": {
+      "direct_relationships": 0.8,
+      "information_value": 0.1,
+      "propagated_relationships": 0.1,
+      "standing": 0.0
+    },
+    "relationship_type_weights": {
+      "gravitational": 1.0,
+      "membership": 1.0,
+      "orbital": 1.0
+    }
+  }
+}

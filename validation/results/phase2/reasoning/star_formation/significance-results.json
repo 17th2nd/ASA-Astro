@@ -1,0 +1,409 @@
+[
+  {
+    "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+    "asa_dependency_status": "unavailable_not_consumed",
+    "component_contributions": {
+      "direct_relationships": 0.0,
+      "information_value": 0.1,
+      "propagated_relationships": 0.0,
+      "standing": 0.0
+    },
+    "confidence_adjustment": 0.325425,
+    "context_id": "context-star-formation-evidence-absence-0001",
+    "context_sha256": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "context_version": "0.1.0",
+    "epistemic_classification": "computed",
+    "explanation_trace_id": "trace-7dced50ddd235eba11ea",
+    "id": "significance-7dced50ddd235eba11ea",
+    "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+    "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59",
+    "ontology_version": "ASTRO-ONTOLOGY-0001",
+    "provenance_refs": [
+      "evidence-907dd5f14be7be2574ee",
+      "provenance-d835245d6645c4394ff4"
+    ],
+    "raw_score": 0.1,
+    "record_status": "active",
+    "scale_semantics": "relative_contextual_proof_of_concept_score_0_to_1_not_probability",
+    "schema_version": "0.1.0",
+    "score": 0.010590143063,
+    "standing_result_id": "standing-1df40bbdee33d5b38874",
+    "subject_id": "candidate-07b1065c39228d6d1340",
+    "taxonomy_version": "ASTRO-RELATIONSHIP-TAXONOMY-0001",
+    "uncertainty_penalty": 0.674575,
+    "warnings": [
+      "Provisional non-canonical Significance hypothesis; DR-0001, DR-0008, DR-0010, and DR-0012 remain open.",
+      "No eligible direct relationship assertion supports this node in the declared Context."
+    ]
+  },
+  {
+    "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+    "asa_dependency_status": "unavailable_not_consumed",
+    "component_contributions": {
+      "direct_relationships": 0.0,
+      "information_value": 0.1,
+      "propagated_relationships": 0.0,
+      "standing": 0.0
+    },
+    "confidence_adjustment": 0.445096,
+    "context_id": "context-star-formation-evidence-absence-0001",
+    "context_sha256": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "context_version": "0.1.0",
+    "epistemic_classification": "computed",
+    "explanation_trace_id": "trace-9f3bdc2a8e52a7b20b8d",
+    "id": "significance-9f3bdc2a8e52a7b20b8d",
+    "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+    "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59",
+    "ontology_version": "ASTRO-ONTOLOGY-0001",
+    "provenance_refs": [
+      "evidence-2e443f9084baa9ea8d24",
+      "provenance-d835245d6645c4394ff4"
+    ],
+    "raw_score": 0.1,
+    "record_status": "active",
+    "scale_semantics": "relative_contextual_proof_of_concept_score_0_to_1_not_probability",
+    "schema_version": "0.1.0",
+    "score": 0.019811044922,
+    "standing_result_id": "standing-ace4b6d4f5e6c5c755e8",
+    "subject_id": "candidate-0ccc75b8cc6c67f7ea59",
+    "taxonomy_version": "ASTRO-RELATIONSHIP-TAXONOMY-0001",
+    "uncertainty_penalty": 0.554904,
+    "warnings": [
+      "Provisional non-canonical Significance hypothesis; DR-0001, DR-0008, DR-0010, and DR-0012 remain open.",
+      "No eligible direct relationship assertion supports this node in the declared Context."
+    ]
+  },
+  {
+    "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+    "asa_dependency_status": "unavailable_not_consumed",
+    "component_contributions": {
+      "direct_relationships": 0.0,
+      "information_value": 0.1,
+      "propagated_relationships": 0.0,
+      "standing": 0.0
+    },
+    "confidence_adjustment": 0.45,
+    "context_id": "context-star-formation-evidence-absence-0001",
+    "context_sha256": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "context_version": "0.1.0",
+    "epistemic_classification": "computed",
+    "explanation_trace_id": "trace-2565585cbea66811c063",
+    "id": "significance-2565585cbea66811c063",
+    "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+    "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59",
+    "ontology_version": "ASTRO-ONTOLOGY-0001",
+    "provenance_refs": [
+      "evidence-3cd3b936a35065b52ad8",
+      "provenance-d835245d6645c4394ff4"
+    ],
+    "raw_score": 0.1,
+    "record_status": "active",
+    "scale_semantics": "relative_contextual_proof_of_concept_score_0_to_1_not_probability",
+    "schema_version": "0.1.0",
+    "score": 0.02025,
+    "standing_result_id": "standing-77d5b12656641aab8a5b",
+    "subject_id": "candidate-29e9d7286a893289246a",
+    "taxonomy_version": "ASTRO-RELATIONSHIP-TAXONOMY-0001",
+    "uncertainty_penalty": 0.55,
+    "warnings": [
+      "Provisional non-canonical Significance hypothesis; DR-0001, DR-0008, DR-0010, and DR-0012 remain open.",
+      "No eligible direct relationship assertion supports this node in the declared Context."
+    ]
+  },
+  {
+    "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+    "asa_dependency_status": "unavailable_not_consumed",
+    "component_contributions": {
+      "direct_relationships": 0.0,
+      "information_value": 0.1,
+      "propagated_relationships": 0.0,
+      "standing": 0.0
+    },
+    "confidence_adjustment": 0.445096,
+    "context_id": "context-star-formation-evidence-absence-0001",
+    "context_sha256": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "context_version": "0.1.0",
+    "epistemic_classification": "computed",
+    "explanation_trace_id": "trace-e5ec0cc8cf7f1bca2cd3",
+    "id": "significance-e5ec0cc8cf7f1bca2cd3",
+    "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+    "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59",
+    "ontology_version": "ASTRO-ONTOLOGY-0001",
+    "provenance_refs": [
+      "evidence-8c2e14414269d5d0c881",
+      "provenance-d835245d6645c4394ff4"
+    ],
+    "raw_score": 0.1,
+    "record_status": "active",
+    "scale_semantics": "relative_contextual_proof_of_concept_score_0_to_1_not_probability",
+    "schema_version": "0.1.0",
+    "score": 0.019811044922,
+    "standing_result_id": "standing-0f2bed1c482402f969ee",
+    "subject_id": "candidate-2f6a47701ae8215947db",
+    "taxonomy_version": "ASTRO-RELATIONSHIP-TAXONOMY-0001",
+    "uncertainty_penalty": 0.554904,
+    "warnings": [
+      "Provisional non-canonical Significance hypothesis; DR-0001, DR-0008, DR-0010, and DR-0012 remain open.",
+      "No eligible direct relationship assertion supports this node in the declared Context."
+    ]
+  },
+  {
+    "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+    "asa_dependency_status": "unavailable_not_consumed",
+    "component_contributions": {
+      "direct_relationships": 0.0,
+      "information_value": 0.1,
+      "propagated_relationships": 0.0,
+      "standing": 0.0
+    },
+    "confidence_adjustment": 0.8,
+    "context_id": "context-star-formation-evidence-absence-0001",
+    "context_sha256": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "context_version": "0.1.0",
+    "epistemic_classification": "computed",
+    "explanation_trace_id": "trace-c7f35622e5cfd52d8875",
+    "id": "significance-c7f35622e5cfd52d8875",
+    "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+    "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59",
+    "ontology_version": "ASTRO-ONTOLOGY-0001",
+    "provenance_refs": [
+      "evidence-450d366b0281011697d3",
+      "provenance-d835245d6645c4394ff4"
+    ],
+    "raw_score": 0.1,
+    "record_status": "active",
+    "scale_semantics": "relative_contextual_proof_of_concept_score_0_to_1_not_probability",
+    "schema_version": "0.1.0",
+    "score": 0.052,
+    "standing_result_id": "standing-218628a3c1851e0ce348",
+    "subject_id": "candidate-34c0fd618ec5c3c27d4b",
+    "taxonomy_version": "ASTRO-RELATIONSHIP-TAXONOMY-0001",
+    "uncertainty_penalty": 0.35,
+    "warnings": [
+      "Provisional non-canonical Significance hypothesis; DR-0001, DR-0008, DR-0010, and DR-0012 remain open.",
+      "No eligible direct relationship assertion supports this node in the declared Context."
+    ]
+  },
+  {
+    "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+    "asa_dependency_status": "unavailable_not_consumed",
+    "component_contributions": {
+      "direct_relationships": 0.0,
+      "information_value": 0.093939393939,
+      "propagated_relationships": 0.0,
+      "standing": 0.0
+    },
+    "confidence_adjustment": 0.45,
+    "context_id": "context-star-formation-evidence-absence-0001",
+    "context_sha256": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "context_version": "0.1.0",
+    "epistemic_classification": "computed",
+    "explanation_trace_id": "trace-79435077cdb8f731bb5e",
+    "id": "significance-79435077cdb8f731bb5e",
+    "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+    "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59",
+    "ontology_version": "ASTRO-ONTOLOGY-0001",
+    "provenance_refs": [
+      "evidence-a520bcefa4721c00b10d",
+      "provenance-d835245d6645c4394ff4"
+    ],
+    "raw_score": 0.093939393939,
+    "record_status": "active",
+    "scale_semantics": "relative_contextual_proof_of_concept_score_0_to_1_not_probability",
+    "schema_version": "0.1.0",
+    "score": 0.019022727273,
+    "standing_result_id": "standing-166ff02588fb63fcf598",
+    "subject_id": "candidate-5234ea6f804ae6cd7932",
+    "taxonomy_version": "ASTRO-RELATIONSHIP-TAXONOMY-0001",
+    "uncertainty_penalty": 0.55,
+    "warnings": [
+      "Provisional non-canonical Significance hypothesis; DR-0001, DR-0008, DR-0010, and DR-0012 remain open.",
+      "No eligible direct relationship assertion supports this node in the declared Context."
+    ]
+  },
+  {
+    "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+    "asa_dependency_status": "unavailable_not_consumed",
+    "component_contributions": {
+      "direct_relationships": 0.0,
+      "information_value": 0.1,
+      "propagated_relationships": 0.0,
+      "standing": 0.0
+    },
+    "confidence_adjustment": 0.432287,
+    "context_id": "context-star-formation-evidence-absence-0001",
+    "context_sha256": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "context_version": "0.1.0",
+    "epistemic_classification": "computed",
+    "explanation_trace_id": "trace-1c5c54c468d6218a7dae",
+    "id": "significance-1c5c54c468d6218a7dae",
+    "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+    "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59",
+    "ontology_version": "ASTRO-ONTOLOGY-0001",
+    "provenance_refs": [
+      "evidence-aa76ba7ddb861a7a68d7",
+      "provenance-d835245d6645c4394ff4"
+    ],
+    "raw_score": 0.1,
+    "record_status": "active",
+    "scale_semantics": "relative_contextual_proof_of_concept_score_0_to_1_not_probability",
+    "schema_version": "0.1.0",
+    "score": 0.018687205037,
+    "standing_result_id": "standing-d1a88cf53a0a7df2c588",
+    "subject_id": "candidate-56ad565e7a1d1b1b8350",
+    "taxonomy_version": "ASTRO-RELATIONSHIP-TAXONOMY-0001",
+    "uncertainty_penalty": 0.567713,
+    "warnings": [
+      "Provisional non-canonical Significance hypothesis; DR-0001, DR-0008, DR-0010, and DR-0012 remain open.",
+      "No eligible direct relationship assertion supports this node in the declared Context."
+    ]
+  },
+  {
+    "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+    "asa_dependency_status": "unavailable_not_consumed",
+    "component_contributions": {
+      "direct_relationships": 0.0,
+      "information_value": 0.09696969697,
+      "propagated_relationships": 0.0,
+      "standing": 0.0
+    },
+    "confidence_adjustment": 0.36,
+    "context_id": "context-star-formation-evidence-absence-0001",
+    "context_sha256": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "context_version": "0.1.0",
+    "epistemic_classification": "computed",
+    "explanation_trace_id": "trace-21a50efa24858d433f6f",
+    "id": "significance-21a50efa24858d433f6f",
+    "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+    "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59",
+    "ontology_version": "ASTRO-ONTOLOGY-0001",
+    "provenance_refs": [
+      "evidence-0d05ad43071715b9cb08",
+      "provenance-d835245d6645c4394ff4"
+    ],
+    "raw_score": 0.09696969697,
+    "record_status": "active",
+    "scale_semantics": "relative_contextual_proof_of_concept_score_0_to_1_not_probability",
+    "schema_version": "0.1.0",
+    "score": 0.012567272727,
+    "standing_result_id": "standing-43a2424ef243b266e814",
+    "subject_id": "candidate-7250c5f89d9de17c4cec",
+    "taxonomy_version": "ASTRO-RELATIONSHIP-TAXONOMY-0001",
+    "uncertainty_penalty": 0.64,
+    "warnings": [
+      "Provisional non-canonical Significance hypothesis; DR-0001, DR-0008, DR-0010, and DR-0012 remain open.",
+      "No eligible direct relationship assertion supports this node in the declared Context."
+    ]
+  },
+  {
+    "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+    "asa_dependency_status": "unavailable_not_consumed",
+    "component_contributions": {
+      "direct_relationships": 0.0,
+      "information_value": 0.1,
+      "propagated_relationships": 0.0,
+      "standing": 0.0
+    },
+    "confidence_adjustment": 0.7,
+    "context_id": "context-star-formation-evidence-absence-0001",
+    "context_sha256": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "context_version": "0.1.0",
+    "epistemic_classification": "computed",
+    "explanation_trace_id": "trace-45c31e85f84675ec8a86",
+    "id": "significance-45c31e85f84675ec8a86",
+    "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+    "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59",
+    "ontology_version": "ASTRO-ONTOLOGY-0001",
+    "provenance_refs": [
+      "evidence-f42a2a159175a85d08a3",
+      "provenance-d835245d6645c4394ff4"
+    ],
+    "raw_score": 0.1,
+    "record_status": "active",
+    "scale_semantics": "relative_contextual_proof_of_concept_score_0_to_1_not_probability",
+    "schema_version": "0.1.0",
+    "score": 0.0455,
+    "standing_result_id": "standing-e3d195b0d93ce7eb4f2d",
+    "subject_id": "candidate-7df86962ac96a3c56165",
+    "taxonomy_version": "ASTRO-RELATIONSHIP-TAXONOMY-0001",
+    "uncertainty_penalty": 0.35,
+    "warnings": [
+      "Provisional non-canonical Significance hypothesis; DR-0001, DR-0008, DR-0010, and DR-0012 remain open.",
+      "No eligible direct relationship assertion supports this node in the declared Context."
+    ]
+  },
+  {
+    "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+    "asa_dependency_status": "unavailable_not_consumed",
+    "component_contributions": {
+      "direct_relationships": 0.0,
+      "information_value": 0.094457636364,
+      "propagated_relationships": 0.0,
+      "standing": 0.0
+    },
+    "confidence_adjustment": 0.558551,
+    "context_id": "context-star-formation-evidence-absence-0001",
+    "context_sha256": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "context_version": "0.1.0",
+    "epistemic_classification": "computed",
+    "explanation_trace_id": "trace-1c54cf206e2a653ff443",
+    "id": "significance-1c54cf206e2a653ff443",
+    "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+    "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59",
+    "ontology_version": "ASTRO-ONTOLOGY-0001",
+    "provenance_refs": [
+      "evidence-da0c33683860d9ea643f",
+      "provenance-d835245d6645c4394ff4"
+    ],
+    "raw_score": 0.094457636364,
+    "record_status": "active",
+    "scale_semantics": "relative_contextual_proof_of_concept_score_0_to_1_not_probability",
+    "schema_version": "0.1.0",
+    "score": 0.029468819678,
+    "standing_result_id": "standing-e70ef25cc2c76ea24a0f",
+    "subject_id": "candidate-b628cd20cf7f99857fbb",
+    "taxonomy_version": "ASTRO-RELATIONSHIP-TAXONOMY-0001",
+    "uncertainty_penalty": 0.441449,
+    "warnings": [
+      "Provisional non-canonical Significance hypothesis; DR-0001, DR-0008, DR-0010, and DR-0012 remain open.",
+      "No eligible direct relationship assertion supports this node in the declared Context."
+    ]
+  },
+  {
+    "algorithm_version": "asa-astro-reasoning-poc-0.1.0",
+    "asa_dependency_status": "unavailable_not_consumed",
+    "component_contributions": {
+      "direct_relationships": 0.0,
+      "information_value": 0.1,
+      "propagated_relationships": 0.0,
+      "standing": 0.0
+    },
+    "confidence_adjustment": 0.7,
+    "context_id": "context-star-formation-evidence-absence-0001",
+    "context_sha256": "c3e87d0da874d00cf4e6c2042c04d5817ea7fff99f1f25a54d45ca36a659d1f5",
+    "context_version": "0.1.0",
+    "epistemic_classification": "computed",
+    "explanation_trace_id": "trace-7f129a4e47d657295b69",
+    "id": "significance-7f129a4e47d657295b69",
+    "input_graph_sha256": "a90d5f1dacef04fa0656c2d5f1dec6b061298893058bf57034c9af7d129c227b",
+    "input_provenance_sha256": "188921cdf8cd52940f844b3af4aed21d409559d09ed99920bd7a6480e7e84e59",
+    "ontology_version": "ASTRO-ONTOLOGY-0001",
+    "provenance_refs": [
+      "evidence-0cd7005c4e7185f5e6c3",
+      "provenance-d835245d6645c4394ff4"
+    ],
+    "raw_score": 0.1,
+    "record_status": "active",
+    "scale_semantics": "relative_contextual_proof_of_concept_score_0_to_1_not_probability",
+    "schema_version": "0.1.0",
+    "score": 0.0455,
+    "standing_result_id": "standing-b25c082880cd2074a314",
+    "subject_id": "candidate-e58c39876750226628df",
+    "taxonomy_version": "ASTRO-RELATIONSHIP-TAXONOMY-0001",
+    "uncertainty_penalty": 0.35,
+    "warnings": [
+      "Provisional non-canonical Significance hypothesis; DR-0001, DR-0008, DR-0010, and DR-0012 remain open.",
+      "No eligible direct relationship assertion supports this node in the declared Context."
+    ]
+  }
+]

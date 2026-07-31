@@ -1,0 +1,51 @@
+{
+  "all_contexts_resolvable": true,
+  "contexts": [
+    {
+      "all_required_information_resolvable": true,
+      "context": "structural_organisation",
+      "direct_evidence_links_resolved_via_bound_graph": 124,
+      "failures": [],
+      "included_edge_evidence_self_contained_in_trace": false,
+      "self_containment_note": "Included contributions carry edge IDs but not evidence IDs; evidence remains resolvable only by joining the hash-bound input graph.",
+      "trace_count": 11
+    },
+    {
+      "all_required_information_resolvable": true,
+      "context": "observational_interpretation",
+      "direct_evidence_links_resolved_via_bound_graph": 95,
+      "failures": [],
+      "included_edge_evidence_self_contained_in_trace": false,
+      "self_containment_note": "Included contributions carry edge IDs but not evidence IDs; evidence remains resolvable only by joining the hash-bound input graph.",
+      "trace_count": 11
+    },
+    {
+      "all_required_information_resolvable": true,
+      "context": "star_formation",
+      "direct_evidence_links_resolved_via_bound_graph": 0,
+      "failures": [],
+      "included_edge_evidence_self_contained_in_trace": false,
+      "self_containment_note": "Included contributions carry edge IDs but not evidence IDs; evidence remains resolvable only by joining the hash-bound input graph.",
+      "trace_count": 11
+    },
+    {
+      "all_required_information_resolvable": true,
+      "context": "scientific_information_value",
+      "direct_evidence_links_resolved_via_bound_graph": 11,
+      "failures": [],
+      "included_edge_evidence_self_contained_in_trace": false,
+      "self_containment_note": "Included contributions carry edge IDs but not evidence IDs; evidence remains resolvable only by joining the hash-bound input graph.",
+      "trace_count": 11
+    },
+    {
+      "all_required_information_resolvable": true,
+      "context": "gravitational_organisation",
+      "direct_evidence_links_resolved_via_bound_graph": 0,
+      "failures": [],
+      "included_edge_evidence_self_contained_in_trace": false,
+      "self_containment_note": "Included contributions carry edge IDs but not evidence IDs; evidence remains resolvable only by joining the hash-bound input graph.",
+      "trace_count": 11
+    }
+  ],
+  "opaque_output_rejected": true
+}

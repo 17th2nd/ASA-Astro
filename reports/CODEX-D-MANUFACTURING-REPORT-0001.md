@@ -243,3 +243,163 @@ The integrated proof of concept does not yet provide evidence that typed Relatio
 Context, and uncertainty produce a more defensible ranking than naive visual prominence. It does
 provide bounded evidence that the B source-to-candidate-graph stage is auditable and deterministic
 for its synthetic fixture. The distinction and the limits are stated explicitly.
+
+## 12. Phase II manufacturing addendum
+
+**Resume date:** 2026-07-31
+**Canonical upstream basis:** `520f790a363660bbd97abf7f0f45f73cacc2d739`
+**Manufacturing result:** complete synthetic integration/validation package manufactured; bounded
+hypothesis outcome `Insufficient evidence`
+
+Sections 1–11 remain the historical report for the earlier stopped unit. This addendum records the
+resumed unit after the C handoff became canonical.
+
+### 12.1 Repository inspection
+
+GitHub `main`, local `HEAD`, and `origin/main` were independently inspected before manufacturing
+and all resolved to `520f790...`. The required sequence `351cc57 → 59b1817 → e3476fc → 520f790`
+was present. The worktree was clean, the branch was `main`, and no alternate branch, fork, PR,
+worktree, repository, or history was created.
+
+Files inspected included all A foundation/model/ontology/validation documents, B pipeline schemas,
+source, tests, reports and handoff, C reasoning schemas, source, tests, report and handoff, the
+decision register, the previous D reports/register, packaging files, and dependency lock.
+
+### 12.2 Work performed
+
+Created D-owned source/fixture/test files:
+
+- `validation/__init__.py`
+- `validation/README.md`
+- `validation/run_phase2.py`
+- `validation/fixtures/manual-priority.json`
+- four additional Context fixtures in `validation/fixtures/contexts/`
+- `tests/integration/test_phase2_validation.py`
+
+Created deterministic generated results:
+
+- `validation/results/phase2/` — 63 files including the root manifest, preserved B evidence,
+  five C reasoning bundles, benchmarks, adversarial results, ablations, explanation checks,
+  reproducibility evidence, and static explorer.
+
+Updated existing D-owned records without deleting their history:
+
+- `docs/integration/INTEGRATION-CONTRACT-REVIEW-0001.md`
+- `reports/ASA-ASTRO-POC-VALIDATION-REPORT-0001.md`
+- `reports/CODEX-D-MANUFACTURING-REPORT-0001.md`
+- `governance/integration-issues.md`
+
+All A-, B-, and C-owned files were intentionally left unchanged. No upstream conceptual defect
+was repaired by D.
+
+### 12.3 Decisions and assumptions
+
+Decisions made within D's integration remit:
+
+1. Orchestrate only the public B and C Python interfaces.
+2. Use the existing generated image as a software fixture, never as astronomical Ground Truth.
+3. Freeze four additional Context inputs only as D adversarial/behavioural declarations; they do
+   not authorise scientific weights.
+4. Preserve a generator-informed manual order as a synthetic comparator, not a reference truth.
+5. Treat byte identity, referential resolution, adverse-case outcomes, and declared ranking metrics
+   as evidence; do not infer scientific correctness from them.
+6. Preserve failed adversarial results in committed JSON and open integration issues.
+7. Select `Insufficient evidence` because positive engineering behaviours coexist with missing
+   astronomy/reference data and critical semantic failures.
+
+Assumptions:
+
+- `520f790...` is the complete upstream integration basis named by the operator.
+- C's provisional formulas may be exercised as POC hypotheses because C explicitly disclaims ASA
+  conformance; exercise does not ratify them.
+- Existing lock and package metadata are the environment contract available to D.
+- The repository's current synthetic fixture is the only permissible local test input.
+
+No scientific identity, measurement, causal relationship, Context authority, ASA definition,
+calibration policy, constitutional status, or release ratification was invented.
+
+### 12.4 Tests and measurements
+
+Commands executed included:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:. \
+  python3 -m unittest tests.integration.test_phase2_validation -v
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:. \
+  python3 validation/run_phase2.py --output validation/results/phase2
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:. \
+  python3 -m unittest discover -s tests -v
+
+git diff --check
+git diff --cached --check
+```
+
+The D test calls the complete harness once, verifies repeat-execution byte identity, Context
+isolation, preserved failure statuses, explorer content, full manifest coverage, and overwrite
+refusal. The complete repository suite passed all 25 tests in 73.262 seconds. The clean
+source-snapshot execution result is recorded in the publication handoff.
+
+Final integrated run measurements:
+
+- 11 candidates, 43 base edges, five Contexts;
+- 54/54 repeated upstream/Context/reasoning files byte-identical;
+- 19 adversarial cases: 13 PASS, 5 FAIL, 1 LIMITATION;
+- 55 Explanation Traces resolvable as hash-bound bundles;
+- structural brightness comparison: 35/55 pair disagreements, rho `-0.509090909091`;
+- five Contexts produced two distinct ranking orders;
+- local run: 47.46 seconds and 80,968 KiB maximum resident memory;
+- output size approximately 4.6 MiB across 63 files.
+
+### 12.5 Known limitations and failures
+
+- No authorised astronomical image or independent Ground Truth exists.
+- ASA remains unavailable and unconsumed.
+- Base Standing centrality did not converge at its 64-iteration cap.
+- contradictory edge evidence and Relationship Assertion uncertainty have no score effect;
+- evidence-absent Contexts emit active rankings;
+- overcertain unresolved image hypotheses are accepted without a classification-specific warning;
+- Context schema coverage does not match A's full Context model;
+- included direct evidence is not self-contained in Explanation Traces;
+- B run identity changes when unrelated downstream schemas change;
+- weights and expected scientific outcomes remain provisional;
+- all numeric ablations retain the same leading subject on the only fixture;
+- ranking similarity to topology is high and cannot be adjudicated without reference evidence.
+
+### 12.6 Integration requirements and human decisions
+
+Remaining human-owned requirements:
+
+- select immutable ASA identity/interface (`DR-0001`);
+- reconcile ownership (`DR-0002`);
+- authorise an astronomical source and use conditions (`DR-0003`);
+- select independent reference/Ground Truth sources and tolerances (`DR-0004`, `DR-0014`);
+- authorise Context, missingness, Standing, Significance, and calibration semantics
+  (`DR-0008`–`DR-0011`);
+- determine review/release authority (`DR-0020`).
+
+Upstream owner remedies are enumerated as `INT-0014` through `INT-0025`. These defects do not
+require D to alter upstream files and were not silently closed.
+
+### 12.7 Integrity disposition
+
+- duplicate implementation introduced: no;
+- repository structure preserved: yes;
+- upstream interfaces modified: no;
+- synthetic/astronomical boundary preserved: yes;
+- Standing/Significance and brightness/Significance separation preserved: yes;
+- uncertainty and failed checks hidden: no;
+- branch or parallel history introduced: no;
+- merge, ratification, or scientific-validation declaration made: no.
+
+The GitHub publication workflow was used only to reconfirm canonical repository state; the direct
+`main` policy explicitly supplied by the operator took precedence over the workflow's usual
+branch-and-draft-PR route.
+
+### 12.8 Phase II final review answer
+
+**Insufficient evidence.** The manufactured POC demonstrates a deterministic, traceable synthetic
+pipeline and clear divergence from brightness, but it does not establish more defensible astronomy
+reasoning in the presence of missing scientific reference evidence and the recorded semantic and
+numerical failures.

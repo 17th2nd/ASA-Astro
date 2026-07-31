@@ -1,0 +1,254 @@
+{
+  "artifacts": [
+    {
+      "path": "ablation-results.json",
+      "sha256": "917c47f58eacb9c9f676f882ce715196cf765979cc9b1844b59aea96cef91f56"
+    },
+    {
+      "path": "adversarial-results.json",
+      "sha256": "33b55490bc1e3c9d451f90adacf7aafdb36143c07e950f2caeff44d79326eda2"
+    },
+    {
+      "path": "benchmark-results.json",
+      "sha256": "13c5bb3efa07e242e530b78310efbfd91db99565b03a3dfca1f57f94bb6b8d4b"
+    },
+    {
+      "path": "contexts/gravitational_organisation.json",
+      "sha256": "1a04ffd135b3204b2e00d6faca560847c2d01f8e48dffa5aa046bd969d383f4b"
+    },
+    {
+      "path": "contexts/observational_interpretation.json",
+      "sha256": "4e230bc68d4ce82f61313fa4205bc67d85eb5cf2e31b75632172e33509798f29"
+    },
+    {
+      "path": "contexts/scientific_information_value.json",
+      "sha256": "7fb826a4562b6953fd2ffe17231336d37c26ae8cc50cbe11630f341c6c09a195"
+    },
+    {
+      "path": "contexts/star_formation.json",
+      "sha256": "e1dc2bd2001dfda229a972ee9a10150adcaf5f1da58837311e420df65190fd38"
+    },
+    {
+      "path": "contexts/structural_organisation.json",
+      "sha256": "32fd3efcf474ba8bf4e1c321d3e24def980c0c5d342c6b4581f925bc72cf3cf8"
+    },
+    {
+      "path": "evidence/graph.graphml",
+      "sha256": "48673867431f7687c931ca07340166df0c3a591cf496aed1f50a15f71a0452f1"
+    },
+    {
+      "path": "evidence/graph.json",
+      "sha256": "0ff9dc94c797cb8701db73b8495634b5312b69f5593a9b5db75c588c9b201471"
+    },
+    {
+      "path": "evidence/manifest.json",
+      "sha256": "6f92e594910afef46955db3bb66ed3ad785b01621694a14a5a50191b0d48fd6c"
+    },
+    {
+      "path": "evidence/overlay.png",
+      "sha256": "5fd1b2e8c1d342c30092aa945923194ebe763665315ea14169ceeda57b82e5c2"
+    },
+    {
+      "path": "evidence/provenance.json",
+      "sha256": "81336e2fc1259d3934ebb6949608b5072d5a8d7d95aced90c58ecc4de639a687"
+    },
+    {
+      "path": "evidence/source/fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a.ppm",
+      "sha256": "fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a"
+    },
+    {
+      "path": "evidence/source/metadata-703200a548f151b31123eb21d496577fe5cb4f44022da267b4bd21ba7793b894.json",
+      "sha256": "703200a548f151b31123eb21d496577fe5cb4f44022da267b4bd21ba7793b894"
+    },
+    {
+      "path": "evidence/summary.md",
+      "sha256": "04aa25c675292d4ce2161aa20dc7c505dd58e9898d7a3c5bd988d23a478f671c"
+    },
+    {
+      "path": "explanation-validation.json",
+      "sha256": "de01557530664615a2f777c4155982d4b2787b0439d82964bc8118b46e17c1e9"
+    },
+    {
+      "path": "explorer.html",
+      "sha256": "a689713e8b6cfeac210765e5b1db1ff651821b76a6409b05752a355602c00a33"
+    },
+    {
+      "path": "input/synthetic-observation.ppm",
+      "sha256": "fb4fd2864605e49849543cab64de5eaa2c296555b8d4a3e0e5f4141d4b43891a"
+    },
+    {
+      "path": "input-manifest.json",
+      "sha256": "fc3d6c4f25cac89df3728fbcf258486b709872beaf32348dd5b74adb1bfee9a8"
+    },
+    {
+      "path": "reasoning/gravitational_organisation/analysis.json",
+      "sha256": "836f8e738cf01ea63783ff9d247ebb47ea152ba46894570d3169015c274c1616"
+    },
+    {
+      "path": "reasoning/gravitational_organisation/baselines.json",
+      "sha256": "298caa317fc4dfc1b418636d19d3c13df51fb839e53bf62655b5c4d234458c89"
+    },
+    {
+      "path": "reasoning/gravitational_organisation/context.json",
+      "sha256": "1a04ffd135b3204b2e00d6faca560847c2d01f8e48dffa5aa046bd969d383f4b"
+    },
+    {
+      "path": "reasoning/gravitational_organisation/explanation-traces.json",
+      "sha256": "4969706865dbb2d863912a3b2738ad14fa39fdca996e3794ef79f5e35b88f0d6"
+    },
+    {
+      "path": "reasoning/gravitational_organisation/manifest.json",
+      "sha256": "85671a82accbf408663469cddc7b06de8f5ac4b23707bc22e932879b984b2e95"
+    },
+    {
+      "path": "reasoning/gravitational_organisation/ranked-results.json",
+      "sha256": "031c64567c1466d3de0818da92c86152519bd077e63227a01f674c1899698555"
+    },
+    {
+      "path": "reasoning/gravitational_organisation/significance-results.json",
+      "sha256": "02f9692395452ae8c820f9fa31503a8cb9a14ab6073e82a9427edffd0f65f68d"
+    },
+    {
+      "path": "reasoning/gravitational_organisation/standing-results.json",
+      "sha256": "650c57cde735ea4c82db04b3ad2ec172ab4d5cf6ff5a15f6afe1b6b6885a7a10"
+    },
+    {
+      "path": "reasoning/observational_interpretation/analysis.json",
+      "sha256": "b3f16bff5271cb7d972a128998e2f6909ae4aff374278836e96295da88ae87ee"
+    },
+    {
+      "path": "reasoning/observational_interpretation/baselines.json",
+      "sha256": "74eb108fc88473e995e40f04a8ff58b5ad3227403357561afdebc5610b3ddc91"
+    },
+    {
+      "path": "reasoning/observational_interpretation/context.json",
+      "sha256": "4e230bc68d4ce82f61313fa4205bc67d85eb5cf2e31b75632172e33509798f29"
+    },
+    {
+      "path": "reasoning/observational_interpretation/explanation-traces.json",
+      "sha256": "97381286a6e798545140493a9fca860947e23f67d4ab07c4d9c946e7fa0817ee"
+    },
+    {
+      "path": "reasoning/observational_interpretation/manifest.json",
+      "sha256": "c088dba2ba41da9ecebe4bceb26c1ed9986db0aca7ab1f6a3f20de1b12ec74e7"
+    },
+    {
+      "path": "reasoning/observational_interpretation/ranked-results.json",
+      "sha256": "934a30086c9d66672c4968ea63a62c3cf1f16765781597768b40b186190a1f17"
+    },
+    {
+      "path": "reasoning/observational_interpretation/significance-results.json",
+      "sha256": "11d227d770c0fb05b71f3f61e73b4bc9725b2fb3c5d8d83e6c8ab623c2e84635"
+    },
+    {
+      "path": "reasoning/observational_interpretation/standing-results.json",
+      "sha256": "650c57cde735ea4c82db04b3ad2ec172ab4d5cf6ff5a15f6afe1b6b6885a7a10"
+    },
+    {
+      "path": "reasoning/scientific_information_value/analysis.json",
+      "sha256": "6cb9a8a9c5db3ef03ec13b0d08fb74e87506725b76643d6f30bd4881df285adb"
+    },
+    {
+      "path": "reasoning/scientific_information_value/baselines.json",
+      "sha256": "298caa317fc4dfc1b418636d19d3c13df51fb839e53bf62655b5c4d234458c89"
+    },
+    {
+      "path": "reasoning/scientific_information_value/context.json",
+      "sha256": "7fb826a4562b6953fd2ffe17231336d37c26ae8cc50cbe11630f341c6c09a195"
+    },
+    {
+      "path": "reasoning/scientific_information_value/explanation-traces.json",
+      "sha256": "ae186a81c806c897bed5d18bedb3ced6a9b35a7d524414feb55cb8d469cbde8a"
+    },
+    {
+      "path": "reasoning/scientific_information_value/manifest.json",
+      "sha256": "b820531f93d8bddddf7a1b86b09fb29b3d219736fd23bd4636aa0402e30b2e05"
+    },
+    {
+      "path": "reasoning/scientific_information_value/ranked-results.json",
+      "sha256": "c7d0754f6fe68dc7bebdc9bc864f07f7d3d6890d1f07c77601c148a28524b065"
+    },
+    {
+      "path": "reasoning/scientific_information_value/significance-results.json",
+      "sha256": "518b5a9ad936ba4f96fe9d331e419a8d9366da5225bebca3a20e7b975b8a009e"
+    },
+    {
+      "path": "reasoning/scientific_information_value/standing-results.json",
+      "sha256": "650c57cde735ea4c82db04b3ad2ec172ab4d5cf6ff5a15f6afe1b6b6885a7a10"
+    },
+    {
+      "path": "reasoning/star_formation/analysis.json",
+      "sha256": "0ec36fb333c4a9f577ddeeb9b8c9090e8f215e726bbad23633426095560265c2"
+    },
+    {
+      "path": "reasoning/star_formation/baselines.json",
+      "sha256": "298caa317fc4dfc1b418636d19d3c13df51fb839e53bf62655b5c4d234458c89"
+    },
+    {
+      "path": "reasoning/star_formation/context.json",
+      "sha256": "e1dc2bd2001dfda229a972ee9a10150adcaf5f1da58837311e420df65190fd38"
+    },
+    {
+      "path": "reasoning/star_formation/explanation-traces.json",
+      "sha256": "48026561429279f093b4448d78911e321fd8871af34df586c354da32fcc63cff"
+    },
+    {
+      "path": "reasoning/star_formation/manifest.json",
+      "sha256": "9910ef5b72106f039578769a170cd6d33deb40a3acefb5a4d000781ba2340872"
+    },
+    {
+      "path": "reasoning/star_formation/ranked-results.json",
+      "sha256": "bee0b56dd1544ab7f9251f254f87327a5c9de0c786b765c7884470223293cf1d"
+    },
+    {
+      "path": "reasoning/star_formation/significance-results.json",
+      "sha256": "c62c75d74fbccb574fd54c246c2dd2f2a6d10f5b1056670eb2edd75e5703221c"
+    },
+    {
+      "path": "reasoning/star_formation/standing-results.json",
+      "sha256": "650c57cde735ea4c82db04b3ad2ec172ab4d5cf6ff5a15f6afe1b6b6885a7a10"
+    },
+    {
+      "path": "reasoning/structural_organisation/analysis.json",
+      "sha256": "3479de58a3bc3876e87740f29dac99a4b14e37a85b5886245625c237b897f917"
+    },
+    {
+      "path": "reasoning/structural_organisation/baselines.json",
+      "sha256": "de28bdf57b9cefa3d894ae709286c696e913da5b7e3fdde91b235f9a31b895ba"
+    },
+    {
+      "path": "reasoning/structural_organisation/context.json",
+      "sha256": "32fd3efcf474ba8bf4e1c321d3e24def980c0c5d342c6b4581f925bc72cf3cf8"
+    },
+    {
+      "path": "reasoning/structural_organisation/explanation-traces.json",
+      "sha256": "ad9939eacf23bbbb2d53774e5b0ed7bcf1ab27c2c7669eda1be6fefb10a2c48d"
+    },
+    {
+      "path": "reasoning/structural_organisation/manifest.json",
+      "sha256": "3abe0747f1f31f5f53baf7e436bee94d2f959324d5dc96753f53575ef7d64372"
+    },
+    {
+      "path": "reasoning/structural_organisation/ranked-results.json",
+      "sha256": "887f324f2e7536a64bfad85c55549be810e9451260b65b14625871e5fae20c00"
+    },
+    {
+      "path": "reasoning/structural_organisation/significance-results.json",
+      "sha256": "cdda1364da152e34c6a706a6cd49955b78605be255b559b684fe7f0019080649"
+    },
+    {
+      "path": "reasoning/structural_organisation/standing-results.json",
+      "sha256": "650c57cde735ea4c82db04b3ad2ec172ab4d5cf6ff5a15f6afe1b6b6885a7a10"
+    },
+    {
+      "path": "reproducibility.json",
+      "sha256": "5b05374ef4c5b993931cd54d3eb4bf19385ceba48831af99be9ed7857d5a2bee"
+    },
+    {
+      "path": "validation-summary.json",
+      "sha256": "e4a6bb907bad8630bb9a123b31d6e16c4b670b0cf6768e3412c9812f995a6a13"
+    }
+  ],
+  "harness_version": "asa-astro-validation-phase2-0.1.0",
+  "upstream_commit": "520f790a363660bbd97abf7f0f45f73cacc2d739"
+}
