@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/explanation-trace.schema.json",
+  "title": "Significance Explanation Trace",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "taxonomy_version", "record_status", "epistemic_classification", "id", "subject_id", "significance_result_id", "algorithm_version", "input_graph_sha256", "input_provenance_sha256", "context_sha256", "context", "final_score", "standing_contribution", "direct_relationship_contributions", "propagated_contributions", "confidence_adjustments", "uncertainty_penalties", "excluded_evidence", "warnings", "top_explanatory_pathways", "provenance_refs"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"}, "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"}, "taxonomy_version": {"const": "ASTRO-RELATIONSHIP-TAXONOMY-0001"}, "record_status": {"const": "active"}, "epistemic_classification": {"const": "computed"},
+    "id": {"$ref": "common.schema.json#/$defs/identifier"}, "subject_id": {"$ref": "common.schema.json#/$defs/identifier"}, "significance_result_id": {"$ref": "common.schema.json#/$defs/identifier"}, "algorithm_version": {"type": "string"}, "input_graph_sha256": {"$ref": "common.schema.json#/$defs/sha256"}, "input_provenance_sha256": {"$ref": "common.schema.json#/$defs/sha256"}, "context_sha256": {"$ref": "common.schema.json#/$defs/sha256"}, "context": {"$ref": "context.schema.json"}, "final_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "standing_contribution": {"type": "object"}, "direct_relationship_contributions": {"type": "array"}, "propagated_contributions": {"type": "array"}, "confidence_adjustments": {"type": "object"}, "uncertainty_penalties": {"type": "object"}, "excluded_evidence": {"type": "array"}, "warnings": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "top_explanatory_pathways": {"type": "array"}, "provenance_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/identifier"}}
+  }
+}

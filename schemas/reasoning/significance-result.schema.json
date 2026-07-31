@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/significance-result.schema.json",
+  "title": "Contextual Significance Result",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "taxonomy_version", "record_status", "epistemic_classification", "id", "subject_id", "algorithm_version", "asa_dependency_status", "input_graph_sha256", "input_provenance_sha256", "context_id", "context_version", "context_sha256", "standing_result_id", "explanation_trace_id", "score", "raw_score", "scale_semantics", "component_contributions", "confidence_adjustment", "uncertainty_penalty", "provenance_refs", "warnings"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"}, "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"}, "taxonomy_version": {"const": "ASTRO-RELATIONSHIP-TAXONOMY-0001"}, "record_status": {"const": "active"}, "epistemic_classification": {"const": "computed"},
+    "id": {"$ref": "common.schema.json#/$defs/identifier"}, "subject_id": {"$ref": "common.schema.json#/$defs/identifier"}, "algorithm_version": {"type": "string"}, "asa_dependency_status": {"const": "unavailable_not_consumed"}, "input_graph_sha256": {"$ref": "common.schema.json#/$defs/sha256"}, "input_provenance_sha256": {"$ref": "common.schema.json#/$defs/sha256"}, "context_id": {"$ref": "common.schema.json#/$defs/identifier"}, "context_version": {"type": "string"}, "context_sha256": {"$ref": "common.schema.json#/$defs/sha256"}, "standing_result_id": {"$ref": "common.schema.json#/$defs/identifier"}, "explanation_trace_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "score": {"type": "number", "minimum": 0, "maximum": 1}, "raw_score": {"type": "number", "minimum": 0}, "scale_semantics": {"type": "string", "minLength": 1}, "component_contributions": {"type": "object", "required": ["standing", "direct_relationships", "propagated_relationships", "information_value"]}, "confidence_adjustment": {"type": "number", "minimum": 0, "maximum": 1}, "uncertainty_penalty": {"type": "number", "minimum": 0, "maximum": 1}, "provenance_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "common.schema.json#/$defs/identifier"}}, "warnings": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

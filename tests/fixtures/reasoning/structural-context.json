@@ -1,0 +1,52 @@
+{
+  "assumptions": [
+    "All numeric weights are replaceable proof-of-concept hypotheses.",
+    "Codex B relationships remain image-space assertions, not physical facts."
+  ],
+  "authority": {
+    "decision_register_dependencies": ["DR-0001", "DR-0008", "DR-0010", "DR-0012"],
+    "status": "provisional_non_canonical"
+  },
+  "baseline_configuration": {
+    "manual_class_priorities": {
+      "internal_substructure": 1.0,
+      "likely_foreground_point_source": 0.05,
+      "primary_extended_object": 0.8
+    }
+  },
+  "context_id": "context-structural-0001",
+  "context_version": "0.1.0",
+  "eligible_relationship_types": ["spatial", "containment", "structural"],
+  "epistemic_classification": "externally_supplied",
+  "excluded_relationship_types": ["observational", "occlusion"],
+  "explanation_requirements": {
+    "include_excluded_evidence": true,
+    "include_warnings": true,
+    "maximum_pathways": 8
+  },
+  "normalization_method": "max",
+  "objective": "Compare relative image-space structural relevance without asserting physical structure",
+  "ontology_version": "ASTRO-ONTOLOGY-0001",
+  "propagation_rules": {
+    "decay": 0.55,
+    "eligible_relationship_types": ["spatial", "containment", "structural"],
+    "enabled": true,
+    "maximum_depth": 3
+  },
+  "record_status": "active",
+  "schema_version": "0.1.0",
+  "uncertainty_tolerance": 0.2,
+  "weights": {
+    "component_weights": {
+      "direct_relationships": 0.3,
+      "information_value": 0.1,
+      "propagated_relationships": 0.25,
+      "standing": 0.35
+    },
+    "relationship_type_weights": {
+      "containment": 0.75,
+      "spatial": 0.15,
+      "structural": 1.0
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/context.schema.json",
+  "title": "ASA-Astro Provisional Computation Context",
+  "x-governing-document": "ASTRO-CONTEXT-MODEL-0001",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "context_id", "context_version", "objective", "authority", "eligible_relationship_types", "excluded_relationship_types", "weights", "propagation_rules", "uncertainty_tolerance", "normalization_method", "explanation_requirements", "baseline_configuration", "assumptions"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"const": "active"},
+    "epistemic_classification": {"const": "externally_supplied"},
+    "context_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "context_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "objective": {"type": "string", "minLength": 1},
+    "authority": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "decision_register_dependencies"],
+      "properties": {
+        "status": {"enum": ["provisional_non_canonical"]},
+        "decision_register_dependencies": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^DR-[0-9]{4}$"}}
+      }
+    },
+    "eligible_relationship_types": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "excluded_relationship_types": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "weights": {
+      "type": "object", "additionalProperties": false,
+      "required": ["component_weights", "relationship_type_weights"],
+      "properties": {
+        "component_weights": {
+          "type": "object", "additionalProperties": false,
+          "required": ["standing", "direct_relationships", "propagated_relationships", "information_value"],
+          "properties": {
+            "standing": {"type": "number", "minimum": 0, "maximum": 1},
+            "direct_relationships": {"type": "number", "minimum": 0, "maximum": 1},
+            "propagated_relationships": {"type": "number", "minimum": 0, "maximum": 1},
+            "information_value": {"type": "number", "minimum": 0, "maximum": 1}
+          }
+        },
+        "relationship_type_weights": {"type": "object", "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}}
+      }
+    },
+    "propagation_rules": {
+      "type": "object", "additionalProperties": false,
+      "required": ["enabled", "eligible_relationship_types", "maximum_depth", "decay"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "eligible_relationship_types": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "maximum_depth": {"type": "integer", "minimum": 0, "maximum": 8},
+        "decay": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+      }
+    },
+    "uncertainty_tolerance": {"type": "number", "minimum": 0, "maximum": 1},
+    "normalization_method": {"enum": ["max", "min_max", "none"]},
+    "explanation_requirements": {
+      "type": "object", "additionalProperties": false,
+      "required": ["include_excluded_evidence", "include_warnings", "maximum_pathways"],
+      "properties": {
+        "include_excluded_evidence": {"const": true},
+        "include_warnings": {"const": true},
+        "maximum_pathways": {"type": "integer", "minimum": 1, "maximum": 100}
+      }
+    },
+    "baseline_configuration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["manual_class_priorities"],
+      "properties": {"manual_class_priorities": {"type": "object", "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}}}
+    },
+    "assumptions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+  }
+}
