@@ -256,6 +256,12 @@ Right bracketing: $e_2 \odot e_3$ has type $Q$; then $P \odot Q = R$, so $e_1 \o
 
 **Corollary 10.2.** The value of a path is not determined by the path. A bracketing must be declared, and distinct declared bracketings are distinct computations.
 
+**Corollary 10.3 (Licensed paths do not form a substructure).** The set of licensed paths is not in general the path set of any substructure of $R$.
+
+*Proof.* Suppose it were the path set of a substructure $R' \subseteq R$. Then a path is licensed iff each of its instances lies in $R'$, a condition on instances alone and hence independent of bracketing and of position within the path. Theorem 10 exhibits instances $e_1, e_2, e_3$, each licensed in some evaluation, for which one bracketing is defined and another is not. Under the substructure hypothesis both bracketings would be licensed. Contradiction. $\blacksquare$
+
+**Observation 10.4.** Corollary 10.3 is the reason licensure must be carried by a state rather than by a set of admitted instances. The natural carrier is a product of the element set with an automaton state and a register holding the previously composed signature; admission is then a transition guard, not a membership test. Notation suggesting a licensed subgraph is therefore misleading, and no result above depends on such an object.
+
 **Observation 10.3.** Theorem 10 is a statement about partial operations, not about uncertainty. If compatibility is gated only by a quantity that accumulates additively along a path with a threshold on the running total, associativity is preserved, since partial sums of non-negative terms are dominated by the total. Non-associativity requires the *type* or *kind* of the composite to feed back into compatibility.
 
 **Theorem 11 (Semantic separation).** There exist a structure, a weight $w$, a designation $\Delta \subseteq U$, and items $a, b$ such that
@@ -354,7 +360,11 @@ Assign signatures so that $(e_1, e_2) \notin \kappa$ and $(f_1, f_2) \in \kappa$
 
 **Open Question 13.5.** Is contextual admissibility reducible to a threshold on a decision-theoretic loss, or does it carry structure not expressible as a threshold? Equivalently: is the admit/reject/indeterminate trichotomy a coarsening of a real-valued criterion, or irreducibly three-valued?
 
-**Open Question 13.6.** Is there an invariant of the licensed-path structure — the pair $(E, \kappa)$ together with its signature algebra — that is not expressible in an existing typed, temporal, or dimensionally annotated formalism? A negative answer would show the composition theory of §9 to be a presentation of known structure rather than new structure.
+**Open Question 13.6 — answered negatively; retained as a closed record.** *Question:* is there an invariant of the licensed-path structure — the pair $(E, \kappa)$ together with its signature algebra — not expressible in an existing typed, temporal, or dimensionally annotated formalism?
+
+*Answer:* no. The structure of §9 is a guarded register automaton over a data path: a finite automaton over relation labels together with a guard on registers carrying previous or composed signatures, evaluated on the product state space $U \times Q \times R$. This is established graph-database theory — regular path queries, regular path queries with comparisons over values stored along a path, and register/binding formalisms for graph data. The guards are instantiated by existing temporal, spatial and dimensional vocabularies, and dimensional compatibility itself long predates any of them.
+
+**Observation 13.6.1.** The closure of 13.6 does not disturb any theorem of §9. Theorems 9, 10 and 11 are statements about the structure, not about its novelty, and each remains proved. What is withdrawn is only the expectation that the structure is new.
 
 **Open Question 13.7.** Define a pseudometric on contexts under which nearby contexts induce nearby significance orderings. Does such a pseudometric exist, and is significance continuous with respect to it? A negative answer would mean small changes of question can produce discontinuous changes of valuation.
 
