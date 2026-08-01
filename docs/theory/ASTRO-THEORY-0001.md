@@ -78,14 +78,45 @@ $$C=\big(\mu_C,\ (\mathcal{Y}_C,\mathcal{G}_C),\ M_C,\ T_C,\ \approx_C,\ \delta_
 
 ### A.2.4 Representation morphisms
 
-**Definition 3.15 (Representation morphism) — derived.** Over fixed $\mathfrak{B}$ and $\mathfrak{M}$, a family $\iota=(\iota_{\mathfrak{B}},\iota_{\mathfrak{M}},\iota_{\mathcal{Y}},\iota_W)$: a bijection $\iota_{\mathfrak{B}}:\mathfrak{B}\to\mathfrak{B}$, a bimeasurable bijection $\iota_{\mathfrak{M}}:\mathfrak{M}\to\mathfrak{M}$, a bimeasurable bijection $\iota_{\mathcal{Y}}$, and an isomorphism $\iota_W$ of codomains in the declared class.
+**Definition 3.14.1 (Homogeneous frame) — primitive. Remediates DCV-001.** A *frame* is a quadruple
+$$\mathbb{F}=\big(\mathfrak{B},\ (\mathfrak{M},\mathcal{F}),\ (\mathcal{Y},\mathcal{G}_{\mathcal{Y}}),\ (W,\preceq_W,\Sigma_W)\big)$$
+consisting of a bearer set, a measurable model space, **one** measurable outcome space and **one** codomain. **Version 1 is homogeneous:** every context of a theory instance uses the frame's outcome space and codomain.
+
+**Observation 3.14.2 (Option A declared, with justification) — remediates DCV-001.** Definition 3.10 permits $(\mathcal{Y}_C,\mathcal{G}_C)$ and $W_C$ to vary with $C$, while a single group was required to act on all of $\mathcal{C}$; the group's outcome and codomain components had no declared source or target, so transported contexts, closure, A3, $\mathrm{Aut}(C)$ and functoriality were not typed for heterogeneous carriers. Two completions were available. **Option A (homogeneous carriers) is adopted**, for three reasons.
+
+1. **No Part A theorem uses heterogeneity.** Theorem 1 varies only $M_C$; Theorem 7′ fixes $W=(\mathbb{R}_{\ge0},+,0,\le)$ throughout its family; Theorem 10″ constructs one context; Corollary 6.2 works inside one context; Proposition 11.1′ is already homogeneous. Option A therefore removes no result.
+2. **It is the bounded repair.** Under Option A every morphism component is an endomorphism of a fixed object, so identity, composition, inverse and functoriality are the ordinary componentwise facts about automorphism groups and need no new coherence apparatus.
+3. **Option B would be a redesign.** A context-indexed action needs components $\iota_{\mathcal{Y},C}:\mathcal{Y}_C\to\mathcal{Y}_{\iota_*C}$ whose target is named by the very transport they define, so the target carrier must be posited as part of the datum rather than derived, and coherence laws must then be proved. That is additional structure, which this pass is not authorised to add.
+
+**Consequence.** **Heterogeneous context-indexed outcome spaces and codomains, and any indexed or groupoid action over them, are removed from Version 1 and deferred as Candidate material.** They are outside Part A, outside the consistency claim of Proposition 11.1′, and outside any Version 1 verification claim. Their formal placement within Part B is deferred, because the pass that adopted Option A was not authorised to modify Part B; the deferral is recorded as **OB-A5**.
+
+**Definition 3.15 (Representation morphism) — derived. Remediates DCV-001.** Over a frame $\mathbb{F}$, a *representation morphism* is a family $\iota=(\iota_{\mathfrak{B}},\iota_{\mathfrak{M}},\iota_{\mathcal{Y}},\iota_W)$ with
+
+| Component | Source | Target | Condition |
+|---|---|---|---|
+| $\iota_{\mathfrak{B}}$ | $\mathfrak{B}$ | $\mathfrak{B}$ | bijection |
+| $\iota_{\mathfrak{M}}$ | $(\mathfrak{M},\mathcal{F})$ | $(\mathfrak{M},\mathcal{F})$ | bimeasurable bijection |
+| $\iota_{\mathcal{Y}}$ | $(\mathcal{Y},\mathcal{G}_{\mathcal{Y}})$ | $(\mathcal{Y},\mathcal{G}_{\mathcal{Y}})$ | bimeasurable bijection |
+| $\iota_W$ | $(W,\preceq_W,\Sigma_W)$ | $(W,\preceq_W,\Sigma_W)$ | automorphism: order isomorphism, measurable isomorphism, and isomorphism of any declared class-$\mathsf{W}_1$ structure |
+
+Write $\mathrm{Mor}(\mathbb{F})$ for the set of these.
+
+**Observation 3.15.1 (Group laws) — remediates DCV-001.** Every component of Definition 3.15 has the **same source and target**, so componentwise composition and componentwise inverse are defined without further data.
+*Identity.* $\mathbf{1}:=(\mathrm{id}_{\mathfrak{B}},\mathrm{id}_{\mathfrak{M}},\mathrm{id}_{\mathcal{Y}},\mathrm{id}_W)\in\mathrm{Mor}(\mathbb{F})$.
+*Composition.* $(\iota\circ\kappa)$ is defined componentwise and lies in $\mathrm{Mor}(\mathbb{F})$: a composite of bijections is a bijection, of bimeasurable bijections is bimeasurable, and of codomain automorphisms is a codomain automorphism.
+*Inverse.* $\iota^{-1}$ is defined componentwise and lies in $\mathrm{Mor}(\mathbb{F})$, since each component class is closed under inverse.
+*Associativity and unit laws* hold componentwise because composition of functions is associative with the identity as unit.
+Hence $\mathrm{Mor}(\mathbb{F})$ is a group, and $\mathcal{G}$ of Definition 3.18 is a subgroup of it. $\square$
 
 **Definition 3.16 (Extended action) — derived.** $\widehat{\iota_W}:\widehat{W}\to\widehat{W'}$ acts as $\iota_W$ on $W$, as $[u,v]\mapsto[\iota_Wu,\iota_Wv]$ on $\mathcal{I}(W)$, and as the identity on each bottom.
 
 **Definition 3.17 (Transported context) — derived.** $\iota_*C$ has
 $$\mu_{\iota_*C}=(\iota_{\mathfrak{M}})_*\mu_C,\qquad M_{\iota_*C}=\iota_{\mathcal{Y}}\circ M_C\circ\iota_{\mathfrak{M}}^{-1},\qquad T_{\iota_*C}(\iota_{\mathfrak{B}}b)=\iota_{\mathfrak{M}}\circ T_C(b)\circ\iota_{\mathfrak{M}}^{-1},$$
 $$\approx_{\iota_*C}=\bot_{\mathrm{abs}}\ \text{if}\ \approx_C=\bot_{\mathrm{abs}},\ \text{else}\ \{(\iota_{\mathcal{Y}}y,\iota_{\mathcal{Y}}y'):y\approx_Cy'\},$$
-$$\delta_{\iota_*C}=\iota_W\circ\delta_C\circ(\iota_{\mathcal{Y}}^{-1}\times\iota_{\mathcal{Y}}^{-1}),\qquad W_{\iota_*C}=\iota_W(W_C),\qquad \rho_{\iota_*C}=\widehat{\iota_W}\circ\rho_C\circ((\iota_W)^{-1})_*.$$
+$$\delta_{\iota_*C}=\iota_W\circ\delta_C\circ(\iota_{\mathcal{Y}}^{-1}\times\iota_{\mathcal{Y}}^{-1}),\qquad \rho_{\iota_*C}=\widehat{\iota_W}\circ\rho_C\circ((\iota_W)^{-1})_*.$$
+The carriers are unchanged: $(\mathcal{Y}_{\iota_*C},\mathcal{G}_{\iota_*C})=(\mathcal{Y},\mathcal{G}_{\mathcal{Y}})$ and $(W_{\iota_*C},\preceq,\Sigma)=(W,\preceq_W,\Sigma_W)$, because $\iota_{\mathcal{Y}}$ and $\iota_W$ are automorphisms of the frame's fixed objects.
+
+**Observation 3.17.0 (Transport is well typed) — remediates DCV-001.** Every displayed component of $\iota_*C$ is a composite of maps whose sources and targets are declared by Definition 3.15 and the frame: $M_{\iota_*C}:\mathfrak{M}\to\mathcal{Y}$; $T_{\iota_*C}(b'):\mathfrak{M}\to\mathfrak{M}$; $\delta_{\iota_*C}:\mathcal{Y}\times\mathcal{Y}\rightharpoonup W$; $\rho_{\iota_*C}:\Delta(W)\rightharpoonup\widehat W$. Hence $\iota_*C$ is a context over the same frame, and the predicate $\iota_*C\in\mathcal{C}$ of Definition 3.18 is evaluable **before** any closure requirement is imposed. Under the prior edition it was not, because $\iota_{\mathcal{Y}}$ and $\iota_W$ had no declared source or target.
 
 **Observation 3.17.1 (Functoriality).** $(\mathrm{id})_*C=C$ and $(\iota\circ\kappa)_*C=\iota_*(\kappa_*C)$.
 *Proof.* Each component of Definition 3.17 is built from $\iota_{\mathfrak{B}},\iota_{\mathfrak{M}},\iota_{\mathcal{Y}},\iota_W$ by composition and inverse; composition of bijections is associative and the identity acts trivially in each slot. $\square$
@@ -93,10 +124,39 @@ This is used by the closure argument of Proposition 11.1′.
 
 ### A.2.5 Theory instance
 
-**Definition 3.18 (Theory instance) — primitive. Remediates FV-001.** A *theory instance* is a tuple
-$$\mathbb{T}=\big(\mathfrak{B},\ (\mathfrak{M},\mathcal{F}),\ \mathcal{C},\ \mathcal{G}\big)$$
-where $\mathcal{C}$ is a nonempty set of contexts over $(\mathfrak{B},\mathfrak{M})$ in the sense of Definition 3.10; $\mathcal{G}$ is a group, under composition, of representation morphisms over $(\mathfrak{B},\mathfrak{M})$; and $\mathcal{C}$ is **closed under transport by $\mathcal{G}$**:
-$$\iota\in\mathcal{G},\ C\in\mathcal{C}\ \Longrightarrow\ \iota_*C\in\mathcal{C}.$$
+**Definition 3.18 (Theory instance) — primitive. Remediates FV-001, DCV-001, DCV-002.** A *theory instance* is a tuple
+$$\mathbb{T}=\big(\underbrace{\mathfrak{B},\ (\mathfrak{M},\mathcal{F}),\ (\mathcal{Y},\mathcal{G}_{\mathcal{Y}}),\ (W,\preceq_W,\Sigma_W)}_{\text{frame }\mathbb{F}},\ \ \mathsf{r},\ \ \mathcal{C},\ \ \mathcal{G}\big)$$
+subject to:
+
+1. **Frame.** $\mathbb{F}$ is a homogeneous frame (Definition 3.14.1).
+2. **Representation component $\mathsf{r}$ — remediates DCV-002.** Exactly one of:
+ - $\mathsf{r}=\big(r,(\mathcal{R},\mathcal{H})\big)$ with $(\mathcal{R},\mathcal{H})$ a measurable space and $r:\mathfrak{M}\to\mathcal{R}$ **total and measurable**; or
+ - $\mathsf{r}=\bot_{\mathrm{abs}}$, the typed absence.
+3. **Contexts.** $\mathcal{C}$ is a nonempty set of contexts in the sense of Definition 3.10 with $(\mathcal{Y}_C,\mathcal{G}_C)=(\mathcal{Y},\mathcal{G}_{\mathcal{Y}})$ and $(W_C,\preceq,\Sigma)=(W,\preceq_W,\Sigma_W)$ for every $C\in\mathcal{C}$ — the **homogeneity requirement**.
+4. **Group.** $\mathcal{G}$ is a subgroup of $\mathrm{Mor}(\mathbb{F})$ (Observation 3.15.1).
+5. **Closure.** $\iota\in\mathcal{G}$ and $C\in\mathcal{C}$ imply $\iota_*C\in\mathcal{C}$, a predicate evaluable by Observation 3.17.0.
+
+**Observation 3.18.2 (Effect of $\mathsf{r}$) — remediates DCV-002.** $\mathsf{r}$ is instance data, not external data. If $\mathsf{r}=(r,(\mathcal{R},\mathcal{H}))$, then **A10** and **Definitions 7.1, 7.4, 7.5 and 7.7** are interpreted with that $r$, and $\mathcal{H}_r$ of Definition 7.1 is computed from it. If $\mathsf{r}=\bot_{\mathrm{abs}}$, then those definitions have no instance to interpret and are **typed as inapplicable**: A10 is not asserted, no identified output is defined, and no sufficiency, fibre-constancy or totality predicate of Definition 7.4 is defined. Inapplicability is a typed state, not a truth value, and in particular A10 is neither true nor false for such an instance. Theorem 3 and Corollary 3.3 are unaffected either way, since they quantify over an arbitrary measurable $r$ or over $M_C$ supplied as their own hypothesis rather than over $\mathsf{r}$.
+
+**Definition 3.18.3 (Primitive-completeness table) — remediates DCV-001, DCV-002.** Every primitive required to interpret every Part A definition and axiom:
+
+| Primitive | Type | Required / optional | Global / context-indexed | Total / partial | Role in axioms and theorems |
+|---|---|---|---|---|---|
+| $\mathfrak{B}$ | set | required | global | — | bearers; A3, A4, Thms 1, 7′, 10″ |
+| $(\mathfrak{M},\mathcal{F})$ | measurable space | required | global | — | models; Defs 3.4, 5.1; Thm 3 |
+| $(\mathcal{Y},\mathcal{G}_{\mathcal{Y}})$ | measurable space | required | global (homogeneous) | — | outcomes; Defs 3.10, 5.1; Cor 3.3 |
+| $(W,\preceq_W,\Sigma_W)$ | codomain | required | global (homogeneous) | — | values; A5, A7; Defs 3.7, 3.8, 3.11 |
+| $\mathsf{r}$ | $(r,(\mathcal{R},\mathcal{H}))$ **or** $\bot_{\mathrm{abs}}$ | **optional, typed** | global | total if supplied | A10; Defs 7.1, 7.4, 7.5, 7.7; Prop 11.1′ |
+| $\mathcal{C}$ | set of contexts | required | global | — | A3, A4; Thm 7′; Prop 11.1′ |
+| $\mathcal{G}$ | subgroup of $\mathrm{Mor}(\mathbb{F})$ | required | global | — | A3; Def 6.1; Cor 6.2 |
+| $\mu_C$ | probability measure on $(\mathfrak{M},\mathcal{F})$ | required | context-indexed | total | Defs 5.2, 5.3 |
+| $M_C$ | $\mathfrak{M}\to\mathcal{Y}$ measurable | required | context-indexed | total | Defs 5.1; Cor 3.3 |
+| $T_C$ | $\mathfrak{B}\rightharpoonup\mathrm{Op}(\mathfrak{M})$ | required | context-indexed | **partial** | Defs 5.1, 5.3 |
+| $\approx_C$ | equivalence on $\mathcal{Y}$, or $\bot_{\mathrm{abs}}$ | optional, typed | context-indexed | — | A8; Thm 4′ |
+| $\delta_C$ | $\mathcal{Y}\times\mathcal{Y}\rightharpoonup W$ | required | context-indexed | **partial** | Defs 5.1, 5.2; A8 |
+| $\rho_C$ | $\Delta(W)\rightharpoonup\widehat W$ | required | context-indexed | **partial** | Def 5.3; A5 |
+
+**No Part A axiom depends on data absent from this table.** A3 and A4 range over $\mathcal{G}$ and $\mathcal{C}$; A5 and A7 over $\widehat W$; A8 over $\approx_C$ and $\delta_C$; A9 over $\Omega^b_C$, derived from $M_C$, $T_C$, $\delta_C$; A10 over $\mathsf{r}$.
 
 **Observation 3.18.1 — remediates FV-001.** The prior edition used $\mathcal{C}$ in A4 and Theorem 7′, and used a morphism universe inside its consistency proof, without declaring either; A3 meanwhile quantified over *every* representation morphism while the proof checked only a model-specific set. Both objects are now signature components, A3 quantifies over the declared $\mathcal{G}$, and **closure is a requirement on instances rather than a claim to be proved about a particular one**. A3 and A4 are consequently predicates over the declared signature.
 
@@ -124,7 +184,7 @@ an equation in $\widehat{W_{\iota_*C}}$. Well formed because $\iota_*C\in\mathca
 
 **A9 (Empty contrast domain).** If $\Omega^b_C=\emptyset$ then $\sigma_C(b)=\bot_{\mathrm{und}}$.
 
-**A10 (Empty fibre).** If $r$ is supplied and $r^{-1}(x)=\emptyset$, the identified output at $x$ is $\bot_{\mathrm{inc}}$.
+**A10 (Empty fibre).** If the instance's representation component is $\mathsf{r}=(r,(\mathcal{R},\mathcal{H}))$, then for every $x\in\mathcal{R}$ with $r^{-1}(x)=\emptyset$ the identified output at $x$ is $\bot_{\mathrm{inc}}$. If $\mathsf{r}=\bot_{\mathrm{abs}}$, A10 is **typed as inapplicable** and is not asserted (Observation 3.18.2).
 
 **Observation A.3.1 — replaces the prior Observation 4.2.1.** A3 and A4 are predicates over declared carriers, since $\mathcal{G}$ and $\mathcal{C}$ are instance components. A5, A7, A8, A9, A10 are predicates over declared functions. FR-1 is a formation rule. Satisfaction of A3–A10 is therefore testable in a model, which is what Proposition 11.1′ does.
 
@@ -262,15 +322,17 @@ The four cases partition every possibility and agree with A9.
 
 **Proposition 11.1′ (Consistency of the deterministic core) — replaces the invalid Proposition 11.1.**
 *Quantifier.* **Existential** in the theory instance; universal in $\iota\in\mathcal{G}$, $C\in\mathcal{C}$ and $b\in\mathfrak{B}$ within the satisfaction checks.
-*Claim.* There is a theory instance satisfying FR-1 and axioms A3, A4, A5, A7, A8, A9, A10 over the deterministic core signature comprising **Definitions 3.1–3.5, 3.5.1, 3.7–3.12, 3.12.1, 3.15–3.18, 5.1–5.3, 6.1, 7.1, 7.4, 7.5, 7.7 and 8.9**.
+*Claim.* There is a theory instance satisfying FR-1 and axioms A3, A4, A5, A7, A8, A9, A10 over the deterministic core signature comprising **Definitions 3.1–3.5, 3.5.1, 3.7–3.12, 3.12.1, 3.14.1, 3.15, 3.16, 3.17, 3.18, 3.18.3, 5.1–5.3, 6.1, 7.1, 7.4, 7.5, 7.7 and 8.9**.
 
-*Proof.* Exhibit $\mathbb{T}=(\mathfrak{B},\mathfrak{M},\mathcal{C},\mathcal{G})$.
+*Proof.* Exhibit the theory instance $\mathbb{T}=\big(\mathbb{F},\ \mathsf{r},\ \mathcal{C},\ \mathcal{G}\big)$ of Definition 3.18, component by component.
 
-**Carriers.** $\mathfrak{B}=\{b_1,b_2\}$; $\mathfrak{M}=\mathbb{R}^2$ with the Borel $\sigma$-algebra; $r:=\mathrm{id}_{\mathfrak{M}}$, so $\mathcal{R}=\mathfrak{M}$ and $\mathcal{H}_r=\mathcal{F}$.
+**Frame $\mathbb{F}$.** $\mathfrak{B}=\{b_1,b_2\}$; $(\mathfrak{M},\mathcal{F})=\mathbb{R}^2$ with the Borel $\sigma$-algebra; $(\mathcal{Y},\mathcal{G}_{\mathcal{Y}})=\mathbb{R}$ with the Borel $\sigma$-algebra; $(W,\preceq_W,\Sigma_W)=(\mathbb{R}_{\ge0},\le)$ with the Borel $\sigma$-algebra, carrying $(+,0)$ so that it is of class $\mathsf{W}_1$, and point-separating by Observation 3.5.2.
 
-**Morphism group.** $\mathcal{G}:=\{\mathrm{id},\jmath\}$ where $\jmath_{\mathfrak{B}}$ transposes $b_1$ and $b_2$, $\jmath_{\mathfrak{M}}(x,y)=(y,x)$, $\jmath_{\mathcal{Y}}=\mathrm{id}_{\mathbb{R}}$, $\jmath_W=\mathrm{id}_W$. Each component is a bimeasurable bijection and $\jmath\circ\jmath=\mathrm{id}$, so $\mathcal{G}$ is a group of order two.
+**Representation component $\mathsf{r}$ — supplied.** $\mathsf{r}=\big(r,(\mathcal{R},\mathcal{H})\big)$ with $(\mathcal{R},\mathcal{H})=(\mathfrak{M},\mathcal{F})$ and $r:=\mathrm{id}_{\mathfrak{M}}$, total and measurable. Hence $\mathcal{H}_r=\mathcal{F}$ by Definition 7.1, and A10 together with Definitions 7.4, 7.5 and 7.7 are interpreted with this $r$ — **as instance data, not as an external datum**.
 
-**Shared context components.** $\mu=\delta_{(0,0)}$; $\mathcal{Y}=\mathbb{R}$ Borel; $\approx=\bot_{\mathrm{abs}}$; $\delta(u,v)=|u-v|$, total, so $D_C=\mathcal{Y}^2$ and every $\Omega^b_C=\mathfrak{M}$; $W=(\mathbb{R}_{\ge0},+,0,\le)$ Borel, of class $\mathsf{W}_1$ and point-separating; $\rho=\rho^{\mathrm{at}}$, well defined by Observation 3.5.2.
+**Morphism group $\mathcal{G}$.** $\mathcal{G}:=\{\mathbf{1},\jmath\}$ with $\jmath_{\mathfrak{B}}$ the transposition of $b_1$ and $b_2$; $\jmath_{\mathfrak{M}}(x,y)=(y,x)$; $\jmath_{\mathcal{Y}}=\mathrm{id}_{\mathbb{R}}$; $\jmath_W=\mathrm{id}_W$. Each component has the source and target required by Definition 3.15: $\jmath_{\mathfrak{B}}$ is a bijection of $\mathfrak{B}$; $\jmath_{\mathfrak{M}}$ is a bimeasurable bijection of $(\mathfrak{M},\mathcal{F})$; $\jmath_{\mathcal{Y}}$ is a bimeasurable bijection of $(\mathcal{Y},\mathcal{G}_{\mathcal{Y}})$; and $\jmath_W$ is an automorphism of $(W,\preceq_W,\Sigma_W)$ preserving $+$ and $0$. So $\jmath\in\mathrm{Mor}(\mathbb{F})$. Since $\jmath\circ\jmath=\mathbf{1}$ componentwise, $\mathcal{G}$ is a subgroup of $\mathrm{Mor}(\mathbb{F})$ of order two, as Definition 3.18 clause 4 requires.
+
+**Shared context components.** $\mu=\delta_{(0,0)}$; $\approx=\bot_{\mathrm{abs}}$; $\delta(u,v)=|u-v|$, total, so $D_C=\mathcal{Y}^2$ and every $\Omega^b_C=\mathfrak{M}$; $\rho=\rho^{\mathrm{at}}$, well defined because $W$ is point-separating. Every context uses the frame's $(\mathcal{Y},\mathcal{G}_{\mathcal{Y}})$ and $(W,\preceq_W,\Sigma_W)$, so **the homogeneity requirement of Definition 3.18 clause 3 holds** and the witness instantiates the general repaired signature rather than a private structure.
 
 **Contexts.**
 $C_1$: $M(x,y)=x$; $T(b_1)(x,y)=(x+2,y+1)$; $T(b_2)(x,y)=(x+1,y+2)$.
@@ -368,7 +430,11 @@ Retained only where entailed by a Part A result or by inspection of the Part A s
 **OB-A2.** Conditions on $M_C$, $\tau$ and $\delta_C$ beyond those of Definition 5.1 that guarantee measurability of $\delta^{\,b}_C$ in wider settings.
 **OB-A3.** Whether a deterministic encodability theorem holds for codomains that are not point-separating, or whether point separation is necessary as well as sufficient.
 
-**None of OB-A1 – OB-A3 blocks the deterministic core**, and none is used by any Part A theorem.
+**OB-A4.** Whether the representation component $\mathsf{r}$ should be required $\mathcal{G}$-equivariant, i.e. whether an instance should carry $\iota_{\mathcal{R}}$ with $r\circ\iota_{\mathfrak{M}}=\iota_{\mathcal{R}}\circ r$. **No Part A statement couples $\mathsf{r}$ and $\mathcal{G}$**: A3 does not mention $r$, and A10 and Definitions 7.1–7.7 do not mention $\mathcal{G}$. Equivariance is therefore not required for well-typedness and is not imposed.
+
+**OB-A5.** Formal placement, within Part B, of the heterogeneous context-indexed carriers and indexed action removed from Version 1 by Observation 3.14.2. Deferred because the adopting pass was not authorised to modify Part B.
+
+**None of OB-A1 – OB-A5 blocks the deterministic core**, and none is used by any Part A theorem.
 
 ---
 
