@@ -31,6 +31,9 @@ The output directory must not exist. A successful run produces a content-address
 
 ## Permanent documentation
 
+- Canonical minimum validation protocol: `validation/benchmarks/ASTRO-EXP-0001.md`
+- Canonical scientific claims register: `docs/claims/ASTRO-CLAIMS-0001.md`
+- Permanent empirical results ledger: `validation/results/ASTRO-RESULTS-0001.md`
 - Pipeline contract and scientific limits: `docs/pipeline/OBSERVATION-TO-GRAPH-PIPELINE-0001.md`
 - Codex B integration handoff: `docs/pipeline/CODEX-B-HANDOFF-0001.md`
 - Machine-readable contracts: `schemas/`
