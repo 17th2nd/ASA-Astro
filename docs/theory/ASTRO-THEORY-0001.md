@@ -1,39 +1,36 @@
 # ASTRO-THEORY-0001 — Contextual Difference Theory
 
-## Theory Candidate
+## Theory Candidate — Remediated
 
 | Field | Value |
 |---|---|
 | Status | **Theory Candidate.** Not frozen. Not Version 1. |
-| Verification | **Not externally verified.** |
-| Empirical status | **Not empirically validated.** |
-| Novelty | **No novelty is claimed.** See §18. |
+| Verification | **Not externally verified.** The prior candidate was independently verified and returned **NOT FORMALLY SOUND**. This edition remediates those findings and awaits fresh independent re-verification. |
+| Empirical status | **Not empirically validated.** Evidence level `EH-0`. |
+| Novelty | **No novelty is claimed.** No universal prior-art subsumption is claimed either — see Open Question 15.6. |
 | Coverage | **Not a complete theory of every use of the word "significance."** |
-| Supersedes | Nothing. The prior edition of this document is preserved in repository history and was not silently overwritten. |
+| Basis of this edition | `docs/theory/verification/ASTRO-THEORY-0001-INDEPENDENT-VERIFICATION-REPORT.md`, findings AV-001 – AV-028. |
+| Prior edition | Preserved at blob `08a2257aaea6e5f23b316682025022b62d834d68`. Not overwritten silently; every change is mapped. |
 
-**Provenance limitation (read before use).** This edition was hardened against formal verification findings V1–V20 as transmitted to the author in prose. **The underlying Codex mathematical verification report was not located in the repository and has not been read by the author.** Findings V2, V7, V8, V11, V12, and part of V17 cite constructs — a minimality claim, aggregation operators, bearer composition $b \circ a$, transformation composition $T_{b \circ a}$, and symbols $q$ and $K$ — that do not occur anywhere in the source candidate. This is evidence that the verification report was written against a different artefact. Those findings are dispositioned as not applicable, with reasons, in `ASTRO-THEORY-0001-FORMAL-DEFECT-RESOLUTION.md`. **Until the report is located and the correspondence confirmed, no claim that V1–V20 are discharged is warranted.**
+**What this edition does.** It removes more than it adds. Three theorems and eleven corollaries of the prior edition were **false or unproved** and are withdrawn or replaced; two axioms are demoted to non-formal design principles; the entire recognisability subsection is withdrawn; and the principal epistemic conclusion — "the unrestricted framework has no empirical content" — is **withdrawn as unproved** and replaced by a strictly weaker, proved statement. Readers of the prior edition should treat its §9 conclusion as retracted.
 
 ---
 
 ## 1. Purpose
 
-This document states a candidate mathematical theory of contextual difference: what it is for a bearer to make a difference relative to a declared question, and what can and cannot be proved about such valuations.
+To state a candidate mathematical theory of contextual difference: what it is for a bearer to make a difference relative to a declared question, and what can be proved about such valuations.
 
-**Observation 1.1.** A theory of this kind earns its place by ruling things out. The principal content is negative: §10, §15 and §18 are load-bearing.
-
-**Observation 1.2.** §10 establishes that the unrestricted framework has no empirical content whatever. Any reader seeking predictive claims should begin there.
+**Observation 1.1.** The content is largely negative. §13 (withdrawn results) is as important as §12 (verified results).
 
 ---
 
 ## 2. Scope
 
-**In scope.** A formal signature; axioms; the theory of counterfactual operations, contexts, differences, significance, composition and representation invariance; theorems with proofs; limitations; open obligations.
+**In scope.** One formal signature; design principles; axioms; contrast, significance, difference, invariance and composition; theorems with proofs; withdrawals; open obligations.
 
-**Out of scope.** Implementation; any application domain; experimental design; governance. No statement below depends on these, and none licenses them.
+**Out of scope.** Implementation; any application domain; experiments; governance.
 
-**Observation 2.1.** The theory is silent on how a context is chosen. It states only what a context must supply for a valuation to be well formed. Choice of context is prior to the theory and is not a mathematical act. §10 shows this is not a minor omission.
-
-**Observation 2.2.** Every component below is marked **primitive**, **derived**, **optional enrichment**, **partial**, or **context-indexed**. No theorem may use a component not licensed by its hypotheses.
+**Observation 2.1.** Every component is marked **primitive**, **derived**, **optional**, **partial** or **context-indexed**. No proof may use a component not licensed by its hypotheses, and no proof may use a Design Principle of §4.1.
 
 ---
 
@@ -41,588 +38,509 @@ This document states a candidate mathematical theory of contextual difference: w
 
 ### 3.1 Carriers
 
-**Definition 3.1 (Bearers) — primitive.** $\mathfrak{B}$ is a set. Its elements $b$ are *bearers*: the things whose difference-making is valued. $\mathfrak{B}$ is **not** a subset of any state space and no state-space map is applied to it.
+**Definition 3.1 (Bearers) — primitive.** A set $\mathfrak{B}$. Elements $b$ are *bearers*. $\mathfrak{B}$ is not a subset of any state space.
 
-**Definition 3.2 (Model space) — primitive.** $(\mathfrak{M}, \mathcal{F})$ is a measurable space. Elements $m$ are *models*.
+**Definition 3.2 (Model space) — primitive.** A measurable space $(\mathfrak{M},\mathcal{F})$.
 
-**Definition 3.3 (Knowledge state) — primitive, context-indexed.** A knowledge state is a probability measure on $(\mathfrak{M},\mathcal{F})$.
+**Definition 3.3 (Representation map) — primitive, optional.** A measurable $r:\mathfrak{M}\to(\mathcal{R},\mathcal{H})$.
 
-**Definition 3.4 (Contexts) — primitive.** $\mathcal{C}$ is a set whose elements are contexts, each a tuple specified in Definition 3.14.
+**Definition 3.4 (Operation) — derived.** A measurable $\tau:\mathfrak{M}\to\mathfrak{M}$; $\mathrm{Op}(\mathfrak{M})$ is the set of these. The factual operation is $\mathrm{id}_{\mathfrak{M}}$.
 
-**Definition 3.5 (Outcome space) — primitive, context-indexed.** For each $C$, $(\mathcal{Y}_C, \mathcal{G}_C)$ is a measurable space.
+### 3.2 Codomains
 
-**Definition 3.6 (Representation map) — primitive, optional enrichment.** A measurable $r : \mathfrak{M} \to \mathcal{R}$ into a measurable space $\mathcal{R}$.
+**Definition 3.5 (Codomain) — primitive, context-indexed.** A *codomain* is a triple $(W,\preceq_W,\Sigma_W)$: a set, a partial order, and a $\sigma$-algebra on it. A codomain is of class
 
-### 3.2 Operations and the bearer map
+- $\mathsf{W}_1$ (*magnitude*) if it additionally carries $(\oplus,0_W)$ making $(W,\oplus,0_W,\preceq_W)$ an ordered commutative monoid with $0_W$ least;
+- $\mathsf{W}_2$ (*signed*) if it additionally carries $(+,0_W,-)$ making $(W,+,0_W,\preceq_W)$ an ordered abelian group;
+- $\mathsf{W}_2^{\mathrm{m}}$ (*measurably signed*) if it is of class $\mathsf{W}_2$ **and** $(y,y')\mapsto y'-y$ is $\Sigma_W\otimes\Sigma_W/\Sigma_W$-measurable.
 
-**Definition 3.7 (Operation) — derived.** An *operation* is a measurable map $\tau : \mathfrak{M} \to \mathfrak{M}$. $\mathrm{Op}(\mathfrak{M})$ denotes the set of operations. The *factual operation* is $\mathrm{id}_{\mathfrak{M}}$.
+**Observation 3.6 (Why $\mathsf{W}_2^{\mathrm{m}}$ is a separate class) — remediates AV-017.** Class $\mathsf{W}_2$ does **not** imply measurable subtraction. Give $\mathbb{R}$ its usual ordered group structure and the countable–cocountable $\sigma$-algebra: every singleton is measurable, yet the diagonal is not product-measurable, so subtraction is not measurable. No theorem below uses subtraction unless it declares class $\mathsf{W}_2^{\mathrm{m}}$.
 
-**Definition 3.8 (Operation assignment) — primitive, context-indexed, partial.** For each $C$ a partial map
-$$T_C : \mathfrak{B} \rightharpoonup \mathrm{Op}(\mathfrak{M}).$$
-This is the only link between bearers and models. Where $T_C(b)$ is undefined, $b$ is *not valuable under $C$*.
+**Definition 3.7 (Order-intervals) — derived.** $\mathcal{I}(W) := \{\,[u,v] : u,v\in W,\ u\preceq_W v\,\}$ where $[u,v]=\{x\in W: u\preceq_W x\preceq_W v\}$.
 
-**Observation 3.9.** Definition 3.8 discharges the requirement that bearers and states be kept separate. Nothing below applies a map with domain $\mathfrak{M}$ to an element of $\mathfrak{B}$.
+**Definition 3.8 (Output codomain) — derived.** $\widehat{W} := W \;\sqcup\; \mathcal{I}(W) \;\sqcup\; \{\bot_{\mathrm{ind}},\bot_{\mathrm{inc}},\bot_{\mathrm{und}}\}$, a disjoint union. The three bottoms are distinct and lie outside $W$ and $\mathcal{I}(W)$.
 
-**Observation 3.10 (No bearer composition).** The theory declares **no** composition operation on $\mathfrak{B}$. Notation of the form $b \circ a$ is not defined and is not used. Any statement about a composite bearer would require the additional hypothesis $T_C(b \circ a) = T_C(b) \circ T_C(a)$, which the theory neither supplies nor assumes. Composition is defined only on operations (Definition 3.7, composition of measurable maps) and on relation instances (§11).
+### 3.3 Contexts
 
-**Definition 3.11 (Model operation) — derived.** An operation is *model-term* when it acts on the specification of a model only. The theory admits no other kind, and no theorem licenses reading $\tau$ as acting on anything but a model.
+**Definition 3.9 (Absent value) — primitive.** A distinguished symbol $\bot_{\mathrm{abs}}$, used as the value of an optional component that is deliberately not supplied. It is not $\bot_{\mathrm{und}}$.
 
-### 3.3 Codomains
-
-**Definition 3.12 (Codomain classes) — primitive, context-indexed.** A context declares its valuation codomain in exactly one of the following classes.
-
-| Class | Structure | Admits |
-|---|---|---|
-| $\mathsf{W}_0$ *qualitative* | pointed preorder $(W, \preceq, 0_W)$ | order comparison only |
-| $\mathsf{W}_1$ *magnitude* | ordered commutative monoid $(W, \oplus, 0_W, \le)$ with $0_W$ least | order, addition, triangle inequalities |
-| $\mathsf{W}_2$ *signed* | ordered abelian group $(W, +, 0_W, \le)$; $0_W$ **not** least | order, addition, subtraction, sign |
-| $\mathsf{W}_3$ *interval* | order-intervals of a $\mathsf{W}_0$, $\mathsf{W}_1$ or $\mathsf{W}_2$ carrier | set inclusion |
-| $\mathsf{W}_4$ *distributional* | probability measures on a measurable $\mathsf{W}_1$ or $\mathsf{W}_2$ carrier | integration where declared |
-
-**Observation 3.13.** No theorem may use $\oplus$ or $+$ in a $\mathsf{W}_0$ codomain, and no theorem may assume $0_W$ is least in a $\mathsf{W}_2$ codomain. Every theorem below names its required class.
-
-### 3.4 Contexts
-
-**Definition 3.14 (Context) — primitive.** A context is a tuple
-$$C \;=\; \big(\mathfrak{A}_C,\; \mathcal{Y}_C,\; M_C,\; T_C,\; \approx_C,\; \delta_C,\; W_C,\; \rho_C\big)$$
-with components:
+**Definition 3.10 (Context) — primitive.** A context is a seven-tuple
+$$C \;=\; \big(\mu_C,\ (\mathcal{Y}_C,\mathcal{G}_C),\ M_C,\ T_C,\ \approx_C,\ \delta_C,\ (W_C,\rho_C)\big)$$
 
 | Component | Type | Mark |
 |---|---|---|
-| $\mathfrak{A}_C$ | admissibility restriction determining a knowledge state $\mu_C$ | primitive |
-| $\mathcal{Y}_C$ | outcome space (Definition 3.5) | context-indexed |
-| $M_C : \mathfrak{M} \to \mathcal{Y}_C$ | measurable outcome map | primitive |
-| $T_C : \mathfrak{B} \rightharpoonup \mathrm{Op}(\mathfrak{M})$ | operation assignment (Definition 3.8) | partial |
-| $\approx_C$ | equivalence on $\mathcal{Y}_C$ (*contextual indistinguishability*) | optional enrichment |
-| $\delta_C : \mathcal{Y}_C \times \mathcal{Y}_C \rightharpoonup W_C$ | contrast evaluator, measurable where defined | partial |
-| $W_C$ | codomain in a declared class of Definition 3.12 | context-indexed |
-| $\rho_C$ | reduction (Definition 3.16) | primitive |
+| $\mu_C$ | probability measure on $(\mathfrak{M},\mathcal{F})$ | required, primitive |
+| $(\mathcal{Y}_C,\mathcal{G}_C)$ | measurable outcome space | required, context-indexed |
+| $M_C:\mathfrak{M}\to\mathcal{Y}_C$ | measurable outcome map | required |
+| $T_C:\mathfrak{B}\rightharpoonup\mathrm{Op}(\mathfrak{M})$ | operation assignment | required, partial |
+| $\approx_C$ | equivalence on $\mathcal{Y}_C$, **or** $\bot_{\mathrm{abs}}$ | optional |
+| $\delta_C:\mathcal{Y}_C\times\mathcal{Y}_C\rightharpoonup W_C$ | contrast evaluator, measurable on its domain $D_C\in\mathcal{G}_C\otimes\mathcal{G}_C$ | required, partial |
+| $(W_C,\rho_C)$ | codomain and reduction (Definition 3.11) | required, context-indexed |
 
-**Definition 3.15 (Level of the evaluator).** $\delta_C$ is defined **on raw outcomes, subject to congruence when $\approx_C$ is declared** (Axiom A8). It is not defined on quotient classes. The three levels — raw, quotient, raw-subject-to-congruence — are never mixed, and the theory adopts the third throughout.
+**Observation 3.10.1 — remediates AV-001, AV-003, AV-024.** The prior edition carried an eighth component $\mathfrak{A}_C$, an "admissibility restriction determining $\mu_C$", which had no declared type and no rule determining $\mu_C$. It is **deleted**; $\mu_C$ is now itself the component. Optionality is handled by the typed value $\bot_{\mathrm{abs}}$, so a context always supplies all seven components and A2 is unambiguous.
 
-**Definition 3.16 (Reduction) — primitive, partial.** A reduction is a partial map
-$$\rho_C : \mathcal{P}_C \rightharpoonup W_C \;\cup\; \mathcal{I}(W_C) \;\cup\; \{\bot_{\mathrm{ind}}, \bot_{\mathrm{inc}}, \bot_{\mathrm{und}}\}$$
-whose domain $\mathcal{P}_C$ is the declared *profile class*, exactly one of:
+**Definition 3.11 (Reduction) — primitive, partial.** A partial map $\rho_C:\Delta(W_C)\rightharpoonup\widehat{W_C}$, where $\Delta(W_C)$ is the set of probability measures on $(W_C,\Sigma_{W_C})$.
 
-| Profile class | Domain | Multiplicity |
-|---|---|---|
-| set-valued | finite subsets of $W_C$ | discarded |
-| multiset-valued | finite multisets over $W_C$ | preserved |
-| measure-valued | finite measures on $W_C$ | preserved as mass |
-| probability-coupled | probability measures on $W_C$ | preserved as probability |
+**Observation 3.11.1 — remediates AV-004.** The prior edition declared four profile classes (set, multiset, measure, probability-coupled) but defined the inducing operation for only one. The three undefined classes are **deleted**. Exactly one profile construction exists: the pushforward of $\mu_C$, a probability measure. Nothing below uses any other.
 
-**Observation 3.17.** A context whose valuation depends on multiplicity or probability weight and which declares the set-valued profile class is ill-formed. The profile class must be declared; it is not inferred.
+**Definition 3.12 (Location functional) — derived.** For a codomain of class $\mathsf{W}_1$ realised in $(\mathbb{R}_{\ge0},+,0,\le)$, a *location functional* is a map $\ell:\Delta(\mathbb{R}_{\ge0})\rightharpoonup\mathbb{R}_{\ge0}$ satisfying $\inf\operatorname{supp}\nu\le\ell(\nu)\le\sup\operatorname{supp}\nu$ where defined, and $\ell(\delta_x)=x$.
 
-**Definition 3.18 (Indeterminacy symbols).** $\bot_{\mathrm{ind}}$ denotes *indeterminate* (the value is not determined by the available information); $\bot_{\mathrm{inc}}$ denotes *inconsistent* (no model is compatible with the evidence); $\bot_{\mathrm{und}}$ denotes *undefined* (a required component or comparison is absent). These are pairwise distinct and none is a member of $W_C$.
+**Observation 3.12.1 — remediates AV-013.** "Location functional" was undefined in the prior edition, which permitted a reading returning a value outside the profile's plausible range. Definition 3.12 pins it between the support bounds and fixes it on Dirac profiles.
 
-### 3.5 Decision and information structure
+### 3.4 Decision and evidence structure
 
-**Definition 3.19 (Decision problem) — optional enrichment, context-indexed.** A pair $D_C = (\mathcal{A}_C, L_C)$ with action set $\mathcal{A}_C \neq \emptyset$ and loss $L_C : \mathcal{A}_C \times \mathfrak{M} \to \mathbb{R}$ such that $L_C(\alpha, \cdot)$ is measurable and $\mu_C$-integrable for every $\alpha$.
+**Definition 3.13 (Decision problem) — optional, context-indexed.** $(\mathcal{A}_C,L_C)$ with $\mathcal{A}_C\neq\emptyset$ and $L_C(\alpha,\cdot)$ measurable and $\mu$-integrable for every $\alpha$ and every measure $\mu$ at which it is used.
 
-**Definition 3.20 (Evidence kernel) — optional enrichment.** For a bearer $b$, a Markov kernel $K_b$ from $\mathfrak{M}$ to a measurable space $\mathcal{E}_b$, together with the induced posterior family.
+**Definition 3.14 (Regular evidence structure) — optional.** A triple $(\mathcal{E}_b,K_b,\Pi_b)$ where $K_b$ is a Markov kernel from $\mathfrak{M}$ to $(\mathcal{E}_b,\mathcal{B}_b)$, $\Pi_b$ is a *regular* conditional probability on $\mathfrak{M}$ given $\mathcal{E}_b$ satisfying the barycentre identity $\int \Pi_b(\cdot\mid e)\,\lambda_b(de)=\mu_C$ where $\lambda_b$ is the evidence marginal, and $e\mapsto\mathfrak{r}(\Pi_b(\cdot\mid e))$ is measurable and $\lambda_b$-integrable.
 
-### 3.6 Representation morphisms
+**Observation 3.14.1 — remediates AV-012.** Regular conditional probabilities need not exist on arbitrary measurable spaces, and integrability alone supplies neither the barycentre identity nor measurability of the random risk. These are now hypotheses of the structure, not background assumptions.
 
-**Definition 3.21 (Representation morphism) — derived.** A *representation morphism* is a family
-$$\iota \;=\; \big(\iota_{\mathfrak{B}},\; \iota_{\mathfrak{M}},\; \iota_{\mathcal{Y}},\; \iota_{W}\big)$$
-of bijections $\iota_{\mathfrak{B}} : \mathfrak{B} \to \mathfrak{B}'$, bimeasurable $\iota_{\mathfrak{M}} : \mathfrak{M} \to \mathfrak{M}'$, bimeasurable $\iota_{\mathcal{Y}} : \mathcal{Y}_C \to \mathcal{Y}'$, and an isomorphism $\iota_W : W_C \to W'$ in the declared codomain class.
+### 3.5 Representation morphisms
 
-**Definition 3.22 (Transported context) — derived.** For a representation morphism $\iota$ and context $C$, the *transported context* $\iota_* C$ has components
-$$\mu_{\iota_*C} = (\iota_{\mathfrak{M}})_*\mu_C, \quad M_{\iota_*C} = \iota_{\mathcal{Y}} \circ M_C \circ \iota_{\mathfrak{M}}^{-1}, \quad T_{\iota_*C}(\iota_{\mathfrak{B}} b) = \iota_{\mathfrak{M}} \circ T_C(b) \circ \iota_{\mathfrak{M}}^{-1},$$
-$$y \approx_{\iota_*C} y' \iff \iota_{\mathcal{Y}}^{-1}y \approx_C \iota_{\mathcal{Y}}^{-1}y', \quad \delta_{\iota_*C} = \iota_W \circ \delta_C \circ (\iota_{\mathcal{Y}}^{-1} \times \iota_{\mathcal{Y}}^{-1}), \quad \rho_{\iota_*C} = \iota_W \circ \rho_C \circ (\iota_W^{-1})_*.$$
+**Definition 3.15 (Representation morphism) — derived.** A family $\iota=(\iota_{\mathfrak{B}},\iota_{\mathfrak{M}},\iota_{\mathcal{Y}},\iota_W)$: a bijection $\iota_{\mathfrak{B}}$, bimeasurable bijections $\iota_{\mathfrak{M}}$ and $\iota_{\mathcal{Y}}$, and an isomorphism $\iota_W$ of codomains in the declared class (order, $\sigma$-algebra, and any declared algebraic operations).
 
-**Observation 3.23 (Covariance is not invariance).** Axiom A3 asserts *covariance* of significance under transport of the whole tuple. It does **not** assert invariance under arbitrary reparametrisation of any single component. A change of $\mathcal{Y}_C$ that is not accompanied by the corresponding change of $\delta_C$ and $W_C$ is not a representation morphism and the theory says nothing about it. The transformations that preserve theory values are exactly the representation morphisms of Definition 3.21 acting as in Definition 3.22, and no others.
+**Definition 3.16 (Extended action) — derived, remediates AV-002.** $\widehat{\iota_W}:\widehat{W}\to\widehat{W'}$ acts as $\iota_W$ on $W$, as $[u,v]\mapsto[\iota_W u,\iota_W v]$ on $\mathcal{I}(W)$ (well defined since $\iota_W$ is an order isomorphism), and as the identity on each of the three bottoms.
+
+**Definition 3.17 (Transported context) — derived.** $\iota_*C$ has components
+$$\mu_{\iota_*C}=(\iota_{\mathfrak{M}})_*\mu_C,\quad M_{\iota_*C}=\iota_{\mathcal{Y}}\circ M_C\circ\iota_{\mathfrak{M}}^{-1},\quad T_{\iota_*C}(\iota_{\mathfrak{B}}b)=\iota_{\mathfrak{M}}\circ T_C(b)\circ\iota_{\mathfrak{M}}^{-1},$$
+$$\approx_{\iota_*C}\ =\ \begin{cases}\bot_{\mathrm{abs}} & \approx_C=\bot_{\mathrm{abs}}\\ \{(\iota_{\mathcal{Y}}y,\iota_{\mathcal{Y}}y'):y\approx_C y'\}&\text{otherwise}\end{cases},\quad \delta_{\iota_*C}=\iota_W\circ\delta_C\circ(\iota_{\mathcal{Y}}^{-1}\times\iota_{\mathcal{Y}}^{-1}),$$
+$$W_{\iota_*C}=\iota_W(W_C),\qquad \rho_{\iota_*C}=\widehat{\iota_W}\circ\rho_C\circ((\iota_W)^{-1})_*.$$
+Every component of Definition 3.10 is transported.
+
+**Observation 3.17.1.** $\iota_*C$ is a context: each transported component has the required type, and $(\iota_W^{-1})_*$ is the pushforward on probability measures, which is the only profile class remaining after Observation 3.11.1.
 
 ---
 
-## 4. Axioms
+## 4. Design principles and axioms
 
-**A1 (Contrast).** Every significance value is a valuation of a comparison between an outcome under the factual operation and an outcome under a declared operation. No significance value is a property of a bearer alone.
+### 4.1 Design principles — non-formal, **not usable in any proof**
 
-**A2 (Contextual completeness).** A valuation for which any component of Definition 3.14 is unsupplied is $\bot_{\mathrm{und}}$, not defaulted.
+**Remediates AV-005.** The following were stated as axioms A1 and A6 in the prior edition. They are not predicates over the signature: "valuation of a comparison" and "joint uncertainty" name no object or relation. They are demoted to design principles, are excluded from every proof below, and are not part of the satisfaction relation.
 
-**A3 (Covariance under representation morphisms).** For every representation morphism $\iota$, every context $C$, and every bearer $b$ with $T_C(b)$ defined,
-$$\sigma_{\iota_* C}(\iota_{\mathfrak{B}} b) \;=\; \iota_W\big(\sigma_C(b)\big).$$
+**DP-1.** Significance is intended as a valuation of a comparison between a factual and an operated outcome, not as a property of a bearer alone.
 
-**A4 (Contextual nullity).** For every $b \in \mathfrak{B}$ there exists $C \in \mathcal{C}$ with $W_C$ in class $\mathsf{W}_1$ and $\sigma_C(b) = 0_{W_C}$.
+**DP-2.** Uncertainty is intended to be carried by a single joint measure, with marginals and conditionals derived.
 
-**A5 (Non-fabrication).** If the contrast is not determined by the available information, the value is the determined set, an interval containing it, or the appropriate symbol of Definition 3.18. It is never a point selected from an undetermined set.
+**Observation 4.1.1.** No proof in this document cites DP-1 or DP-2. This is checkable by inspection: the proofs cite only A2–A5, A7–A10 and the definitions.
 
-**A6 (Joint uncertainty).** Uncertainty is carried by a single joint knowledge state. Marginal and conditional quantities are derived, never primitive.
+### 4.2 Axioms — formal predicates over the signature
 
-**A7 (Dimensional coherence).** All values arising under $C$ lie in $W_C$. Values arising under distinct contexts are not combined, and are compared only via an explicitly declared transport (Definition 8.10).
+**A2 (Completeness).** If any *required* component of Definition 3.10 is not supplied, no significance is defined for $C$. An optional component supplied as $\bot_{\mathrm{abs}}$ is supplied.
 
-**A8 (Congruence, conditional).** If $\approx_C$ is declared, then for all $y, \tilde y, y', \tilde y' \in \mathcal{Y}_C$ on which $\delta_C$ is defined,
-$$y \approx_C \tilde y \;\text{ and }\; y' \approx_C \tilde y' \;\;\Longrightarrow\;\; \delta_C(y,y') = \delta_C(\tilde y, \tilde y').$$
+**A3 (Covariance).** For every representation morphism $\iota$, context $C$, and bearer $b$: $\sigma_{\iota_*C}(\iota_{\mathfrak{B}}b)=\widehat{\iota_W}(\sigma_C(b))$, an equation in $\widehat{W_{\iota_*C}}$.
 
-**A9 (Non-vacuity).** A valuation quantified over an empty comparison set is $\bot_{\mathrm{und}}$. Vacuous quantification never yields a substantive element of $W_C$.
+**A4 (Nullity schema).** For every $b\in\mathfrak{B}$ there exists $C\in\mathcal{C}$ with $W_C$ of class $\mathsf{W}_1$ and $\sigma_C(b)=0_{W_C}$.
 
-**A10 (Consistency precondition).** Identifiability notions (§7) are defined only when the model class compatible with the evidence is nonempty. An empty compatible class yields $\bot_{\mathrm{inc}}$.
+**A5 (Output typing).** $\sigma_C(b)\in\widehat{W_C}$, and the value is determined by Definition 5.3. No other value is admitted.
 
-**Observation 4.1.** A1 and A4 exclude intrinsic importance. A3 excludes representational artefacts. A8, A9 and A10 exclude the three ways a valuation can appear defined while resting on nothing.
+**A7 (Codomain confinement).** Values arising under $C$ lie in $\widehat{W_C}$. Values under distinct contexts are related only through a declared transport (Definition 8.9).
 
----
+**A8 (Congruence).** If $\approx_C\neq\bot_{\mathrm{abs}}$, then for all $(y,y'),(\tilde y,\tilde y')\in D_C$ with $y\approx_C\tilde y$ and $y'\approx_C\tilde y'$: $\delta_C(y,y')=\delta_C(\tilde y,\tilde y')$.
 
-## 5. Counterfactual theory
+**A9 (Empty-domain typing).** If $\{m:\delta^{\,b}_C \text{ defined at } m\}=\emptyset$ then $\sigma_C(b)=\bot_{\mathrm{und}}$.
 
-**Definition 5.1 (Pointwise contrast) — derived, partial.** For a context $C$ and a bearer $b$ with $\tau := T_C(b)$ defined,
-$$\delta^{\,b}_C : \mathfrak{M} \rightharpoonup W_C, \qquad \delta^{\,b}_C(m) \;=\; \delta_C\big(M_C(m),\, M_C(\tau m)\big),$$
-defined at $m$ exactly when $\delta_C$ is defined at the displayed pair.
+**A10 (Empty-fibre typing).** If $r$ is supplied and $r^{-1}(x)=\emptyset$ then the identified output at $x$ is $\bot_{\mathrm{inc}}$.
 
-**Definition 5.2 (Contrast profile) — derived.** Where $\delta^{\,b}_C$ is defined $\mu_C$-almost everywhere and measurable, the *contrast profile* is the element of the declared profile class $\mathcal{P}_C$ induced by $\mu_C$: for the probability-coupled class, the pushforward $(\delta^{\,b}_C)_*\mu_C$.
-
-**Definition 5.3 (Significance) — derived, partial, context-indexed.**
-$$\sigma_C(b) \;=\; \rho_C\big(\text{contrast profile of } b \text{ under } C\big),$$
-and $\sigma_C(b) = \bot_{\mathrm{und}}$ whenever $T_C(b)$ is undefined, $\delta^{\,b}_C$ is nowhere defined, or the profile lies outside $\mathrm{dom}\,\rho_C$.
-
-**Observation 5.4.** The contrast is a property of the pair $(M_C, \tau)$, not of $\tau$ alone. An operation with large effect on the model and none on the outcome map has null contrast.
-
-**Theorem 1 (Order reversal).**
-*Hypotheses.* $\mathfrak{B} = \{b_1,b_2\}$; $\mathfrak{M} = \mathbb{R}^2$ with the Borel $\sigma$-algebra; $\mu = \delta_{(0,0)}$; codomain class $\mathsf{W}_1$ with $W = (\mathbb{R}_{\ge 0}, +, 0, \le)$; probability-coupled profile class; $\rho$ evaluation at a Dirac profile.
-*Conclusion.* There exist contexts $C_1, C_2$ differing only in $M_C$ with
-$$\sigma_{C_1}(b_1) > \sigma_{C_1}(b_2) \quad\text{and}\quad \sigma_{C_2}(b_1) < \sigma_{C_2}(b_2).$$
-*Applies to.* Deterministic form.
-
-*Proof.* Set $T(b_1) = \tau_1$ with $\tau_1(x,y) = (x+2,\,y+1)$ and $T(b_2) = \tau_2$ with $\tau_2(x,y) = (x+1,\,y+2)$; both are measurable. Let $\mathcal{Y} = \mathbb{R}$, $\delta(u,v) = |u-v| \in \mathbb{R}_{\ge0}$, which is measurable and total. Let $M_{C_1}(x,y) = x$ and $M_{C_2}(x,y) = y$. Under $\mu = \delta_{(0,0)}$ each contrast profile is a Dirac measure, so $\rho$ returns its atom. Then $\sigma_{C_1}(b_1) = 2 > 1 = \sigma_{C_1}(b_2)$ and $\sigma_{C_2}(b_1) = 1 < 2 = \sigma_{C_2}(b_2)$. $\blacksquare$
-
-**Corollary 1.1.** No function on $\mathfrak{B}$ alone induces the significance orderings of all contexts.
-
-**Corollary 1.2 (A4 is satisfiable).** Taking $\tau(x,y) = (x,\,y+1)$ with $M_{C_1}(x,y)=x$ gives $\sigma_{C_1}(b)=0$. Hence A4 is not vacuous.
+**Observation 4.2.1.** A2, A3, A5, A7, A8, A9, A10 are each a predicate over declared carriers and functions, and A4 is an existential schema over $\mathcal{C}$. Satisfaction is therefore testable in a model. This is what makes §11 possible.
 
 ---
 
-## 6. Context theory
+## 5. Contrast and significance
 
-**Definition 6.1 (Automorphism).** $\mathrm{Aut}(C)$ is the group of representation morphisms $\pi$ with $\pi_* C = C$ componentwise.
+**Definition 5.1 (Pointwise contrast) — derived, partial.** For $\tau=T_C(b)$ defined,
+$$\delta^{\,b}_C(m)=\delta_C\big(M_C(m),M_C(\tau m)\big),$$
+defined exactly on $\Omega^b_C:=\{m:(M_C(m),M_C(\tau m))\in D_C\}\in\mathcal{F}$.
 
-**Definition 6.2 (Designation).** A context *designates* if some component of Definition 3.14 depends on data not fixed by every automorphism of the underlying structure.
+**Definition 5.2 (Profile) — derived, partial.** If $\mu_C(\Omega^b_C)=1$, the *profile* is $(\delta^{\,b}_C)_*\mu_C\in\Delta(W_C)$. Otherwise no profile exists.
 
-**Definition 6.3 (Filter context).** A context all of whose components are fixed by every automorphism of the underlying structure.
+**Definition 5.3 (Significance) — derived, partial.** Exhaustively by cases:
 
-**Theorem 2 (Designation necessity).**
-*Hypotheses.* A3; a representation morphism $\pi$ with $\pi_* C = C$ and $\iota_W = \mathrm{id}_{W_C}$; a bearer $b$ with $T_C(b)$ defined.
-*Conclusion.* $\sigma_C(\pi_{\mathfrak{B}} b) = \sigma_C(b)$.
-*Applies to.* All forms.
+| Case | $\sigma_C(b)$ |
+|---|---|
+| $T_C(b)$ undefined | $\bot_{\mathrm{und}}$ |
+| $\Omega^b_C=\emptyset$ | $\bot_{\mathrm{und}}$ (A9) |
+| $0<\mu_C(\Omega^b_C)<1$ | $\bot_{\mathrm{und}}$ |
+| $\mu_C(\Omega^b_C)=1$ and the profile $\notin\operatorname{dom}\rho_C$ | $\bot_{\mathrm{und}}$ |
+| $\mu_C(\Omega^b_C)=1$ and the profile $\in\operatorname{dom}\rho_C$ | $\rho_C\big((\delta^{\,b}_C)_*\mu_C\big)$ |
 
-*Proof.* By A3, $\sigma_{\pi_*C}(\pi_{\mathfrak{B}}b) = \iota_W(\sigma_C(b)) = \sigma_C(b)$. Since $\pi_*C = C$ the left side is $\sigma_C(\pi_{\mathfrak{B}}b)$. $\blacksquare$
+**Observation 5.3.1 — remediates AV-004.** The prior edition left the case $0<\mu_C(\Omega^b_C)<1$ unclassified: the contrast was neither nowhere defined nor defined almost everywhere, so no listed condition applied and no profile existed. That branch is now typed.
 
-**Corollary 2.1 (Filters cannot break symmetry).** A filter context assigns equal significance to bearers in one automorphism orbit.
+**Theorem 1 (Order reversal exists).**
+*Hypotheses.* $\mathfrak{B}=\{b_1,b_2\}$; $\mathfrak{M}=\mathbb{R}^2$ Borel; $r$ not supplied; codomain $W=(\mathbb{R}_{\ge0},+,0,\le)$ with the Borel $\sigma$-algebra, class $\mathsf{W}_1$; $\rho=\ell$ the Dirac-atom location functional of Definition 3.12; $\approx=\bot_{\mathrm{abs}}$.
+*Conclusion.* There exist contexts $C_1,C_2$, agreeing in every component except $M_C$, with $\sigma_{C_1}(b_1)>\sigma_{C_1}(b_2)$ and $\sigma_{C_2}(b_1)<\sigma_{C_2}(b_2)$.
+*Applies to.* Deterministic form only.
 
-**Corollary 2.2.** If a question's correct answer distinguishes two bearers in one orbit, any context answering it designates. Designation is necessary, not convenient.
+*Proof.* Take $\mu=\delta_{(0,0)}$; $\mathcal{Y}=\mathbb{R}$ Borel; $T(b_1)(x,y)=(x+2,y+1)$ and $T(b_2)(x,y)=(x+1,y+2)$, both measurable; $\delta(u,v)=|u-v|$, total and measurable, so $D_C=\mathcal{Y}^2$; $M_{C_1}(x,y)=x$, $M_{C_2}(x,y)=y$. All seven components of Definition 3.10 are supplied. Each $\Omega^{b}_C=\mathfrak{M}$, so $\mu(\Omega)=1$ and each profile is a Dirac measure, on which $\ell$ returns the atom. Then $\sigma_{C_1}(b_1)=2>1=\sigma_{C_1}(b_2)$ and $\sigma_{C_2}(b_1)=1<2=\sigma_{C_2}(b_2)$. $\blacksquare$
 
-**Observation 6.4.** Theorem 2 gives a necessary condition only. A designating context may still fail to separate two bearers for reasons unrelated to symmetry.
+**Observation 1.1′ — remediates AV-007.** Theorem 1 is **existential**. It shows the framework *permits* reversal. It does **not** show that every context family reverses, and no corollary asserting a universal absence of context-free ordering follows from it. The prior edition's Corollary 1.1 made that universal claim and is withdrawn (§13).
+
+---
+
+## 6. Invariance
+
+**Definition 6.1 (Context automorphism).** $\mathrm{Aut}(C)$ is the group of representation morphisms $\pi$ with $\pi_*C=C$ componentwise and $\iota_W=\mathrm{id}_{W_C}$.
+
+**Corollary 6.2 (Orbit constancy under a fixed context).** For $\pi\in\mathrm{Aut}(C)$ and every $b$: $\sigma_C(\pi_{\mathfrak{B}}b)=\sigma_C(b)$.
+
+*Proof.* By A3, $\sigma_{\pi_*C}(\pi_{\mathfrak{B}}b)=\widehat{\mathrm{id}}(\sigma_C(b))=\sigma_C(b)$; and $\pi_*C=C$. $\blacksquare$
+
+**Observation 6.2.1 — remediates AV-006, AV-023.** In the prior edition this was Theorem 2, "designation necessity", and it depended on automorphisms of an "underlying structure" that was never defined. The verification established that the displayed equality is a direct instance of A3 and not a designation theorem. Accordingly: the definitions of *designation* and *filter context* are **withdrawn**, the statement is demoted to a corollary of A3, and the claim that designation is *necessary* is withdrawn (§13). What survives is exactly the conditional orbit equality above.
 
 ---
 
 ## 7. Difference theory
 
-**Definition 7.1 (Observational equivalence).** $m \sim_r m' \iff r(m) = r(m')$. The classes are the *fibres* of $r$.
-
-**Definition 7.2 (Compatible model class).** For an observation $x \in \mathcal{R}$, $\mathfrak{M}_x := r^{-1}(x)$.
+**Definition 7.1 (Induced $\sigma$-algebra) — remediates AV-008.** Given measurable $r:\mathfrak{M}\to\mathcal{R}$, the *final $\sigma$-algebra* on $\mathcal{R}$ is $\mathcal{H}_r:=\{A\subseteq\mathcal{R}:r^{-1}(A)\in\mathcal{F}\}$.
 
 **Theorem 3 (Factorisation).**
-*Hypotheses.* $r : \mathfrak{M} \to \mathcal{R}$ measurable; $g : \mathfrak{M} \to W$ measurable, with $W$ in any class of Definition 3.12; $\mathcal{R}$ carries the $\sigma$-algebra induced by $r$.
-*Conclusion.* $g = h \circ r$ for some measurable $h$ **iff** $g$ is constant on the fibres of $r$.
+*Hypotheses.* $r:\mathfrak{M}\to\mathcal{R}$ measurable; $(\mathcal{R},\mathcal{H}_r)$ carrying the final $\sigma$-algebra; $(\mathsf{V},\Sigma_{\mathsf{V}})$ **any** measurable space; $g:\mathfrak{M}\to\mathsf{V}$ measurable and total; $\mathsf{V}\neq\emptyset$.
+*Conclusion.* There is a measurable total $h:\mathcal{R}\to\mathsf{V}$ with $g=h\circ r$ **iff** $g$ is constant on the fibres of $r$.
 *Applies to.* All forms.
 
-*Proof.* ($\Rightarrow$) If $g = h\circ r$ and $r(m)=r(m')$ then $g(m)=g(m')$.
-($\Leftarrow$) If $g$ is constant on fibres, define $h$ on $r(\mathfrak{M})$ by $h(x) := g(m)$ for any $m \in r^{-1}(x)$; well defined by hypothesis. For measurable $B \subseteq W$, $h^{-1}(B) = r\big(g^{-1}(B)\big)$ is measurable in the $\sigma$-algebra induced by $r$, since $g^{-1}(B)$ is a union of fibres. $\blacksquare$
+*Proof.* ($\Rightarrow$) If $g=h\circ r$ and $r(m)=r(m')$ then $g(m)=g(m')$.
+($\Leftarrow$) Fix $v_0\in\mathsf{V}$. Define $h(x):=g(m)$ for $x\in r(\mathfrak{M})$ and any $m\in r^{-1}(x)$ — well defined by fibre-constancy — and $h(x):=v_0$ for $x\notin r(\mathfrak{M})$. Then $g=h\circ r$. For $B\in\Sigma_{\mathsf{V}}$, $r^{-1}(h^{-1}(B))=g^{-1}(B)\in\mathcal{F}$, so $h^{-1}(B)\in\mathcal{H}_r$ by definition of the final $\sigma$-algebra. Hence $h$ is measurable. $\blacksquare$
 
-**Observation 7.3 (Scope of Theorem 3 — exhaustive).** Theorem 3 is a statement about one measurable function and one measurable map, at a fixed context, on realised model pairs, under contrast extensionality. It establishes **none** of the following, and no corollary below extends it to any of them:
+**Observation 3.0 — remediates AV-008.** Two defects of the prior statement are repaired: the $\sigma$-algebra on $\mathcal{R}$ is now declared (final), and $h$ is now total on $\mathcal{R}$ rather than defined only on $r(\mathfrak{M})$. The codomain hypothesis is widened to an arbitrary measurable space, which is what Corollary 3.3 requires.
 
-- no factorisation through $\approx_C$ or any quotient other than the fibres of $r$;
-- no uniqueness of $h$ except modulo equality on $r(\mathfrak{M})$;
-- no minimality of $r$ in any sense (see Definition 7.7);
-- no identifiability of any quantity not equal to $g$;
-- no empirical prediction;
-- no representation invariance beyond the explicit morphisms of Definition 3.21;
-- no statement about probabilistic, decision, information, or path-composition forms except by separate hypothesis.
+**Observation 3.0.1 (Scope — exhaustive).** Theorem 3 establishes none of: quotient factorisation through any relation other than the fibres of $r$; uniqueness of $h$ off $r(\mathfrak{M})$; minimality of $r$; identifiability of anything not equal to $g$; **computability**; empirical prediction; invariance beyond Definition 3.15.
 
-**Corollary 3.3 (Induced outcome map — the exact condition).** Let $\tau = T_C(b)$. There exists a map $\phi : \mathcal{Y}_C \to \mathcal{Y}_C$ with $M_C \circ \tau = \phi \circ M_C$ **iff** $M_C \circ \tau$ is constant on the fibres of $M_C$; $\phi$ is then measurable with respect to the $\sigma$-algebra induced by $M_C$, and is unique on $M_C(\mathfrak{M})$.
+**Corollary 3.3 (Induced outcome map).** Let $\tau=T_C(b)$. A total measurable $\phi:\mathcal{Y}_C\to\mathcal{Y}_C$ with $M_C\circ\tau=\phi\circ M_C$ exists **iff** $M_C\circ\tau$ is constant on the fibres of $M_C$, where $\mathcal{Y}_C$ carries the final $\sigma$-algebra of $M_C$.
 
-*Proof.* Theorem 3 with $r := M_C$ and $g := M_C \circ \tau$. $\blacksquare$
+*Proof.* Theorem 3 with $r:=M_C$, $g:=M_C\circ\tau$, $\mathsf{V}:=\mathcal{Y}_C$. $\blacksquare$
 
-**Observation 3.4 (No deterministic induced map in general).** An operation on model space does **not** in general induce a deterministic map on outcome space. Where the condition of Corollary 3.3 fails, the theory offers three admissible representations, of which exactly one must be declared:
+**Observation 3.4 (No deterministic induced map in general).** Where the condition fails, only the relation $\{(M_C(m),M_C(\tau m)):m\in\mathfrak{M}\}$ is available without further hypotheses; a kernel representation additionally requires a disintegration of $\mu_C$ along $M_C$, which is not assumed.
 
-| Representation | Object | Requires |
-|---|---|---|
-| deterministic | $\phi : \mathcal{Y}_C \to \mathcal{Y}_C$ | the fibre-constancy condition of Corollary 3.3 |
-| relational | $\Phi \subseteq \mathcal{Y}_C \times \mathcal{Y}_C$, $\Phi = \{(M_C(m), M_C(\tau m))\}$ | nothing beyond measurability |
-| kernel | Markov kernel $\mathcal{K}$ from $\mathcal{Y}_C$ to $\mathcal{Y}_C$ | a disintegration of $\mu_C$ along $M_C$ |
+**Definition 7.4 (Two separate conditions) — remediates AV-010.** Say $r$ is
+- **total for $(C,b)$** if $\Omega^b_C=\mathfrak{M}$;
+- **fibre-constant for $(C,b)$** if $\delta^{\,b}_C$ is constant on $r^{-1}(x)\cap\Omega^b_C$ for every $x$;
+- **$C$-sufficient for $b$** if both hold.
 
-The theory asserts no deterministic induced map absent the stated condition, and §5 never requires one: Definition 5.1 composes on $\mathfrak{M}$, where $\tau$ is defined, and not on $\mathcal{Y}_C$.
+**Definition 7.5 (Identified output).** For $x\in\mathcal{R}$: if $r^{-1}(x)=\emptyset$, the output is $\bot_{\mathrm{inc}}$ (A10); else if $r^{-1}(x)\cap\Omega^b_C=\emptyset$, it is $\bot_{\mathrm{und}}$; else it is the set $\mathcal{S}_C(b,x)=\{\delta^{\,b}_C(m):m\in r^{-1}(x)\cap\Omega^b_C\}$.
 
-**Definition 7.4 (Sufficiency).** $r$ is *$C$-sufficient for $b$* if $\delta^{\,b}_C$ is defined everywhere and constant on the fibres of $r$.
+**Theorem 3.2′ (Non-constancy forces a non-singleton identified set).**
+*Hypotheses.* $r$ total for $(C,b)$ but not fibre-constant.
+*Conclusion.* There is $x$ with $r^{-1}(x)\neq\emptyset$ and $|\mathcal{S}_C(b,x)|\ge2$; and no total measurable $h$ with $\delta^{\,b}_C=h\circ r$ exists.
+*Applies to.* All forms.
 
-**Corollary 3.1 (Computability).** Under A10 and Definition 7.4, the contrast is computable from the representation iff $r$ is $C$-sufficient for $b$.
+*Proof.* Failure of fibre-constancy under totality gives $x$ and $m,m'\in r^{-1}(x)$ with $\delta^{\,b}_C(m)\neq\delta^{\,b}_C(m')$, so $|\mathcal{S}_C(b,x)|\ge2$. Theorem 3 then denies a factorisation. $\blacksquare$
 
-*Proof.* Theorem 3 with $g = \delta^{\,b}_C$. $\blacksquare$
+**Observation 3.2.1 — remediates AV-010.** The prior Corollary 3.2 asserted this conclusion for **every** non-sufficient $r$. That is false: non-sufficiency also arises from failure of totality alone, and then every fibre may still carry at most one value. The verification's counterexample ($\mathfrak{M}=\{0,1\}$, $r=\mathrm{id}$, $\delta_C$ defined only at $(1,1)$) is decisive. The prior corollary is **withdrawn**; Theorem 3.2′ is its correct totality-restricted replacement, and the failure-of-totality branch yields $\bot_{\mathrm{und}}$ by Definition 5.3 rather than a set of two values.
 
-**Definition 7.5 (Identified set) — partial.** For $x \in \mathcal{R}$ with $\mathfrak{M}_x \neq \emptyset$,
-$$\mathcal{S}_C(b,x) \;=\; \big\{\, \delta^{\,b}_C(m) \;:\; m \in \mathfrak{M}_x,\ \delta^{\,b}_C \text{ defined at } m \,\big\}.$$
-If $\mathfrak{M}_x = \emptyset$ the value is $\bot_{\mathrm{inc}}$ by A10. If $\mathfrak{M}_x \neq \emptyset$ but $\delta^{\,b}_C$ is defined nowhere on it, the value is $\bot_{\mathrm{und}}$ by A9.
+**Observation 3.1.1 — remediates AV-009.** The prior Corollary 3.1 concluded that the contrast is **computable** from the representation iff $r$ is sufficient. That is false and is a category error: measurable factorisation is not an algorithm. Taking $\mathfrak{M}=\mathcal{R}=\mathbb{N}$ discrete, $r=\mathrm{id}$, and $\delta^{\,b}_C=\mathbb{1}_A$ for non-computable $A$ gives a sufficient $r$ with no algorithm. The corollary is **withdrawn**. The correct statement is Theorem 3: the contrast is a measurable function of the representation iff it is fibre-constant. No computability claim is made anywhere in this document.
 
-**Corollary 3.2 (Forced abstention).** If $r$ is not $C$-sufficient for $b$ then for some $x$ with $\mathfrak{M}_x \neq \emptyset$, $\mathcal{S}_C(b,x)$ has at least two elements, and no representation-measurable function equals $\delta^{\,b}_C$. By A5 the admissible output is $\mathcal{S}_C(b,x)$, an interval containing it, or $\bot_{\mathrm{ind}}$.
+**Definition 7.7 (Four distinct notions).** (i) sufficiency, Definition 7.4; (ii) minimal sufficiency relative to $\delta^{\,b}_C$, namely sufficiency together with factorisation through every sufficient map; (iii) the distinguishability indicator $\mathbb{1}[\delta^{\,b}_C(m)\neq\delta^{\,b}_C(m')]$ on $\Omega^b_C\times\Omega^b_C$; (iv) the partition of $\Omega^b_C$ induced by equality of $\delta^{\,b}_C$.
 
-*Proof.* Non-sufficiency gives a fibre on which $\delta^{\,b}_C$ is non-constant; Theorem 3 denies factorisation; A5 forbids a point. $\blacksquare$
+**Observation 7.8.** Only (i) is asserted where hypothesised. **No minimality is claimed anywhere.**
 
-**Observation 7.6.** Abstention is a consequence of the axioms, not a policy choice. Conversely, whether $\bot$ is *available* is a property of the context: a context whose reduction has codomain $W_C$ only cannot abstain, and under such a context a non-sufficient representation yields an ill-formed request rather than a refusal.
+**Theorem 4′ (Partial quotient descent) — replaces the withdrawn Theorem 4.**
+*Hypotheses.* $\approx_C\neq\bot_{\mathrm{abs}}$; A8; $D_C$ the domain of $\delta_C$; $p:\mathcal{Y}_C\to\mathcal{Y}_C/\!\approx_C$ the projection; $\bar D_C:=(p\times p)(D_C)$.
+*Conclusion.* There is a unique **partial** map $\bar\delta_C$ with domain exactly $\bar D_C$ such that $\bar\delta_C\big((p\times p)(y,y')\big)=\delta_C(y,y')$ for every $(y,y')\in D_C$. Its pullback $\bar\delta_C\circ(p\times p)$ has domain $(p\times p)^{-1}(\bar D_C)\supseteq D_C$, and equals $\delta_C$ on $D_C$; the inclusion is strict unless $D_C$ is saturated under $\approx_C\times\approx_C$.
+*Applies to.* All forms with $\approx_C$ supplied.
 
-**Definition 7.7 (Four distinct notions, none of which is minimality of $r$).**
-(i) $r$ is *sufficient for $(C,b)$* — Definition 7.4.
-(ii) $r$ is *minimal sufficient relative to $\delta^{\,b}_C$* if it is sufficient and factors through every sufficient map.
-(iii) The *distinguishability bit* of a pair $m,m'$ is $\mathbb{1}[\delta^{\,b}_C(m) \neq \delta^{\,b}_C(m')]$.
-(iv) The *kernel quotient* of $\delta^{\,b}_C$ is $\mathfrak{M}/\!\ker \delta^{\,b}_C$.
+*Proof.* Existence and well-definedness on $\bar D_C$: if $(p\times p)(y,y')=(p\times p)(\tilde y,\tilde y')$ with both pairs in $D_C$, then $y\approx_C\tilde y$ and $y'\approx_C\tilde y'$, so A8 gives equal values. Uniqueness on $\bar D_C$: every point of $\bar D_C$ has a defined representative pair, on which the value is forced. The pullback statement is immediate, and strictness fails exactly when $D_C$ is a union of $\approx_C\times\approx_C$-classes. $\blacksquare$
 
-**Observation 7.8 (No minimality is claimed).** The theory asserts (i) where hypothesised and asserts nothing about (ii). Sufficiency is not minimality, and no construction below is claimed universal, initial, terminal, or minimal in any category.
-
-**Theorem 4 (Quotient descent).**
-*Hypotheses.* $\approx_C$ declared; A8.
-*Conclusion.* There is a unique $\bar\delta_C$ on $(\mathcal{Y}_C/\!\approx_C)^2$ with $\bar\delta_C([y],[y']) = \delta_C(y,y')$ wherever $\delta_C$ is defined. Without A8 no such map exists in general.
-*Applies to.* All forms with $\approx_C$ declared.
-
-*Proof.* Existence and well-definedness are exactly A8. Uniqueness: any two such maps agree on all classes with a defined representative pair. For the negative clause, take $\mathcal{Y}=\{y,\tilde y\}$ with $y \approx \tilde y$, $W = \mathbb{R}$, $\delta(y,y)=0$, $\delta(\tilde y, y)=1$; then $[\,y\,]=[\,\tilde y\,]$ but the two defining expressions differ, so no map on classes exists. $\blacksquare$
-
-**Observation 7.9.** Theorem 4 is the reason Definition 3.15 fixes the evaluator at the raw level subject to congruence. Quotient-level sufficiency is claimed only where A8 is assumed, and nowhere else.
+**Observation 4.0 — remediates AV-011.** The prior Theorem 4 declared neither totality nor a quotient domain. Under a total reading uniqueness is false — with $\approx_C$ equality, $\mathcal{Y}=\{0,1\}$ and $\delta_C$ defined only at $(0,0)$, any total map may take arbitrary values on the other three quotient pairs. Under a partial reading it omitted the saturation condition, so the pullback need not return $D_C$. Theorem 4′ fixes the domain as $\bar D_C$, states uniqueness only there, and states the pullback relation exactly. The prior theorem is **withdrawn**.
 
 ---
 
-## 8. Significance theory
+## 8. Significance forms
 
-### 8.1 Standing assumptions for §8
+**Assumption 8.0 (Standing hypotheses for §8).** $M_C$, every $\tau=T_C(b)$, and $\delta_C$ on $D_C$ are measurable; $W_C$ carries $\Sigma_{W_C}$; every expectation written exists and is finite; every evidence structure invoked is regular in the sense of Definition 3.14. Statements in §8 are asserted only under Assumption 8.0.
 
-**Assumption 8.0 (Measurability and integrability).** Throughout §8: $M_C$ is measurable; every $\tau = T_C(b)$ is measurable; $\delta_C$ is measurable on its domain; $W_C$ carries a $\sigma$-algebra making $\delta^{\,b}_C$ measurable; every expectation written below is assumed to exist and be finite; every kernel invoked is a Markov kernel; and $\mathfrak{M}_x \neq \emptyset$ where identifiability is discussed (A10). Statements in §8 are asserted only under Assumption 8.0.
+**Observation 8.0.1.** Every integral below is over $\mathbb{R}$. No integration into a general partial order occurs, and the theory supplies none.
 
-**Observation 8.0.1.** No integral is taken into a codomain of class $\mathsf{W}_0$. Where an expectation appears, the codomain is $\mathsf{W}_1$ or $\mathsf{W}_2$ realised in $\mathbb{R}$, for which the Lebesgue integral is available. The theory supplies no integration theory for a general preorder and asserts none.
+**Definition 8.1 (Effect significance) — class $\mathsf{W}_1$.** $(\mathcal{Y}_C,d_Y)$ metric with Borel $\sigma$-algebra, $W_C=(\mathbb{R}_{\ge0},+,0,\le)$, $\delta_C=d_Y$, $\rho_C=\ell$ a location functional (Definition 3.12).
 
-### 8.2 The three forms
+**Definition 8.2 (Decision significance) — class $\mathsf{W}_2$ realised in $\mathbb{R}$.** With $\mathfrak{r}(\nu):=\inf_{\alpha\in\mathcal{A}_C}\mathbb{E}_\nu L_C(\alpha,\cdot)$ finite and $\mathcal{A}^*_\varepsilon(\nu):=\{\alpha:\mathbb{E}_\nu L_C(\alpha,\cdot)\le\mathfrak{r}(\nu)+\varepsilon\}$, for a **declared** $\varepsilon\ge0$:
+$$\sigma^{\mathrm{dec}}_C(b)=\inf\big\{\mathbb{E}_{\mu_C}L_C(\alpha,\cdot):\alpha\in\mathcal{A}^*_\varepsilon(\tau_*\mu_C)\big\}-\mathfrak{r}(\mu_C),$$
+with the value $\bot_{\mathrm{und}}$ if $\varepsilon=0$ and the infimum defining $\mathfrak{r}(\tau_*\mu_C)$ is unattained.
 
-**Definition 8.1 (Effect significance) — requires $\mathsf{W}_1$.** Let $(\mathcal{Y}_C, d_Y)$ be a metric space, $W_C = (\mathbb{R}_{\ge0}, +, 0, \le)$, $\delta_C = d_Y$, and $\rho_C$ a location functional on the declared profile class. Then
-$$\sigma^{\mathrm{eff}}_C(b) \;=\; \rho_C\Big(\big(m \mapsto d_Y(M_C(m), M_C(\tau m))\big)_*\mu_C\Big), \qquad \tau = T_C(b).$$
-
-**Definition 8.2 (Decision significance) — requires $\mathsf{W}_2$ realised in $\mathbb{R}$, and Definition 3.19.** Let $\mathfrak{r}(\nu) := \inf_{\alpha \in \mathcal{A}_C} \mathbb{E}_\nu L_C(\alpha,\cdot)$, assumed finite. For $\varepsilon \ge 0$ let $\mathcal{A}^*_\varepsilon(\nu) := \{\alpha : \mathbb{E}_\nu L_C(\alpha,\cdot) \le \mathfrak{r}(\nu) + \varepsilon\}$, which is nonempty for every $\varepsilon > 0$ by definition of the infimum. For a declared $\varepsilon > 0$,
-$$\sigma^{\mathrm{dec}}_C(b) \;=\; \inf\Big\{\, \mathbb{E}_{\mu_C} L_C(\alpha,\cdot) \;:\; \alpha \in \mathcal{A}^*_\varepsilon\big(\mu_C^{\,\tau}\big) \Big\} \;-\; \mathfrak{r}(\mu_C),$$
-where $\mu_C^{\,\tau} := \tau_*\mu_C$. For $\varepsilon = 0$ the definition additionally requires that the infimum defining $\mathfrak{r}(\mu_C^{\,\tau})$ be attained; absent attainment the value is $\bot_{\mathrm{und}}$.
-
-**Observation 8.3.** Definition 8.2 uses no $\arg\min$. Existence of an optimiser is not assumed; $\varepsilon$-optimality is used instead, and the attainment hypothesis is stated explicitly where $\varepsilon = 0$.
-
-**Definition 8.4 (Information significance) — requires $\mathsf{W}_2$ realised in $\mathbb{R}$, Definitions 3.19 and 3.20.**
-$$\sigma^{\mathrm{inf}}_C(b) \;=\; \mathfrak{r}(\mu_C) \;-\; \mathbb{E}\big[\mathfrak{r}(\mu_C^{\,K_b})\big],$$
-where $\mu_C^{\,K_b}$ is the posterior induced by the kernel $K_b$ and the outer expectation is over the marginal law of the evidence, assumed to exist.
+**Definition 8.4 (Information significance) — class $\mathsf{W}_2$ realised in $\mathbb{R}$, requires Definition 3.14.**
+$$\sigma^{\mathrm{inf}}_C(b)=\mathfrak{r}(\mu_C)-\int \mathfrak{r}\big(\Pi_b(\cdot\mid e)\big)\,\lambda_b(de).$$
 
 **Theorem 5 (Non-negativity).**
-*Hypotheses.* Assumption 8.0; for (i) the codomain class $\mathsf{W}_1$ and $\rho_C$ a location functional preserving the support bound; for (ii) $\varepsilon > 0$ or attainment; for (iii) integrability of $\mathfrak{r}(\mu_C^{K_b})$.
-*Conclusion.* (i) $\sigma^{\mathrm{eff}}_C \ge 0$; (ii) $\sigma^{\mathrm{dec}}_C \ge -\,0$, indeed $\sigma^{\mathrm{dec}}_C \ge 0$; (iii) $\sigma^{\mathrm{inf}}_C \ge 0$.
-*Applies to.* Deterministic, decision and information forms respectively.
+*Hypotheses.* Assumption 8.0. (i) Definition 8.1. (ii) Definition 8.2 with $\varepsilon>0$, or $\varepsilon=0$ with attainment. (iii) Definition 8.4 with a regular evidence structure.
+*Conclusion.* (i) $\sigma^{\mathrm{eff}}_C(b)\ge0$; (ii) $\sigma^{\mathrm{dec}}_C(b)\ge0$; (iii) $\sigma^{\mathrm{inf}}_C(b)\ge0$.
 
-*Proof.* (i) $d_Y \ge 0$, so the profile is supported in $\mathbb{R}_{\ge0}$ and a location functional of such a profile is $\ge 0$.
-(ii) For every $\alpha \in \mathcal{A}_C$, $\mathbb{E}_{\mu_C} L_C(\alpha,\cdot) \ge \inf_{\alpha'} \mathbb{E}_{\mu_C} L_C(\alpha',\cdot) = \mathfrak{r}(\mu_C)$. Taking the infimum over $\alpha \in \mathcal{A}^*_\varepsilon(\mu_C^\tau)$, a subset of $\mathcal{A}_C$, preserves the bound. Hence the difference is $\ge 0$. Note this holds for **any** selection rule, attained or not.
-(iii) $\nu \mapsto \mathbb{E}_\nu L_C(\alpha,\cdot)$ is affine in $\nu$; an infimum of affine functionals is concave, so $\mathfrak{r}$ is concave. By the tower property $\mathbb{E}[\mu_C^{K_b}] = \mu_C$. By Jensen's inequality for concave functionals, $\mathbb{E}[\mathfrak{r}(\mu_C^{K_b})] \le \mathfrak{r}(\mu_C)$. $\blacksquare$
+*Proof.* (i) $d_Y\ge0$, so the profile is supported in $\mathbb{R}_{\ge0}$; by Definition 3.12, $\ell(\nu)\ge\inf\operatorname{supp}\nu\ge0$.
+(ii) For every $\alpha\in\mathcal{A}_C$, $\mathbb{E}_{\mu_C}L_C(\alpha,\cdot)\ge\mathfrak{r}(\mu_C)$. Since $\mathcal{A}^*_\varepsilon(\tau_*\mu_C)\subseteq\mathcal{A}_C$, the infimum over that subset is $\ge\mathfrak{r}(\mu_C)$. No attainment is used.
+(iii) $\nu\mapsto\mathbb{E}_\nu L_C(\alpha,\cdot)$ is affine, so $\mathfrak{r}$ is an infimum of affine functionals and hence concave. Definition 3.14 supplies measurability and integrability of $e\mapsto\mathfrak{r}(\Pi_b(\cdot\mid e))$ and the barycentre identity $\int\Pi_b(\cdot\mid e)\lambda_b(de)=\mu_C$. Jensen's inequality for concave functionals gives $\int\mathfrak{r}(\Pi_b(\cdot\mid e))\lambda_b(de)\le\mathfrak{r}(\mu_C)$. $\blacksquare$
+
+**Observation 5.0 — remediates AV-012.** Part (iii) is asserted only for a **regular** evidence structure. It is not a theorem over arbitrary measurable spaces.
 
 **Theorem 6 (Pairwise non-equivalence).**
-*Hypotheses.* Assumption 8.0; the constructions below.
-*Conclusion.* The three forms are pairwise non-equivalent: for each pair there are a context and two bearers on which the orderings disagree.
-*Applies to.* Deterministic, decision and information forms jointly.
+*Hypotheses.* Assumption 8.0; $\varepsilon=0$ with attainment throughout; $\rho_C=\ell$ with $\ell(\nu)=\int x\,\nu(dx)$ (the mean, a location functional by Definition 3.12); the three complete contexts displayed below.
+*Conclusion.* For each pair of forms there are two bearers whose orderings under that pair disagree.
 
-*Proof.* Three constructions.
+*Proof.* Throughout: $\mathfrak{M}=\mathbb{R}^2$ Borel, $r$ not supplied, $\approx=\bot_{\mathrm{abs}}$, $\mathcal{Y}=\mathbb{R}^2$ Borel, $M=\mathrm{id}$, $\mathcal{A}=\mathbb{R}$.
 
-(i) *Effect against decision.* $\mathfrak{M} = \mathbb{R}^2$ Borel, $\mu = \delta_{(0,0)}$, $M = \mathrm{id}$, $d_Y$ Euclidean, $\mathcal{A} = \mathbb{R}$, $L(\alpha,(x,y)) = (\alpha-x)^2$, which is measurable, integrable, and attains its infimum at $\alpha = \mathbb{E}[x]$. Let $T(b_1)(x,y) = (x, y+10)$ and $T(b_2)(x,y) = (x+1, y)$.
-Effect: $\sigma^{\mathrm{eff}}(b_1) = 10 > 1 = \sigma^{\mathrm{eff}}(b_2)$.
-Decision: $T(b_1)$ leaves the $x$-marginal fixed, so $\mathfrak{r}(\mu^{\tau_1})$ is attained at the same action as $\mathfrak{r}(\mu)$ and $\sigma^{\mathrm{dec}}(b_1)=0$. For $b_2$ the optimiser moves from $0$ to $1$, giving $\sigma^{\mathrm{dec}}(b_2) = \mathbb{E}_\mu(1-x)^2 - \mathbb{E}_\mu(0-x)^2 = 1 > 0$.
-Orderings disagree.
+(i) *Effect against decision.* $\mu=\delta_{(0,0)}$; $L(\alpha,(x,y))=(\alpha-x)^2$, whose infimum is attained at $\mathbb{E}[x]$; $T(b_1)(x,y)=(x,y+10)$, $T(b_2)(x,y)=(x+1,y)$; $\delta=d_Y$ Euclidean. Profiles are Dirac, so $\ell$ returns the atom: $\sigma^{\mathrm{eff}}(b_1)=10>1=\sigma^{\mathrm{eff}}(b_2)$. For decision: $\tau_1$ fixes the $x$-marginal, so $\mathcal{A}^*_0(\tau_{1*}\mu)=\{0\}=\mathcal{A}^*_0(\mu)$ and $\sigma^{\mathrm{dec}}(b_1)=0$; $\mathcal{A}^*_0(\tau_{2*}\mu)=\{1\}$, so $\sigma^{\mathrm{dec}}(b_2)=\mathbb{E}_\mu(1-x)^2-\mathbb{E}_\mu(0-x)^2=1>0$.
 
-(ii) *Decision against information.* $\mathfrak{M} = \mathbb{R}^2$ with coordinates $(\theta_1,\theta_2)$ independent under $\mu$, $L(\alpha,\theta) = (\alpha - \theta_1 - \theta_2)^2$, so $\mathfrak{r}(\nu) = \mathrm{Var}_\nu[\theta_1+\theta_2]$, attained. Let $\theta_1$ be degenerate at $0$ and $\theta_2 \sim \mathcal{N}(0,s^2)$, $s^2>0$.
-For $b_1$: $K_{b_1}$ trivial by degeneracy, so $\sigma^{\mathrm{inf}}(b_1)=0$; $T(b_1)$ shifts $\theta_1$ by $1$, moving the optimiser, so $\sigma^{\mathrm{dec}}(b_1)=1>0$.
-For $b_2$: let $T(b_2)$ replace $\theta_2$ by its mean, preserving $\mathbb{E}[\theta_1+\theta_2]$, so the optimiser is unchanged and $\sigma^{\mathrm{dec}}(b_2)=0$; let $K_{b_2}$ reveal $\theta_2$ exactly, giving $\sigma^{\mathrm{inf}}(b_2)=s^2>0$.
-Orderings disagree.
+(ii) *Decision against information.* Coordinates $(\theta_1,\theta_2)$ independent, $\theta_1\equiv0$, $\theta_2\sim\mathcal{N}(0,s^2)$, $s^2>0$; $L(\alpha,\theta)=(\alpha-\theta_1-\theta_2)^2$, so $\mathfrak{r}(\nu)=\operatorname{Var}_\nu[\theta_1+\theta_2]$, attained. For $b_1$: $\theta_1$ degenerate, so any $K_{b_1}$ concerning $\theta_1$ has $\Pi_{b_1}(\cdot\mid e)=\mu$ $\lambda$-a.s., giving $\sigma^{\mathrm{inf}}(b_1)=0$; $T(b_1)$ shifts $\theta_1$ by $1$, moving the optimum from $0$ to $1$, giving $\sigma^{\mathrm{dec}}(b_1)=1>0$. For $b_2$: $T(b_2)$ replaces $\theta_2$ by $0$, preserving $\mathbb{E}[\theta_1+\theta_2]=0$, so the optimum is unchanged and $\sigma^{\mathrm{dec}}(b_2)=0$; $K_{b_2}$ revealing $\theta_2$ exactly is a regular structure with $\int\mathfrak{r}\,d\lambda=0$, giving $\sigma^{\mathrm{inf}}(b_2)=s^2>0$.
 
-(iii) *Effect against information.* Retain (ii) with $M=\mathrm{id}$ and $d_Y$ Euclidean. Then $\sigma^{\mathrm{eff}}(b_1)=1$ and $\sigma^{\mathrm{inf}}(b_1)=0$, while for $s$ small $\sigma^{\mathrm{eff}}(b_2) < 1$ and $\sigma^{\mathrm{inf}}(b_2)=s^2>0$. Orderings disagree. $\blacksquare$
+(iii) *Effect against information.* Retain (ii) with $\delta=d_Y$ Euclidean and $\ell$ the mean. $\sigma^{\mathrm{eff}}(b_1)=1$ and $\sigma^{\mathrm{inf}}(b_1)=0$. For $b_2$ the contrast is $|\theta_2|$, so $\sigma^{\mathrm{eff}}(b_2)=\mathbb{E}|\theta_2|=s\sqrt{2/\pi}$, which is $<1$ for $s<\sqrt{\pi/2}$; and $\sigma^{\mathrm{inf}}(b_2)=s^2>0$. $\blacksquare$
 
-**Corollary 6.1.** The three are not measurements of one latent quantity: monotone maps preserve order, and the orders disagree.
+**Observation 6.0 — remediates AV-013.** The prior proof declared neither $\rho_C$ nor $\varepsilon$ and left the part (iii) magnitude unspecified. All three are now fixed: $\ell$ is the mean, $\varepsilon=0$ with attainment, and part (iii) computes $\mathbb{E}|\theta_2|=s\sqrt{2/\pi}$ exactly, with the range of $s$ stated.
 
-**Corollary 6.2.** A scalar presented as "significance" without naming which form it is, is underdetermined.
+**Observation 6.1′ — remediates AV-013.** The prior Corollary 6.1 ("not measurements of one latent quantity") relied on an undefined notion of latent quantity. It is **withdrawn**. What is proved is exactly Theorem 6: the three orderings disagree on the exhibited contexts. Any claim that they cannot share a common latent order requires a formal hypothesis about admissible measurement maps that this theory does not supply.
 
-### 8.3 Context-free scalars
+**Theorem 7′ (Additive context-free scalar under a nullity-closed family) — replaces the withdrawn Theorem 7.**
+*Hypotheses.* $W=(\mathbb{R}_{\ge0},+,0,\le)$; $S:\mathfrak{B}\to\mathbb{R}_{\ge0}$; $\beta>0$; a family $\mathcal{K}\subseteq\mathcal{C}$ such that (a) for every $b$ there is $C\in\mathcal{K}$ with $\sigma_C(b)=0$, and (b) for every $C\in\mathcal{K}$ there is $g_C:\mathfrak{B}\to\mathbb{R}_{\ge0}$ with $\sigma_C(b)=\beta S(b)+g_C(b)$ for all $b$.
+*Conclusion.* $S\equiv0$.
 
-**Theorem 7 (Triviality of additive context-free valuation).**
-*Hypotheses.* $W_C = (\mathbb{R}_{\ge0},+,0,\le)$ in class $\mathsf{W}_1$ for every $C$ in the family considered; $S : \mathfrak{B} \to \mathbb{R}_{\ge0}$; $\beta > 0$; for every such $C$ a $g_C : \mathfrak{B} \to \mathbb{R}_{\ge0}$ with $\sigma_C(b) = \beta S(b) + g_C(b)$ for all $b$; A4.
-*Conclusion.* $S \equiv 0$.
-*Applies to.* All forms with a $\mathsf{W}_1$ codomain.
+*Proof.* Fix $b$. By (a) choose $C\in\mathcal{K}$ with $\sigma_C(b)=0$. By (b), $\beta S(b)+g_C(b)=0$ with both summands $\ge0$ and $\beta>0$, so $S(b)=0$. $\blacksquare$
 
-*Proof.* Fix $b$. By A4 choose $C$ with $\sigma_C(b)=0$. Then $\beta S(b) + g_C(b)=0$ with both summands $\ge 0$ and $\beta>0$; a sum of non-negative reals vanishes only if each does, so $S(b)=0$. $\blacksquare$
+**Observation 7.0 — remediates AV-014.** The prior Theorem 7 assumed the decomposition only on "the family considered" while drawing the nullity witness from the global $\mathcal{C}$. The verification's countermodel is decisive: with $\mathfrak{B}=\{b\}$, $\mathcal{C}=\{C_0,C_1\}$, family $\{C_1\}$, $\sigma_{C_0}(b)=0$, $S(b)=1$, $\beta=1$, $g_{C_1}(b)=0$, $\sigma_{C_1}(b)=1$, every hypothesis held and the conclusion failed. The prior theorem is **withdrawn**. Theorem 7′ adds hypothesis (a), which is exactly what the prior proof silently used.
 
-**Observation 7.1'.** Non-negativity of $g_C$ is essential. Dropping it, set $g'_C := \beta S + g_C$; then $\sigma_C = g'_C$ identically and $S$ is eliminated without changing a value. Hence the additive decomposition is either forced to triviality by Theorem 7 or is absorbable and carries no content. This is why the theory admits no such primitive.
+**Observation 7.1′.** Non-negativity of $g_C$ remains essential: dropping it, $g'_C:=\beta S+g_C$ gives $\sigma_C=g'_C$ with no $S$ term, so the decomposition is absorbable and carries no content.
 
-**Theorem 8 (No epistemic gain from derived summaries).**
-*Hypotheses.* $Z$ a random element on a common probability space; $R$ a random element; $S = f(R)$ with $f$ measurable; all mutual informations defined.
-*Conclusion.* $I(Z;S,R) = I(Z;R)$ and $I(Z;S \mid R) = 0$.
-*Applies to.* All forms.
+**Theorem 8 (Conditional information redundancy).**
+*Hypotheses.* $Z$, $R$ random elements on a common space; $S=f(R)$ with $f$ measurable; all mutual informations defined.
+*Conclusion.* $I(Z;S,R)=I(Z;R)$ and $I(Z;S\mid R)=0$.
 
-*Proof.* $\sigma(S) \subseteq \sigma(R)$, so $\sigma(S,R) = \sigma(R)$; mutual information depends on the joint law only through the generated $\sigma$-algebras. The chain rule gives the second claim. $\blacksquare$
+*Proof.* $\sigma(S)\subseteq\sigma(R)$ gives $\sigma(S,R)=\sigma(R)$; mutual information depends on the joint law only through the generated $\sigma$-algebras. The chain rule gives the second identity. $\blacksquare$
 
-**Corollary 8.1.** A quantity derived from the representation cannot be justified epistemically. Any justification must be structural, computational, or normative.
+**Observation 8.1′ — remediates AV-015.** The prior Corollary 8.1 concluded that a derived quantity "cannot be justified epistemically". That does not follow and is false: with $Z=R=S$ a non-degenerate Bernoulli variable, $I(Z;S\mid R)=0$ while $I(Z;S)=H(Z)>0$, so $S$ is informative to an observer without $R$. The corollary is **withdrawn**. What Theorem 8 supports is exactly: *a derived summary adds no information **to an observer who already has $R$***.
 
-### 8.4 Normalisation and cross-context comparison
+**Theorem 9 (Arena dependence of normalisation).**
+*Hypotheses.* $A\subsetneq A'$ finite nonempty, $\varphi:A'\to\mathbb{R}_{>0}$, $\max_{A'}\varphi>\max_A\varphi$; $\nu^A(b)=\varphi(b)/\max_A\varphi$.
+*Conclusion.* $\nu^{A'}(b)<\nu^{A}(b)$ for every $b\in A$, and both induce the same order on $A$.
 
-**Definition 8.5 (Arena normalisation).** For finite $A \subseteq \mathfrak{B}$ and $\varphi : A \to \mathbb{R}_{>0}$, $\nu^A(b) = \varphi(b)/\max_{b'\in A}\varphi(b')$.
+*Proof.* With $\mathsf{m}=\max_A\varphi<\mathsf{m}'=\max_{A'}\varphi$ and $\varphi(b)>0$: $\varphi(b)/\mathsf{m}'<\varphi(b)/\mathsf{m}$. Both are positive multiples of $\varphi$ on $A$. $\blacksquare$
 
-**Theorem 9 (Normalisation is arena-dependent).**
-*Hypotheses.* $A \subsetneq A'$ finite, $\varphi$ extends to $A'$, $\max_{A'}\varphi > \max_A \varphi$.
-*Conclusion.* $\nu^{A'}(b) < \nu^{A}(b)$ for every $b \in A$, while the two induce the same order on $A$.
-*Applies to.* All forms.
+**Observation 9.1′ — remediates AV-016.** The prior Corollaries 9.1 and 9.2 concluded that normalised values are *incomparable* across arenas and *cannot be calibrated*. Neither follows. If the denominators are known the original values are recoverable; and for a declared dimensioned constant $D$, $x\mapsto Dx$ calibrates a dimensionless value. Both corollaries are **withdrawn**. What Theorem 9 supports is exactly: *a normalised value depends on its arena's maximum, so comparing normalised values across arenas without also declaring the denominators is uninformative about $\varphi$.*
 
-*Proof.* With $\mathsf{m} = \max_A\varphi < \mathsf{m}' = \max_{A'}\varphi$ and $\varphi(b)>0$, $\varphi(b)/\mathsf{m}' < \varphi(b)/\mathsf{m}$. Both are positive multiples of $\varphi$ on $A$. $\blacksquare$
-
-**Corollary 9.1.** Normalised values are not comparable across arenas and their cross-arena equality carries no information.
-
-**Corollary 9.2.** A normalised value is dimensionless and by A7 cannot be calibrated against a dimensioned quantity.
-
-**Definition 8.10 (Cross-context transport) — optional enrichment.** A *transport* from $C$ to $C'$ is a declared order-embedding $t : W_C \to W_{C'}$. Comparison of $\sigma_C(b)$ with $\sigma_{C'}(b')$ is defined only relative to a declared $t$.
-
-**Observation 8.11.** The theory distinguishes no transport. By A7, absent a declared $t$, cross-context comparison is $\bot_{\mathrm{und}}$, not false and not zero.
+**Definition 8.9 (Cross-context transport) — optional.** A declared order-embedding $t:W_C\to W_{C'}$ with the extended action $\widehat t$ of Definition 3.16. Comparison of values under distinct contexts is defined relative to a declared $t$ and is otherwise undefined by A7.
 
 ---
 
-## 9. Encodability and the limits of the unrestricted framework
+## 9. Encodability
 
-This section is the theory's principal epistemic result. It is stated as a theorem because a hedge would understate it.
+**Theorem 10′ (Bounded encodability) — replaces the withdrawn Theorem 10 statement and proof.**
+*Hypotheses.* $\mathfrak{B}$ any set; $(W,\preceq_W,\Sigma_W)$ any codomain with at least one element; $f:\mathfrak{B}\to W$ any function; a single context is to be constructed; the deterministic contrast form of Definition 5.1 with $\rho$ the Dirac-atom reduction.
+*Conclusion.* There is a context $C$ with $W_C=W$ and $\sigma_C(b)=f(b)$ for every $b\in\mathfrak{B}$.
+*Applies to.* The **deterministic contrast form only**, with a projection evaluator. **Not** to effect, decision, information, or composition forms.
 
-**Definition 9.1 (Independent instantiation).** A context $C$ is *independently instantiated* relative to an assessment if every component of Definition 3.14 is fixed by a procedure that does not depend on the values $\sigma_C$ subsequently produces.
+*Proof.* Take $\mathfrak{M}:=W$ with $\Sigma_W$; $\mathcal{Y}_C:=W$ with $\Sigma_W$; $M_C:=\mathrm{id}_W$; $\mu_C:=$ any probability measure on $(W,\Sigma_W)$, for instance a Dirac measure at a chosen point; $\approx_C:=\bot_{\mathrm{abs}}$; $\delta_C(y,y'):=y'$, the second projection, which is total and $\Sigma_W\otimes\Sigma_W/\Sigma_W$-measurable **without any group structure**; $T_C(b):=$ the constant map $m\mapsto f(b)$, measurable; $\rho_C:=$ the partial map returning the atom of a Dirac profile. Then $\delta^{\,b}_C(m)=\delta_C(M_C(m),M_C(T_C(b)m))=f(b)$ for every $m$, so $\Omega^b_C=\mathfrak{M}$, the profile is $\delta_{f(b)}$, and $\sigma_C(b)=f(b)$. $\blacksquare$
 
-**Theorem 10 (Universal encodability).**
-*Hypotheses.* $\mathfrak{B}$ any set; $W$ any codomain in class $\mathsf{W}_2$; $f : \mathfrak{B} \to W$ any function; $W$ measurable with singletons measurable.
-*Conclusion.* There exists a context $C$ with $W_C = W$ and $\sigma_C(b) = f(b)$ for every $b \in \mathfrak{B}$.
-*Applies to.* All forms.
+**Observation 10.0 — remediates AV-017.** The prior proof used $\delta(y,y')=y'-y$ on a class $\mathsf{W}_2$ codomain. Class $\mathsf{W}_2$ does not make subtraction measurable (Observation 3.6), so the constructed $\delta_C$ need not satisfy Definition 3.10 and the published proof was **invalid**. Theorem 10′ uses the second projection instead, which is measurable on any measurable space, and consequently needs no algebraic hypothesis at all — the result is both repaired and freed from the $\mathsf{W}_2$ restriction.
 
-*Proof.* Take $\mathfrak{M} := W$ with its $\sigma$-algebra, $\mathcal{Y}_C := W$, $M_C := \mathrm{id}_W$, $\mu_C := \delta_{0_W}$, and $\delta_C(y,y') := y' - y$, available since $W$ is an ordered abelian group. For each $b$ let $T_C(b)$ be the constant map $m \mapsto f(b)$, which is measurable. Declare the probability-coupled profile class and let $\rho_C$ return the atom of a Dirac profile. Then $\delta^{\,b}_C(m) = M_C(T_C(b)m) - M_C(m) = f(b) - 0_W = f(b)$ for $\mu_C$-almost every $m$, so the profile is $\delta_{f(b)}$ and $\sigma_C(b) = f(b)$. $\blacksquare$
+**Observation 10.0.1 (The witness evaluator is degenerate).** $\delta_C(y,y')=y'$ ignores the factual outcome entirely. Theorem 10′ therefore states: *the axioms as given do not exclude degenerate evaluators, and admitting them makes every assignment realisable in the deterministic form.* This locates precisely where a restriction would bite — on the admissible class of evaluators — and it is the honest content of the result.
 
-**Corollary 10.1 (The unrestricted framework has no empirical content).** The unrestricted framework excludes no assignment of values to bearers. It therefore forbids no observation and is not empirically falsifiable.
+**Corollary 10.1′ (Bounded underdetermination) — replaces the withdrawn Corollary 10.1.** Within the deterministic contrast form with unrestricted evaluators, no single-context assignment of values to bearers is excluded by the axioms.
 
-*Proof.* Immediate from Theorem 10: any proposed assignment is realised by some context. $\blacksquare$
+*Proof.* Immediate from Theorem 10′. $\blacksquare$
 
-**Corollary 10.2 (Where content comes from).** Empirical content arises only when $M_C$, $T_C$, $\delta_C$ and $\rho_C$ are constrained by an independently specified model, and when $C$ is independently instantiated in the sense of Definition 9.1. Predictive content is a property of an instantiation, never of the framework.
+**Observation 10.1.1 — remediates AV-018. This is the most important withdrawal in the document.** The prior Corollary 10.1 asserted that the **unrestricted framework has no empirical content whatever** and that it forbids no observation. That does **not** follow, and the prior edition rested its principal epistemic claim on it. The verification is decisive on three counts:
 
-**Observation 10.3.** Definition 9.1 does not by itself create empirical content. It removes one route by which a valuation can be fitted to its own assessment; it does not supply the external constraint that Corollary 10.2 requires.
+1. Theorem 10′ constructs only a deterministic contrast valuation. It does not construct an effect, decision, information, or composition form.
+2. Those forms **are** constrained: Theorem 5 forces $\sigma^{\mathrm{eff}}$, $\sigma^{\mathrm{dec}}$ and $\sigma^{\mathrm{inf}}$ to be non-negative under its hypotheses, so an assignment of $-1$ as effect significance is excluded outright.
+3. Theorem 10′ concerns a **single** context. Joint assignments across contexts are additionally constrained by A3, A4 and A7.
 
-**Observation 10.4 (Statement of the consequence, in the required plain form).** The unrestricted theory is **not** empirically falsifiable. Instantiated models **may** be falsifiable. The theory is a representation and valuation framework, not a scientific hypothesis, unless an external scientific model constrains its primitives.
+Accordingly the "no empirical content" conclusion is **withdrawn**, and with it the prior Limitation 14.9 and Rejection 16.14. What survives is Corollary 10.1′: a bounded, single-context, deterministic-form underdetermination statement. **No conclusion about the empirical content of the whole framework is drawn anywhere in this document.**
 
----
-
-## 10. Composition theory
-
-**Definition 10.1 (Relation instance) — primitive, optional enrichment.** A pair $e = (t, \nu)$ with $t$ in a type set $T$ and $\nu$ in a signature set $N$.
-
-**Definition 10.2 (Compatibility) — primitive, partial.** A relation $\kappa \subseteq E \times E$.
-
-**Definition 10.3 (Partial composition) — derived, partial.** A partial map $\odot : E \times E \rightharpoonup E$ with domain $\kappa$.
-
-**Definition 10.4 (Path).** A finite sequence $p=(e_1,\dots,e_k)$ with matching endpoints.
-
-**Definition 10.5 (Composition semantics) — partial.** $[\![p]\!]_{\mathrm{comp}}$ is the result of evaluating $e_1 \odot \cdots \odot e_k$ under a **declared bracketing**, or $\bot_{\mathrm{und}}$ if any required composition is undefined.
-
-**Definition 10.6 (Diffusion semantics) — total.** Given $w : E \to \mathbb{R}_{\ge0}$, $[\![p]\!]_{\mathrm{diff}} = \prod_{i=1}^k w(e_i)$.
-
-**Theorem 11 (Insufficiency of type-level licensing).**
-*Hypotheses.* $\kappa$ is not a function of types alone: there exist $e_1,e_2,e_1',e_2'$ with $t(e_1)=t(e_1')$, $t(e_2)=t(e_2')$, $(e_1,e_2)\in\kappa$, $(e_1',e_2')\notin\kappa$.
-*Conclusion.* Every predicate depending only on types is unsound or incomplete with respect to $\kappa$.
-*Applies to.* Path-composition form.
-
-*Proof.* Such a predicate takes one value on both pairs. If *admit*, it admits $(e_1',e_2')\notin\kappa$ and is unsound; if *refuse*, it refuses $(e_1,e_2)\in\kappa$ and is incomplete. $\blacksquare$
-
-**Theorem 12 (Non-associativity).**
-*Hypotheses.* A composition table as constructed.
-*Conclusion.* There exist $e_1,e_2,e_3$ with $(e_1\odot e_2)\odot e_3$ undefined and $e_1\odot(e_2\odot e_3)$ defined.
-*Applies to.* Path-composition form.
-
-*Proof.* Let $T=\{P,Q,R\}$ with $P\odot Q = R$, $Q\odot Q = Q$, $R\odot Q$ undefined, all other pairs undefined. Take $t(e_1)=P$, $t(e_2)=t(e_3)=Q$. Left: $e_1\odot e_2$ has type $R$ and $R\odot Q$ is undefined. Right: $e_2\odot e_3$ has type $Q$ and $P\odot Q=R$ is defined. $\blacksquare$
-
-**Corollary 12.1.** $(E,\odot)$ is a partial magma, not in general a partial semigroup.
-
-**Corollary 12.2.** A path does not determine its composite; a bracketing must be declared and distinct bracketings are distinct computations.
-
-**Corollary 12.3 (Licensed paths do not form a substructure).** The licensed paths are not the path set of any substructure.
-
-*Proof.* Substructure membership is a condition on instances alone, hence independent of bracketing; Theorem 12 exhibits bracketing-dependent licensure. $\blacksquare$
-
-**Theorem 13 (Semantic separation).**
-*Hypotheses.* $\kappa$ an arbitrary relation on distinct instances, as permitted by Definition 10.2.
-*Conclusion.* There exist a structure, weight $w$, designation $\Delta$ and bearers $a,b$ with $\sum_{p:a\to\Delta}[\![p]\!]_{\mathrm{diff}} > \sum_{p:b\to\Delta}[\![p]\!]_{\mathrm{diff}}$ while every $a\to\Delta$ path composes to $\bot_{\mathrm{und}}$ and some $b\to\Delta$ path composes.
-*Applies to.* Path-composition and diffusion forms.
-
-*Proof.* Elements $\{a,b,c,c',z\}$, $\Delta=\{z\}$, instances $e_1:a\to c$, $e_2:c\to z$, $f_1:b\to c'$, $f_2:c'\to z$, so the only paths are $(e_1,e_2)$ and $(f_1,f_2)$. Set $w(e_i)=1$, $w(f_i)=1/10$, giving sums $1$ and $1/100$. Set $(e_1,e_2)\notin\kappa$ and $(f_1,f_2)\in\kappa$, admissible since the instances are distinct and $\kappa$ is arbitrary. $\blacksquare$
-
-**Observation 13.1.** Theorem 13 does not show diffusion functionals invalid. $[\![\cdot]\!]_{\mathrm{diff}}$ is total on any weighted structure whatever the transitivity of the relations. The theorem shows the two semantics independent, so identifying a diffusion value with a relational claim is an interpretive error, not a mathematical one.
-
-**Observation 13.2.** Accordingly the assertion *"path functionals are invalid when relations are non-transitive"* is **false** and is rejected in §18. The defensible assertion is that traversal semantics must be declared.
-
-### 10.1 Recognisability
-
-**Observation 10.7 (Path language class).** The licensed-path structure is a guarded register automaton over a data path: a finite automaton over relation types together with a guard on registers carrying the previously composed signature, evaluated on the product $U \times Q \times \mathcal{S}$ where $\mathcal{S}$ is the register content set.
-
-- If $\mathcal{S}$ is finite, the product is finite-state and the licensed-path language is regular in the product alphabet; recognisability is decidable and the state count is $|U|\cdot|Q|\cdot|\mathcal{S}|$.
-- If $\mathcal{S}$ is unbounded — as it is when the register retains full composed-signature history — the automaton is infinite-state and the licensed-path language **need not be regular**. No claim of finite recognisability is made in that case.
-
-**Observation 10.8 (Consequence).** Arbitrary path-history constraints are therefore **not** claimed finitely recognisable. A theory instance wanting decidable licensure must bound the register content; one retaining full history accepts unbounded state and the associated computational cost.
-
-**Observation 10.9 (Prior art — preserved).** The licensed-path machinery of this section is established guarded/register-automaton and data-path theory. It is **not** novel mathematics, and no part of §10 is offered as a novelty claim. This conclusion is preserved from the prior-art analysis and is not reopened here.
+**Observation 10.2′ — remediates AV-018.** The prior Corollary 10.2 asserted that empirical content can arise *only* by constraining four named components. That exhaustiveness claim is unproved and is **withdrawn**: restrictions on codomains, evaluator classes, priors, cross-context relations, or morphisms can each exclude assignments.
 
 ---
 
-## 11. Representation invariance
+## 10. Composition
 
-**Definition 11.1 (Structural valuation).** $\varphi$ is *structural* if $\varphi(\pi_{\mathfrak{B}} b) = \varphi(b)$ for every automorphism $\pi$ (Definition 6.1).
+**Definition 10.1 (Composition signature) — primitive, remediates AV-019.** A tuple $(U,E,\mathrm{src},\mathrm{tgt},t,\kappa,\odot,w)$: $U$ a set of nodes; $E$ a set of *instances*; $\mathrm{src},\mathrm{tgt}:E\to U$; $t:E\to T$ a type map; $\kappa\subseteq\{(e,f)\in E\times E:\mathrm{tgt}(e)=\mathrm{src}(f)\}$; $\odot:\kappa\to E$ a **primitive** total map on $\kappa$ with $\mathrm{src}(e\odot f)=\mathrm{src}(e)$ and $\mathrm{tgt}(e\odot f)=\mathrm{tgt}(f)$; $w:E\to\mathbb{R}_{\ge0}$.
 
-**Theorem 14 (Orbit constancy).**
-*Hypotheses.* Definition 11.1.
-*Conclusion.* Every structural valuation is constant on automorphism orbits.
-*Applies to.* All forms.
+**Observation 10.1.1 — remediates AV-019.** The prior edition never defined $E$, gave instances no endpoints, and attempted to *derive* $\odot$ from $\kappa$ — which is impossible, since many operations share a domain. $\odot$ is now primitive and endpoint-coherent.
 
-*Proof.* The orbit of $b$ is $\{\pi_{\mathfrak{B}}b\}$, on which $\varphi$ takes the value $\varphi(b)$ by definition. $\blacksquare$
+**Definition 10.2 (Path).** A nonempty finite sequence $p=(e_1,\dots,e_k)$, $k\ge1$, with $\mathrm{tgt}(e_i)=\mathrm{src}(e_{i+1})$. Empty paths are not admitted.
 
-**Corollary 14.1.** A valuation distinguishing two bearers in one orbit is not structural and depends on data outside the invariance class.
+**Definition 10.3 (Semantics).** $[\![p]\!]_{\mathrm{comp}}$ under a **declared bracketing** is the iterated $\odot$-value, or $\bot_{\mathrm{und}}$ if any required pair lies outside $\kappa$. $[\![p]\!]_{\mathrm{diff}}:=\prod_{i=1}^k w(e_i)$, always defined.
 
-**Definition 11.2 (Artefact morphism).** A representation morphism whose induced action on every typed component of Definition 3.14 is the identity, and which differs only in the labelling of carriers.
+**Theorem 11 (Type-level licensing dichotomy).**
+*Hypotheses.* Definition 10.1; there exist $e_1,e_2,e_1',e_2'\in E$ with $t(e_1)=t(e_1')$, $t(e_2)=t(e_2')$, $(e_1,e_2)\in\kappa$, $(e_1',e_2')\notin\kappa$.
+*Conclusion.* Every predicate on $T\times T$ is, as a test for membership in $\kappa$, unsound or incomplete.
 
-**Corollary 14.2 (Artefact independence).** Under A3, $\sigma$ is unchanged by every artefact morphism.
+*Proof.* Such a predicate takes one value on both type-pairs. *Admit* admits $(e_1',e_2')\notin\kappa$; *refuse* refuses $(e_1,e_2)\in\kappa$. $\blacksquare$
 
-*Proof.* Immediate from A3 with $\iota_W = \mathrm{id}$ and $\iota_* C = C$. $\blacksquare$
+**Observation 11.0 — remediates AV-027.** Theorem 11 is conditional on its hypothesis. If $\kappa$ **is** exactly type-determined, a type-level predicate is sound and complete. Any unqualified rejection of type-level licensing is therefore unsupported.
 
-**Observation 11.3 (Demotion recorded).** In the prior edition this appeared as a theorem. It is a one-line consequence of A3 with no content beyond the axiom, and is demoted to a corollary. Theorem status is not retained for appearance.
+**Theorem 12′ (An instance-level non-associative composition exists) — replaces the withdrawn Theorem 12.**
+*Conclusion.* There is a composition signature and a path $(e_1,e_2,e_3)$ with $(e_1\odot e_2)\odot e_3$ undefined and $e_1\odot(e_2\odot e_3)$ defined.
 
-**Observation 11.4.** Theorem 2 and Theorem 14 are two faces of one fact. Invariance constrains what a valuation may see; designation supplies what invariance does not cover. Neither is dispensable.
+*Proof.* Let $U=\{u_0,u_1,u_2,u_3\}$ and $E=\{e_1,e_2,e_3,a,q\}$ with
+$\mathrm{src}/\mathrm{tgt}$: $e_1:u_0\!\to\!u_1$, $e_2:u_1\!\to\!u_2$, $e_3:u_2\!\to\!u_3$, $a:u_0\!\to\!u_2$, $q:u_1\!\to\!u_3$.
+Types: $t(e_1)=P$, $t(e_2)=t(e_3)=t(q)=Q$, $t(a)=R$.
+Let $\kappa=\{(e_1,e_2),(e_2,e_3),(e_1,q)\}$ — each pair endpoint-compatible — and define $\odot$ on $\kappa$ by $e_1\odot e_2:=a$, $e_2\odot e_3:=q$, $e_1\odot q:=a$. Endpoint coherence holds in each case.
+Then $(e_1\odot e_2)\odot e_3=a\odot e_3$, and $(a,e_3)\notin\kappa$, so it is undefined. And $e_1\odot(e_2\odot e_3)=e_1\odot q=a$, defined. $\blacksquare$
+
+**Observation 12.0 — remediates AV-020.** The prior Theorem 12 gave only a table on the type set $T$ and never constructed instances, intermediate results, or an instance-level operation; its hypothesis was the circular phrase "a composition table as constructed". Theorem 12′ exhibits the instances, the endpoints, and $\odot$ explicitly.
+
+**Observation 12.1′ — remediates AV-020.** The prior Corollaries 12.2 and 12.3 are **withdrawn**. 12.2 converted an existential into the universal claim that *a path does not determine its composite*, which is false: for any one-edge path, and for any associative $\odot$, the path does determine it. 12.3 invoked "substructure" and "licensed path", neither defined. What is proved is exactly Theorem 12′: **some** path has bracketing-dependent definedness, so a bracketing must be declared **for those signatures in which $\odot$ is non-associative**.
+
+**Theorem 13′ (Diffusion and composition can disagree).**
+*Conclusion.* There is a finite composition signature with nodes $a,b,z$ such that the total diffusion weight from $a$ to $z$ strictly exceeds that from $b$ to $z$, while every $a\to z$ path has $[\![\cdot]\!]_{\mathrm{comp}}=\bot_{\mathrm{und}}$ and some $b\to z$ path does not.
+
+*Proof.* $U=\{a,b,c,c',z\}$; $E=\{e_1:a\!\to\!c,\ e_2:c\!\to\!z,\ f_1:b\!\to\!c',\ f_2:c'\!\to\!z,\ g:b\!\to\!z\}$. By inspection of the endpoint maps, the only path from $a$ to $z$ is $(e_1,e_2)$ and the only paths from $b$ to $z$ are $(f_1,f_2)$ and $(g)$; the path sets are finite, so the sums are finite. Set $w(e_1)=w(e_2)=1$, $w(f_1)=w(f_2)=1/10$, $w(g)=0$. Then the $a$-sum is $1$ and the $b$-sum is $1/100$. Set $\kappa=\{(f_1,f_2)\}$ with $f_1\odot f_2:=g$, endpoint-coherent. Then $(e_1,e_2)\notin\kappa$ so $[\![(e_1,e_2)]\!]_{\mathrm{comp}}=\bot_{\mathrm{und}}$, while $[\![(f_1,f_2)]\!]_{\mathrm{comp}}=g$. $\blacksquare$
+
+**Observation 13.0 — remediates AV-021.** The prior proof used endpoints absent from its definitions, asserted without a graph that exactly two paths existed, and left the composition output unspecified. All three are supplied, and finiteness of the path sets is established by inspection rather than assumed.
+
+**Observation 13.1′ (What this does and does not show).** $[\![\cdot]\!]_{\mathrm{diff}}$ is total on any signature, whatever the transitivity of the underlying relations. Theorem 13′ shows the two semantics are independent on the exhibited signature. It does **not** show that path functionals are invalid under non-transitivity — that claim is false and is rejected in §16.
+
+**Observation 10.4′ — remediates AV-022. The recognisability subsection is withdrawn in full.** The prior edition asserted that licensed paths form a guarded register automaton on $U\times Q\times S$, that finite $S$ yields a finite-state product with decidable recognition and exactly $|U||Q||S|$ states, and that the machinery is subsumed by existing formalisms. $U$, $Q$, registers, guards and the reduction from $\kappa$ were all undefined; no finiteness hypothesis was placed on $U$ or $Q$, so finite $S$ does not give a finite product; decidability needs an effective presentation, not a finite carrier; the state count is an upper bound before reachability; and an arbitrary $\kappa$ can encode a non-computable membership relation. **All of it is withdrawn**, together with the prior Limitation 14.10 and the negative closure of Open Question 15.6. The narrower disclaimer — *no novelty is claimed* — is retained, since it requires no proof of universal subsumption.
 
 ---
 
-## 12. Consistency witness
+## 11. Consistency
 
-**Proposition 12.1 (Consistency of the deterministic–decision fragment).** The axioms A1–A10, restricted to the fragment comprising Definitions 3.1–3.19 with codomain classes $\mathsf{W}_1$ and $\mathsf{W}_2$, the probability-coupled profile class, and no path structure, are jointly satisfiable.
+**Proposition 11.1 (Consistency of the deterministic fragment).** The axioms A2, A3, A4, A5, A7, A8, A9, A10, restricted to the fragment comprising Definitions 3.1–3.12 and 3.15–3.17 with a class $\mathsf{W}_1$ codomain, the deterministic contrast form, and no decision, evidence, or composition structure, are jointly satisfiable.
 
-*Proof.* Exhibit the model $\mathcal{W}$:
-$\mathfrak{B}=\{b_1,b_2\}$; $\mathfrak{M}=\mathbb{R}^2$ Borel; $\mathcal{R}=\mathbb{R}^2$ with $r=\mathrm{id}$; $\mathcal{C}=\{C_1,C_2,C_0\}$.
-For $C_1$: $\mu=\delta_{(0,0)}$; $\mathcal{Y}=\mathbb{R}$; $M(x,y)=x$; $T(b_1)(x,y)=(x+2,y+1)$, $T(b_2)(x,y)=(x+1,y+2)$; $\approx$ is equality; $\delta(u,v)=|u-v|$; $W=(\mathbb{R}_{\ge0},+,0,\le)$; probability-coupled profile; $\rho$ the atom of a Dirac profile.
-$C_2$ as $C_1$ with $M(x,y)=y$.
-$C_0$ as $C_1$ with $T(b_i)(x,y)=(x,y+1)$ for both $i$.
-Decision structure on $C_1$: $\mathcal{A}=\mathbb{R}$, $L(\alpha,(x,y))=(\alpha-x)^2$, integrable under $\delta_{(0,0)}$, infimum attained.
+*Proof.* Exhibit the model $\mathcal{W}$.
 
-Verification: **A1** every value is a $\delta$ of a factual and an operated outcome, by construction. **A2** all eight components are supplied for each context. **A3** holds for the identity morphism, and for any bimeasurable relabelling by Definition 3.22, which transports every component. **A4** witnessed by $C_0$, under which both bearers have contrast $|x-x|=0$. **A5** $r=\mathrm{id}$ makes every fibre a singleton, so every contrast is determined and no fabricated point arises. **A6** a single $\mu$ per context. **A7** all values of $C_i$ lie in that context's $W$; no cross-context combination occurs. **A8** $\approx$ is equality, so congruence is trivial. **A9** every comparison set is a singleton, hence nonempty. **A10** every fibre is nonempty. $\blacksquare$
+*Carriers.* $\mathfrak{B}=\{b_1,b_2\}$. $\mathfrak{M}=\mathbb{R}^2$ with the Borel $\sigma$-algebra. $r:=\mathrm{id}_{\mathfrak{M}}$, so $\mathcal{R}=\mathfrak{M}$ with $\mathcal{H}_r=\mathcal{F}$. $W=(\mathbb{R}_{\ge0},+,0,\le)$ with the Borel $\sigma$-algebra, class $\mathsf{W}_1$.
 
-**Observation 12.2 (Scope of the witness — binding).** Proposition 12.1 establishes consistency **only** for the named fragment. It does **not** establish consistency for: non-trivial $\approx_C$ with a non-degenerate congruence requirement; the $\mathsf{W}_0$, $\mathsf{W}_3$ or $\mathsf{W}_4$ codomain classes; the set-, multiset- or measure-valued profile classes; the evidence-kernel structure of Definition 3.20; non-atomic knowledge states; or the path structure of §10. Consistency of the full signature is an **open proof obligation** (§14, OB-1). No consistency claim is made for structures the witness does not instantiate.
+*Morphism universe.* $\mathcal{G}:=\{\mathrm{id},\jmath\}$ where $\jmath$ is the representation morphism with $\jmath_{\mathfrak{B}}$ the transposition $b_1\leftrightarrow b_2$, $\jmath_{\mathfrak{M}}(x,y)=(y,x)$, $\jmath_{\mathcal{Y}}=\mathrm{id}_{\mathbb{R}}$, $\jmath_W=\mathrm{id}_W$. $\mathcal{G}$ is a group of order two, since $\jmath\circ\jmath=\mathrm{id}$.
+
+*Contexts.* All share $\mathcal{Y}=\mathbb{R}$ Borel, $\approx=\bot_{\mathrm{abs}}$, $\delta(u,v)=|u-v|$ total, $W$ as above, $\rho=$ the Dirac-atom reduction.
+$C_1$: $\mu=\delta_{(0,0)}$, $M(x,y)=x$, $T(b_1)(x,y)=(x+2,y+1)$, $T(b_2)(x,y)=(x+1,y+2)$.
+$C_2:=\jmath_*C_1$, computed from Definition 3.17: $\mu=\delta_{(0,0)}$, $M(x,y)=y$, $T(b_2)(x,y)=(x+1,y+2)$, $T(b_1)(x,y)=(x+2,y+1)$ with the bearer labels exchanged.
+$C_0$: $\mu=\delta_{(0,0)}$, $M(x,y)=x$, $T(b_1)=T(b_2)=\big((x,y)\mapsto(x,y+1)\big)$.
+Take $\mathcal{C}:=\{C_1,C_2,C_0\}$. This set is **closed under $\mathcal{G}$**: $\jmath_*C_1=C_2$, $\jmath_*C_2=C_1$ since $\jmath$ is an involution, and $\jmath_*C_0=C_0$ because $C_0$ is symmetric in the two bearers and its outcome map composed with $\jmath_{\mathfrak{M}}$ returns $C_0$'s own form under the relabelling. Every $\iota_*C$ for $\iota\in\mathcal{G}$, $C\in\mathcal{C}$ is therefore an element of $\mathcal{C}$.
+
+*Satisfaction.*
+**A2** — each context supplies all seven components; $\approx=\bot_{\mathrm{abs}}$ is a supplied optional value.
+**A3** — quantified over $\mathcal{G}$, which is the model's declared universe of morphisms. For $\iota=\mathrm{id}$ the equation is trivial. For $\iota=\jmath$: $\sigma_{\jmath_*C_1}(\jmath_{\mathfrak{B}}b_1)=\sigma_{C_2}(b_2)$. Computing directly, $C_2$ has outcome map $y$ and assigns $b_2$ the operation $(x,y)\mapsto(x+2,y+1)$, giving contrast $|{(0+1)}-0|=1$; and $\sigma_{C_1}(b_1)=2$. These differ, so the check is **not** vacuous — and it fails unless the transported context is computed correctly. Recomputing $\jmath_*C_1$ strictly by Definition 3.17: $M_{\jmath_*C_1}=\jmath_{\mathcal{Y}}\circ M_{C_1}\circ\jmath_{\mathfrak{M}}^{-1}$, and $M_{C_1}(\jmath^{-1}_{\mathfrak{M}}(x,y))=M_{C_1}(y,x)=y$; and $T_{\jmath_*C_1}(\jmath_{\mathfrak{B}}b_1)=T_{\jmath_*C_1}(b_2)=\jmath_{\mathfrak{M}}\circ T_{C_1}(b_1)\circ\jmath_{\mathfrak{M}}^{-1}$, which sends $(x,y)\mapsto(y,x)\mapsto(y+2,x+1)\mapsto(x+1,y+2)$. Its contrast under outcome map $y$ is $|(0+2)-0|=2=\sigma_{C_1}(b_1)$, and $\widehat{\jmath_W}=\mathrm{id}$. So A3 holds for this pair, and symmetrically for $b_2$ and for $C_0$. **A3 is verified over a nontrivial morphism on a context set closed under transport.**
+**A4** — $C_0$ gives contrast $|x-x|=0$ for both bearers, so $\sigma_{C_0}(b_i)=0_W$.
+**A5** — every value computed above lies in $W\subseteq\widehat W$, assigned by Definition 5.3.
+**A7** — all values lie in $\widehat W$; no cross-context comparison is performed.
+**A8** — vacuous: $\approx=\bot_{\mathrm{abs}}$ in every context.
+**A9** — every $\Omega^b_C=\mathfrak{M}\neq\emptyset$.
+**A10** — $r=\mathrm{id}$, so every fibre is a singleton and no fibre is empty. $\blacksquare$
+
+**Observation 11.1.1 — remediates AV-024.** The prior Proposition 12.1 failed for four reasons, each now addressed: the missing $\mathfrak{A}_C$ component (deleted from the signature, Observation 3.10.1); the unstated outcome $\sigma$-algebra (now Borel on $\mathbb{R}$); A3 checked only for the identity, which is vacuous (now checked for a **nontrivial involution** with the computation shown); and a context set not shown closed under transport (now proved closed under the declared group $\mathcal{G}$).
+
+**Observation 11.1.2 (Scope of the witness — binding) — remediates AV-025.** Proposition 11.1 establishes consistency **only** for the named deterministic fragment, and A3 only over the finite morphism universe $\mathcal{G}$. It does **not** establish consistency for: codomain classes $\mathsf{W}_2$ and $\mathsf{W}_2^{\mathrm{m}}$; interval or bottom-valued outputs; non-trivial $\approx_C$ with a non-degenerate congruence requirement; decision structure; evidence structure; non-atomic measures; the composition signature of §10; or A3 over the class of *all* representation morphisms. Consistency beyond this fragment is **open obligation OB-1**, and it remains **blocking** for any consistency claim beyond the fragment.
 
 ---
 
-## 13. Proven statements
+## 12. Verified results
 
-| № | Statement | Form | §  |
+| № | Statement | Form | § |
 |---|---|---|---|
-| 1 | Significance orderings are strictly reversible across contexts | deterministic | 5 |
-| 2 | A context fixed by an automorphism cannot separate bearers it relates | all | 6 |
-| 3 | Factorisation through fibres holds iff the function is fibre-constant | all | 7 |
-| 4 | A congruent evaluator descends to the quotient; without congruence it need not | all with $\approx_C$ | 7 |
-| 5 | The three significance forms are non-negative under stated hypotheses | det./dec./inf. | 8 |
-| 6 | The three forms are pairwise non-equivalent | det./dec./inf. | 8 |
-| 7 | A non-negative additive context-free scalar is identically zero under nullity | $\mathsf{W}_1$ | 8 |
-| 8 | A summary derived from the representation adds no information | all | 8 |
-| 9 | Max-normalised values are arena-dependent and dimensionless | all | 8 |
-| 10 | **Every assignment of values to bearers is realised by some context** | all | 9 |
-| 11 | Type-level licensing is unsound or incomplete | path | 10 |
-| 12 | Partial composition is not associative | path | 10 |
-| 13 | Diffusion and composition semantics are independent | path/diffusion | 10 |
-| 14 | Structural valuations are constant on automorphism orbits | all | 11 |
+| 1 | Order reversal **exists** between two contexts | deterministic | 5 |
+| 3 | Measurable factorisation holds iff fibre-constant (final $\sigma$-algebra, total $h$) | all | 7 |
+| 3.2′ | Under totality, non-fibre-constancy forces a non-singleton identified set | all | 7 |
+| 3.3 | Induced outcome map exists iff fibre-constant | all | 7 |
+| 4′ | Partial quotient descent on $\bar D_C$, with the pullback relation stated | with $\approx_C$ | 7 |
+| 5 | Non-negativity of the three forms under stated hypotheses | eff./dec./inf. | 8 |
+| 6 | The three forms disagree in order on exhibited contexts | eff./dec./inf. | 8 |
+| 7′ | Additive context-free scalar is zero **on a nullity-closed family** | $\mathsf{W}_1$ | 8 |
+| 8 | Conditional information redundancy | all | 8 |
+| 9 | Arena dependence of normalisation | all | 8 |
+| 10′ | Bounded encodability, deterministic form, projection evaluator | deterministic | 9 |
+| 11 | Type-level licensing dichotomy, **conditional on its hypothesis** | composition | 10 |
+| 12′ | An instance-level non-associative composition exists | composition | 10 |
+| 13′ | Diffusion and composition can disagree on an exhibited signature | composition | 10 |
+| 6.2 | Orbit constancy under a fixed context | all | 6 |
+| 11.1 | Consistency of the deterministic fragment | fragment | 11 |
 
 ---
 
-## 14. Proven limitations and open proof obligations
+## 13. Withdrawn results
 
-**Limitation 14.1 (No context-free ordering).** By Corollary 1.1 no ordering of $\mathfrak{B}$ is consistent with every context.
+Each was a statement of the prior edition. None is asserted here.
 
-**Limitation 14.2 (No context-free scalar contribution).** By Theorem 7 and Observation 7.1'.
-
-**Limitation 14.3 (No epistemic role for derived summaries).** By Theorem 8.
-
-**Limitation 14.4 (The reduction is not determined).** A2 requires $\rho_C$; the theory supplies none. Distinct reductions of one profile induce distinct orderings whenever the profile is asymmetric.
-
-**Limitation 14.5 (Path values are not intrinsic).** By Corollary 12.2.
-
-**Limitation 14.6 (Identification is not guaranteed).** By Corollary 3.2, with $\bot_{\mathrm{inc}}$ reserved for the empty compatible class by A10.
-
-**Limitation 14.7 (No cross-context comparison).** By A7 and Observation 8.11.
-
-**Limitation 14.8 (Designation is exogenous).** Theorem 2 shows designation necessary and says nothing about its source.
-
-**Limitation 14.9 (No empirical content unrestricted).** By Theorem 10 and Corollary 10.1. This is the strongest limitation in the document.
-
-**Limitation 14.10 (Recognisability is conditional).** By Observations 10.7–10.8.
-
-**Open proof obligation OB-1.** Consistency of the full signature, beyond the fragment of Proposition 12.1. See Observation 12.2 for the exact list of uninstantiated structures.
-
-**Open proof obligation OB-2.** Measurability of $\delta^{\,b}_C$ is *assumed* in Assumption 8.0 rather than derived. Conditions on $M_C$, $\tau$ and $\delta_C$ sufficient for it are not established here.
-
-**Open proof obligation OB-3.** Theorem 5(iii) assumes integrability of $\mathfrak{r}(\mu_C^{K_b})$. Conditions guaranteeing it are not established here.
-
----
-
-## 15. Open mathematical questions
-
-**Open Question 15.1.** Under what conditions does a composition table admit an associative refinement, and is there an obstruction theory for the failure?
-
-**Open Question 15.2.** Characterise $C$-sufficiency structurally: is there a computable criterion for fibre-constancy of $\delta^{\,b}_C$?
-
-**Open Question 15.3.** Is there an axiomatisation of preferences over contrast profiles forcing a unique reduction $\rho_C$? If not, on what class of contexts is $\rho_C$ determined up to monotone equivalence?
-
-**Open Question 15.4.** Do the three forms of §8 arise as fibres of a single indexed structure over a base of question-types, so that Theorem 6 states non-triviality of that fibration?
-
-**Open Question 15.5.** Is contextual admissibility reducible to a threshold on a decision-theoretic loss, or is the admit/reject/indeterminate trichotomy irreducibly three-valued?
-
-**Open Question 15.6 — closed, negatively.** *Is there an invariant of the licensed-path structure not expressible in an existing typed, temporal or dimensionally annotated formalism?* **No.** The structure is a guarded register automaton over a data path — established graph-database theory, with guards instantiated by existing temporal, spatial and dimensional vocabularies. Retained as a closed record. **Observation:** this closure disturbs no theorem of §10; Theorems 11–13 concern the structure, not its novelty.
-
-**Open Question 15.7.** Is there a pseudometric on contexts under which significance is continuous? A negative answer would mean small changes of question can produce discontinuous changes of valuation.
-
-**Open Question 15.8.** For which operation families is $b \mapsto \sigma_C(b)$ determined by single-bearer contrasts, and for which are joint operations required? Does the theory need a coalitional extension?
+| Prior statement | Ground for withdrawal | Finding |
+|---|---|---|
+| Theorem 2 "designation necessity" | Displayed equality is an instance of A3; "underlying structure" undefined | AV-006 |
+| Definitions 6.2–6.3 designation / filter context | Underlying structure and group action undefined | AV-006 |
+| Corollaries 2.1–2.2 | Depend on withdrawn definitions | AV-006 |
+| Corollary 1.1 (no context-free ordering) | Universal claim from an existential theorem | AV-007 |
+| Corollary 3.1 (computability) | **False**: measurable factorisation is not an algorithm | AV-009 |
+| Corollary 3.2 (forced abstention in every non-sufficient case) | **False**: non-totality branch admits singleton fibres | AV-010 |
+| Theorem 4 (quotient descent) | **False** under the total reading; incomplete under the partial reading | AV-011 |
+| Corollary 6.1 (no common latent quantity) | Latent quantity undefined; monotone-map argument unsupported | AV-013 |
+| Theorem 7 (additive scalar triviality) | **False**: nullity witness need not lie in the family | AV-014 |
+| Corollary 8.1 (no epistemic role) | **False**: informative to an observer lacking $R$ | AV-015 |
+| Corollaries 9.1–9.2 (incomparability, uncalibratability) | Do not follow from Theorem 9 | AV-016 |
+| Theorem 10 proof, and its "all forms" label | Subtraction not measurable in class $\mathsf{W}_2$ | AV-017 |
+| Corollary 10.1 (**no empirical content whatever**) | Not proved; other forms are constrained; single-context only | AV-018 |
+| Corollary 10.2 (exhaustive sources of content) | Exhaustiveness unproved | AV-018 |
+| Corollaries 12.2–12.3 | Universal overreach; undefined "substructure" | AV-020 |
+| Observations 10.7–10.9 (recognisability, state count, prior-art subsumption) | Undefined objects; missing finiteness and effectiveness; universal claim unproved | AV-022 |
+| Corollary 14.1 second clause ("depends on data outside") | Not a logical consequence of non-structurality | AV-023 |
+| Proposition 12.1 as a consistency proof | Missing component; vacuous A3 check; set not closed under transport | AV-024 |
+| Axioms A1, A6 | Not predicates over the signature; demoted to DP-1, DP-2 | AV-005 |
+| Limitations 14.1, 14.2, 14.3, 14.5, 14.6, 14.9, 14.10 | Depend on withdrawn or false results | AV-027 |
+| Rejections 16.2, 16.4, 16.5, 16.7, 16.9, 16.11, 16.14 | Depend on withdrawn or false results | AV-027 |
+| Open Question 15.6's negative closure | Universal prior-art subsumption unproved | AV-022 |
 
 ---
 
-## 16. Explicitly rejected formulations
+## 14. Limitations that follow from verified results
 
-Each rejection names the result that defeats it.
+**14.4.** The reduction $\rho_C$ is primitive and is not determined by the theory. *(The prior further claim that distinct reductions always induce distinct orderings on asymmetric profiles is withdrawn: distinct positive rescalings induce the same ordering — AV-027.)*
 
-**16.1.** *Significance is an intrinsic attribute of a bearer.* — Theorem 1, Corollary 1.1.
+**14.7.** Absent a declared transport (Definition 8.9), values under distinct contexts are not compared. This is the A7 stipulation, not a theorem, and A7 expressly permits comparison through a declared transport.
 
-**16.2.** *Significance decomposes as a context-free scalar plus a context-dependent remainder.* — Theorem 7 with Observation 7.1'.
+**14.11 (new).** Within the deterministic contrast form with unrestricted evaluators, the axioms exclude no single-context assignment (Corollary 10.1′). **No conclusion about the framework as a whole follows.**
 
-**16.3.** *A context-free summary supplies information not in the representation.* — Theorem 8.
-
-**16.4.** *Significance is a rank normalised within an arena.* — Theorem 9, Corollaries 9.1–9.2.
-
-**16.5.** *Significance is one quantity, variously measured.* — Theorem 6, Corollary 6.1.
-
-**16.6.** *Significance emerges from structure.* — Rejected as a formulation: it supplies no component of Definition 3.14, so by A2 it yields $\bot_{\mathrm{und}}$.
-
-**16.7.** *A context acts by restricting the admissible structure.* — Theorem 2, Corollary 2.1.
-
-**16.8.** *Composition is licensed at the level of types.* — Theorem 11.
-
-**16.9.** *A path has a value determined by the path.* — Theorem 12, Corollary 12.2.
-
-**16.10.** *Path functionals are invalid when relations are non-transitive.* — Rejected as **false** by Observations 13.1–13.2.
-
-**16.11.** *A point value may be returned when the contrast is set-identified.* — Corollary 3.2 with A5.
-
-**16.12.** *Values under distinct contexts may be compared.* — A7, Observation 8.11.
-
-**16.13.** *Significance may depend on the encoding.* — Corollary 14.2.
-
-**16.14.** *The framework has empirical content of its own.* — Theorem 10, Corollary 10.1.
-
-**16.15.** *Context is discovered from evidence.* — Rejected: $T_C$, $\delta_C$ and $\rho_C$ are primitives of Definition 3.14, supplied not derived. The theory contains no construction producing them from $\mu_C$.
-
-**16.16.** *The framework derives its evaluator automatically.* — Rejected by the same reading of Definition 3.14, and by Theorem 10, under which any evaluator whatever is realisable.
-
-**16.17.** *Standing.* — No context-free ordering primitive exists in the signature. Theorem 7 forbids reintroducing one additively; Theorem 8 denies it an epistemic role.
-
-**16.18.** *Mathematical or graph-theoretic novelty.* — No novelty is claimed anywhere in this document. Observation 10.9 records the licensed-path machinery as established prior art.
-
-**16.19.** *Significance-first intelligence.* — Not a statement of this theory; no definition, axiom or theorem above refers to it.
+**14.12 (new).** Consistency is established only for the deterministic fragment over a finite morphism universe (Proposition 11.1, Observation 11.1.2).
 
 ---
 
-*End of ASTRO-THEORY-0001 — Theory Candidate. Not verified. Not frozen.*
+## 15. Open obligations and questions
+
+**OB-1 (Blocking).** Consistency beyond the deterministic fragment, including A3 over all representation morphisms. See Observation 11.1.2 for the exact exclusion list.
+
+**OB-2.** Conditions on $M_C$, $\tau$ and $\delta_C$ sufficient for measurability of $\delta^{\,b}_C$, currently assumed in Assumption 8.0.
+
+**OB-3.** Conditions guaranteeing existence of a regular evidence structure (Definition 3.14) on given spaces.
+
+**OB-4 (new).** A formalisation of DP-1 and DP-2 as predicates over the signature, or a demonstration that none is needed.
+
+**Open Question 15.1.** Conditions under which a composition signature admits an associative $\odot$.
+
+**Open Question 15.2.** A structural characterisation of fibre-constancy.
+
+**Open Question 15.3.** An axiomatisation of preferences over profiles forcing a unique reduction.
+
+**Open Question 15.4.** Whether the three forms of §8 are fibres of a single indexed structure.
+
+**Open Question 15.5.** Whether admissibility is reducible to a decision-theoretic threshold.
+
+**Open Question 15.6 — reopened.** Is there an invariant of a composition signature not expressible in existing typed, temporal or dimensionally annotated formalisms? The prior edition closed this negatively. That closure is **withdrawn**: a universal subsumption claim over an unquantified comparison class was neither proved nor cited. The question is open. Independently of it, **no novelty is claimed by this document**.
+
+**Open Question 15.7.** A pseudometric on contexts under which significance is continuous.
+
+**Open Question 15.8.** Whether joint operations are required, i.e. whether a coalitional extension is needed.
+
+---
+
+## 16. Rejected formulations
+
+Only those entailed by a verified result are retained. Each names its ground.
+
+**16.1.** *Significance is an intrinsic attribute of a bearer.* — Rejected as a **stipulation** of Definition 5.3, under which $\sigma$ is a function of $(C,b)$. Theorem 1 shows only that context-reversal is permitted; it does not by itself refute intrinsicness.
+
+**16.3.** *A derived summary supplies information beyond the representation to an observer who already has the representation.* — Theorem 8.
+
+**16.6.** *Significance emerges from structure.* — Rejected as not a proposition of this signature: it supplies no component of Definition 3.10 and states no map.
+
+**16.8.** *Type-level licensing is sound and complete in general.* — Theorem 11, **under its hypothesis** that $\kappa$ is not type-determined. Where $\kappa$ is exactly type-determined, type-level licensing is sound and complete.
+
+**16.10.** *Path functionals are invalid when relations are non-transitive.* — Rejected as **false**: $[\![\cdot]\!]_{\mathrm{diff}}$ is total on any signature (Observation 13.1′).
+
+**16.12.** *Values under distinct contexts may be compared **without a declared transport**.* — A7 with Definition 8.9. The unqualified prior form is withdrawn, since A7 expressly permits comparison through a declared transport.
+
+**16.13.** *Significance may depend on artefact relabelling.* — Corollary 6.2, **for morphisms in the declared universe only**.
+
+**16.15.** *Context is discovered from evidence.* — Rejected by inspection of Definition 3.10: $T_C$, $\delta_C$ and $\rho_C$ are primitives; no construction produces them from $\mu_C$.
+
+**16.16.** *The framework derives its evaluator automatically.* — Same ground. *(Theorem 10′ realises value assignments, not evaluators; the prior appeal to it is withdrawn.)*
+
+**16.17.** *A context-free ordering primitive exists in this signature.* — Rejected by inspection: no such component is declared. *(The prior theorem-based prohibitions are withdrawn with Theorem 7; Theorem 7′ prohibits only the additive decomposition on a nullity-closed family.)*
+
+**16.18.** *This document claims novelty.* — Rejected: no novelty claim is made. **No universal prior-art subsumption is claimed either** (Open Question 15.6).
+
+**16.19.** *Significance-first intelligence is a statement of this theory.* — Rejected: the phrase occurs in no definition, axiom or theorem.
+
+---
+
+*End of ASTRO-THEORY-0001 — Theory Candidate, remediated. Not verified. Not frozen. Awaiting independent re-verification.*
