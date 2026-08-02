@@ -4,14 +4,16 @@
 |---|---|
 | Status | **Theory Candidate.** Not frozen in this pass. |
 | Structure | **Part A — Version 1 Deterministic Core Candidate** · **Part B — Candidate Enrichments** |
-| Verification | Not externally verified. The prior edition was independently verified as **DETERMINISTIC CORE REQUIRES BOUNDED REMEDIATION** (blocking findings TR-1 – TR-6 of the Final Version 1 Verification). This edition closes those findings and awaits final freeze verification. |
+| Verification | Not externally verified. The prior edition was independently examined for freeze and returned **NOT READY FOR VERSION 1** on the single blocking defect **FFV-001** — Definition 7.7 was not a complete definition. That examination established no contradiction, no failed witness, no theorem exceeding its proof and no Part B dependency. This edition closes FFV-001 and awaits re-verification. |
 | Empirical status | Not empirically validated. Evidence level `EH-0`. |
-| Novelty | No novelty is claimed. No universal prior-art subsumption is claimed. |
-| Prior edition | Blob `c20ca91fa18551f247dfa1c150dea3f9d9b510d5`. Not silently overwritten; every change is mapped in `verification/ASTRO-THEORY-0001-TERMINAL-CHANGE-MAP.md`. |
+| Novelty | No novelty is claimed. No universal prior-art subsumption is claimed. No minimality is claimed. |
+| Prior edition | Blob `6fc866796b0a9c39d3f7384d4118fce8ee7ae5ac`. Not silently overwritten; every change is mapped in `verification/ASTRO-THEORY-0001-FFV-001-CHANGE-MAP.md`. |
 
 **Freeze boundary.** Part A is self-contained: **no Part A definition, axiom, theorem or proof depends on anything in Part B.** Part B is Candidate, non-frozen, not required by the deterministic core, outside the consistency claim, and outside any Version 1 verification claim.
 
-**What changed in this pass — terminal formal closure only.** No theory redesign, no new result, no novelty claim. The extended codomain action is retyped $\widehat W\to\widehat W$, its unbound target removed (TR-1). The codomain is promoted to a **codomain object** carrying an explicitly selected class datum, so the structure used by A4 and by morphism preservation is supplied through the tuple rather than through prose (TR-2). Cross-context transport (Definition 8.9) and axiom **A7** are **withdrawn** from Version 1: no retained theorem used either, and neither was a predicate over the declared instance (TR-3). The superseded four-component instance equality is replaced by the complete tuple, and Theorem 3.2′ is gated to the supplied-representation branch (TR-4). The identified output is given a declared function type and its own carrier (TR-4). Corollary 10.1″ is **narrowed** to the single-context construction and no longer claims axiom-level non-exclusion (TR-5). Proposition 11.1′ is recomputed against the repaired signature (TR-6).
+**What changed in this pass — micro-remediation of one defect only.** **Definition 7.7 is withdrawn** (Observation 7.7.1) and removed from the signature of Proposition 11.1′, closing **FFV-001**. It named four notions and defined three of them not at all: minimal sufficiency, a distinguishability indicator and an equality partition had no symbol, domain, codomain or rule, while its fourth notion merely duplicated Definition 7.4. **Sufficiency is retained, unchanged, in Definition 7.4.** The three undefined notions are **not part of Version 1** and are deferred as **OB-A7**.
+
+**Nothing else changed.** No axiom, theorem, proof, witness calculation, codomain structure, transport rule or representation component was touched, and Part B is byte-identical. The non-blocking observation FFV-NB-001 — a surplus $\mathsf{r}=\bot_{\mathrm{abs}}$ hypothesis in Theorem 1 — is **deliberately not corrected here**, being outside the authorised scope of a single-defect pass.
 
 ---
 
@@ -203,7 +205,7 @@ These are **abbreviations for the displayed components**, introduced by this def
 
 **Observation 3.18.2 (Effect of $\mathsf{r}$) — remediates DCV-002, TR-4.** $\mathsf{r}$ is instance data, not external data.
 
-*Supplied branch.* If $\mathsf{r}=(r,(\mathcal{R},\mathcal{H}))$, then **A10**, **Definitions 7.1, 7.4, 7.5 and 7.7** and **Theorem 3.2′** are interpreted with that $r$, and $\mathcal{H}_r$ of Definition 7.1 is computed from it.
+*Supplied branch.* If $\mathsf{r}=(r,(\mathcal{R},\mathcal{H}))$, then **A10**, **Definitions 7.1, 7.4 and 7.5** and **Theorem 3.2′** are interpreted with that $r$, and $\mathcal{H}_r$ of Definition 7.1 is computed from it.
 
 *Absent branch.* If $\mathsf{r}=\bot_{\mathrm{abs}}$, then those statements have no instance to interpret and are **typed as inapplicable**: A10 is not asserted; the identified-output function $\mathrm{Id}^b_C$ of Definition 7.5 is **not formed**; no sufficiency, fibre-constancy or totality predicate of Definition 7.4 is defined; and **the hypotheses and conclusion of Theorem 3.2′ are not formed**, so the theorem is neither true nor false and **no vacuous truth is inferred from it**. Inapplicability is a typed state, not a truth value.
 
@@ -219,7 +221,7 @@ These are **abbreviations for the displayed components**, introduced by this def
 | $\mathbb{W}=\big((W,\preceq_W,\Sigma_W),\mathsf{c}\big)$ | **codomain object** (Def 3.6) | required | global (homogeneous) | — | values; A5; Defs 3.7, 3.8, 3.11, 3.16 |
 | ↳ carrier $(W,\preceq_W,\Sigma_W)$ | codomain carrier (Def 3.5) | required | global | — | Defs 3.7, 3.8, 3.12.1; A5 |
 | ↳ class datum $\mathsf{c}$ | $\mathsf{W}_1(\oplus,0_W)$ **or** $\bot_{\mathrm{abs}}$ | **required, typed** | global | — | **A4** ($0_W$); Def 3.15 (W-c); Thms 1, 7′; Prop 11.1′ |
-| $\mathsf{r}$ | $(r,(\mathcal{R},\mathcal{H}))$ **or** $\bot_{\mathrm{abs}}$ | **optional, typed** | global | total if supplied | A10; Defs 7.1, 7.4, 7.5, 7.7; Thm 3.2′; Prop 11.1′ |
+| $\mathsf{r}$ | $(r,(\mathcal{R},\mathcal{H}))$ **or** $\bot_{\mathrm{abs}}$ | **optional, typed** | global | total if supplied | A10; Defs 7.1, 7.4, 7.5; Thm 3.2′; Prop 11.1′ |
 | $\mathcal{C}$ | set of contexts | required | global | — | A3, A4; Thm 7′; Prop 11.1′ |
 | $\mathcal{G}$ | subgroup of $\mathrm{Mor}(\mathbb{F})$ | required | global | — | A3; Def 6.1; Cor 6.2 |
 | $\bot_{\mathrm{abs}}$ | symbol (Def 3.9) | required | global | — | typed absence of $\mathsf{c}$, $\mathsf{r}$, $\approx_C$; FR-1 |
@@ -391,7 +393,20 @@ with **domain** $\mathcal{R}$ — the representation carrier of $\mathsf{r}$ —
 
 **Observation 3.2.1 (Non-conclusions).** Non-sufficiency arising from failure of **totality** alone yields $\bot_{\mathrm{und}}$ by Definition 5.3, and no two-valued fibre. The universal form asserted in an earlier edition was false and remains withdrawn. Nothing is concluded for an instance with $\mathsf{r}=\bot_{\mathrm{abs}}$.
 
-**Definition 7.7 (Four distinct notions).** (i) sufficiency; (ii) minimal sufficiency relative to $\delta^{\,b}_C$; (iii) the distinguishability indicator on $\Omega^b_C\times\Omega^b_C$; (iv) the partition of $\Omega^b_C$ by equality of $\delta^{\,b}_C$. **No minimality is claimed anywhere.**
+**Observation 7.7.1 (Withdrawal of Definition 7.7) — remediates FFV-001.** The prior edition carried:
+
+> **Definition 7.7 (Four distinct notions).** (i) sufficiency; (ii) minimal sufficiency relative to $\delta^{\,b}_C$; (iii) the distinguishability indicator on $\Omega^b_C\times\Omega^b_C$; (iv) the partition of $\Omega^b_C$ by equality of $\delta^{\,b}_C$. **No minimality is claimed anywhere.**
+
+**Withdrawal.** That declaration is withdrawn from Version 1. It was not a definition: of the four notions it named, three were given no symbol, no domain, no codomain and no rule, and the fourth duplicated Definition 7.4. The grounds are exact.
+
+1. **Sufficiency (i) is already defined, and is retained.** Definition 7.4 defines "*$C$-sufficient for $b$*" completely, as the conjunction of totality and fibre-constancy for $(C,b)$. Clause (i) added nothing to it. **Sufficiency is therefore preserved in Version 1 exactly as Definition 7.4 states it**, and every use of the word "sufficient" in Part A refers to that definition and to no other.
+2. **Minimal sufficiency (ii) is not part of Version 1.** The phrase named no admissible class of sufficient representations, no comparison relation, and no minimality predicate, so it denoted nothing. Supplying those would introduce an ordering apparatus that no retained statement consumes, and would create precisely the minimality claim that Observation 3.0.1 and §A.10.2.4 disclaim. **No notion of minimal sufficiency exists in Version 1, and none is claimed.**
+3. **The distinguishability indicator (iii) is not part of Version 1.** No symbol, codomain or value rule was declared, and the phrase occurs nowhere else in Part A.
+4. **The equality partition (iv) is not part of Version 1.** No symbol or quotient notation was declared. It is not the quotient of Theorem 4′, which is taken by the supplied context equivalence $\approx_C$ on $\mathcal{Y}_C$ and is fully defined there; the two must not be conflated.
+
+**Nothing retained uses the withdrawn notions.** Every retained statement — Theorems 1, 3, 3.2′, 4′, 7′, 9, 10″, Corollaries 3.3, 6.2, 10.1″, Proposition 11.1′, and axioms A3, A4, A5, A8, A9, A10 — was checked individually: none cites Definition 7.7, and none mentions minimal sufficiency, a distinguishability indicator, or the equality partition. Withdrawal therefore removes no result and changes no proof, witness or axiom.
+
+**Removal was preferred to completion.** Completing (ii), (iii) and (iv) was the alternative. It was rejected because it would broaden the deterministic signature with structure no retained statement consumes, and because a minimality predicate would contradict the document's standing non-claims. The label **7.7** is not reused. Definition 7.7 is removed from the signature of Proposition 11.1′, since it declared no primitive that the consistency claim requires. Any future treatment of the three withdrawn notions is deferred as **OB-A7**.
 
 **Theorem 4′ (Partial quotient descent).**
 *Hypotheses.* $\approx_C\neq\bot_{\mathrm{abs}}$; A8; $p$ the projection to $\mathcal{Y}_C/\!\approx_C$; $\bar D_C:=(p\times p)(D_C)$.
@@ -464,7 +479,7 @@ The corollary above is therefore **restricted to the single-context construction
 
 **Proposition 11.1′ (Consistency of the deterministic core) — replaces the invalid Proposition 11.1. Recomputed against the repaired signature under TR-6.**
 *Quantifier.* **Existential** in the theory instance; universal in $\iota\in\mathcal{G}$, $C\in\mathcal{C}$ and $b\in\mathfrak{B}$ within the satisfaction checks.
-*Claim.* There is a theory instance satisfying FR-1 and axioms **A3, A4, A5, A8, A9, A10** over the deterministic core signature comprising **Definitions 3.1–3.5, 3.5.1, 3.6, 3.7, 3.8, 3.8.1, 3.9–3.12, 3.12.1, 3.14.1, 3.15, 3.16, 3.17, 3.18, 3.18.3, 3.18.4, 5.1–5.3, 6.1, 7.1, 7.4, 7.5 and 7.7**. There is no axiom A7 and no Definition 8.9 in Version 1 (Observations A.3.2, 8.9.1), so neither is claimed.
+*Claim.* There is a theory instance satisfying FR-1 and axioms **A3, A4, A5, A8, A9, A10** over the deterministic core signature comprising **Definitions 3.1–3.5, 3.5.1, 3.6, 3.7, 3.8, 3.8.1, 3.9–3.12, 3.12.1, 3.14.1, 3.15, 3.16, 3.17, 3.18, 3.18.3, 3.18.4, 5.1–5.3, 6.1, 7.1, 7.4 and 7.5**. There is no axiom A7, no Definition 8.9 and no Definition 7.7 in Version 1 (Observations A.3.2, 8.9.1, 7.7.1), so none is claimed. **Every definition named above is complete**, and each is instantiated by the witness below.
 
 *Proof.* Exhibit the theory instance $\mathbb{T}=\big(\mathbb{F},\ \mathsf{r},\ \mathcal{C},\ \mathcal{G}\big)$ of Definition 3.18, component by component. **Every datum below is supplied through a declared slot of the tuple; no structure is introduced in prose.**
 
@@ -474,7 +489,7 @@ $$\mathbb{W}:=\Big(\big(\mathbb{R}_{\ge0},\ \le,\ \mathcal{B}(\mathbb{R}_{\ge0})
 
 *The class datum is a component, not a remark.* $\mathsf{c}$ selects the operation $+$ and the element $0$, and **(M1)–(M5)** of Definition 3.6 hold for them: addition on $\mathbb{R}_{\ge0}$ is associative and commutative; $x+0=x$; $x\le y\Rightarrow x+z\le y+z$; and $0\le x$ for every $x\in\mathbb{R}_{\ge0}$. So $\mathbb{W}$ is of class $\mathsf{W}_1$, and its carrier is point-separating by Observation 3.5.2. **This is the structure A4 and Definition 3.15 (W-c) refer to**, and it reaches them through the tuple.
 
-**Representation component $\mathsf{r}$ — supplied.** $\mathsf{r}=\big(r,(\mathcal{R},\mathcal{H})\big)$ with $(\mathcal{R},\mathcal{H})=(\mathfrak{M},\mathcal{F})$ and $r:=\mathrm{id}_{\mathfrak{M}}$, total and measurable. Hence $\mathcal{H}_r=\mathcal{F}$ by Definition 7.1, and A10, Theorem 3.2′ and Definitions 7.4, 7.5 and 7.7 are interpreted with this $r$ — **as instance data, not as an external datum**. The instance is therefore in the supplied branch of Observation 3.18.2, and $\mathrm{Id}^b_C:\mathcal{R}\to\widehat{W}^{\mathrm{id}}$ is formed for every $(C,b)$.
+**Representation component $\mathsf{r}$ — supplied.** $\mathsf{r}=\big(r,(\mathcal{R},\mathcal{H})\big)$ with $(\mathcal{R},\mathcal{H})=(\mathfrak{M},\mathcal{F})$ and $r:=\mathrm{id}_{\mathfrak{M}}$, total and measurable. Hence $\mathcal{H}_r=\mathcal{F}$ by Definition 7.1, and A10, Theorem 3.2′ and Definitions 7.4 and 7.5 are interpreted with this $r$ — **as instance data, not as an external datum**. The instance is therefore in the supplied branch of Observation 3.18.2, and $\mathrm{Id}^b_C:\mathcal{R}\to\widehat{W}^{\mathrm{id}}$ is formed for every $(C,b)$.
 
 **Morphism group $\mathcal{G}$.** $\mathcal{G}:=\{\mathbf{1},\jmath\}$ with $\jmath_{\mathfrak{B}}$ the transposition of $b_1$ and $b_2$; $\jmath_{\mathfrak{M}}(x,y)=(y,x)$; $\jmath_{\mathcal{Y}}=\mathrm{id}_{\mathbb{R}}$; $\jmath_W=\mathrm{id}_{\mathbb{R}_{\ge0}}$. Each component has the source and target required by Definition 3.15: $\jmath_{\mathfrak{B}}$ is a bijection of $\mathfrak{B}$; $\jmath_{\mathfrak{M}}$ is a bimeasurable bijection of $(\mathfrak{M},\mathcal{F})$; $\jmath_{\mathcal{Y}}$ is a bimeasurable bijection of $(\mathcal{Y},\mathcal{G}_{\mathcal{Y}})$; and $\jmath_W$ is an automorphism of the **codomain object** $\mathbb{W}$ — **(W-a)** $\mathrm{id}$ is an order isomorphism of $(\mathbb{R}_{\ge0},\le)$; **(W-b)** $\mathrm{id}$ and its inverse are Borel measurable; **(W-c)** with $\mathsf{c}=\mathsf{W}_1(+,0)$, $\mathrm{id}(x+y)=\mathrm{id}(x)+\mathrm{id}(y)$ and $\mathrm{id}(0)=0$, so the **selected** datum is preserved exactly. So $\jmath\in\mathrm{Mor}(\mathbb{F})$, and likewise $\mathbf{1}\in\mathrm{Mor}(\mathbb{F})$. Since $\jmath\circ\jmath=\mathbf{1}$ componentwise, $\mathcal{G}$ is a subgroup of $\mathrm{Mor}(\mathbb{F})$ of order two, as Definition 3.18 clause 4 requires.
 
@@ -615,13 +630,15 @@ Retained only where entailed by a Part A result or by inspection of the Part A s
 **OB-A2.** Conditions on $M_C$, $\tau$ and $\delta_C$ beyond those of Definition 5.1 that guarantee measurability of $\delta^{\,b}_C$ in wider settings.
 **OB-A3.** Whether a deterministic encodability theorem holds for codomains that are not point-separating, or whether point separation is necessary as well as sufficient.
 
-**OB-A4.** Whether the representation component $\mathsf{r}$ should be required $\mathcal{G}$-equivariant, i.e. whether an instance should carry $\iota_{\mathcal{R}}$ with $r\circ\iota_{\mathfrak{M}}=\iota_{\mathcal{R}}\circ r$. **No Part A statement couples $\mathsf{r}$ and $\mathcal{G}$**: A3 does not mention $r$, and A10 and Definitions 7.1–7.7 do not mention $\mathcal{G}$. Equivariance is therefore not required for well-typedness and is not imposed.
+**OB-A4.** Whether the representation component $\mathsf{r}$ should be required $\mathcal{G}$-equivariant, i.e. whether an instance should carry $\iota_{\mathcal{R}}$ with $r\circ\iota_{\mathfrak{M}}=\iota_{\mathcal{R}}\circ r$. **No Part A statement couples $\mathsf{r}$ and $\mathcal{G}$**: A3 does not mention $r$, and A10 and Definitions 7.1–7.5 do not mention $\mathcal{G}$. Equivariance is therefore not required for well-typedness and is not imposed.
 
 **OB-A5.** Formal placement, within Part B, of the heterogeneous context-indexed carriers and indexed action removed from Version 1 by Observation 3.14.2. Deferred because the adopting pass was not authorised to modify Part B.
 
 **OB-A6 — recorded in this pass.** Formal placement of a cross-context transport discipline and of any axiom governing cross-context comparison, following the withdrawal of Definition 8.9 and axiom A7 (Observation 8.9.1). Any such treatment must declare the transport as typed instance data with source, target, preservation rules and typed absence, and — if it is to be genuinely cross-context — must first resolve the heterogeneous-carrier question of **OB-A5**. Deferred: the withdrawing pass was authorised to close defects, not to add structure, and no retained Part A statement consumes such a datum.
 
-**None of OB-A1 – OB-A6 blocks the deterministic core**, and none is used by any Part A theorem.
+**OB-A7 — recorded in this pass.** Formal treatment, if any is wanted, of the three notions withdrawn with Definition 7.7 (Observation 7.7.1): minimal sufficiency relative to $\delta^{\,b}_C$, a distinguishability indicator on $\Omega^b_C\times\Omega^b_C$, and the partition of $\Omega^b_C$ by equality of $\delta^{\,b}_C$. Any such treatment must supply, for each notion, a symbol, a domain, a codomain, a complete rule, and — for minimal sufficiency — an admissible class, a comparison relation and a minimality predicate. Deferred: none is consumed by any retained Part A statement, and the pass that withdrew them was authorised to close a completeness defect, not to add structure. **No minimality result is claimed by Version 1**, consistently with Observation 3.0.1 and §A.10.2.4.
+
+**None of OB-A1 – OB-A7 blocks the deterministic core**, and none is used by any Part A theorem.
 
 ---
 
