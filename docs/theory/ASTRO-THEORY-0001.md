@@ -2,18 +2,27 @@
 
 | Field | Value |
 |---|---|
-| Status | **Theory Candidate.** Not frozen in this pass. |
-| Structure | **Part A — Version 1 Deterministic Core Candidate** · **Part B — Candidate Enrichments** |
-| Verification | Not externally verified. The prior edition was independently examined for freeze and returned **NOT READY FOR VERSION 1** on the single blocking defect **FFV-001** — Definition 7.7 was not a complete definition. That examination established no contradiction, no failed witness, no theorem exceeding its proof and no Part B dependency. This edition closes FFV-001 and awaits re-verification. |
-| Empirical status | Not empirically validated. Evidence level `EH-0`. |
+| Status | **FROZEN.** Part A is **Version 1 — Deterministic Core, Frozen**. Part B remains **Candidate** and is **not** frozen. |
+| Version | **Version 1 — Deterministic Core** |
+| Freeze date | 2026-08-02 (Australia/Brisbane) |
+| Structure | **Part A — Version 1 Deterministic Core · FROZEN** · **Part B — Candidate Enrichments · CANDIDATE, NOT FROZEN** |
+| Verification | Independently verified. Final determination: **VERSION 1 DETERMINISTIC CORE VERIFIED WITH NON-BLOCKING FINDINGS**. |
+| Verification verdict | `verification/ASTRO-THEORY-0001-FINAL-BINARY-FREEZE-VERDICT.md` |
+| Verified commit | `994b6223535d60dced3c06198f2930de37fbc3c0` |
+| Verified source blob | `69a7846614847f479962827557924a31b4b45b26` |
+| Recorded non-blocking finding | **FFV-NB-001** — Theorem 1 carries a surplus representation-absence hypothesis. **Recorded, not repaired.** The verdict finds it does not make the theorem false, ambiguous or inconsistent, and does not enlarge its scope. |
+| Empirical status | **Not empirically validated.** Evidence level `EH-0`. `ASTRO-EXP-0001` has **not** been executed. |
 | Novelty | No novelty is claimed. No universal prior-art subsumption is claimed. No minimality is claimed. |
-| Prior edition | Blob `6fc866796b0a9c39d3f7384d4118fce8ee7ae5ac`. Not silently overwritten; every change is mapped in `verification/ASTRO-THEORY-0001-FFV-001-CHANGE-MAP.md`. |
+| Canonical location | `docs/theory/ASTRO-THEORY-0001.md` on `main` of `17th2nd/ASA-Astro`. Freeze record: `ASTRO-THEORY-0001-V1-FREEZE-RECORD.md`. Manifest: `ASTRO-THEORY-0001-V1-MANIFEST.md`. Freeze report: `reports/ASTRO-THEORY-0001-V1-FREEZE-REPORT.md`. |
+| Supersession rule | The frozen mathematical body is **immutable**. It may be changed only by explicit supersession — a formally identified amendment candidate, `ASTRO-THEORY-0001` Version 1.x for a non-semantic correction, or `ASTRO-THEORY-0002` or another explicitly authorised successor for substantive extension or replacement. |
+| Amendment rule | **No edit to the frozen mathematical body may occur silently.** Any change requires a new candidate, a recorded authority basis, and a published change map. Part B does **not** become frozen by occupying this file. |
+| Verification lineage | Candidate → independent verification → bounded remediation → terminal formal closure → FFV-001 micro-remediation → final binary freeze verdict. Every round is preserved under `docs/theory/verification/`; no prior report has been altered. |
 
-**Freeze boundary.** Part A is self-contained: **no Part A definition, axiom, theorem or proof depends on anything in Part B.** Part B is Candidate, non-frozen, not required by the deterministic core, outside the consistency claim, and outside any Version 1 verification claim.
+**Freeze boundary.** Part A is self-contained: **no Part A definition, axiom, theorem or proof depends on anything in Part B.** **Part A is frozen as Version 1 — Deterministic Core.** Part B is Candidate, non-frozen, not required by the deterministic core, outside the consistency claim, outside any Version 1 verification claim, and **outside this freeze**. Part B is available for future development only through formal supersession or a separate enrichment instrument.
 
-**What changed in this pass — micro-remediation of one defect only.** **Definition 7.7 is withdrawn** (Observation 7.7.1) and removed from the signature of Proposition 11.1′, closing **FFV-001**. It named four notions and defined three of them not at all: minimal sufficiency, a distinguishability indicator and an equality partition had no symbol, domain, codomain or rule, while its fourth notion merely duplicated Definition 7.4. **Sufficiency is retained, unchanged, in Definition 7.4.** The three undefined notions are **not part of Version 1** and are deferred as **OB-A7**.
+**What this freeze does not claim.** The freeze records that the deterministic core was verified as a formal mathematical object at the exact blob named above. It does **not** claim empirical validation, novelty, superiority over prior art, proof of any Part B enrichment, proof of a universal theory of significance, execution of `ASTRO-EXP-0001`, or evidence above `EH-0`.
 
-**Nothing else changed.** No axiom, theorem, proof, witness calculation, codomain structure, transport rule or representation component was touched, and Part B is byte-identical. The non-blocking observation FFV-NB-001 — a surplus $\mathsf{r}=\bot_{\mathrm{abs}}$ hypothesis in Theorem 1 — is **deliberately not corrected here**, being outside the authorised scope of a single-defect pass.
+**Immediately preceding edition.** Blob `6fc866796b0a9c39d3f7384d4118fce8ee7ae5ac`, superseded by the FFV-001 micro-remediation that produced the verified blob. Not silently overwritten; that change is mapped in `verification/ASTRO-THEORY-0001-FFV-001-CHANGE-MAP.md`. **This freeze changed no mathematics**: the mathematical body is byte-identical to the verified source, as proved in `ASTRO-THEORY-0001-V1-MANIFEST.md`.
 
 ---
 
@@ -706,4 +715,4 @@ Retained only where entailed by a Part A result or by inspection of the Part A s
 
 ---
 
-*End of ASTRO-THEORY-0001. Part A is the Version 1 Deterministic Core Candidate; Part B is Candidate Enrichments. Not frozen. Not verified. Awaiting final independent re-verification.*
+*End of ASTRO-THEORY-0001. Part A is **Version 1 — Deterministic Core, FROZEN**, verified with the single non-blocking finding FFV-NB-001. Part B is **Candidate Enrichments — not frozen, not verified**, and outside the freeze. Not empirically validated; evidence level `EH-0`.*
