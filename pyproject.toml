@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools==68.1.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,8 +8,10 @@ version = "0.1.0"
 description = "Deterministic observation-to-candidate-graph proof of concept for ASA validation"
 requires-python = ">=3.11"
 dependencies = [
+  "attrs==23.2.0",
   "Pillow==10.2.0",
   "jsonschema==4.10.3",
+  "pyrsistent==0.20.0",
 ]
 
 [project.scripts]

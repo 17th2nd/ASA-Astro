@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ast
 import importlib
+import tomllib
 import unittest
 from pathlib import Path
 
@@ -43,6 +44,18 @@ class ArchitectureTests(unittest.TestCase):
             "astro_exec.roles",
         )
         self.assertEqual([importlib.import_module(name).__name__ for name in modules], list(modules))
+
+    def test_dependency_metadata_matches_lock(self) -> None:
+        """G1 clean installation: build and runtime pins exactly match the lock."""
+
+        project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+        declared = set(project["build-system"]["requires"]) | set(project["project"]["dependencies"])
+        locked = {
+            line
+            for line in (ROOT / "requirements.lock").read_text(encoding="utf-8").splitlines()
+            if line and not line.startswith("#")
+        }
+        self.assertEqual(declared, locked)
 
 
 if __name__ == "__main__":
