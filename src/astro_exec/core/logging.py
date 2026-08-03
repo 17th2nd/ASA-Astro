@@ -7,6 +7,7 @@ from typing import Any
 
 from .canonical_json import canonical_bytes
 from .errors import ConfigurationError
+from .ids import validate_identifier
 
 _SEVERITIES = {"debug", "error", "info", "warning"}
 
@@ -14,11 +15,14 @@ _SEVERITIES = {"debug", "error", "info", "warning"}
 class StructuredLogger:
     """Append deterministic structured events to a newly created JSONL file."""
 
-    def __init__(self, path: str | Path, run_id: str) -> None:
+    def __init__(self, path: str | Path, run_id: str, component: str = "astro_exec") -> None:
         """Create an empty log and refuse to overwrite an existing path."""
 
         self.path = Path(path)
-        self.run_id = run_id
+        self.run_id = validate_identifier(run_id, prefix="RUN")
+        if not component:
+            raise ConfigurationError("log component must be non-empty")
+        self.component = component
         self._sequence = 0
         self.path.parent.mkdir(parents=True, exist_ok=True)
         try:
@@ -26,16 +30,28 @@ class StructuredLogger:
         except FileExistsError as exc:
             raise ConfigurationError("structured log already exists", details={"path": str(self.path)}) from exc
 
-    def emit(self, severity: str, event: str, *, details: dict[str, Any] | None = None) -> dict[str, Any]:
+    def emit(
+        self,
+        severity: str,
+        event: str,
+        *,
+        details: dict[str, Any] | None = None,
+        provenance_id: str | None = None,
+    ) -> dict[str, Any]:
         """Append and return one canonical event record."""
 
         if severity not in _SEVERITIES:
             raise ConfigurationError("unknown log severity", details={"severity": severity})
         if not event:
             raise ConfigurationError("log event must be non-empty")
+        if provenance_id is not None:
+            validate_identifier(provenance_id, prefix="PV")
         record = {
+            "classification": "diagnostic-log-not-scientific-evidence",
+            "component": self.component,
             "details": dict(details or {}),
             "event": event,
+            "provenance_id": provenance_id,
             "run_id": self.run_id,
             "sequence": self._sequence,
             "severity": severity,

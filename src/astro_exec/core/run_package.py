@@ -72,14 +72,14 @@ def create_dry_run(
     root = Path(repository_root).resolve()
     run_id = stable_identifier("RUN", {"config_fingerprint": config.fingerprint, "run_label": run_label})
     lifecycle = RunLifecycle(run_id)
-    lifecycle.transition(RunState.VERIFYING)
+    lifecycle.transition(RunState.VALIDATING)
     verified = verify_frozen_artefacts(config, root)
-    lifecycle.transition(RunState.VERIFIED)
-    lifecycle.transition(RunState.MATERIALIZING)
+    lifecycle.transition(RunState.READY)
+    lifecycle.transition(RunState.EXECUTING)
 
     destination.mkdir(parents=True)
-    logger = StructuredLogger(destination / "logs/events.jsonl", run_id)
-    logger.emit("info", "dry-run-created", details={"state": RunState.CREATED.value})
+    logger = StructuredLogger(destination / "logs/events.jsonl", run_id, "run-package")
+    logger.emit("info", "dry-run-created", details={"state": RunState.PROPOSED.value})
     _write_json(destination / "config.snapshot.json", config.snapshot())
     _write_json(destination / "environment.json", _environment(root))
     _write_json(
@@ -120,8 +120,14 @@ def create_dry_run(
     )
     graph.add(run_node)
     _write_json(destination / "provenance/graph.json", graph.to_record())
-    lifecycle.transition(RunState.DRY_RUN_COMPLETE)
-    logger.emit("info", "dry-run-complete", details={"state": lifecycle.state.value})
+    lifecycle.transition(RunState.COMPLETED)
+    lifecycle.seal()
+    logger.emit(
+        "info",
+        "dry-run-complete",
+        details={"state": lifecycle.state.value},
+        provenance_id=run_node.node_id,
+    )
     _write_json(
         destination / "run.json",
         {

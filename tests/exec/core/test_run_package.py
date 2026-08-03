@@ -22,6 +22,7 @@ class DryRunPackageTests(unittest.TestCase):
     """Verify G1 empty-package completeness and replay determinism."""
 
     def test_two_dry_runs_are_identical_except_run_id(self) -> None:
+        """G1 dry run: repeated packages compare deterministically and verify."""
         config = load_config(ROOT / "config/astro-exec-phase2.toml")
         with tempfile.TemporaryDirectory() as directory:
             left = Path(directory) / "left"
@@ -40,6 +41,7 @@ class DryRunPackageTests(unittest.TestCase):
             self.assertEqual(len(provenance["nodes"]), 8)
 
     def test_existing_output_and_tampering_fail_closed(self) -> None:
+        """G1 replay: overwrite and checksum tampering are rejected."""
         config = load_config(ROOT / "config/astro-exec-phase2.toml")
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "run"
@@ -51,6 +53,7 @@ class DryRunPackageTests(unittest.TestCase):
                 verify_run_package(output)
 
     def test_frozen_artefact_drift_aborts_before_output_creation(self) -> None:
+        """R-061/G1 run creation: drift prevents any package directory creation."""
         config = load_config(ROOT / "config/astro-exec-phase2.toml")
         with tempfile.TemporaryDirectory() as directory:
             fake_root = Path(directory) / "repository"

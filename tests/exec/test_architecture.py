@@ -17,6 +17,7 @@ class ArchitectureTests(unittest.TestCase):
     """Prove the new engine is independent from legacy and rendering packages."""
 
     def test_astro_exec_does_not_import_asa_astro_or_renderers(self) -> None:
+        """G1 import boundary: astro_exec imports neither legacy nor renderers."""
         forbidden: list[tuple[str, str]] = []
         for path in PACKAGE.rglob("*.py"):
             tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
@@ -29,6 +30,7 @@ class ArchitectureTests(unittest.TestCase):
         self.assertEqual(forbidden, [])
 
     def test_declared_package_namespaces_import(self) -> None:
+        """G1 package foundation: every declared infrastructure namespace imports."""
         modules = (
             "astro_exec.analysis",
             "astro_exec.cli",

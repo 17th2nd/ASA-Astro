@@ -56,7 +56,7 @@ def verify_run_package(path: str | Path) -> ReplayReport:
     except (OSError, json.JSONDecodeError) as exc:
         raise ReplayMismatch("run package core records are unreadable") from exc
     run_id = validate_identifier(run.get("run_id", ""), prefix="RUN")
-    if run.get("state") != "DRY_RUN_COMPLETE" or run.get("dry_run") is not True:
+    if run.get("state") != "sealed" or run.get("dry_run") is not True:
         raise ReplayMismatch("run package is not a completed Phase 2 dry run")
     recorded_fingerprint = snapshot.pop("config_fingerprint", None)
     if recorded_fingerprint != fingerprint(snapshot):
