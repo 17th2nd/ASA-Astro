@@ -94,3 +94,9 @@ class ProvenanceRecordIdentity(DeterministicIdentity):
     """Identity of a content-addressed provenance assertion."""
 
     prefix = "PV"
+
+
+class TransformationIdentity(DeterministicIdentity):
+    """Identity of a declared infrastructure transformation contract."""
+
+    prefix = "XFORM"

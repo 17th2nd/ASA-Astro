@@ -8,6 +8,7 @@ from .ids import (
     InvocationIdentity,
     ProvenanceRecordIdentity,
     RunIdentity,
+    TransformationIdentity,
     stable_identifier,
     validate_identifier,
 )
@@ -23,6 +24,7 @@ __all__ = [
     "ProvenanceRecordIdentity",
     "RunIdentity",
     "SHA256Digest",
+    "TransformationIdentity",
     "fingerprint",
     "sha256_bytes",
     "sha256_file",

@@ -6,8 +6,11 @@ import re
 import tomllib
 from collections.abc import Mapping
 from dataclasses import dataclass
+from importlib.resources import files
 from pathlib import Path, PurePosixPath
 from typing import Any
+
+from jsonschema import Draft202012Validator
 
 from .errors import ConfigurationError
 from .hashing import fingerprint
@@ -15,6 +18,7 @@ from .hashing import fingerprint
 CONFIG_SCHEMA_VERSION = "astro-exec-config-v1"
 PHASE_2_MODE = "dry-run"
 ROLE_NAMES = ("asalab", "custodian", "statistician", "truthlab")
+DEFAULT_POLICY = "no-implicit-defaults"
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -72,6 +76,7 @@ class ExecutionConfig:
     """Fully validated immutable Phase 2 execution configuration."""
 
     schema_version: str
+    default_policy: str
     mode: str
     frozen_artefacts: tuple[FrozenArtefact, ...]
     roles: tuple[RoleCapabilities, ...]
@@ -80,6 +85,7 @@ class ExecutionConfig:
         """Return the fingerprint input in declared canonical order."""
 
         return {
+            "defaults": {"applied": [], "policy": self.default_policy},
             "execution": {"mode": self.mode},
             "frozen_artefacts": [item.to_record() for item in self.frozen_artefacts],
             "roles": {item.role: {"read_roots": list(item.read_roots), "write_roots": list(item.write_roots)} for item in self.roles},
@@ -91,6 +97,14 @@ class ExecutionConfig:
         """Return the immutable canonical configuration fingerprint."""
 
         return fingerprint(self.to_record())
+
+    @property
+    def identity(self) -> "ConfigurationIdentity":
+        """Return the typed identity of this complete validated configuration."""
+
+        from .ids import ConfigurationIdentity
+
+        return ConfigurationIdentity.derive(self.to_record())
 
     def snapshot(self) -> dict[str, Any]:
         """Return the canonical record plus its self-verifiable fingerprint."""
@@ -110,9 +124,28 @@ class ExecutionConfig:
 def config_from_mapping(data: Mapping[str, Any]) -> ExecutionConfig:
     """Validate an in-memory mapping against the frozen Phase 2 contract."""
 
-    _keys(data, {"schema_version", "execution", "frozen_artefacts", "roles"}, "$")
+    errors = sorted(
+        Draft202012Validator(configuration_schema()).iter_errors(data),
+        key=lambda error: tuple(str(part) for part in error.absolute_path),
+    )
+    if errors:
+        error = errors[0]
+        location = "$" + "".join(f"[{part}]" for part in error.absolute_path)
+        raise ConfigurationError(
+            "configuration does not match its versioned schema",
+            details={"location": location, "validation": error.message},
+        )
+
+    _keys(data, {"schema_version", "defaults", "execution", "frozen_artefacts", "roles"}, "$")
     if data["schema_version"] != CONFIG_SCHEMA_VERSION:
         raise ConfigurationError("unsupported configuration schema version")
+
+    defaults = data["defaults"]
+    if not isinstance(defaults, Mapping):
+        raise ConfigurationError("defaults must be a table")
+    _keys(defaults, {"policy", "applied"}, "$.defaults")
+    if defaults["policy"] != DEFAULT_POLICY or defaults["applied"] != []:
+        raise ConfigurationError("Phase 2 does not permit implicit or applied defaults")
 
     execution = data["execution"]
     if not isinstance(execution, Mapping):
@@ -156,10 +189,25 @@ def config_from_mapping(data: Mapping[str, Any]) -> ExecutionConfig:
 
     return ExecutionConfig(
         schema_version=CONFIG_SCHEMA_VERSION,
+        default_policy=DEFAULT_POLICY,
         mode=PHASE_2_MODE,
         frozen_artefacts=tuple(sorted(artefacts, key=lambda item: item.path)),
         roles=tuple(roles),
     )
+
+
+def configuration_schema() -> dict[str, Any]:
+    """Load the packaged JSON Schema for the current configuration version."""
+
+    import json
+
+    resource = files("astro_exec").joinpath("contracts/astro-exec-config-v1.schema.json")
+    try:
+        schema = json.loads(resource.read_text(encoding="utf-8"))
+        Draft202012Validator.check_schema(schema)
+    except (OSError, ValueError, TypeError) as exc:
+        raise ConfigurationError("packaged configuration schema is unavailable or invalid") from exc
+    return schema
 
 
 def load_config(path: str | Path) -> ExecutionConfig:

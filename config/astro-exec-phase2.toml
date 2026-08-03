@@ -1,5 +1,9 @@
 schema_version = "astro-exec-config-v1"
 
+[defaults]
+policy = "no-implicit-defaults"
+applied = []
+
 [execution]
 mode = "dry-run"
 
