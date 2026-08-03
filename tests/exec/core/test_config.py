@@ -37,7 +37,7 @@ class ConfigurationTests(unittest.TestCase):
             config_from_mapping(base)
 
         unsafe = load_config(ROOT / "config/astro-exec-phase2.toml").to_record()
-        unsafe["frozen_artefacts"][0]["path"] = "../outside"
+        unsafe["execution"]["frozen_manifest"] = "../outside"
         with self.assertRaises(ConfigurationError):
             config_from_mapping(unsafe)
 

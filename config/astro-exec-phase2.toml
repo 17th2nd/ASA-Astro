@@ -6,30 +6,7 @@ applied = []
 
 [execution]
 mode = "dry-run"
-
-[[frozen_artefacts]]
-path = "docs/claims/ASTRO-CLAIMS-0001.md"
-sha256 = "44282ba8c92aa5f40b495982b50192a49f8aeb1ba5910895ea7c09136010c50b"
-
-[[frozen_artefacts]]
-path = "docs/theory/ASTRO-THEORY-0001-V1-FREEZE-RECORD.md"
-sha256 = "b9fd57bb29750c3efe97ca18d8e4741f8afd08ae9e192b6dcf1e7fecc88cc6bc"
-
-[[frozen_artefacts]]
-path = "docs/theory/ASTRO-THEORY-0001.md"
-sha256 = "c1289b3e8f096a91c82ed1bc912be31e798a289df26cc64dace76a06d8c1d56c"
-
-[[frozen_artefacts]]
-path = "reports/ASTRO-V1-RESEARCH-CONTROLS-FREEZE-REPORT.md"
-sha256 = "43bf27049c640dd6467c2284a84eb37b5072aef4e8612815b7ab592ca2871fc1"
-
-[[frozen_artefacts]]
-path = "validation/benchmarks/ASTRO-EXP-0001.md"
-sha256 = "a38796892e1d7d68c3a40b35b0a39175d07948f8ef9df73fee26daf4943a7316"
-
-[[frozen_artefacts]]
-path = "validation/results/ASTRO-RESULTS-0001.md"
-sha256 = "434e4d417141ad69dcf45b23a5c89df644f01b6af3e9837bf5169db5fabf27a7"
+frozen_manifest = "config/frozen-artefacts-v1.json"
 
 [roles.asalab]
 read_roots = ["inputs/estimator"]

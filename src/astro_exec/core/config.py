@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 import tomllib
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -19,7 +18,6 @@ CONFIG_SCHEMA_VERSION = "astro-exec-config-v1"
 PHASE_2_MODE = "dry-run"
 ROLE_NAMES = ("asalab", "custodian", "statistician", "truthlab")
 DEFAULT_POLICY = "no-implicit-defaults"
-_SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
 
 def _keys(value: Mapping[str, Any], expected: set[str], location: str) -> None:
@@ -38,19 +36,6 @@ def _relative_path(value: Any, location: str) -> str:
     if path.is_absolute() or ".." in path.parts or "$" in value or "\\" in value:
         raise ConfigurationError("unsafe repository-relative path", details={"location": location, "path": value})
     return path.as_posix()
-
-
-@dataclass(frozen=True, slots=True)
-class FrozenArtefact:
-    """Repository-relative path and expected SHA-256 for a frozen artefact."""
-
-    path: str
-    sha256: str
-
-    def to_record(self) -> dict[str, str]:
-        """Return the canonical configuration record."""
-
-        return {"path": self.path, "sha256": self.sha256}
 
 
 @dataclass(frozen=True, slots=True)
@@ -78,7 +63,7 @@ class ExecutionConfig:
     schema_version: str
     default_policy: str
     mode: str
-    frozen_artefacts: tuple[FrozenArtefact, ...]
+    frozen_manifest: str
     roles: tuple[RoleCapabilities, ...]
 
     def to_record(self) -> dict[str, Any]:
@@ -86,8 +71,7 @@ class ExecutionConfig:
 
         return {
             "defaults": {"applied": [], "policy": self.default_policy},
-            "execution": {"mode": self.mode},
-            "frozen_artefacts": [item.to_record() for item in self.frozen_artefacts],
+            "execution": {"frozen_manifest": self.frozen_manifest, "mode": self.mode},
             "roles": {item.role: {"read_roots": list(item.read_roots), "write_roots": list(item.write_roots)} for item in self.roles},
             "schema_version": self.schema_version,
         }
@@ -136,7 +120,7 @@ def config_from_mapping(data: Mapping[str, Any]) -> ExecutionConfig:
             details={"location": location, "validation": error.message},
         )
 
-    _keys(data, {"schema_version", "defaults", "execution", "frozen_artefacts", "roles"}, "$")
+    _keys(data, {"schema_version", "defaults", "execution", "roles"}, "$")
     if data["schema_version"] != CONFIG_SCHEMA_VERSION:
         raise ConfigurationError("unsupported configuration schema version")
 
@@ -150,24 +134,10 @@ def config_from_mapping(data: Mapping[str, Any]) -> ExecutionConfig:
     execution = data["execution"]
     if not isinstance(execution, Mapping):
         raise ConfigurationError("execution must be a table")
-    _keys(execution, {"mode"}, "$.execution")
+    _keys(execution, {"mode", "frozen_manifest"}, "$.execution")
     if execution["mode"] != PHASE_2_MODE:
         raise ConfigurationError("Phase 2 permits dry-run mode only")
-
-    raw_artefacts = data["frozen_artefacts"]
-    if not isinstance(raw_artefacts, list) or not raw_artefacts:
-        raise ConfigurationError("frozen_artefacts must be a non-empty array")
-    artefacts: list[FrozenArtefact] = []
-    for index, item in enumerate(raw_artefacts):
-        if not isinstance(item, Mapping):
-            raise ConfigurationError("frozen artefact must be a table", details={"index": index})
-        _keys(item, {"path", "sha256"}, f"$.frozen_artefacts[{index}]")
-        digest = item["sha256"]
-        if not isinstance(digest, str) or not _SHA256.fullmatch(digest):
-            raise ConfigurationError("invalid SHA-256 digest", details={"index": index})
-        artefacts.append(FrozenArtefact(_relative_path(item["path"], f"$.frozen_artefacts[{index}].path"), digest))
-    if len({item.path for item in artefacts}) != len(artefacts):
-        raise ConfigurationError("duplicate frozen artefact path")
+    frozen_manifest = _relative_path(execution["frozen_manifest"], "$.execution.frozen_manifest")
 
     raw_roles = data["roles"]
     if not isinstance(raw_roles, Mapping):
@@ -191,7 +161,7 @@ def config_from_mapping(data: Mapping[str, Any]) -> ExecutionConfig:
         schema_version=CONFIG_SCHEMA_VERSION,
         default_policy=DEFAULT_POLICY,
         mode=PHASE_2_MODE,
-        frozen_artefacts=tuple(sorted(artefacts, key=lambda item: item.path)),
+        frozen_manifest=frozen_manifest,
         roles=tuple(roles),
     )
 

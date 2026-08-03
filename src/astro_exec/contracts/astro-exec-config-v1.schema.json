@@ -4,7 +4,7 @@
   "title": "ASTRO-EXEC Phase 2 configuration",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "defaults", "execution", "frozen_artefacts", "roles"],
+  "required": ["schema_version", "defaults", "execution", "roles"],
   "properties": {
     "schema_version": {"const": "astro-exec-config-v1"},
     "defaults": {
@@ -19,20 +19,10 @@
     "execution": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["mode"],
-      "properties": {"mode": {"const": "dry-run"}}
-    },
-    "frozen_artefacts": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["path", "sha256"],
-        "properties": {
-          "path": {"type": "string", "minLength": 1},
-          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
-        }
+      "required": ["mode", "frozen_manifest"],
+      "properties": {
+        "mode": {"const": "dry-run"},
+        "frozen_manifest": {"type": "string", "minLength": 1}
       }
     },
     "roles": {

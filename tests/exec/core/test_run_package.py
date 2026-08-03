@@ -10,6 +10,7 @@ from pathlib import Path
 from astro_exec.core.config import load_config
 from astro_exec.core.determinism import compare_dry_runs
 from astro_exec.core.errors import ConfigurationError, FrozenArtefactDrift, ReplayMismatch
+from astro_exec.core.frozen import load_frozen_manifest
 from astro_exec.core.replay import verify_run_package
 from astro_exec.core.run_package import create_dry_run
 
@@ -54,11 +55,16 @@ class DryRunPackageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             fake_root = Path(directory) / "repository"
             output = Path(directory) / "run"
-            for item in config.frozen_artefacts:
+            source_manifest = ROOT / config.frozen_manifest
+            destination_manifest = fake_root / config.frozen_manifest
+            destination_manifest.parent.mkdir(parents=True, exist_ok=True)
+            destination_manifest.write_bytes(source_manifest.read_bytes())
+            for item in load_frozen_manifest(source_manifest).artefacts:
                 destination = fake_root / item.path
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 destination.write_bytes((ROOT / item.path).read_bytes())
-            (fake_root / config.frozen_artefacts[0].path).write_text("drift", encoding="utf-8")
+            first = load_frozen_manifest(source_manifest).artefacts[0]
+            (fake_root / first.path).write_text("drift", encoding="utf-8")
 
             with self.assertRaises(FrozenArtefactDrift):
                 create_dry_run(output, config=config, repository_root=fake_root, run_label="drift")
