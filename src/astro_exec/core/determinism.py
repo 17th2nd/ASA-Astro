@@ -1,64 +1,62 @@
-"""Run-package comparison under the G1 run-id-only difference contract."""
+"""Byte comparison for authoritative Phase 2 dry-run content."""
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .canonical_json import canonical_bytes
 from .errors import ReplayMismatch
+
+
+def _checksums(path: Path) -> dict[str, str]:
+    try:
+        entries = dict(line.split("  ", 1)[::-1] for line in path.read_text(encoding="ascii").splitlines())
+    except (OSError, ValueError) as exc:
+        raise ReplayMismatch("authoritative checksum inventory is malformed") from exc
+    if not entries:
+        raise ReplayMismatch("authoritative checksum inventory is empty")
+    return entries
 
 
 @dataclass(frozen=True, slots=True)
 class DeterminismReport:
-    """Result of comparing two complete dry-run packages."""
+    """Result of byte-comparing two authoritative-content inventories."""
 
-    equivalent_except_run_id: bool
+    authoritative_equivalent: bool
     differing_files: tuple[str, ...]
+
+    @property
+    def equivalent_except_run_id(self) -> bool:
+        """Compatibility alias; run identity is now itself authoritative."""
+
+        return self.authoritative_equivalent
 
     def to_record(self) -> dict[str, Any]:
         """Return the canonical comparison record."""
 
         return {
+            "authoritative_equivalent": self.authoritative_equivalent,
             "differing_files": list(self.differing_files),
-            "equivalent_except_run_id": self.equivalent_except_run_id,
         }
 
 
-def _normalize(value: Any, run_id: str) -> Any:
-    if isinstance(value, dict):
-        return {key: _normalize(child, run_id) for key, child in value.items()}
-    if isinstance(value, list):
-        return [_normalize(child, run_id) for child in value]
-    return "<RUN-ID>" if value == run_id else value
-
-
-def _normalized_file(path: Path, run_id: str) -> bytes:
-    if path.suffix == ".json":
-        return canonical_bytes(_normalize(json.loads(path.read_text(encoding="utf-8")), run_id))
-    if path.suffix == ".jsonl":
-        records = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
-        return b"\n".join(canonical_bytes(_normalize(record, run_id)) for record in records) + b"\n"
-    return path.read_bytes()
-
-
 def compare_dry_runs(left: str | Path, right: str | Path) -> DeterminismReport:
-    """Compare packages after replacing only their declared run-id values."""
+    """Compare exactly the files declared by both authoritative inventories."""
 
     roots = (Path(left), Path(right))
-    try:
-        run_ids = tuple(json.loads((root / "run.json").read_text(encoding="utf-8"))["run_id"] for root in roots)
-    except (OSError, json.JSONDecodeError, KeyError) as exc:
-        raise ReplayMismatch("dry-run package has no readable run identifier") from exc
-    file_sets = [
-        {path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file() and path.name != "CHECKSUMS.sha256"}
-        for root in roots
-    ]
-    differing = set(file_sets[0] ^ file_sets[1])
-    for relative in file_sets[0] & file_sets[1]:
-        if _normalized_file(roots[0] / relative, run_ids[0]) != _normalized_file(roots[1] / relative, run_ids[1]):
+    inventories = tuple(_checksums(root / "AUTHORITATIVE-CONTENT.sha256") for root in roots)
+    differing = set(inventories[0]) ^ set(inventories[1])
+    for relative in set(inventories[0]) & set(inventories[1]):
+        if inventories[0][relative] != inventories[1][relative]:
             differing.add(relative)
+            continue
+        try:
+            if (roots[0] / relative).read_bytes() != (roots[1] / relative).read_bytes():
+                differing.add(relative)
+        except OSError as exc:
+            raise ReplayMismatch("authoritative package file is unavailable", details={"path": relative}) from exc
+    if (roots[0] / "AUTHORITATIVE-CONTENT.sha256").read_bytes() != (roots[1] / "AUTHORITATIVE-CONTENT.sha256").read_bytes():
+        differing.add("AUTHORITATIVE-CONTENT.sha256")
     result = tuple(sorted(differing))
     return DeterminismReport(not result, result)
