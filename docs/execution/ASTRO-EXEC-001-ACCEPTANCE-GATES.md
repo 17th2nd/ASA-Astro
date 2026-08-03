@@ -11,12 +11,16 @@ A gate is passed only when its evidence exists on GitHub `main` and has been ver
 **Blocks:** all implementation.
 
 ## G1 — Contracts frozen (Phase 2)
-- [ ] `astro_exec.core` published; canonical JSON, identifiers, hashing, config, provenance, errors, logging, `LeakageGuard`
-- [ ] Contract tests green on a fresh clone in a clean environment
-- [ ] Frozen-artefact digest verification aborts on drift
-- [ ] Two dry runs byte-identical except run id
-- [ ] `astro_exec` does not import `asa_astro` (import-graph test)
-- [ ] Interfaces documented sufficiently for B–E to proceed without conversation context
+- [x] `astro_exec.core` published; canonical JSON, identifiers, hashing, config, provenance, errors, logging, `LeakageGuard`
+- [x] Contract tests green on a fresh clone in a clean environment
+- [x] Frozen-artefact digest verification aborts on drift
+- [x] Two dry runs byte-identical except run id (stronger: authoritative run id and bytes are identical; invocation metadata is external)
+- [x] `astro_exec` does not import `asa_astro` (import-graph test)
+- [x] Interfaces documented sufficiently for B–E to proceed without conversation context
+
+G1 evidence: `reports/ASTRO-EXEC-002-G1-VALIDATION-REPORT.md` and
+`docs/execution/ASTRO-EXEC-002-REQUIREMENTS-TRACEABILITY.md`. No later gate is marked complete by
+this Phase 2 receipt.
 
 **Blocks:** Operators B, C, D, E.
 

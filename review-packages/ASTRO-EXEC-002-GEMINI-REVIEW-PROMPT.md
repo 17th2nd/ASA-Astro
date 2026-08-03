@@ -30,14 +30,17 @@ completion report supplied in the bundle.
 3. Can any content identifier, configuration fingerprint, provenance identifier, lifecycle output or
    run package depend on wall clock, hostname, PID, memory address, random state, map insertion order,
    or filesystem enumeration order?
-4. Does frozen-artefact verification happen before output creation and abort on a missing, escaped or
-   changed artefact?
+4. Does manifest-driven frozen verification happen before output creation and abort on a missing,
+   changed, substituted, escaped, or prohibited extra artefact while preserving the frozen Part A
+   versus Candidate Part B boundary?
 5. Can the ASA-laboratory role read truth-laboratory outputs through direct paths, absolute paths,
    traversal, symlinks, undeclared roots, or a mutable capability object?
-6. Are two dry runs byte-equivalent after replacing only their declared run identifiers and excluding
-   the checksum inventory whose hashes cover those identifiers?
-7. Does offline replay detect file addition, deletion, mutation, malformed checksums, configuration
-   fingerprint drift, invalid run state, or an authoritative-scientific classification?
+6. Do two dry runs with identical authoritative inputs have the same authoritative run identity and
+   byte-identical authoritative content? Is varying invocation metadata confined to a sibling
+   diagnostic record outside the package and its digest?
+7. Does offline replay detect file addition, deletion, mutation, unsafe/duplicate/malformed
+   checksums, configuration fingerprint drift, run-identity drift, invalid lifecycle state,
+   invocation leakage, or an authoritative-scientific classification?
 8. Does any module under `src/astro_exec/` import `asa_astro`, a renderer, or another forbidden or
    unpinned dependency?
 9. Is `UR-001` preserved as unresolved, with no estimator algorithm or selection heuristic hidden in
@@ -49,8 +52,8 @@ completion report supplied in the bundle.
     to proceed without private conversation context?
 12. Do tests validate all public modules, security boundaries, malformed inputs, drift, deterministic
     replay, CLI behavior, role isolation and import boundaries? Identify any tautological test.
-13. Is the fresh-clone evidence sufficient, reproducible from the included manifests and consistent
-    with the verified commit?
+13. Is the fresh-clone wheel-install evidence sufficient, exact-lock reproducible, and consistent
+    with the verified implementation commit and evidence publication commit?
 14. Were any frozen scientific artefact, historical `src/asa_astro/` file, result ledger, claim,
     experiment protocol, theory file or legacy fixture modified?
 15. Do the open unresolved requirements remain open, correctly scoped, and fail closed where Phase 2

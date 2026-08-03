@@ -2,103 +2,107 @@
 
 | Field | Value |
 |---|---|
-| Package | `ASTRO-EXEC-002` Phase 2 — Execution Skeleton |
-| Operator | Operator A |
-| Authoritative repository | `https://github.com/17th2nd/ASA-Astro` |
-| Baseline | `5e8b0a567c7e8c95fdc4081c568b483eba022189` |
-| Implementation tip verified from GitHub | `b9f16c8471ba2454bf5cfb6f779904a77f6b1bde` |
+| Package | ASTRO-EXEC-002 Phase 2 — Execution Skeleton |
+| Operator | Codex Operator A |
+| Authoritative repository | `https://github.com/17th2nd/ASA-Astro`, branch `main` |
+| Programme baseline | `5e8b0a567c7e8c95fdc4081c568b483eba022189` |
+| Expanded-directive starting SHA | `9cc9c60fccf624238962f122fe1c2c6e9bbb3a7e` |
+| Final tested implementation SHA | `5d4600b713eb5ebcb34698241e0050b660ba43ab` |
 | Verification date | 2026-08-03 |
 | Evidence level | `EH-0`; no scientific experiment executed |
 
+The final tested implementation SHA is the exact code/configuration state retrieved from GitHub and
+validated below. The subsequent evidence-only commit is identified by the containing Git commit of
+this report and by the post-publication Gemini manifest; a Git commit cannot contain its own SHA.
+
 ## Scope boundary
 
-The delivered package is infrastructure only. It contains no scientific computation, orbit
-propagation, estimator implementation, datasets, astronomy mathematics, empirical result, ledger
-candidate, or authoritative-scientific output. `src/asa_astro/` and all frozen scientific artefacts
-are unchanged.
+The delivery is deterministic infrastructure only. It implements no astronomy, physics, datasets,
+orbit determination or propagation, estimator logic, experiment selection, truth comparison,
+metrics, statistics, claims evaluation, rendering, or ledger mutation. `src/asa_astro/`, legacy
+schemas and fixtures, historical records, and frozen scientific artefacts were intentionally
+unchanged. No `UR` entry was closed.
 
 ## Published bounded units
 
-| Unit | Commit verified on GitHub `main` | Evidence |
-|---|---|---|
-| A1 — canonical representation, hashing, identifiers, errors | `df7296193e799609c4748148fc46a4add178542b` | Canonical JSON, SHA-256, content ids and structured-error tests green |
-| A2 — configuration, provenance, logging, frozen artefacts, LeakageGuard | `be2366d2bac5392ac484623c9ade13ac509dccb4` | Config fingerprint, six artefact digests, provenance, logging and isolation tests green |
-| A3 — lifecycle, run package, replay, roles, estimator ABI and CLI | `b9f16c8471ba2454bf5cfb6f779904a77f6b1bde` | Dry-run, replay, import graph and public CLI tests green |
+Every row was validated, committed, pushed directly to `main`, fetched back, and matched against
+`origin/main` before the next unit began.
 
-Each unit was tested, committed to `main`, pushed, and independently verified with
-`git ls-remote origin refs/heads/main` before the next unit began.
+| Unit | Verified GitHub commit |
+|---|---|
+| Initial canonical representation | `df7296193e799609c4748148fc46a4add178542b` |
+| Initial integrity/capability foundation | `be2366d2bac5392ac484623c9ade13ac509dccb4` |
+| Initial lifecycle/interfaces | `b9f16c8471ba2454bf5cfb6f779904a77f6b1bde` |
+| Initial G1 reports | `93eae8178ef8cb692d95eb94bfd59309bae06651` |
+| Gemini review prompt | `9cc9c60fccf624238962f122fe1c2c6e9bbb3a7e` |
+| Canonical timestamps, typed digests and identities | `3868ec85820d32163075cff5fa0ee45a9edde545` |
+| Schema-backed config and complete provenance | `d777d3b3ca4856809c6cafceee693ab14027a525` |
+| Frozen manifest and LeakageGuard | `eeafebafb4e310669300e53098b04e104fff9a38` |
+| Required lifecycle, structured logs and CLI | `375588596f7bbed716c8428fd32bdf728285537b` |
+| Authoritative/invocation separation and replay | `0b81776d9013f69709fb50ccc72ce98aac0838ee` |
+| Exact clean-install dependency graph | `5d4600b713eb5ebcb34698241e0050b660ba43ab` |
+
+No published commit was amended, rebased, or force-pushed.
 
 ## G1 acceptance evidence
 
-| Criterion | Evidence | Outcome |
+| Criterion | Objective evidence | Outcome |
 |---|---|---|
-| `astro_exec.core` published | Installed from a new GitHub clone; 25 package modules import | **PASS** |
-| Canonical JSON, identifiers, hashing, config, provenance, errors, logging, `LeakageGuard` | 16 focused core-contract tests plus interface documentation | **PASS** |
-| Contract tests green on fresh clone in clean environment | New `/tmp` clone and new `venv`; wheel built and installed; 24/24 `tests/exec` tests pass | **PASS** |
-| Frozen-artefact drift aborts | Direct mismatch test and run-level test prove output is not created after drift | **PASS** |
-| Two dry runs byte-identical except run id | `compare_dry_runs`: `differing_files=[]`, `equivalent_except_run_id=True` | **PASS** |
-| No import of `asa_astro` | AST import-graph test over every `src/astro_exec/**/*.py`; runtime clean import test | **PASS** |
-| Interfaces documented for B–E | `ASTRO-EXEC-002-PHASE-2-INTERFACES.md` plus complete public docstrings | **PASS** |
+| `astro_exec.core` published | Complete modules installed from GitHub wheel; public API inventory published | PASS |
+| Canonical JSON, identifiers, hashing, config, provenance, errors, logging, LeakageGuard | Focused known-answer, validation, completeness and negative tests | PASS |
+| Contract tests green on fresh clone | 38/38 installed Phase 2 tests in a new virtual environment | PASS |
+| Complete existing Python validation preserved | 25/25 repository-native legacy tests in the same fresh clone | PASS |
+| Frozen verification aborts on drift | Missing/changed/substituted/extra tests plus output-noncreation assertion | PASS |
+| Two dry runs byte-identical except run id | Stronger: same authoritative run ID and digest; zero differing authoritative files | PASS |
+| No `asa_astro` import | AST import-graph test across every `src/astro_exec/**/*.py` | PASS |
+| Interfaces documented without conversation context | Phase 2 interface document plus zero-missing public-docstring audit | PASS |
 
-## Tests executed
+Detailed test receipt: `reports/ASTRO-EXEC-002-TEST-REPORT.md`.
+Requirements mapping: `docs/execution/ASTRO-EXEC-002-REQUIREMENTS-TRACEABILITY.md`.
 
-### Fresh GitHub clone and isolated environment
+## Deterministic replay evidence
 
-```text
-python -m unittest discover -s tests/exec -p 'test*.py' -v
-Ran 24 tests in 0.020s — OK
-
-astro-exec run --dry-run ... --run-label fresh-clone-a
-status: DRY_RUN_COMPLETE
-
-astro-exec run --dry-run ... --run-label fresh-clone-b
-status: DRY_RUN_COMPLETE
-
-astro-exec replay run-a
-status: verified; 8 files
-
-astro-exec replay run-b
-status: verified; 8 files
-
-compare_dry_runs(run-a, run-b)
-{'differing_files': [], 'equivalent_except_run_id': True}
-```
-
-The cloned repository resolved to `b9f16c8471ba2454bf5cfb6f779904a77f6b1bde` and reported
-`main...origin/main` with no changes.
-
-### Retained pre-Phase-2 suites
+The installed CLI generated two packages from identical authoritative inputs and different explicit
+invocation labels:
 
 ```text
-Legacy schema, evidence and pipeline: 11 tests — OK
-Legacy reasoning: 10 tests — OK
-Legacy Phase-2 validation harness: 4 tests in 48.370s — OK
+run id: RUN-ca9998d7ff3795ef2104fbcc2697a7d3dd779d32b7dbe96287a1525e1e85a7ac
+authoritative digest: c63d67203fe528b104e79cd5994baf67cf7dc72af26a85aeaa22886735c59bb4
+package one replay: verified
+package two replay: verified
+authoritative_equivalent: true
+differing_files: []
 ```
 
-### Static validation
+The invocation labels are contained only in separate sibling diagnostic records. Package logs are
+explicitly `diagnostic-not-scientific-evidence` and excluded from authoritative content.
 
-```text
-python3 -m py_compile src/astro_exec/**/*.py tests/exec/**/*.py — PASS
-git diff --check — PASS
-Public interface docstring audit — PASS (25 imported modules)
-Forbidden asa_astro/rendering import audit — PASS
-```
+## Frozen-artefact evidence
 
-## Frozen-artefact receipt
+`config/frozen-artefacts-v1.json` pins SHA-256 and Git blob SHA-1 for all six required artefacts.
+The guard verifies the exact manifest before creating a run directory and reports an exact drift
+type. The theory entry is `mixed`: Part A is frozen; Part B is Candidate and not frozen.
 
-The checked-in configuration pins and verifies these SHA-256 values before any output directory is
-created:
+## LeakageGuard evidence
 
-| Path | SHA-256 |
-|---|---|
-| `docs/claims/ASTRO-CLAIMS-0001.md` | `44282ba8c92aa5f40b495982b50192a49f8aeb1ba5910895ea7c09136010c50b` |
-| `docs/theory/ASTRO-THEORY-0001-V1-FREEZE-RECORD.md` | `b9fd57bb29750c3efe97ca18d8e4741f8afd08ae9e192b6dcf1e7fecc88cc6bc` |
-| `docs/theory/ASTRO-THEORY-0001.md` | `c1289b3e8f096a91c82ed1bc912be31e798a289df26cc64dace76a06d8c1d56c` |
-| `reports/ASTRO-V1-RESEARCH-CONTROLS-FREEZE-REPORT.md` | `43bf27049c640dd6467c2284a84eb37b5072aef4e8612815b7ab592ca2871fc1` |
-| `validation/benchmarks/ASTRO-EXP-0001.md` | `a38796892e1d7d68c3a40b35b0a39175d07948f8ef9df73fee26daf4943a7316` |
-| `validation/results/ASTRO-RESULTS-0001.md` | `434e4d417141ad69dcf45b23a5c89df644f01b6af3e9837bf5169db5fabf27a7` |
+Capabilities are explicit and immutable for custodian, truth laboratory, ASA laboratory and
+statistician. Access is denied by default. Tests prove allowed reads work while cross-role truth
+reads, `..` traversal and symlink escape fail with `LeakageViolation`.
 
-## Result
+## Import and installation evidence
 
-**G1 IMPLEMENTATION EVIDENCE SATISFIED.** Operators B–E may rely only on the published interfaces
-after the custodian accepts this gate. Phase 3 has not begun.
+- Installed runtime/build dependencies match `requirements.lock` exactly.
+- Packaged config schema loads from the distribution, not ancestor discovery.
+- No `astro_exec` module imports `asa_astro` or a renderer.
+- No workstation absolute path, sibling repository fallback, environment-variable access path, or
+  implicit ancestor scan exists in `astro_exec`.
+
+## Unresolved requirements and later gates
+
+`UR-001` through `UR-010` remain unchanged. `UnresolvedEstimator.select()` still raises
+`UnresolvedRequirement("UR-001")`. G2 and every later gate remain unmarked and unimplemented.
+
+## Gate result
+
+**G1 IS OBJECTIVELY SATISFIED AT THE TESTED IMPLEMENTATION SHA.** The repository-published evidence
+remains engineering validation at `EH-0`. Programme authority retains the acceptance ruling.
