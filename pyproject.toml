@@ -14,6 +14,7 @@ dependencies = [
 
 [project.scripts]
 asa-astro-observe = "asa_astro.cli:main"
+astro-exec = "astro_exec.cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
