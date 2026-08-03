@@ -58,6 +58,7 @@ tests/exec/test_architecture.py
 tests/exec/test_interfaces_and_cli.py
 reports/ASTRO-EXEC-002-G1-VALIDATION-REPORT.md
 reports/ASTRO-EXEC-002-COMPLETION-REPORT.md
+review-packages/ASTRO-EXEC-002-GEMINI-REVIEW-PROMPT.md
 ```
 
 ## Tests and acceptance
