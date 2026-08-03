@@ -31,6 +31,18 @@ class CanonicalJSONError(AstroExecError):
     code = "CANONICAL_JSON_ERROR"
 
 
+class DigestValidationError(AstroExecError):
+    """Raised when a digest has the wrong algorithm, shape, or value."""
+
+    code = "DIGEST_VALIDATION_ERROR"
+
+
+class DigestMismatch(AstroExecError):
+    """Raised when bytes do not match their declared typed content digest."""
+
+    code = "DIGEST_MISMATCH"
+
+
 class ConfigurationError(AstroExecError):
     """Raised when execution configuration is malformed or unsafe."""
 
