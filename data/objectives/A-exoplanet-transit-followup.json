@@ -1,0 +1,23 @@
+{
+  "name": "Exoplanet transit follow-up",
+  "version": "1.0",
+  "purpose_class": "follow_up",
+  "question": "Which known or candidate transiting-planet host stars should receive a transit observation in this window?",
+  "authority": "CLAUDE-ASTRO-BUILD-001 §7 Objective A (synthetic programme declaration)",
+  "target_kinds": ["star"],
+  "required_evidence": ["ephemeris"],
+  "eligible_relationship_types": ["hosts", "calibration_reference_for", "near"],
+  "unevaluated_relationships": "exclude",
+  "missingness_policy": "indeterminate",
+  "exclusions": ["apparent_brightness_as_relevance", "proximity_as_relevance"],
+  "explanation_threshold": 0.25,
+  "features": [
+    {"name": "transit_window_proximity", "weight": 4.0, "required": true, "params": {"horizon_hours": 36}, "rationale": "A transit can only be observed while it happens; predicted mid-transit inside the window is the scientific opportunity."},
+    {"name": "visibility", "weight": 2.0, "required": true, "params": {"min_altitude_deg": 30}, "rationale": "Below the altitude limit the observation is not feasible from the declared site."},
+    {"name": "instrument_suitability", "weight": 1.5, "required": false, "params": {"magnitude_attribute": "magnitude_v"}, "rationale": "Feasibility only: the target must be within the declared limiting magnitude. Brightness confers no relevance beyond feasibility."},
+    {"name": "observation_gap", "weight": 1.5, "required": false, "params": {"cadence_hours": 240}, "rationale": "Ephemeris refinement needs epochs spread in time; a recently observed host gains less."},
+    {"name": "evidence_quality", "weight": 1.0, "required": false, "params": {"evidence_kinds": ["ephemeris"]}, "rationale": "A precise ephemeris makes the predicted window trustworthy."},
+    {"name": "relationship_support", "weight": 1.0, "required": false, "params": {"types": ["hosts"]}, "rationale": "An endorsed host-companion relationship is what makes the star a transit target at all."}
+  ],
+  "plan": {"action": "observe_transit", "max_targets": 2, "duration_minutes": 180}
+}

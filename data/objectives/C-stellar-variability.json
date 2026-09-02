@@ -1,0 +1,22 @@
+{
+  "name": "Stellar variability monitoring",
+  "version": "1.0",
+  "purpose_class": "monitoring",
+  "question": "Which stars most need additional time-series coverage to characterise their variability or oscillations?",
+  "authority": "CLAUDE-ASTRO-BUILD-001 §7 Objective C / §19 asteroseismology readiness (synthetic programme declaration)",
+  "target_kinds": ["star", "variable_star"],
+  "required_evidence": ["time_series"],
+  "eligible_relationship_types": ["member_of"],
+  "unevaluated_relationships": "exclude",
+  "missingness_policy": "indeterminate",
+  "exclusions": ["apparent_brightness_as_relevance"],
+  "explanation_threshold": 0.25,
+  "features": [
+    {"name": "time_series_coverage_gap", "weight": 3.0, "required": true, "params": {"required_span_days": 90}, "rationale": "Frequency resolution scales with total span; short baselines cannot resolve close modes."},
+    {"name": "observation_gap", "weight": 2.0, "required": false, "params": {"cadence_hours": 720, "evidence_kinds": ["time_series", "photometry"]}, "rationale": "Long gaps degrade the window function."},
+    {"name": "visibility", "weight": 2.0, "required": true, "params": {"min_altitude_deg": 30}, "rationale": "Feasibility from the declared site."},
+    {"name": "evidence_quality", "weight": 1.0, "required": false, "params": {"evidence_kinds": ["time_series"]}, "rationale": "Existing high-quality series make additional coverage more valuable, not less, because it can be combined."},
+    {"name": "relationship_support", "weight": 1.0, "required": false, "params": {"types": ["member_of"]}, "rationale": "Cluster members share age and composition, which raises the value of each oscillation measurement."}
+  ],
+  "plan": {"action": "time_series_block", "max_targets": 2, "duration_minutes": 240}
+}

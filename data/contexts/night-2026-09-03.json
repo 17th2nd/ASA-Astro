@@ -1,0 +1,10 @@
+{
+  "label": "Synthetic observing night, 1 m telescope at SYN-SITE-SSO",
+  "as_of": "2026-09-03T08:00:00Z",
+  "window_start": "2026-09-03T09:00:00Z",
+  "window_end": "2026-09-03T19:00:00Z",
+  "site_designation": "SYN-SITE-SSO",
+  "instrument_designation": "SYN-SCOPE-1M",
+  "constraints": {"limiting_magnitude": 14.0, "available_minutes": 480, "min_altitude_deg": 30},
+  "anchor_target_designations": ["SYN-HOST-A"]
+}
