@@ -189,6 +189,38 @@ def cmd_benchmark(args) -> int:
     return 0
 
 
+def cmd_catalogues(args) -> int:
+    from astro.catalogues.manifest import SOURCES, fetch_source, load_manifest, verify_snapshots
+    if args.action == "fetch":
+        keys = args.source or list(SOURCES)
+        for key in keys:
+            entry = fetch_source(key)
+            print(f"{key}: {len(entry['files'])} file(s) retrieved {entry['retrieved_at']}  " + ", ".join(f"{f['path']} {f['bytes']} B" for f in entry["files"]))
+        return 0
+    m, ok = load_manifest(), verify_snapshots()
+    for key, entry in sorted(m.entries.items()):
+        print(f"{key:22} {'OK ' if ok.get(key) else 'MISSING/DRIFT'} retrieved {entry['retrieved_at']}  {entry['release']}  licence: {entry['licence'][:60]}")
+    if not m.entries:
+        print("no snapshots recorded; run `astro catalogues fetch`")
+    return 0
+
+
+def cmd_store(args) -> int:
+    from astro.store import DEFAULT_SOURCES, build_store, store_status
+    if args.action == "build":
+        r = build_store(args.store, tuple(args.source) if args.source else DEFAULT_SOURCES, universe_path=args.universe_out)
+        print(json.dumps({k: r[k] for k in ("universe_id", "entities", "evidence", "relationships", "kernel_seq", "kernel_digest", "timing_s", "loaded_this_build")}, indent=1))
+        print("kinds:", r["kinds"])
+        print(f"BUILD.json written in {args.store}")
+        return 0
+    st = store_status(args.store, verify=args.verify)
+    print(json.dumps({k: st[k] for k in st if k != "build"}, indent=1, default=str))
+    if st["build"]:
+        b = st["build"]
+        print(f"built {b['built_at']}  universe {b['universe_id']}  entities {b['entities']}  evidence {b['evidence']}  ASA {b['asa_baseline'][:12]}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="astro", description="Astro — Astronomy Execution Engine on ASA")
     sub = p.add_subparsers(dest="command", required=True)
@@ -222,6 +254,17 @@ def build_parser() -> argparse.ArgumentParser:
     b.add_argument("--context", required=True)
     b.add_argument("--out")
     b.set_defaults(fn=cmd_benchmark)
+    c = sub.add_parser("catalogues", help="fetch or check raw catalogue snapshots (never runs inside an evaluation)")
+    c.add_argument("action", choices=["fetch", "status"])
+    c.add_argument("--source", nargs="*", help="source keys (default: all)")
+    c.set_defaults(fn=cmd_catalogues)
+    st = sub.add_parser("store", help="build or inspect the persistent ASA store of real catalogues")
+    st.add_argument("action", choices=["build", "status"])
+    st.add_argument("--store", default="var/astro-store")
+    st.add_argument("--source", nargs="*")
+    st.add_argument("--universe-out", help="also save the merged universe JSON here")
+    st.add_argument("--verify", action="store_true", help="status: run the Governor-less verifier and a replay")
+    st.set_defaults(fn=cmd_store)
     return p
 
 
