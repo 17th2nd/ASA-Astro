@@ -18,7 +18,7 @@ class UniverseError(ValueError):
     """The universe is internally inconsistent."""
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class Universe:
     universe_id: str
     label: str
@@ -27,6 +27,29 @@ class Universe:
     evidence: tuple[EvidenceRecord, ...]
     relationships: tuple[RelationshipAssertion, ...]
     states: tuple[EntityState, ...]
+
+    def _index(self) -> dict[str, Any]:
+        """Derived lookup tables, built once per (immutable) universe; never part of identity."""
+        idx = self.__dict__.get("_idx")
+        if idx is None:
+            by_entity = {e.entity_id: e for e in self.entities}
+            by_name: dict[str, Entity] = {}
+            for e in self.entities:
+                by_name.setdefault(e.designation, e)
+                for a in e.aliases:
+                    by_name.setdefault(a, e)
+            ev_by_subject: dict[str, list[EvidenceRecord]] = {}
+            for ev in self.evidence:
+                ev_by_subject.setdefault(ev.subject_id, []).append(ev)
+            rel_by_participant: dict[str, list[RelationshipAssertion]] = {}
+            for r in self.relationships:
+                for p in r.participants():
+                    rel_by_participant.setdefault(p, []).append(r)
+            by_cat = {(c, i): e for e in self.entities for c, i in e.catalogue_ids}
+            idx = {"entity": by_entity, "name": by_name, "evidence": ev_by_subject, "relationships": rel_by_participant,
+                   "state": {s.entity_id: s for s in self.states}, "catalogue": by_cat}
+            object.__setattr__(self, "_idx", idx)
+        return idx
 
     @classmethod
     def create(
@@ -61,6 +84,7 @@ class Universe:
         ev_ids = [e.evidence_id for e in evs]
         if len(set(ev_ids)) != len(ev_ids):
             raise UniverseError("duplicate evidence identity")
+        ev_ids = set(ev_ids)
         for ev in evs:
             if ev.subject_id not in known:
                 raise UniverseError(f"evidence {ev.evidence_id} subject {ev.subject_id} unknown")
@@ -86,31 +110,23 @@ class Universe:
 
     # ---- lookups -------------------------------------------------------------
     def entity(self, entity_id: str) -> Entity:
-        for e in self.entities:
-            if e.entity_id == entity_id:
-                return e
-        raise KeyError(entity_id)
+        return self._index()["entity"][entity_id]
 
     def find(self, designation: str) -> Entity:
-        for e in self.entities:
-            if e.designation == designation or designation in e.aliases:
-                return e
-        raise KeyError(designation)
+        return self._index()["name"][designation]
+
+    def find_by_catalogue(self, catalogue: str, identifier: str) -> Entity:
+        return self._index()["catalogue"][(catalogue, identifier)]
 
     def evidence_for(self, entity_id: str, kind: str | None = None) -> tuple[EvidenceRecord, ...]:
-        return tuple(e for e in self.evidence if e.subject_id == entity_id and (kind is None or e.kind == kind))
+        return tuple(e for e in self._index()["evidence"].get(entity_id, ()) if kind is None or e.kind == kind)
 
     def relationships_of(self, entity_id: str, relationship_type: str | None = None) -> tuple[RelationshipAssertion, ...]:
-        return tuple(
-            r for r in self.relationships
-            if entity_id in r.participants() and (relationship_type is None or r.relationship_type == relationship_type)
-        )
+        return tuple(r for r in self._index()["relationships"].get(entity_id, ())
+                     if relationship_type is None or r.relationship_type == relationship_type)
 
     def state_of(self, entity_id: str) -> EntityState | None:
-        for s in self.states:
-            if s.entity_id == entity_id:
-                return s
-        return None
+        return self._index()["state"].get(entity_id)
 
     # ---- evolution (always a new universe; the old one is untouched) ----------
     def with_evidence(self, *new_evidence: EvidenceRecord, label: str | None = None) -> "Universe":

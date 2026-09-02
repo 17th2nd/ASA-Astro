@@ -1,0 +1,129 @@
+{
+  "alerce_sn": {
+    "citation": "F\u00f6rster F. et al., 2021, AJ 161, 242; ZTF public alert stream",
+    "files": [
+      {
+        "bytes": 687,
+        "path": "data/catalogues/raw/alerce_SLSN.json",
+        "sha256": "76d91e4cf388cd42c27b1a0baec4d227e6ab80bb2adba2439fd1ae00e05cd38a"
+      },
+      {
+        "bytes": 687,
+        "path": "data/catalogues/raw/alerce_SNII.json",
+        "sha256": "5a36d52766c63f93b29bafe1b577bb8356d08895cee349bcc5443dcabab97d86"
+      },
+      {
+        "bytes": 5297,
+        "path": "data/catalogues/raw/alerce_SNIa.json",
+        "sha256": "339df5037c1f02f28dfb75cbf58020ac2036743c4253eb82ce6669b1ec6edc57"
+      },
+      {
+        "bytes": 1268,
+        "path": "data/catalogues/raw/alerce_SNIbc.json",
+        "sha256": "bb0a16fcdd683fa696f7f313aba55583bf5f57fd4843aa16d1577551b53e358d"
+      }
+    ],
+    "licence": "ALeRCE/ZTF public; cite F\u00f6rster+ 2021",
+    "notes": "One file per class in SNIa, SNII, SNIbc, SLSN. Classifier probability is used as alert confidence.",
+    "release": "live API (ZTF public alerts)",
+    "retrieved_at": "2026-09-02T22:53:43Z",
+    "title": "ALeRCE ZTF light-curve classifier \u2014 recent supernova candidates",
+    "url": "https://api.alerce.online/ztf/v1/objects/?classifier=lc_classifier&class={cls}&ranking=1&probability=0.4&firstmjd=61240&page_size=500&order_by=lastmjd&order_mode=DESC"
+  },
+  "exoplanets": {
+    "citation": "NASA Exoplanet Archive, operated by Caltech under contract with NASA",
+    "files": [
+      {
+        "bytes": 1956312,
+        "path": "data/catalogues/raw/exoplanetarchive_pscomppars.csv",
+        "sha256": "efe8352882797b33ac36d5171b8fa9a8af6d67fe346a0dba39965af3d95556c6"
+      }
+    ],
+    "licence": "Public domain / NASA data policy; cite the archive (doi:10.26133/NEA13)",
+    "notes": "pl_tranmid is BJD_TDB; converted to UTC ignoring the ~69 s TDB\u2212UTC offset and light-time, recorded in the evidence.",
+    "release": "live table (composite parameters; no versioned release)",
+    "retrieved_at": "2026-09-02T22:42:44Z",
+    "title": "NASA Exoplanet Archive \u2014 Planetary Systems Composite Parameters (pscomppars)",
+    "url": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name,hostname,ra,dec,sy_vmag,sy_gaiamag,sy_dist,st_spectype,st_teff,st_rad,st_mass,pl_orbper,pl_orbpererr1,pl_tranmid,pl_tranmiderr1,pl_trandur,pl_rade,pl_bmasse,tran_flag,discoverymethod,disc_year,disc_facility,gaia_dr2_id,gaia_dr3_id,tic_id,hd_name,hip_name+from+pscomppars&format=csv"
+  },
+  "gaia_hosts": {
+    "citation": "Gaia Collaboration, Vallenari et al. 2023, A&A 674, A1",
+    "files": [
+      {
+        "bytes": 798527,
+        "path": "data/catalogues/raw/gaia_dr3_hosts.csv",
+        "sha256": "64f14a90ee2be1650a52bd38a5f12b1c71bcc3183ed4e8c0dc399ecf584cdb1a"
+      }
+    ],
+    "licence": "ESA Gaia data policy; cite Gaia Collaboration 2016, 2023",
+    "notes": "Astrometric epoch J2016.0; positions used as-is (no proper-motion propagation).",
+    "release": "Gaia DR3 (2022-06-13)",
+    "retrieved_at": "2026-09-02T22:53:43Z",
+    "title": "Gaia DR3 gaia_source_lite for NASA Exoplanet Archive host stars (by gaia_dr3_id)",
+    "url": "https://gea.esac.esa.int/tap-server/tap/sync (POST; ADQL: select source_id,ra,dec,parallax,parallax_error,pmra,pmdec,phot_g_mean_mag,phot_bp_mean_mag,phot_rp_mean_mag,radial_velocity,teff_gspphot,ruwe from gaiadr3.gaia_source_lite where source_id in (...); batches of 800)"
+  },
+  "gcvs": {
+    "citation": "Samus N.N. et al., 2017, Astronomy Reports 61, 80",
+    "files": [
+      {
+        "bytes": 5665560,
+        "path": "data/catalogues/raw/vizier_gcvs.csv",
+        "sha256": "46415c26f9556ff8342af327664d09995b9a082eb2c1a933255f91523cfca314"
+      }
+    ],
+    "licence": "CDS/VizieR terms; cite Samus+ 2017",
+    "notes": "",
+    "release": "GCVS 5.1 via VizieR",
+    "retrieved_at": "2026-09-02T22:42:44Z",
+    "title": "General Catalogue of Variable Stars (GCVS 5.1), VizieR B/gcvs/gcvs_cat",
+    "url": "https://tapvizier.cds.unistra.fr/TAPVizieR/tap/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=csv&MAXREC=100000&QUERY=select+VarNum,GCVS,RAJ2000,DEJ2000,VarType,magMax,Min1,flt,Epoch,Period,SpType+from+%22B/gcvs/gcvs_cat%22"
+  },
+  "huntreffert_clusters": {
+    "citation": "Hunt E.L., Reffert S., 2023, A&A 673, A114",
+    "files": [
+      {
+        "bytes": 629695,
+        "path": "data/catalogues/raw/vizier_huntreffert_clusters.csv",
+        "sha256": "838a46792c6d0d259326e82f2f53e3ed7343f0f437530e425b637e6293abd556"
+      }
+    ],
+    "licence": "CDS/VizieR terms; cite Hunt & Reffert 2023",
+    "notes": "",
+    "release": "2023 catalogue via VizieR",
+    "retrieved_at": "2026-09-02T22:42:44Z",
+    "title": "Hunt & Reffert 2023 open clusters, VizieR J/A+A/673/A114/clusters",
+    "url": "https://tapvizier.cds.unistra.fr/TAPVizieR/tap/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=csv&MAXREC=100000&QUERY=select+Name,Type,RA_ICRS,DE_ICRS,r50,N,Plx,dist50,logAge50+from+%22J/A%2BA/673/A114/clusters%22"
+  },
+  "mpc_sites": {
+    "citation": "IAU Minor Planet Center, ObsCodes list",
+    "files": [
+      {
+        "bytes": 148402,
+        "path": "data/catalogues/raw/mpc_ObsCodes.html",
+        "sha256": "40a9593c9265cb611770df3aaf50358ef11f88a96c0a6c66300d7a8bf28e412a"
+      }
+    ],
+    "licence": "MPC public data",
+    "notes": "Parallax constants (longitude, \u03c1cos\u03c6', \u03c1sin\u03c6') converted to geodetic latitude and approximate elevation; recorded as derived.",
+    "release": "live list",
+    "retrieved_at": "2026-09-02T22:42:44Z",
+    "title": "IAU Minor Planet Center observatory codes",
+    "url": "https://www.minorplanetcenter.net/iau/lists/ObsCodes.html"
+  },
+  "openngc": {
+    "citation": "Mattia Verga, OpenNGC, https://github.com/mattiaverga/OpenNGC",
+    "files": [
+      {
+        "bytes": 3876622,
+        "path": "data/catalogues/raw/openngc_NGC.csv",
+        "sha256": "be150bdaa1997dacbcb39f303074403edec7a953b589b36d5f1c4522c0cc6fae"
+      }
+    ],
+    "licence": "CC-BY-SA-4.0 (share-alike: derived redistribution must carry the same licence)",
+    "notes": "",
+    "release": "master branch snapshot (see retrieval time)",
+    "retrieved_at": "2026-09-02T22:42:44Z",
+    "title": "OpenNGC \u2014 NGC/IC deep-sky objects",
+    "url": "https://raw.githubusercontent.com/mattiaverga/OpenNGC/master/database_files/NGC.csv"
+  }
+}

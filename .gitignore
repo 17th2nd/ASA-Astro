@@ -8,3 +8,5 @@ dist/
 *.egg-info/
 out/
 .asa/
+data/catalogues/raw/
+var/

@@ -129,7 +129,7 @@ class StateLink:
     literals: tuple[tuple[str, Any], ...]
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class RelationalSnapshot:
     """ASA relational state as Astro consumes it. Immutable; identified by the kernel digest."""
 
@@ -144,17 +144,29 @@ class RelationalSnapshot:
     evidence_links: tuple[EvidenceLink, ...]
     states: tuple[StateLink, ...]
 
+    def _index(self) -> dict[str, dict]:
+        idx = self.__dict__.get("_idx")
+        if idx is None:
+            edges: dict[str, list[Edge]] = {}
+            for e in self.edges:
+                for p in e.participants():
+                    edges.setdefault(p, []).append(e)
+            links: dict[str, list[EvidenceLink]] = {}
+            for l in self.evidence_links:
+                links.setdefault(l.subject_id, []).append(l)
+            states = {s.entity_id: s for s in self.states if s.lifecycle == "registered"}
+            idx = {"edges": edges, "links": links, "states": states}
+            object.__setattr__(self, "_idx", idx)
+        return idx
+
     def edges_of(self, entity_id: str, type_name: str | None = None) -> tuple[Edge, ...]:
-        return tuple(e for e in self.edges if entity_id in e.participants() and (type_name is None or e.type_name == type_name))
+        return tuple(e for e in self._index()["edges"].get(entity_id, ()) if type_name is None or e.type_name == type_name)
 
     def evidence_of(self, entity_id: str) -> tuple[EvidenceLink, ...]:
-        return tuple(l for l in self.evidence_links if l.subject_id == entity_id)
+        return tuple(self._index()["links"].get(entity_id, ()))
 
     def state_of(self, entity_id: str) -> StateLink | None:
-        for s in self.states:
-            if s.entity_id == entity_id and s.lifecycle == "registered":
-                return s
-        return None
+        return self._index()["states"].get(entity_id)
 
     def to_record(self) -> dict[str, Any]:
         return {
@@ -169,7 +181,12 @@ class AstroAdapter:
     def __init__(self, kernel: Kernel):
         self.k = kernel
         self._astro_of: dict[str, str] = {}
+        self._uro_index: dict[tuple, str] = {}
         self._rebuild_index()
+
+    @staticmethod
+    def _uro_key(type_id: str, bindings: Mapping[str, list[str]]) -> tuple:
+        return (type_id, tuple(sorted((role, tuple(sorted(refs))) for role, refs in bindings.items())))
 
     # ---- lifecycle
     @classmethod
@@ -199,6 +216,16 @@ class AstroAdapter:
             attrs = uao.get("attributes") or {}
             if "astro_id" in attrs:
                 self._astro_of[uao["id"]] = attrs["astro_id"]
+        self._uro_index = {}
+        for key, u in self.k.state.uros.items():
+            if u["lifecycle"] == "registered":
+                self._uro_index[self._uro_key(u["type"], u["bindings"])] = key
+
+    def _submit_uro(self, type_id: str, bindings: Mapping[str, list[str]], literals: Mapping[str, Any]) -> Receipt:
+        r = self._submit("propose", type_id=type_id, bindings=bindings, literals=dict(literals), proposer=ACTOR)
+        if r.key:
+            self._uro_index[self._uro_key(type_id, bindings)] = r.key
+        return r
 
     def _find_uro(self, type_id: str, bindings: Mapping[str, list[str]], literals: Mapping[str, Any] | None = None) -> str | None:
         """Key of a registered URO with identical type, bindings and (when given) literals, else None.
@@ -206,16 +233,15 @@ class AstroAdapter:
         The kernel folds duplicates into a governed `merged` decision, which is itself an event;
         Astro therefore checks before proposing so that reloading a universe appends nothing.
         """
-        want = {role: sorted(refs) for role, refs in bindings.items()}
-        for key, u in self.k.state.uros.items():
-            if u["type"] != type_id or u["lifecycle"] != "registered":
-                continue
-            if {role: sorted(refs) for role, refs in u["bindings"].items()} != want:
-                continue
-            if literals is not None and u["literals"] != dict(literals):
-                continue
-            return key
-        return None
+        key = self._uro_index.get(self._uro_key(type_id, bindings))
+        if key is None:
+            return None
+        u = self.k.uro(key)
+        if u is None or u["lifecycle"] != "registered":
+            return None
+        if literals is not None and u["literals"] != dict(literals):
+            return None
+        return key
 
     def _register_uao(self, astro_id: str, attributes: Mapping[str, Any]) -> str:
         uid = uao_id(astro_id)
@@ -257,13 +283,12 @@ class AstroAdapter:
         })
         eb = {"record": [uid], "subject": [uao_id(ev.subject_id)]}
         if self._find_uro(TYPE_ID["evidence_of"], eb) is None:
-            self._submit("propose", type_id=TYPE_ID["evidence_of"], bindings=eb,
-                         literals={"evidence_kind": ev.kind, "status": ev.status, "quality": decimal_text(ev.quality),
-                                   "observed_at": ev.observed_at or ""}, proposer=ACTOR)
+            self._submit_uro(TYPE_ID["evidence_of"], eb, {"evidence_kind": ev.kind, "status": ev.status, "quality": decimal_text(ev.quality),
+                                                          "observed_at": ev.observed_at or ""})
         if ev.instrument_id:
             ib = {"record": [uid], "instrument": [uao_id(ev.instrument_id)]}
             if self._find_uro(TYPE_ID["observed_with"], ib) is None:
-                self._submit("propose", type_id=TYPE_ID["observed_with"], bindings=ib, literals={}, proposer=ACTOR)
+                self._submit_uro(TYPE_ID["observed_with"], ib, {})
         return uid
 
     def sync_evidence_status(self, ev: EvidenceRecord) -> bool:
@@ -283,13 +308,13 @@ class AstroAdapter:
         key = self._find_uro(TYPE_ID[rel.relationship_type], bindings, literals)
         added = False
         if key is None:
-            r = self._submit("propose", type_id=TYPE_ID[rel.relationship_type], bindings=bindings, literals=literals, proposer=ACTOR)
+            r = self._submit_uro(TYPE_ID[rel.relationship_type], bindings, literals)
             key, added = r.key, r.outcome == "admitted"
         supports = 0
         for eid in rel.evidence_ids:
             sb = {"source": [uao_id(eid)], "target": [key]}
             if self._find_uro(SUPPORTS, sb) is None:
-                s = self._submit("propose", type_id=SUPPORTS, bindings=sb, literals={"strength": decimal_text(rel.confidence)}, proposer=ACTOR)
+                s = self._submit_uro(SUPPORTS, sb, {"strength": decimal_text(rel.confidence)})
                 supports += int(s.outcome == "admitted")
         return added, supports
 
@@ -300,14 +325,19 @@ class AstroAdapter:
                     "alert_state": state.alert_state, "last_observed_at": state.last_observed_at or "", "stale": state.stale}
         if self._find_uro(TYPE_ID["observation_state"], {"subject": [subject]}, literals) is not None:
             return False
-        r = self._submit("propose", type_id=TYPE_ID["observation_state"], bindings={"subject": [subject]}, literals=literals, proposer=ACTOR)
+        r = self._submit_uro(TYPE_ID["observation_state"], {"subject": [subject]}, literals)
         if r.outcome != "admitted":
             return False
         if current and current != r.key:
             self._submit("supersede", key=current, successor=r.key)
+            self._uro_index.pop(self._uro_key(TYPE_ID["observation_state"], {"subject": [subject]}), None)
+            self._uro_index[self._uro_key(TYPE_ID["observation_state"], {"subject": [subject]})] = r.key
         return True
 
     def _current_state_key(self, subject_uao: str) -> str | None:
+        key = self._uro_index.get(self._uro_key(TYPE_ID["observation_state"], {"subject": [subject_uao]}))
+        if key is not None and self.k.uro(key) and self.k.uro(key)["lifecycle"] == "registered":
+            return key
         keys = [u["recorded_key"] for u in self.k.relationships(subject_uao)
                 if u["type"] == TYPE_ID["observation_state"] and u["lifecycle"] == "registered"]
         return keys[0] if keys else None
