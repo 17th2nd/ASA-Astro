@@ -114,17 +114,54 @@ def cmd_demo(args) -> int:
         print("Objective A before new evidence:")
         print(_table(first, universe, limit=3))
         host_a, host_b = universe.find("SYN-HOST-A"), universe.find("SYN-HOST-B")
-        new = [
-            EvidenceRecord.create("photometry", host_a.entity_id, values={"mag_v": 10.41}, uncertainty={"mag_v": 0.01}, observed_at="2026-09-03T06:30:00Z", source=syn, quality=0.9),
-            EvidenceRecord.create("ephemeris", host_b.entity_id, values={"period_days": 9.4, "epoch_utc": "2026-09-03T14:00:00Z", "duration_hours": 3.0}, source=syn, quality=0.95),
-        ]
-        u2 = universe.with_evidence(*new, label="slice1+evidence")
-        adapter.load_universe(u2)
+        old_a = universe.evidence_for(host_a.entity_id, "ephemeris")[0]
+        corrected_a = EvidenceRecord.create("ephemeris", host_a.entity_id, values={"period_days": 2.75, "epoch_utc": "2026-09-01T03:30:00Z", "duration_hours": 2.1}, source=syn, quality=0.97)
+        refined_b = EvidenceRecord.create("ephemeris", host_b.entity_id, values={"period_days": 9.4, "epoch_utc": "2026-09-03T14:00:00Z", "duration_hours": 3.0}, source=syn, quality=0.95)
+        u2 = universe.supersede_evidence(old_a.evidence_id, corrected_a).with_evidence(refined_b, label="slice1+evidence")
+        counts = adapter.load_universe(u2)
         second = decide(u2, objectives["A"], context, adapter)
-        print("\nNew evidence: fresh photometry of SYN-HOST-A this morning; refined ephemeris of SYN-HOST-B with a transit tonight.")
+        print("\nNew evidence: a corrected ephemeris epoch for SYN-HOST-A (supersedes the old record; tonight's transit moves out of the window);")
+        print(f"a refined ephemeris for SYN-HOST-B with a transit tonight. ASA registered {counts['evidence']} records and {counts['status_updates']} status update.")
         print(f"Universe {u2.universe_id}  kernel digest {second.snapshot.digest}\n\nObjective A after new evidence (same objective, same context):")
         print(_table(second, universe, limit=3))
         print(f"\nEntity identities unchanged: {[e.entity_id for e in universe.entities] == [e.entity_id for e in u2.entities]}")
+    elif args.scenario == "session":
+        from astro.session import run_session
+        for k in ("A", "C"):
+            adapter = open_or_bootstrap(universe)
+            s = run_session(universe, objectives[k], context, adapter)
+            print(f"Objective {k}: {objectives[k].name} — session {s.session_id[:20]}")
+            for c in s.cycles:
+                ex = c.outcome.action if c.outcome else None
+                ranked = ", ".join(f"{r.designation} {r.score:.3f}" for r in c.decision.evaluation.ranked()[:3])
+                skipped = "; ".join(f"{x.designation}: {x.reason}" for x in c.decision.plan.skipped if x.status == "eligible")
+                print(f"  cycle {c.index} as of {c.as_of}: ranked [{ranked}]")
+                print(f"    plan {[a.designation for a in c.decision.plan.actions]}" + (f"  skipped: {skipped}" if skipped else ""))
+                print(f"    executed {ex.designation} {ex.start_utc}–{ex.end_utc}; {len(c.outcome.evidence)} simulated evidence records → universe {c.outcome.universe_after[:16]}" if ex else "    nothing schedulable; session ends")
+            print(f"  executed: {list(s.executed())}  final universe {s.final_universe.universe_id[:16]}  kernel {adapter.digest()[:23]}\n")
+    return 0
+
+
+def cmd_session(args) -> int:
+    from astro.session import run_session
+    universe = Universe.load(args.universe)
+    objective = load_objective(args.objective)
+    context = load_context(args.context, universe)
+    adapter = open_or_bootstrap(universe, args.store)
+    s = run_session(universe, objective, context, adapter, max_cycles=args.max_cycles)
+    for c in s.cycles:
+        ex = c.outcome.action if c.outcome else None
+        print(f"cycle {c.index} as of {c.as_of}: ranked {[r.designation for r in c.decision.evaluation.ranked()][:4]} plan {[a.designation for a in c.decision.plan.actions]}")
+        print(f"  {'executed ' + ex.designation + ' ' + ex.start_utc + '–' + ex.end_utc if ex else 'nothing schedulable; session ends'}")
+    print(f"session {s.session_id}\nexecuted {list(s.executed())}\nfinal universe {s.final_universe.universe_id}\nkernel digest {adapter.digest()}")
+    if args.out:
+        out = Path(args.out)
+        out.mkdir(parents=True, exist_ok=True)
+        _write(out / "session.json", s.to_record())
+        s.final_universe.save(out / "universe-final.json")
+        for c in s.cycles:
+            c.decision.receipt.write(out / f"cycle-{c.index:02d}")
+        print(f"written: {out}/session.json universe-final.json cycle-NN/receipt.json")
     return 0
 
 
@@ -145,8 +182,16 @@ def build_parser() -> argparse.ArgumentParser:
     x.add_argument("--entity", required=True, help="designation or alias")
     x.set_defaults(fn=cmd_explain)
     d = sub.add_parser("demo", help="run a canonical demonstration on the slice-1 synthetic universe")
-    d.add_argument("scenario", choices=["context-switch", "evidence-arrival"])
+    d.add_argument("scenario", choices=["context-switch", "evidence-arrival", "session"])
     d.set_defaults(fn=cmd_demo)
+    s = sub.add_parser("session", help="run the evaluate → plan → schedule → execute → re-evaluate loop with the simulated executor")
+    s.add_argument("--universe", required=True)
+    s.add_argument("--objective", required=True)
+    s.add_argument("--context", required=True)
+    s.add_argument("--out")
+    s.add_argument("--store")
+    s.add_argument("--max-cycles", type=int, default=6)
+    s.set_defaults(fn=cmd_session)
     return p
 
 

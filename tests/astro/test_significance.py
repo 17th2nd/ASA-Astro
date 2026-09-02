@@ -41,7 +41,7 @@ class TestContextSwitchDemonstration(unittest.TestCase):
         a = decide(u, obj["A"], ctx, adapter, **FIXED)
         b = decide(u, obj["B"], ctx, adapter, **FIXED)
         self.assertNotEqual(a.evaluation.ranking(), b.evaluation.ranking())
-        self.assertEqual(u.find(a.evaluation.ranking()[0]).designation if False else a.evaluation.ranked()[0].designation, "SYN-HOST-A")
+        self.assertEqual(a.evaluation.ranked()[0].designation, "SYN-HOST-A")
         self.assertEqual(b.evaluation.ranked()[0].designation, "SYN-TR-2026a")
         self.assertNotEqual(a.plan.selected_ids(), b.plan.selected_ids())
         # the universe and the ASA relational state are untouched by evaluation
@@ -74,26 +74,34 @@ class TestEvidenceArrivalDemonstration(unittest.TestCase):
 
     def new_evidence(self, u: Universe):
         host_a, host_b = u.find("SYN-HOST-A"), u.find("SYN-HOST-B")
-        fresh_phot_a = EvidenceRecord.create("photometry", host_a.entity_id, values={"mag_v": 10.41}, uncertainty={"mag_v": 0.01},
-                                             observed_at="2026-09-03T06:30:00Z", source=SYN, quality=0.9)
+        # a corrected epoch for HOST-A moves tonight's predicted transit out of the window; it supersedes the old ephemeris
+        corrected_eph_a = EvidenceRecord.create("ephemeris", host_a.entity_id, values={"period_days": 2.75, "epoch_utc": "2026-09-01T03:30:00Z", "duration_hours": 2.1},
+                                                source=SYN, quality=0.97)
         refined_eph_b = EvidenceRecord.create("ephemeris", host_b.entity_id, values={"period_days": 9.4, "epoch_utc": "2026-09-03T14:00:00Z", "duration_hours": 3.0},
                                               source=SYN, quality=0.95)
-        return fresh_phot_a, refined_eph_b
+        return corrected_eph_a, refined_eph_b
 
     def test_new_evidence_changes_the_plan(self):
         u, obj, ctx, adapter = setup()
+        host_a = u.find("SYN-HOST-A")
         first = decide(u, obj["A"], ctx, adapter, **FIXED)
-        u2 = u.with_evidence(*self.new_evidence(u), label="slice1+evidence")
-        adapter.load_universe(u2)                                       # incremental: only the new records are registered
+        corrected_a, refined_b = self.new_evidence(u)
+        old_a = u.evidence_for(host_a.entity_id, "ephemeris")[0]
+        u2 = u.supersede_evidence(old_a.evidence_id, corrected_a).with_evidence(refined_b, label="slice1+evidence")
+        counts = adapter.load_universe(u2)                              # incremental: two new records, one status update
+        self.assertEqual((counts["evidence"], counts["status_updates"], counts["entities"]), (2, 1, 0))
         second = decide(u2, obj["A"], ctx, adapter, **FIXED)
-        self.assertEqual(first.plan.actions[0].designation, "SYN-HOST-A")
-        self.assertEqual(second.plan.actions[0].designation, "SYN-HOST-B")
+        self.assertEqual([a.designation for a in first.plan.actions], ["SYN-HOST-A"])
+        self.assertEqual([a.designation for a in second.plan.actions], ["SYN-HOST-B"])
         self.assertNotEqual(first.evaluation.kernel_digest, second.evaluation.kernel_digest)
         self.assertNotEqual(u.universe_id, u2.universe_id)
         self.assertEqual({e.entity_id for e in u.entities}, {e.entity_id for e in u2.entities})   # identities unchanged
         b_result = second.evaluation.result_for(u.find("SYN-HOST-B").entity_id)
-        used = set(b_result.evidence_ids)
-        self.assertIn(self.new_evidence(u)[1].evidence_id, used)                                # the decision cites the new record
+        self.assertIn(refined_b.evidence_id, set(b_result.evidence_ids))                         # the decision cites the new record
+        a_result = second.evaluation.result_for(host_a.entity_id)
+        excluded = [x for rule in a_result.eligibility if rule["rule"] == "evidence_policy" for x in rule["excluded"]]
+        self.assertIn({"evidence_id": old_a.evidence_id, "reason": "status superseded"}, excluded)
+        self.assertEqual(old_a.with_status("superseded").evidence_id, old_a.evidence_id)          # status is not identity
 
     def test_contested_evidence_is_excluded_and_traced(self):
         u, obj, ctx, adapter = setup()
