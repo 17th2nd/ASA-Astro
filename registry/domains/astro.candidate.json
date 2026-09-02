@@ -1,0 +1,438 @@
+{
+  "$domain": {
+    "namespace": "astro",
+    "owner": "asa:uao:astro/registry-owner",
+    "status": "APPLICATION DOMAIN CANDIDATE — not asa.core; not Council-ratified; Astro-owned",
+    "admission_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+    "traceability": [
+      "CLAUDE-ASTRO-BUILD-001 §6",
+      "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+      "ADR-002 §7.5 (namespaces are governance T-1)"
+    ],
+    "object_kinds": [
+      "star",
+      "planet",
+      "exoplanet",
+      "moon",
+      "galaxy",
+      "nebula",
+      "supernova",
+      "variable_star",
+      "transient",
+      "candidate",
+      "sky_region",
+      "catalogue_source",
+      "star_cluster",
+      "asteroid",
+      "comet",
+      "instrument",
+      "telescope",
+      "site",
+      "survey",
+      "observation",
+      "evidence"
+    ],
+    "kind_attribute": "kind",
+    "note": "object_kinds / kind_attribute are Astro application metadata interpreted only by the Astro adapter; the kernel does not read them."
+  },
+  "definitions": [
+    {
+      "id": "asa:type:astro/hosts@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "supported",
+      "roles": [
+        {
+          "name": "host",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        },
+        {
+          "name": "companion",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/member-of@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "supported",
+      "roles": [
+        {
+          "name": "member",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        },
+        {
+          "name": "group",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/catalogued-as@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "definitional",
+      "roles": [
+        {
+          "name": "object",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        },
+        {
+          "name": "entry",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/near@1",
+      "meta": false,
+      "symmetric": true,
+      "evidence": "supported",
+      "roles": [
+        {
+          "name": "pair",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 2,
+          "max": 2,
+          "identity": true
+        }
+      ],
+      "literals": [
+        {
+          "name": "separation_arcsec",
+          "datatype": "decimal",
+          "identity": false
+        }
+      ],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/calibration-reference-for@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "supported",
+      "roles": [
+        {
+          "name": "reference",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        },
+        {
+          "name": "target",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/comparison-star-for@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "supported",
+      "roles": [
+        {
+          "name": "comparison",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        },
+        {
+          "name": "target",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/hosted-transient@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "supported",
+      "roles": [
+        {
+          "name": "host",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        },
+        {
+          "name": "transient",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/observed-with@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "definitional",
+      "roles": [
+        {
+          "name": "record",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        },
+        {
+          "name": "instrument",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/located-at@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "definitional",
+      "roles": [
+        {
+          "name": "instrument",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        },
+        {
+          "name": "site",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/candidate-of@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "definitional",
+      "roles": [
+        {
+          "name": "candidate",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        },
+        {
+          "name": "survey",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/evidence-of@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "definitional",
+      "roles": [
+        {
+          "name": "record",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        },
+        {
+          "name": "subject",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [
+        {
+          "name": "evidence_kind",
+          "datatype": "string",
+          "identity": false
+        },
+        {
+          "name": "status",
+          "datatype": "string",
+          "identity": false
+        },
+        {
+          "name": "quality",
+          "datatype": "decimal",
+          "identity": false
+        },
+        {
+          "name": "observed_at",
+          "datatype": "string",
+          "identity": false
+        }
+      ],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/observation-state@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "definitional",
+      "roles": [
+        {
+          "name": "subject",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [
+        {
+          "name": "as_of",
+          "datatype": "string",
+          "identity": true
+        },
+        {
+          "name": "observation_status",
+          "datatype": "string",
+          "identity": false
+        },
+        {
+          "name": "candidate_status",
+          "datatype": "string",
+          "identity": false
+        },
+        {
+          "name": "alert_state",
+          "datatype": "string",
+          "identity": false
+        },
+        {
+          "name": "last_observed_at",
+          "datatype": "string",
+          "identity": false
+        },
+        {
+          "name": "stale",
+          "datatype": "boolean",
+          "identity": false
+        }
+      ],
+      "provenance_roles": []
+    }
+  ]
+}

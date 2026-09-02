@@ -1,0 +1,1329 @@
+{
+  "$meta": {
+    "title": "ASA Relationship Type Registry — application domain astro",
+    "registry_version": "2026.2",
+    "schema": "09_Drafts/Claude/2026-08-29_Claude_ASA-SPEC-00X_Relationship_Type_Registry_v0.1_DRAFT.md §6.2",
+    "subordination_clause_ack": true,
+    "provenance_anchor": "PROPOSED",
+    "css_schema_version": "2026.1",
+    "spec_authority": "ASA-SPEC-00X (proposed ASA-SPEC-0006); domain astro admitted by ASTRO-REGISTRY-CANDIDATE-2026-09-03 (application authority, not Council)"
+  },
+  "participant_kinds": [
+    "perspective",
+    "uao",
+    "uro"
+  ],
+  "types": [
+    {
+      "id": "asa:type:asa.core/challenges@1",
+      "namespace": "asa.core",
+      "owner": "asa:uao:asa.core/governor-v1",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "D-012",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:asa.core/challenges@1",
+        "meta": true,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "target",
+            "kind": "participant",
+            "binds": [
+              "uro"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [
+          {
+            "name": "grounds",
+            "datatype": "string",
+            "identity": false
+          }
+        ],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:f320db59b4fa952a25da6dab96fd1abfdc218542e30cb13fa7318cef0d669a52",
+      "semantics": {
+        "participant_roles": [
+          "target"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "target"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": true,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "ADR-002 §3.7",
+        "ADR-002 §5",
+        "ADR-002 §7.6",
+        "ASA-SPEC-0001 Meta_Types v0.1"
+      ]
+    },
+    {
+      "id": "asa:type:asa.core/contradicts@1",
+      "namespace": "asa.core",
+      "owner": "asa:uao:asa.core/governor-v1",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "D-012",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:asa.core/contradicts@1",
+        "meta": true,
+        "symmetric": true,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "claims",
+            "kind": "participant",
+            "binds": [
+              "uro"
+            ],
+            "min": 2,
+            "max": 2,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:989fe687aee8338bc18e2c778b910a7d00db9bd54789abe5cc194176c5f92cbb",
+      "semantics": {
+        "participant_roles": [
+          "claims"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "claims"
+        ],
+        "identity_literals": [],
+        "symmetric": true,
+        "ordering": "unordered-symmetric",
+        "meta": true,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "ADR-002 §3.7",
+        "ADR-002 §5",
+        "ADR-002 §7.6",
+        "ASA-SPEC-0001 Meta_Types v0.1"
+      ]
+    },
+    {
+      "id": "asa:type:asa.core/stance@1",
+      "namespace": "asa.core",
+      "owner": "asa:uao:asa.core/governor-v1",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "D-012",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:asa.core/stance@1",
+        "meta": true,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "holder",
+            "kind": "participant",
+            "binds": [
+              "perspective"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "target",
+            "kind": "participant",
+            "binds": [
+              "uro"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [
+          {
+            "name": "value",
+            "datatype": "string",
+            "identity": false
+          }
+        ],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:2b6f18ba2948e837319f6c546a2d07682a832e91e62bf769e458bf0e90fbb159",
+      "semantics": {
+        "participant_roles": [
+          "holder",
+          "target"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "holder",
+          "target"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": true,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "ADR-002 §3.7",
+        "ADR-002 §5",
+        "ADR-002 §7.6",
+        "ASA-SPEC-0001 Meta_Types v0.1"
+      ]
+    },
+    {
+      "id": "asa:type:asa.core/supersedes@1",
+      "namespace": "asa.core",
+      "owner": "asa:uao:asa.core/governor-v1",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "D-012",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:asa.core/supersedes@1",
+        "meta": true,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "predecessor",
+            "kind": "participant",
+            "binds": [
+              "uro"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "successor",
+            "kind": "participant",
+            "binds": [
+              "uro"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:a5cce548045c79478d9aa653f9429628bf613d718e7e59e78e14600a614b5c20",
+      "semantics": {
+        "participant_roles": [
+          "predecessor",
+          "successor"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "predecessor",
+          "successor"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": true,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "ADR-002 §3.7",
+        "ADR-002 §5",
+        "ADR-002 §7.6",
+        "ASA-SPEC-0001 Meta_Types v0.1"
+      ]
+    },
+    {
+      "id": "asa:type:asa.core/supports@1",
+      "namespace": "asa.core",
+      "owner": "asa:uao:asa.core/governor-v1",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "D-012",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:asa.core/supports@1",
+        "meta": true,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "source",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "target",
+            "kind": "participant",
+            "binds": [
+              "uro"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [
+          {
+            "name": "strength",
+            "datatype": "decimal",
+            "identity": false
+          }
+        ],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:a636f816697ec3c5e43ae2dd2a48d7169e018f903955f7acdf4574adfe8d7b19",
+      "semantics": {
+        "participant_roles": [
+          "source",
+          "target"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "source",
+          "target"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": true,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "ADR-002 §3.7",
+        "ADR-002 §5",
+        "ADR-002 §7.6",
+        "ASA-SPEC-0001 Meta_Types v0.1"
+      ]
+    },
+    {
+      "id": "asa:type:astro/calibration-reference-for@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/calibration-reference-for@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "supported",
+        "roles": [
+          {
+            "name": "reference",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "target",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:f65a5fa64eee9a2467e3b4520c45a1d22b7cfdfbe20ab7a1118c3c1f43d78aed",
+      "semantics": {
+        "participant_roles": [
+          "reference",
+          "target"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "reference",
+          "target"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "supported",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/candidate-of@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/candidate-of@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "candidate",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "survey",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:7a5df672d028e51ac96e10f0be5e819df212ba2ae2f3a6d6bdbac5560a0b99ae",
+      "semantics": {
+        "participant_roles": [
+          "candidate",
+          "survey"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "candidate",
+          "survey"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/catalogued-as@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/catalogued-as@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "entry",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "object",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:ea6ac7ca5c5764f2ec2ac68e5b135d9a0324fb532c043e76e7b10b6c11d4e3b4",
+      "semantics": {
+        "participant_roles": [
+          "entry",
+          "object"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "entry",
+          "object"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/comparison-star-for@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/comparison-star-for@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "supported",
+        "roles": [
+          {
+            "name": "comparison",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "target",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:ac852dc5805b75aa02c9ae947b8db6e75cd569b503c74ad8528a1be4f3d8d883",
+      "semantics": {
+        "participant_roles": [
+          "comparison",
+          "target"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "comparison",
+          "target"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "supported",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/evidence-of@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/evidence-of@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "record",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "subject",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [
+          {
+            "name": "evidence_kind",
+            "datatype": "string",
+            "identity": false
+          },
+          {
+            "name": "observed_at",
+            "datatype": "string",
+            "identity": false
+          },
+          {
+            "name": "quality",
+            "datatype": "decimal",
+            "identity": false
+          },
+          {
+            "name": "status",
+            "datatype": "string",
+            "identity": false
+          }
+        ],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:31219ff68c2eba3928264ff9ce6cfb7ad916d0f71e2a26178875aca54bc9329e",
+      "semantics": {
+        "participant_roles": [
+          "record",
+          "subject"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "record",
+          "subject"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/hosted-transient@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/hosted-transient@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "supported",
+        "roles": [
+          {
+            "name": "host",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "transient",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:3d593029df1de576e76d7775720a7a5a8a3dd97c5f8df4a9e9b5b9e5ab18cc0d",
+      "semantics": {
+        "participant_roles": [
+          "host",
+          "transient"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "host",
+          "transient"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "supported",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/hosts@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/hosts@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "supported",
+        "roles": [
+          {
+            "name": "companion",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "host",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:3f4f440b88fd4c79924aa0bc4ffcc40aca45e5fd55beff08776247e386a302f8",
+      "semantics": {
+        "participant_roles": [
+          "companion",
+          "host"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "companion",
+          "host"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "supported",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/located-at@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/located-at@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "instrument",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "site",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:02eb197ead4fbde97117f09266ce0a04e066f57a5d235da7701ce543489197c5",
+      "semantics": {
+        "participant_roles": [
+          "instrument",
+          "site"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "instrument",
+          "site"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/member-of@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/member-of@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "supported",
+        "roles": [
+          {
+            "name": "group",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "member",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:48b050a7e909fc984740ce48f4d5a3c3404ddb095b861bec28bf7b1c97a846c4",
+      "semantics": {
+        "participant_roles": [
+          "group",
+          "member"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "group",
+          "member"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "supported",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/near@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/near@1",
+        "meta": false,
+        "symmetric": true,
+        "evidence": "supported",
+        "roles": [
+          {
+            "name": "pair",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 2,
+            "max": 2,
+            "identity": true
+          }
+        ],
+        "literals": [
+          {
+            "name": "separation_arcsec",
+            "datatype": "decimal",
+            "identity": false
+          }
+        ],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:a177939ff92e63a1177d96c7628a131541f73f477de3a8b91c06c65456c1fb76",
+      "semantics": {
+        "participant_roles": [
+          "pair"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "pair"
+        ],
+        "identity_literals": [],
+        "symmetric": true,
+        "ordering": "unordered-symmetric",
+        "meta": false,
+        "evidence": "supported",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/observation-state@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/observation-state@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "subject",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [
+          {
+            "name": "alert_state",
+            "datatype": "string",
+            "identity": false
+          },
+          {
+            "name": "as_of",
+            "datatype": "string",
+            "identity": true
+          },
+          {
+            "name": "candidate_status",
+            "datatype": "string",
+            "identity": false
+          },
+          {
+            "name": "last_observed_at",
+            "datatype": "string",
+            "identity": false
+          },
+          {
+            "name": "observation_status",
+            "datatype": "string",
+            "identity": false
+          },
+          {
+            "name": "stale",
+            "datatype": "boolean",
+            "identity": false
+          }
+        ],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:ee850d64df926cb1ce59450e281d16c877f8b68e031132004199daa022e63479",
+      "semantics": {
+        "participant_roles": [
+          "subject"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "subject"
+        ],
+        "identity_literals": [
+          "as_of"
+        ],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/observed-with@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/observed-with@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "instrument",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "record",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:cf2e196e1b0f9c015b370a8e466d0e4a16e446166ddb932daf6663f3f3c4ebbc",
+      "semantics": {
+        "participant_roles": [
+          "instrument",
+          "record"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "instrument",
+          "record"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    }
+  ],
+  "digest": "sha256:52f783616debf8925789a1d5007b5939659605412c28fb622724e335487f8db2"
+}
