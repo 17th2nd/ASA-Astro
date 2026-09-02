@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any, Mapping
 
 from .identity import Provenance, content_id, forbid_intrinsic, freeze_mapping, thaw
@@ -52,7 +52,7 @@ class EvidenceRecord:
         forbid_intrinsic(values, f"EvidenceRecord({kind}) values")
         body = {
             "kind": kind, "subject_id": subject_id, "observed_at": observed_at, "values": dict(values),
-            "uncertainty": dict(uncertainty or {}), "quality": quality, "status": status, "source": source.to_record(),
+            "uncertainty": dict(uncertainty or {}), "quality": quality, "source": source.to_record(),
             "derived_from": sorted(derived_from), "instrument_id": instrument_id,
         }
         return cls(
@@ -60,6 +60,12 @@ class EvidenceRecord:
             values=freeze_mapping(values), uncertainty=freeze_mapping(uncertainty), quality=quality, status=status,
             source=source, derived_from=tuple(sorted(derived_from)), instrument_id=instrument_id,
         )
+
+    def with_status(self, status: str) -> "EvidenceRecord":
+        """Same record, new lifecycle status. Identity is unchanged: status is not content."""
+        if status not in EVIDENCE_STATUSES:
+            raise ValueError(f"evidence status {status!r} not in EVIDENCE_STATUSES")
+        return replace(self, status=status)
 
     @property
     def value_map(self) -> dict[str, Any]:

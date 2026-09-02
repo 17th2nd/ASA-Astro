@@ -117,6 +117,24 @@ class Universe:
         return Universe.create(label or self.label, self.data_class, self.entities, self.evidence + tuple(new_evidence),
                                self.relationships, self.states)
 
+    def with_evidence_status(self, evidence_id: str, status: str, label: str | None = None) -> "Universe":
+        """Change one evidence record's lifecycle status (e.g. ``superseded``); its identity is unchanged."""
+        found = False
+        evidence = []
+        for e in self.evidence:
+            if e.evidence_id == evidence_id:
+                evidence.append(e.with_status(status))
+                found = True
+            else:
+                evidence.append(e)
+        if not found:
+            raise UniverseError(f"evidence {evidence_id} not in universe")
+        return Universe.create(label or self.label, self.data_class, self.entities, evidence, self.relationships, self.states)
+
+    def supersede_evidence(self, old_evidence_id: str, new_record: EvidenceRecord, label: str | None = None) -> "Universe":
+        """Register a replacement record and mark the old one superseded, in one step."""
+        return self.with_evidence(new_record, label=label).with_evidence_status(old_evidence_id, "superseded", label=label)
+
     def with_relationships(self, *new: RelationshipAssertion, label: str | None = None) -> "Universe":
         return Universe.create(label or self.label, self.data_class, self.entities, self.evidence,
                                self.relationships + tuple(new), self.states)

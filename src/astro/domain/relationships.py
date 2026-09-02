@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any, Mapping
 
 from .identity import Provenance, content_id, freeze_mapping, thaw
@@ -74,13 +74,17 @@ class RelationshipAssertion:
         body = {
             "relationship_type": relationship_type, "roles": {r: list(v) for r, v in role_items},
             "literals": dict(literals or {}), "evidence_ids": sorted(evidence_ids), "confidence": confidence,
-            "status": status, "source": source.to_record(),
+            "source": source.to_record(),
         }
         return cls(
             assertion_id=content_id("REL", body), relationship_type=relationship_type, roles=role_items,
             literals=freeze_mapping(literals), evidence_ids=tuple(sorted(evidence_ids)), confidence=confidence,
             status=status, source=source,
         )
+
+    def with_status(self, status: str) -> "RelationshipAssertion":
+        """Same assertion, new lifecycle status; identity unchanged."""
+        return replace(self, status=status)
 
     @property
     def role_map(self) -> dict[str, tuple[str, ...]]:

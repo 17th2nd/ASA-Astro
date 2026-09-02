@@ -227,7 +227,7 @@ class AstroAdapter:
     # ---- writes: whole universe
     def load_universe(self, universe: Universe) -> dict[str, int]:
         """Register everything in the universe that the kernel does not already hold. Idempotent."""
-        counts = {"entities": 0, "evidence": 0, "relationships": 0, "supports": 0, "states": 0}
+        counts = {"entities": 0, "evidence": 0, "relationships": 0, "supports": 0, "states": 0, "status_updates": 0}
         for entity in universe.entities:
             if self.k.query(uao_id(entity.entity_id)) is None:
                 self.register_entity(entity)
@@ -236,6 +236,8 @@ class AstroAdapter:
             if self.k.query(uao_id(ev.evidence_id)) is None:
                 self.register_evidence(ev)
                 counts["evidence"] += 1
+        for ev in universe.evidence:
+            counts["status_updates"] += int(self.sync_evidence_status(ev))
         for rel in universe.relationships:
             added, supports = self.register_relationship(rel)
             counts["relationships"] += int(added)
@@ -263,6 +265,16 @@ class AstroAdapter:
             if self._find_uro(TYPE_ID["observed_with"], ib) is None:
                 self._submit("propose", type_id=TYPE_ID["observed_with"], bindings=ib, literals={}, proposer=ACTOR)
         return uid
+
+    def sync_evidence_status(self, ev: EvidenceRecord) -> bool:
+        """Bring the evidence-of URO's non-identity ``status`` literal in line with the universe record."""
+        key = self._find_uro(TYPE_ID["evidence_of"], {"record": [uao_id(ev.evidence_id)], "subject": [uao_id(ev.subject_id)]})
+        if key is None:
+            return False
+        if self.k.uro(key)["literals"].get("status") == ev.status:
+            return False
+        self._submit("update_state", key=key, literals={"status": ev.status})
+        return True
 
     def register_relationship(self, rel: RelationshipAssertion) -> tuple[bool, int]:
         """Propose the relationship URO and one supports URO per cited evidence record."""
