@@ -80,16 +80,21 @@ def _visible_intervals(universe: Universe, context: ObservingContext, entity_id:
     return out
 
 
-def _preferred_start(evaluation: SignificanceEvaluation, entity_id: str, duration: timedelta) -> datetime | None:
+def _preferred_start(evaluation: SignificanceEvaluation | None, entity_id: str, duration: timedelta) -> datetime | None:
     """A transit-shaped action wants to be centred on the predicted mid-transit recorded in the evaluation trace."""
-    r = evaluation.result_for(entity_id)
+    if evaluation is None:
+        return None
+    try:
+        r = evaluation.result_for(entity_id)
+    except KeyError:
+        return None
     for c in r.contributions:
         if c["feature"] == "transit_window_proximity" and c["status"] == "available" and "next_transit_utc" in c["trace"]:
             return parse_utc(c["trace"]["next_transit_utc"]) - duration / 2
     return None
 
 
-def schedule_plan(plan: Plan, evaluation: SignificanceEvaluation, universe: Universe, context: ObservingContext) -> Schedule:
+def schedule_plan(plan: Plan, evaluation: SignificanceEvaluation | None, universe: Universe, context: ObservingContext) -> Schedule:
     """Greedy, deterministic placement in plan order; no overlaps; each action inside a visibility interval."""
     t0, t1 = context.window
     now = max(context.now, t0)

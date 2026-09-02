@@ -83,3 +83,24 @@ Slice 3 — catalogue adapters with provenance (Gaia DR3 / NASA Exoplanet Archiv
 Slice 4 — the three-pane visual (universe | objective & context | significance & plan) on top of `evaluate`/`session` JSON.
 Slice 5 — benchmark harness: ASA-guided session vs FIFO, random, static priority, brute force; report negative findings as such.
 Also: relationship-status sync in the adapter (evidence status is synced; relationship status is not yet), `astro explain` for entities not in the receipt's explanation set, README quick-start on a clean machine with GitHub clone of ASA (network).
+
+## Benchmark (§18) — added after the first push
+
+`astro benchmark` runs every strategy through the same session loop, scheduler and simulated executor; only
+selection differs. Baselines (fifo, random, static priority = brightest first) see the objective's kind filter
+and budgets only. `oracle` selects with the ground-truth scorer and is an upper bound. Useful = the action
+satisfied the objective's question per the universe's own records at the time.
+
+| Objective | fifo | random | static priority | **asa** | oracle |
+|---|---|---|---|---|---|
+| A transit follow-up | 1/3 useful, 360 min wasted | 0/3, 540 | 0/2, 360 | **1/1, 0** | 1/1, 0 |
+| B transient follow-up | 1/1, 0 | 1/1, 0 | 1/1, 0 | **1/1, 0** | 1/1, 0 |
+| C stellar variability | 0/3, 540 | 1/3, 360 | 1/2, 180 | **2/2, 0** | 2/2, 0 |
+| D calibration | 1/5, 80 | 1/5, 80 | 1/5, 80 | **1/1, 0** | 1/1, 0 |
+
+Read honestly: a smoke benchmark on 14 hand-built entities whose objectives and oracle were written by the
+same operator. It shows the harness works and the engine does what its declarations say; it is not evidence
+that ASA improves astronomy. Objective B has no discriminating power (one eligible transient; every strategy
+ties — recorded as a test). Baseline waste is partly the absence of a stop rule. All strategies reproduce
+exactly; the engine never imports the oracle (tested). Next: larger populations, baselines with stop rules,
+an oracle not written by the objective's author.

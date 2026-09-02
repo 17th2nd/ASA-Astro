@@ -29,10 +29,13 @@ class Cycle:
     outcome: ExecutionOutcome | None
 
     def to_record(self) -> dict[str, Any]:
+        ev = getattr(self.decision, "evaluation", None)
+        rc = getattr(self.decision, "receipt", None)
+        snap = getattr(self.decision, "snapshot", None)
         return {
             "index": self.index, "as_of": self.as_of, "universe_id": self.universe_id,
-            "evaluation_id": self.decision.evaluation.evaluation_id, "receipt_id": self.decision.receipt.receipt_id,
-            "kernel_digest": self.decision.snapshot.digest, "ranking": [r.designation for r in self.decision.evaluation.ranked()],
+            "evaluation_id": ev.evaluation_id if ev else None, "receipt_id": rc.receipt_id if rc else None,
+            "kernel_digest": snap.digest if snap else None, "ranking": [r.designation for r in ev.ranked()] if ev else None,
             "plan": [a.designation for a in self.decision.plan.actions], "schedule": self.schedule.to_record(),
             "executed": self.outcome.action.to_record() if self.outcome else None,
             "new_evidence": [e.evidence_id for e in self.outcome.evidence] if self.outcome else [],
@@ -58,13 +61,17 @@ class Session:
 
 
 def run_session(universe: Universe, objective: Objective, context: ObservingContext, adapter: AstroAdapter, *,
-                executor: Executor | None = None, max_cycles: int = 6, commit: str | None = None, issued_at: str | None = None) -> Session:
+                executor: Executor | None = None, max_cycles: int = 6, commit: str | None = None, issued_at: str | None = None,
+                planner=None) -> Session:
+    """Run the loop. ``planner(universe, objective, context, adapter) -> Decision`` defaults to the ASA-guided
+    ``pipeline.decide``; benchmark baselines supply their own planner and are never confused with it."""
     executor = executor or SimulatedExecutor()
+    plan_step = planner or (lambda u, o, c, a: decide(u, o, c, a, commit=commit, issued_at=issued_at))
     cycles: list[Cycle] = []
     current, ctx = universe, context
     for i in range(1, max_cycles + 1):
         adapter.load_universe(current)
-        decision = decide(current, objective, ctx, adapter, commit=commit, issued_at=issued_at)
+        decision = plan_step(current, objective, ctx, adapter)
         sched = schedule_plan(decision.plan, decision.evaluation, current, ctx)
         if not sched.scheduled:
             cycles.append(Cycle(i, ctx.as_of, current.universe_id, decision, sched, None))

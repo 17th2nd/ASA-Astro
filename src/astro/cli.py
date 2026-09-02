@@ -165,6 +165,30 @@ def cmd_session(args) -> int:
     return 0
 
 
+def cmd_benchmark(args) -> int:
+    from astro.benchmark import run_benchmark
+    universe = Universe.load(args.universe)
+    context = load_context(args.context, universe)
+    records = []
+    for path in args.objective:
+        objective = load_objective(path)
+        b = run_benchmark(universe, objective, context)
+        records.append(b.to_record())
+        print(f"{objective.name}  (universe {universe.universe_id[:16]}, benchmark {b.benchmark_id[:16]})")
+        print(f"  {'strategy':16} {'useful':>8} {'wasted':>12} {'first useful':>13}  executed")
+        for r in b.results:
+            first = f"{r.time_to_first_useful_minutes} min" if r.time_to_first_useful_minutes is not None else "never"
+            print(f"  {r.strategy:16} {r.useful_actions:>3}/{len(r.executed):<4} {r.wasted_minutes:>5}/{r.total_minutes:<5}min {first:>13}  " + ", ".join(f"{e['designation']}{'' if e['useful'] else ' ✗'}" for e in r.executed))
+        print()
+    print("Baselines apply only the kind filter and the objective's budgets; they never see evidence, relationships or significance.")
+    print("`oracle` selects with the benchmark's ground-truth scorer and is an upper bound, not a runnable strategy.")
+    if args.out:
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        _write(Path(args.out), {"benchmarks": records})
+        print(f"written: {args.out}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="astro", description="Astro — Astronomy Execution Engine on ASA")
     sub = p.add_subparsers(dest="command", required=True)
@@ -192,6 +216,12 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--store")
     s.add_argument("--max-cycles", type=int, default=6)
     s.set_defaults(fn=cmd_session)
+    b = sub.add_parser("benchmark", help="compare ASA-guided execution with fifo, random, static-priority and oracle strategies")
+    b.add_argument("--universe", required=True)
+    b.add_argument("--objective", required=True, nargs="+")
+    b.add_argument("--context", required=True)
+    b.add_argument("--out")
+    b.set_defaults(fn=cmd_benchmark)
     return p
 
 
