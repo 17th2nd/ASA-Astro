@@ -29,6 +29,37 @@ PYTHONPATH=src python3 -m asa_astro.cli \
 
 The output directory must not exist. A successful run produces a content-addressed source copy, canonical JSON graph, provenance bundle, processing manifest, Markdown summary, GraphML exchange graph, and diagnostic PNG overlay.
 
+## Astro — Astronomy Execution Engine on ASA (CLAUDE-ASTRO-BUILD-001)
+
+`src/astro/` is the Astro execution engine: a proving implementation of ASA on astronomy workloads.
+Astro owns astronomy (entities, evidence, relationships, objectives, planning, scheduling, execution,
+receipts); ASA — consumed at the pinned baseline in `config/asa-baseline.json` — owns identity,
+relationship admission, provenance and replay. Significance is a **derived construct** computed by
+Astro over ASA relational state under a declared Objective; it is never stored on an entity.
+
+```bash
+ASTRO_ASA_SOURCE=/path/to/ASA/clone python3 tools/asa_baseline.py   # materialise the pinned ASA kernel under .asa/ (omit the env var to clone from GitHub)
+.venv/bin/pip install --no-deps -e .
+astro version
+astro demo context-switch      # one universe, four objectives, four different selections; universe and ASA state unchanged
+astro demo evidence-arrival    # same objective, new evidence, different plan
+astro evaluate --universe data/universe/slice1.json --objective data/objectives/A-exoplanet-transit-followup.json \
+               --context data/contexts/night-2026-09-03.json --out /tmp/astro-run
+astro explain --out /tmp/astro-run --universe data/universe/slice1.json --entity SYN-HOST-A
+PYTHONPATH=src python3 -m unittest discover -s tests/astro -t .
+```
+
+Layout: `astro.domain` (entities, evidence, relationships, state, immutable Universe) · `astro.objectives`
+(Objective, ObservingContext) · `astro.asa` (pinned-baseline locator, AstroAdapter, RelationalSnapshot) ·
+`astro.significance` (feature library, evaluator, explanation) · `astro.execution` (plan, schedule,
+simulated executor) · `astro.session` (evaluate → plan → schedule → execute → evidence → re-evaluate) ·
+`astro.receipts` (AstroDecisionReceipt) · `registry/` (Astro relationship-type facet, validated by ASA) ·
+`data/` (synthetic slice-1 universe, objectives, contexts — all labelled) · `temp/` (operator reports;
+`temp/astro-asa-integration.md` records what Astro consumes from ASA and what it asks of it).
+
+All Astro data in this repository is **synthetic or simulated and labelled as such**. Nothing in Astro
+touches the frozen scientific instruments below or claims empirical validation of ASA.
+
 ## Canonical programme state
 
 | Instrument | State |

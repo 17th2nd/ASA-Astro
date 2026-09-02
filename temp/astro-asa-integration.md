@@ -35,6 +35,10 @@ architectural demand on ASA main unless Astro has demonstrated it by implementat
 |---|---|---|
 | `src/astro/asa/locator.py` | Kernel is not pip-installable from the branch (no `pyproject` outside `kernel/dist`, which is untracked). | When ASA publishes an installable package with a version pin, replace path insertion with a dependency pin. |
 
-## Candidate generic capabilities (record only after Astro demonstrates them)
+## Candidate generic capabilities (recorded only after Astro demonstrated them)
 
-- (none yet)
+| Date | Capability | Demonstrated by | Suggested ASA form |
+|---|---|---|---|
+| 2026-09-03 | **Enumeration query.** The consumer contract has `query(uao)`, `relationships(ref)`, `uro(key)` but no way to enumerate registered UAOs or UROs. Astro's `RelationalSnapshot` and duplicate-avoidance (`_find_uro`) read `Kernel.state.uaos` / `Kernel.state.uros` (a property on the API class, deep-copied projections) — outside the documented list. | `src/astro/asa/adapter.py` `snapshot()`, `_find_uro()`, `_rebuild_index()` | `Kernel.entities() -> list[str]`, `Kernel.uros(type_id=None) -> list[dict]`, and `Kernel.find_uro(type_id, bindings, literals) -> key | None` (identity-key lookup without proposing). Non-blocking. |
+| 2026-09-03 | **Duplicate proposal is an event.** Re-proposing an identical URO appends `uro.proposed` + `governor.decision(merged)` + `uro.merged`, so an idempotent reload changes the digest. Correct per §11.6, but a consumer that wants "register if absent" must pre-check. | `tests/astro/test_asa_adapter.py::test_load_is_deterministic_and_idempotent` | Either the `find_uro` lookup above or a documented `submit("propose", ..., if_absent=True)` that returns the existing key without appending. |
+| 2026-09-03 | **Derived-construct contract.** Astro's significance evaluation is a pure function of (kernel snapshot digest, objective declaration, context declaration, external value store bound by `record_digest`). ASA says significance is a Derived Construct evaluated at query time (programme §3/§21) but publishes no shape for one. | `src/astro/significance/evaluator.py` (`SignificanceEvaluation` scoped to kernel digest + head + registry digest + ASA baseline) | If ASA wants a generic shape: `DerivedConstruct{inputs: kernel_digest, registry_digest, declaration_id; output_id; scope}`. Astro will adopt it if published; not requested as a blocker. |
