@@ -1,0 +1,12 @@
+{
+  "schema_version": "astro-asa-baseline-v1",
+  "repository": "https://github.com/17th2nd/ASA.git",
+  "ref": "kernel/v0.1-alpha",
+  "sha": "b855d4c730dc2553db7a693d91c7d4d0cf25d03c",
+  "kernel_subdir": "kernel",
+  "kernel_version": "0.1.0-alpha10",
+  "kernel_status": "ENGINEERING ALPHA - NOT RATIFIED",
+  "consumed_surface": ["asa_kernel.api", "asa_kernel.identity", "asa_kernel.storage", "asa_kernel.registry", "tools/build_registry.compose_domain"],
+  "checkout_dir": ".asa/ASA",
+  "note": "Astro consumes ASA at exactly this commit. Re-pinning is a deliberate, recorded change; see temp/astro-asa-integration.md."
+}
