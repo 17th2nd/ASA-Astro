@@ -35,6 +35,21 @@ architectural demand on ASA main unless Astro has demonstrated it by implementat
 |---|---|---|
 | `src/astro/asa/locator.py` | Kernel is not pip-installable from the branch (no `pyproject` outside `kernel/dist`, which is untracked). | When ASA publishes an installable package with a version pin, replace path insertion with a dependency pin. |
 
+## Scale facts from the real store (2026-09-03)
+
+| Fact | Value |
+|---|---|
+| Universe | 95,011 entities · 102,581 evidence · 6,354 relationships (7 public catalogues) |
+| Kernel events | 868,292 in one stream; load 327 s (≈2,650 ev/s with FileStorage); in-memory 3,600 ev/s |
+| Open time | `Kernel.open` replays the whole log: **105 s** for 868k events; RSS 2.8–4.7 GB |
+| Disk | 4.0 GB under `var/astro-store/` (`events.jsonl` + one file per event in `content/`) |
+| Idempotent reload | 4 s (indexed lookups; nothing appended) |
+| Snapshot | 15 s to materialise 6k edges + 103k evidence links |
+
+**Requests that follow (non-blocking):** a projection checkpoint/snapshot so `open` does not replay every event; a
+compact content store (one file per event does not scale); a bulk `submit` that batches persistence. Astro
+works without them; they decide how far the store can grow.
+
 ## Candidate generic capabilities (recorded only after Astro demonstrated them)
 
 | Date | Capability | Demonstrated by | Suggested ASA form |

@@ -57,7 +57,18 @@ simulated executor) · `astro.session` (evaluate → plan → schedule → execu
 `data/` (synthetic slice-1 universe, objectives, contexts — all labelled) · `temp/` (operator reports;
 `temp/astro-asa-integration.md` records what Astro consumes from ASA and what it asks of it).
 
-All Astro data in this repository is **synthetic or simulated and labelled as such**. Nothing in Astro
+### Real catalogues and the persistent store
+
+`astro catalogues fetch` pulls public catalogues into `data/catalogues/raw/` (gitignored; digests, retrieval time,
+release, licence and citation recorded in `data/catalogues/manifest.json`): NASA Exoplanet Archive composite
+parameters, Gaia DR3 for every host star, GCVS 5.1, OpenNGC (CC-BY-SA-4.0), Hunt & Reffert 2023 clusters, IAU MPC
+observatory codes, ALeRCE ZTF supernova candidates. `astro store build --store var/astro-store --universe-out
+var/universe-real.json` merges them by identity into one universe labelled `real` and loads it into a persistent
+ASA kernel (≈95k entities, ≈103k evidence records, ≈870k events; `BUILD.json` is the receipt).
+`astro evaluate … --store var/astro-store --universe var/universe-real.json --context data/contexts/siding-spring-2026-09-03.json`
+then answers, for example, which known transiting planets transit tonight from Siding Spring.
+
+All Astro data committed in this repository is **synthetic or simulated and labelled as such**; real catalogue rows are fetched, never committed, and every real record carries its source and licence. Nothing in Astro
 touches the frozen scientific instruments below or claims empirical validation of ASA.
 
 ## Canonical programme state

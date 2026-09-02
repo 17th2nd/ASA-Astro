@@ -113,9 +113,11 @@ def schedule_plan(plan: Plan, evaluation: SignificanceEvaluation | None, univers
             if preferred is not None:
                 candidates.append(min(max(preferred, lo), hi))
             candidates.append(lo)
-            for (bs, be) in busy:                     # right after each existing booking
+            for (bs, be) in busy:                     # right after, or ending right at, each existing booking
                 if lo <= be <= hi:
                     candidates.append(be)
+                if lo <= bs - duration <= hi:
+                    candidates.append(bs - duration)
         placed = None
         for start in sorted(candidates, key=lambda c: (abs((c - preferred).total_seconds()) if preferred else 0, c)):
             end = start + duration
