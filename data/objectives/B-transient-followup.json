@@ -4,21 +4,101 @@
   "purpose_class": "follow_up",
   "question": "Which reported transient events warrant classification follow-up now?",
   "authority": "CLAUDE-ASTRO-BUILD-001 §7 Objective B (synthetic programme declaration)",
-  "target_kinds": ["transient", "supernova", "candidate"],
-  "required_evidence": ["alert"],
-  "eligible_relationship_types": ["hosted_transient", "candidate_of"],
+  "target_kinds": [
+    "transient",
+    "supernova",
+    "candidate"
+  ],
+  "required_evidence": [
+    "alert"
+  ],
+  "eligible_relationship_types": [
+    "hosted_transient",
+    "candidate_of"
+  ],
   "unevaluated_relationships": "exclude",
   "missingness_policy": "indeterminate",
-  "exclusions": ["apparent_brightness_as_relevance"],
+  "exclusions": [
+    "apparent_brightness_as_relevance"
+  ],
   "explanation_threshold": 0.25,
   "features": [
-    {"name": "alert_freshness", "weight": 3.0, "required": true, "params": {"half_life_hours": 24}, "rationale": "Early-time classification carries the most information; value halves each day."},
-    {"name": "alert_confidence", "weight": 2.0, "required": false, "params": {}, "rationale": "Weak alerts waste follow-up time."},
-    {"name": "alert_rarity", "weight": 2.0, "required": false, "params": {}, "rationale": "Rare classes justify rapid response."},
-    {"name": "visibility", "weight": 2.0, "required": true, "params": {"min_altitude_deg": 25}, "rationale": "Follow-up must be feasible from the declared site in the window."},
-    {"name": "candidate_status", "weight": 1.0, "required": false, "params": {"values": {"candidate": 1.0, "confirmed": 0.2, "none": 0.5, "rejected": 0.0}}, "rationale": "Unclassified candidates gain most from a classification spectrum."},
-    {"name": "relationship_support", "weight": 1.0, "required": false, "params": {"types": ["hosted_transient"]}, "rationale": "A host association constrains the event class and distance."},
-    {"name": "observation_gap", "weight": 1.0, "required": false, "params": {"cadence_hours": 12, "evidence_kinds": ["photometry", "spectrum"]}, "rationale": "Fast cadence is needed early in a transient's evolution."}
+    {
+      "name": "alert_freshness",
+      "weight": 3.0,
+      "required": true,
+      "params": {
+        "half_life_hours": 24
+      },
+      "rationale": "Early-time classification carries the most information; value halves each day."
+    },
+    {
+      "name": "alert_confidence",
+      "weight": 2.0,
+      "required": false,
+      "params": {},
+      "rationale": "Weak alerts waste follow-up time."
+    },
+    {
+      "name": "alert_rarity",
+      "weight": 2.0,
+      "required": false,
+      "params": {},
+      "rationale": "Rare classes justify rapid response."
+    },
+    {
+      "name": "visibility",
+      "weight": 2.0,
+      "required": true,
+      "params": {
+        "min_altitude_deg": 25
+      },
+      "rationale": "Follow-up must be feasible from the declared site in the window."
+    },
+    {
+      "name": "candidate_status",
+      "weight": 1.0,
+      "required": false,
+      "params": {
+        "values": {
+          "candidate": 1.0,
+          "confirmed": 0.2,
+          "none": 0.5,
+          "rejected": 0.0
+        }
+      },
+      "rationale": "Unclassified candidates gain most from a classification spectrum."
+    },
+    {
+      "name": "relationship_support",
+      "weight": 1.0,
+      "required": false,
+      "params": {
+        "types": [
+          "hosted_transient"
+        ]
+      },
+      "rationale": "A host association constrains the event class and distance."
+    },
+    {
+      "name": "observation_gap",
+      "weight": 1.0,
+      "required": false,
+      "params": {
+        "cadence_hours": 12,
+        "evidence_kinds": [
+          "photometry",
+          "spectrum"
+        ]
+      },
+      "rationale": "Fast cadence is needed early in a transient's evolution."
+    }
   ],
-  "plan": {"action": "classify_transient", "max_targets": 2, "duration_minutes": 45}
+  "plan": {
+    "action": "classify_transient",
+    "max_targets": 2,
+    "duration_minutes": 45,
+    "min_score": 0.5,
+    "min_repeat_gap_hours": 12
+  }
 }

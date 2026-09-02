@@ -50,17 +50,17 @@ def build() -> Universe:
 
     # --- evidence ---------------------------------------------------------------------------------
     ev = []
-    eph_a = EvidenceRecord.create("ephemeris", host.entity_id, values={"period_days": 2.75, "epoch_utc": "2026-09-01T11:00:00Z", "duration_hours": 2.1},
+    eph_a = EvidenceRecord.create("ephemeris", host.entity_id, values={"period_days": 2.75, "epoch_utc": "2026-08-31T15:30:00Z", "duration_hours": 2.1},
                                   source=SYN, quality=0.92); ev.append(eph_a)
     eph_b = EvidenceRecord.create("ephemeris", host_b.entity_id, values={"period_days": 9.4, "epoch_utc": "2026-08-30T02:00:00Z", "duration_hours": 3.0},
                                   source=SYN, quality=0.80); ev.append(eph_b)
     phot_a1 = EvidenceRecord.create("photometry", host.entity_id, values={"mag_v": 10.4}, uncertainty={"mag_v": 0.01}, observed_at="2026-08-12T12:00:00Z",
                                     source=SYN, quality=0.9, instrument_id=scope.entity_id); ev.append(phot_a1)
-    phot_b1 = EvidenceRecord.create("photometry", host_b.entity_id, values={"mag_v": 11.8}, uncertainty={"mag_v": 0.02}, observed_at="2026-09-02T14:00:00Z",
+    phot_b1 = EvidenceRecord.create("photometry", host_b.entity_id, values={"mag_v": 11.8}, uncertainty={"mag_v": 0.02}, observed_at="2026-08-28T14:00:00Z",
                                     source=SYN, quality=0.85, instrument_id=scope.entity_id); ev.append(phot_b1)
-    phot_b2 = EvidenceRecord.create("photometry", host_b.entity_id, values={"mag_v": 11.79}, uncertainty={"mag_v": 0.02}, observed_at="2026-09-02T16:00:00Z",
+    phot_b2 = EvidenceRecord.create("photometry", host_b.entity_id, values={"mag_v": 11.79}, uncertainty={"mag_v": 0.02}, observed_at="2026-08-28T16:00:00Z",
                                     source=SYN, quality=0.85, instrument_id=scope.entity_id); ev.append(phot_b2)
-    phot_b3 = EvidenceRecord.create("photometry", host_b.entity_id, values={"mag_v": 11.81}, uncertainty={"mag_v": 0.02}, observed_at="2026-09-02T18:00:00Z",
+    phot_b3 = EvidenceRecord.create("photometry", host_b.entity_id, values={"mag_v": 11.81}, uncertainty={"mag_v": 0.02}, observed_at="2026-08-28T18:00:00Z",
                                     source=SYN, quality=0.85, instrument_id=scope.entity_id); ev.append(phot_b3)
     cal_c = EvidenceRecord.create("calibration_assessment", calib.entity_id, values={"stability": 0.97, "bands": ["V"]}, observed_at="2026-07-01T00:00:00Z",
                                   source=SYN, quality=0.95); ev.append(cal_c)
@@ -100,7 +100,7 @@ def build() -> Universe:
     # --- state -------------------------------------------------------------------------------------
     states = [
         EntityState(host.entity_id, AS_OF, observation_status="observed", last_observed_at="2026-08-12T12:00:00Z"),
-        EntityState(host_b.entity_id, AS_OF, observation_status="observed", last_observed_at="2026-09-02T18:00:00Z"),
+        EntityState(host_b.entity_id, AS_OF, observation_status="observed", last_observed_at="2026-08-28T18:00:00Z"),
         EntityState(calib.entity_id, AS_OF, observation_status="observed", last_observed_at="2026-08-30T10:00:00Z"),
         EntityState(variable.entity_id, AS_OF, observation_status="observed", last_observed_at="2026-07-02T00:00:00Z"),
         EntityState(plain.entity_id, AS_OF, observation_status="observed", last_observed_at="2026-05-01T00:00:00Z"),

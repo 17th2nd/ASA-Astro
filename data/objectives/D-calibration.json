@@ -4,18 +4,64 @@
   "purpose_class": "calibration",
   "question": "Which stars should be observed as calibration references for the context's anchor targets?",
   "authority": "CLAUDE-ASTRO-BUILD-001 §7 Objective D (synthetic programme declaration)",
-  "target_kinds": ["star"],
+  "target_kinds": [
+    "star"
+  ],
   "required_evidence": [],
-  "eligible_relationship_types": ["calibration_reference_for", "near"],
+  "eligible_relationship_types": [
+    "calibration_reference_for",
+    "near"
+  ],
   "unevaluated_relationships": "exclude",
   "missingness_policy": "zero_with_trace",
-  "exclusions": ["apparent_brightness_as_relevance"],
+  "exclusions": [
+    "apparent_brightness_as_relevance"
+  ],
   "explanation_threshold": 0.25,
   "features": [
-    {"name": "calibration_suitability", "weight": 4.0, "required": true, "params": {}, "rationale": "Only an endorsed calibration-reference relationship to an anchor target, scaled by assessed stability, makes a star a calibrator here."},
-    {"name": "proximity_to_anchor", "weight": 2.0, "required": false, "params": {"max_separation_arcsec": 3600}, "rationale": "A reference close on the sky shares airmass and extinction with the anchor. Declared use of proximity."},
-    {"name": "visibility", "weight": 1.5, "required": false, "params": {"min_altitude_deg": 30}, "rationale": "Feasibility from the declared site."},
-    {"name": "evidence_quality", "weight": 1.0, "required": false, "params": {"evidence_kinds": ["calibration_assessment", "photometry"]}, "rationale": "A well-characterised reference is worth more."}
+    {
+      "name": "calibration_suitability",
+      "weight": 4.0,
+      "required": true,
+      "params": {},
+      "rationale": "Only an endorsed calibration-reference relationship to an anchor target, scaled by assessed stability, makes a star a calibrator here."
+    },
+    {
+      "name": "proximity_to_anchor",
+      "weight": 2.0,
+      "required": false,
+      "params": {
+        "max_separation_arcsec": 3600
+      },
+      "rationale": "A reference close on the sky shares airmass and extinction with the anchor. Declared use of proximity."
+    },
+    {
+      "name": "visibility",
+      "weight": 1.5,
+      "required": false,
+      "params": {
+        "min_altitude_deg": 30
+      },
+      "rationale": "Feasibility from the declared site."
+    },
+    {
+      "name": "evidence_quality",
+      "weight": 1.0,
+      "required": false,
+      "params": {
+        "evidence_kinds": [
+          "calibration_assessment",
+          "photometry"
+        ]
+      },
+      "rationale": "A well-characterised reference is worth more."
+    }
   ],
-  "plan": {"action": "observe_calibrator", "max_targets": 1, "duration_minutes": 20}
+  "plan": {
+    "action": "observe_calibrator",
+    "max_targets": 1,
+    "duration_minutes": 20,
+    "min_score": 0.5,
+    "min_repeat_gap_hours": 12
+  }
 }

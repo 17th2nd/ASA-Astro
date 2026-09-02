@@ -359,7 +359,158 @@
   "evidence": [
     {
       "derived_from": [],
-      "evidence_id": "EVD-02f813348a212836d94711eba078e2ee7b1a1fd9702d2292e61eb667a7de3f6c",
+      "evidence_id": "EVD-0b3d2aebe400663b4e8dcda5791944062b66b78890297106a384e5d0ecf79240",
+      "instrument_id": "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72",
+      "kind": "photometry",
+      "observed_at": "2026-08-28T18:00:00Z",
+      "quality": 0.85,
+      "source": {
+        "data_class": "synthetic",
+        "reference": "src/astro/data/slice1.py",
+        "retrieved_at": null,
+        "source": "astro-slice1-generator"
+      },
+      "status": "admissible",
+      "subject_id": "ENT-76b6d39034612dbfc3a71093332a4c661cd779dad1a0f6e6977547d5c908ae9d",
+      "uncertainty": {
+        "mag_v": 0.02
+      },
+      "values": {
+        "mag_v": 11.81
+      }
+    },
+    {
+      "derived_from": [
+        "EVD-f9eddf80666373ef21be746becccd159437f627992acac3745abbf60c932a841"
+      ],
+      "evidence_id": "EVD-0f5408a9432dc1f26ac7aa3f83dcea4c5143611ffcff1652eff7e85d7a518d25",
+      "instrument_id": null,
+      "kind": "classification",
+      "observed_at": null,
+      "quality": 0.7,
+      "source": {
+        "data_class": "synthetic",
+        "reference": "src/astro/data/slice1.py",
+        "retrieved_at": null,
+        "source": "astro-slice1-generator"
+      },
+      "status": "admissible",
+      "subject_id": "ENT-d5359e58db6267d8aab70ef9957b5ad2e86346b77648b746bdac9dbc30111b0e",
+      "uncertainty": {},
+      "values": {
+        "class": "delta_scuti_like",
+        "period_hours": 3.1
+      }
+    },
+    {
+      "derived_from": [],
+      "evidence_id": "EVD-2e0b77b4c4663336a3146590730fa52939dc482866f517660c5fbdbed8e0f623",
+      "instrument_id": null,
+      "kind": "ephemeris",
+      "observed_at": null,
+      "quality": 0.92,
+      "source": {
+        "data_class": "synthetic",
+        "reference": "src/astro/data/slice1.py",
+        "retrieved_at": null,
+        "source": "astro-slice1-generator"
+      },
+      "status": "admissible",
+      "subject_id": "ENT-4731315caa0f4b6e83f427af9dbff822488ad51bb36121cec0989c309858a42b",
+      "uncertainty": {},
+      "values": {
+        "duration_hours": 2.1,
+        "epoch_utc": "2026-08-31T15:30:00Z",
+        "period_days": 2.75
+      }
+    },
+    {
+      "derived_from": [],
+      "evidence_id": "EVD-57639a4b618b1025a6d76ab3623af4311cf456b504e35ae44cf9c69ca7866858",
+      "instrument_id": null,
+      "kind": "ephemeris",
+      "observed_at": null,
+      "quality": 0.8,
+      "source": {
+        "data_class": "synthetic",
+        "reference": "src/astro/data/slice1.py",
+        "retrieved_at": null,
+        "source": "astro-slice1-generator"
+      },
+      "status": "admissible",
+      "subject_id": "ENT-76b6d39034612dbfc3a71093332a4c661cd779dad1a0f6e6977547d5c908ae9d",
+      "uncertainty": {},
+      "values": {
+        "duration_hours": 3.0,
+        "epoch_utc": "2026-08-30T02:00:00Z",
+        "period_days": 9.4
+      }
+    },
+    {
+      "derived_from": [],
+      "evidence_id": "EVD-5ceb894693933773075c5bd1461e73309de9ee4e574197b5a1cfc3817d0f05d7",
+      "instrument_id": null,
+      "kind": "catalogue_measurement",
+      "observed_at": null,
+      "quality": 0.8,
+      "source": {
+        "data_class": "synthetic",
+        "reference": "src/astro/data/slice1.py",
+        "retrieved_at": null,
+        "source": "astro-slice1-generator"
+      },
+      "status": "admissible",
+      "subject_id": "ENT-e9682cba5bbd5ff1a04f1441e8177980dfa885bd10aef638582108c09b820d80",
+      "uncertainty": {},
+      "values": {
+        "membership_probability": 0.93
+      }
+    },
+    {
+      "derived_from": [],
+      "evidence_id": "EVD-61d743c981e2bed3533ef7d3f380aeacbfb152136327ef8b4cb7c66abcfb8678",
+      "instrument_id": null,
+      "kind": "classification",
+      "observed_at": null,
+      "quality": 0.4,
+      "source": {
+        "data_class": "synthetic",
+        "reference": "src/astro/data/slice1.py",
+        "retrieved_at": null,
+        "source": "astro-slice1-generator"
+      },
+      "status": "contested",
+      "subject_id": "ENT-8134933e0dd4384ead9608f67004f8b892b739c262f6c36438a015c8f4b255e5",
+      "uncertainty": {},
+      "values": {
+        "class": "AGN-flare"
+      }
+    },
+    {
+      "derived_from": [],
+      "evidence_id": "EVD-6275e5574ac2a9d5f2e02fca221d79a0c09fc7d26e1e993712384f6caf454475",
+      "instrument_id": "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72",
+      "kind": "photometry",
+      "observed_at": "2026-08-28T16:00:00Z",
+      "quality": 0.85,
+      "source": {
+        "data_class": "synthetic",
+        "reference": "src/astro/data/slice1.py",
+        "retrieved_at": null,
+        "source": "astro-slice1-generator"
+      },
+      "status": "admissible",
+      "subject_id": "ENT-76b6d39034612dbfc3a71093332a4c661cd779dad1a0f6e6977547d5c908ae9d",
+      "uncertainty": {
+        "mag_v": 0.02
+      },
+      "values": {
+        "mag_v": 11.79
+      }
+    },
+    {
+      "derived_from": [],
+      "evidence_id": "EVD-73ae406b76cd11db3414c07b21e5c320b2e128458886fdb5273dd1687a5149e0",
       "instrument_id": "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72",
       "kind": "photometry",
       "observed_at": "2026-08-30T10:00:00Z",
@@ -381,71 +532,7 @@
     },
     {
       "derived_from": [],
-      "evidence_id": "EVD-06e9c38d13cb4e163b86229298b89fce03c5d3c9912809b6bb2bb42565cc303a",
-      "instrument_id": null,
-      "kind": "catalogue_measurement",
-      "observed_at": null,
-      "quality": 0.8,
-      "source": {
-        "data_class": "synthetic",
-        "reference": "src/astro/data/slice1.py",
-        "retrieved_at": null,
-        "source": "astro-slice1-generator"
-      },
-      "status": "admissible",
-      "subject_id": "ENT-e9682cba5bbd5ff1a04f1441e8177980dfa885bd10aef638582108c09b820d80",
-      "uncertainty": {},
-      "values": {
-        "membership_probability": 0.93
-      }
-    },
-    {
-      "derived_from": [],
-      "evidence_id": "EVD-0a7a9e5d0ee42a80fe88993f670f4d3b16ad4db0e47cce03809f5a70bbb22e6b",
-      "instrument_id": "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72",
-      "kind": "photometry",
-      "observed_at": "2026-08-12T12:00:00Z",
-      "quality": 0.9,
-      "source": {
-        "data_class": "synthetic",
-        "reference": "src/astro/data/slice1.py",
-        "retrieved_at": null,
-        "source": "astro-slice1-generator"
-      },
-      "status": "admissible",
-      "subject_id": "ENT-4731315caa0f4b6e83f427af9dbff822488ad51bb36121cec0989c309858a42b",
-      "uncertainty": {
-        "mag_v": 0.01
-      },
-      "values": {
-        "mag_v": 10.4
-      }
-    },
-    {
-      "derived_from": [],
-      "evidence_id": "EVD-0cd81c25e4533104e9882262345c98d04960fa4e93f37523e2710248a758dfb5",
-      "instrument_id": "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72",
-      "kind": "photometry",
-      "observed_at": "2026-09-02T18:00:00Z",
-      "quality": 0.85,
-      "source": {
-        "data_class": "synthetic",
-        "reference": "src/astro/data/slice1.py",
-        "retrieved_at": null,
-        "source": "astro-slice1-generator"
-      },
-      "status": "admissible",
-      "subject_id": "ENT-76b6d39034612dbfc3a71093332a4c661cd779dad1a0f6e6977547d5c908ae9d",
-      "uncertainty": {
-        "mag_v": 0.02
-      },
-      "values": {
-        "mag_v": 11.81
-      }
-    },
-    {
-      "derived_from": [],
-      "evidence_id": "EVD-2bcbd29d8ea8cb463f0f8d8f93dd753680c1392e7506fff25906a46c825139c7",
+      "evidence_id": "EVD-86019a8c1a8d401bd9ff7c5d2f89fb001c0d10e401a8b3a8029f6b36d86309f8",
       "instrument_id": null,
       "kind": "alert",
       "observed_at": "2026-09-03T01:30:00Z",
@@ -468,11 +555,11 @@
     },
     {
       "derived_from": [],
-      "evidence_id": "EVD-2eafd5593a86c920d6638884d1ed24c1289611a8e583aa614a71ffe2e677d3c3",
-      "instrument_id": null,
+      "evidence_id": "EVD-8c92e0db83bbccec7c95aa063c15ae69f293c91dffb3cfa7569e9ccf98d1da9d",
+      "instrument_id": "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72",
       "kind": "photometry",
-      "observed_at": "2026-05-01T00:00:00Z",
-      "quality": 0.9,
+      "observed_at": "2026-08-28T14:00:00Z",
+      "quality": 0.85,
       "source": {
         "data_class": "synthetic",
         "reference": "src/astro/data/slice1.py",
@@ -480,21 +567,21 @@
         "source": "astro-slice1-generator"
       },
       "status": "admissible",
-      "subject_id": "ENT-f413c328dcda802d92844a6b4498b2c4d60ee27afb40ea28fed3b7d358329ab9",
+      "subject_id": "ENT-76b6d39034612dbfc3a71093332a4c661cd779dad1a0f6e6977547d5c908ae9d",
       "uncertainty": {
-        "mag_v": 0.01
+        "mag_v": 0.02
       },
       "values": {
-        "mag_v": 8.7
+        "mag_v": 11.8
       }
     },
     {
       "derived_from": [],
-      "evidence_id": "EVD-6287e274ec2e398f3a26fddd89f1ebdaf4af77c97f26043f90e42770b733ca51",
-      "instrument_id": null,
-      "kind": "ephemeris",
-      "observed_at": null,
-      "quality": 0.92,
+      "evidence_id": "EVD-acef604b7c9ba661bf3e01f520ec4fb666fd9f1e75e476fa878eac2162b87a5d",
+      "instrument_id": "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72",
+      "kind": "photometry",
+      "observed_at": "2026-08-12T12:00:00Z",
+      "quality": 0.9,
       "source": {
         "data_class": "synthetic",
         "reference": "src/astro/data/slice1.py",
@@ -503,83 +590,16 @@
       },
       "status": "admissible",
       "subject_id": "ENT-4731315caa0f4b6e83f427af9dbff822488ad51bb36121cec0989c309858a42b",
-      "uncertainty": {},
+      "uncertainty": {
+        "mag_v": 0.01
+      },
       "values": {
-        "duration_hours": 2.1,
-        "epoch_utc": "2026-09-01T11:00:00Z",
-        "period_days": 2.75
+        "mag_v": 10.4
       }
     },
     {
       "derived_from": [],
-      "evidence_id": "EVD-66ff1e61f2cea0342936ef5d168e7040e35d6cb0ba6da7b0009068a8ee36759e",
-      "instrument_id": null,
-      "kind": "astrometry",
-      "observed_at": null,
-      "quality": 0.9,
-      "source": {
-        "data_class": "synthetic",
-        "reference": "src/astro/data/slice1.py",
-        "retrieved_at": null,
-        "source": "astro-slice1-generator"
-      },
-      "status": "admissible",
-      "subject_id": "ENT-78ec77a92d7a5e4bc015b5dc99dbb4b1811ce005a1e367498c1ddd27782561b2",
-      "uncertainty": {},
-      "values": {
-        "dec_deg": -25.0,
-        "ra_deg": 335.0
-      }
-    },
-    {
-      "derived_from": [],
-      "evidence_id": "EVD-737648a8ee2ee2d97e106d5b0908a0a7c65f3960b5364083f255845f4fbad1ea",
-      "instrument_id": null,
-      "kind": "calibration_assessment",
-      "observed_at": "2026-07-01T00:00:00Z",
-      "quality": 0.95,
-      "source": {
-        "data_class": "synthetic",
-        "reference": "src/astro/data/slice1.py",
-        "retrieved_at": null,
-        "source": "astro-slice1-generator"
-      },
-      "status": "admissible",
-      "subject_id": "ENT-66ee9ec91f1de5b9efd7e44d31750b8fe5f3a347dc1bd19a45afe0c0a3d4c757",
-      "uncertainty": {},
-      "values": {
-        "bands": [
-          "V"
-        ],
-        "stability": 0.97
-      }
-    },
-    {
-      "derived_from": [
-        "EVD-d1c7002f5467108e1a53d347dacf4fe6af6cc2210fe4367d665834b8df4369aa"
-      ],
-      "evidence_id": "EVD-84abcfac9677a38ed11ebd2dcdd82cd1a68eb49860d7a80ae5d8555e40608098",
-      "instrument_id": null,
-      "kind": "classification",
-      "observed_at": null,
-      "quality": 0.7,
-      "source": {
-        "data_class": "synthetic",
-        "reference": "src/astro/data/slice1.py",
-        "retrieved_at": null,
-        "source": "astro-slice1-generator"
-      },
-      "status": "admissible",
-      "subject_id": "ENT-d5359e58db6267d8aab70ef9957b5ad2e86346b77648b746bdac9dbc30111b0e",
-      "uncertainty": {},
-      "values": {
-        "class": "delta_scuti_like",
-        "period_hours": 3.1
-      }
-    },
-    {
-      "derived_from": [],
-      "evidence_id": "EVD-85c45a559b21a82d9dca6309c0d1893916bb9268d024a703ef5be10af1eaa197",
+      "evidence_id": "EVD-da296bbae5cff038e74d501c0d84e24293d4250b458834df4a87b72ca986e7cc",
       "instrument_id": null,
       "kind": "time_series",
       "observed_at": "2026-07-15T00:00:00Z",
@@ -601,11 +621,11 @@
     },
     {
       "derived_from": [],
-      "evidence_id": "EVD-95c8fd95de0e5f15bb43f9f373336a779835827e50f52fbe96c2027d702b1b8e",
+      "evidence_id": "EVD-e431346c9a13aad3217c07ce9743888bddf233ded0496a2d419c039d8d46b9f3",
       "instrument_id": null,
-      "kind": "ephemeris",
-      "observed_at": null,
-      "quality": 0.8,
+      "kind": "calibration_assessment",
+      "observed_at": "2026-07-01T00:00:00Z",
+      "quality": 0.95,
       "source": {
         "data_class": "synthetic",
         "reference": "src/astro/data/slice1.py",
@@ -613,37 +633,39 @@
         "source": "astro-slice1-generator"
       },
       "status": "admissible",
-      "subject_id": "ENT-76b6d39034612dbfc3a71093332a4c661cd779dad1a0f6e6977547d5c908ae9d",
+      "subject_id": "ENT-66ee9ec91f1de5b9efd7e44d31750b8fe5f3a347dc1bd19a45afe0c0a3d4c757",
       "uncertainty": {},
       "values": {
-        "duration_hours": 3.0,
-        "epoch_utc": "2026-08-30T02:00:00Z",
-        "period_days": 9.4
+        "bands": [
+          "V"
+        ],
+        "stability": 0.97
       }
     },
     {
       "derived_from": [],
-      "evidence_id": "EVD-9cde9f7db6f345f7187c4222e43ca6aac26e080a9b9c923dc6c81cd1a30cf097",
+      "evidence_id": "EVD-f55ab4fae38ee256fc898ac33a4d78041eab8aef7536538ebb128e1f7fd4a89a",
       "instrument_id": null,
-      "kind": "classification",
+      "kind": "astrometry",
       "observed_at": null,
-      "quality": 0.4,
+      "quality": 0.9,
       "source": {
         "data_class": "synthetic",
         "reference": "src/astro/data/slice1.py",
         "retrieved_at": null,
         "source": "astro-slice1-generator"
       },
-      "status": "contested",
-      "subject_id": "ENT-8134933e0dd4384ead9608f67004f8b892b739c262f6c36438a015c8f4b255e5",
+      "status": "admissible",
+      "subject_id": "ENT-78ec77a92d7a5e4bc015b5dc99dbb4b1811ce005a1e367498c1ddd27782561b2",
       "uncertainty": {},
       "values": {
-        "class": "AGN-flare"
+        "dec_deg": -25.0,
+        "ra_deg": 335.0
       }
     },
     {
       "derived_from": [],
-      "evidence_id": "EVD-d1c7002f5467108e1a53d347dacf4fe6af6cc2210fe4367d665834b8df4369aa",
+      "evidence_id": "EVD-f9eddf80666373ef21be746becccd159437f627992acac3745abbf60c932a841",
       "instrument_id": "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72",
       "kind": "time_series",
       "observed_at": "2026-06-20T00:00:00Z",
@@ -665,11 +687,11 @@
     },
     {
       "derived_from": [],
-      "evidence_id": "EVD-f344486ed0ef913683f5a425c9f65f0cd90ce3708a688eab142724846baecd1b",
-      "instrument_id": "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72",
+      "evidence_id": "EVD-fbb055f7d7b84b2d97a41f3a0a403e2057ac147fd2783373e3a36f2f77707791",
+      "instrument_id": null,
       "kind": "photometry",
-      "observed_at": "2026-09-02T16:00:00Z",
-      "quality": 0.85,
+      "observed_at": "2026-05-01T00:00:00Z",
+      "quality": 0.9,
       "source": {
         "data_class": "synthetic",
         "reference": "src/astro/data/slice1.py",
@@ -677,117 +699,22 @@
         "source": "astro-slice1-generator"
       },
       "status": "admissible",
-      "subject_id": "ENT-76b6d39034612dbfc3a71093332a4c661cd779dad1a0f6e6977547d5c908ae9d",
+      "subject_id": "ENT-f413c328dcda802d92844a6b4498b2c4d60ee27afb40ea28fed3b7d358329ab9",
       "uncertainty": {
-        "mag_v": 0.02
+        "mag_v": 0.01
       },
       "values": {
-        "mag_v": 11.79
-      }
-    },
-    {
-      "derived_from": [],
-      "evidence_id": "EVD-fc852b3a874b1d008b4db3b5e8a1d60dde29739abbdcd5d4f440c13707ba5e97",
-      "instrument_id": "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72",
-      "kind": "photometry",
-      "observed_at": "2026-09-02T14:00:00Z",
-      "quality": 0.85,
-      "source": {
-        "data_class": "synthetic",
-        "reference": "src/astro/data/slice1.py",
-        "retrieved_at": null,
-        "source": "astro-slice1-generator"
-      },
-      "status": "admissible",
-      "subject_id": "ENT-76b6d39034612dbfc3a71093332a4c661cd779dad1a0f6e6977547d5c908ae9d",
-      "uncertainty": {
-        "mag_v": 0.02
-      },
-      "values": {
-        "mag_v": 11.8
+        "mag_v": 8.7
       }
     }
   ],
   "label": "slice1",
   "relationships": [
     {
-      "assertion_id": "REL-0310adee28845a85fa4c791b7353c5f100f8037c9a6c6e5262ce2321e4f74dc1",
-      "confidence": 0.99,
-      "evidence_ids": [
-        "EVD-02f813348a212836d94711eba078e2ee7b1a1fd9702d2292e61eb667a7de3f6c"
-      ],
-      "literals": {
-        "separation_arcsec": 2400
-      },
-      "relationship_type": "near",
-      "roles": {
-        "pair": [
-          "ENT-4731315caa0f4b6e83f427af9dbff822488ad51bb36121cec0989c309858a42b",
-          "ENT-66ee9ec91f1de5b9efd7e44d31750b8fe5f3a347dc1bd19a45afe0c0a3d4c757"
-        ]
-      },
-      "source": {
-        "data_class": "synthetic",
-        "reference": "src/astro/data/slice1.py",
-        "retrieved_at": null,
-        "source": "astro-slice1-generator"
-      },
-      "status": "asserted"
-    },
-    {
-      "assertion_id": "REL-0abbe36354ded75929dddf399f628b71f852f3459cfddea426041ae56b5a37a5",
-      "confidence": 0.8,
-      "evidence_ids": [
-        "EVD-2bcbd29d8ea8cb463f0f8d8f93dd753680c1392e7506fff25906a46c825139c7",
-        "EVD-66ff1e61f2cea0342936ef5d168e7040e35d6cb0ba6da7b0009068a8ee36759e"
-      ],
-      "literals": {},
-      "relationship_type": "hosted_transient",
-      "roles": {
-        "host": [
-          "ENT-78ec77a92d7a5e4bc015b5dc99dbb4b1811ce005a1e367498c1ddd27782561b2"
-        ],
-        "transient": [
-          "ENT-8134933e0dd4384ead9608f67004f8b892b739c262f6c36438a015c8f4b255e5"
-        ]
-      },
-      "source": {
-        "data_class": "synthetic",
-        "reference": "src/astro/data/slice1.py",
-        "retrieved_at": null,
-        "source": "astro-slice1-generator"
-      },
-      "status": "asserted"
-    },
-    {
-      "assertion_id": "REL-0c03908be84a4f93d688f7724d0001c2ecca6bc25b1a491b8a8d7a0020c8a0b4",
-      "confidence": 0.96,
-      "evidence_ids": [
-        "EVD-6287e274ec2e398f3a26fddd89f1ebdaf4af77c97f26043f90e42770b733ca51"
-      ],
-      "literals": {},
-      "relationship_type": "hosts",
-      "roles": {
-        "companion": [
-          "ENT-07a2465931931094333e901c81da390e243f08191e4cb5b4b57c692a6eef8ce2"
-        ],
-        "host": [
-          "ENT-4731315caa0f4b6e83f427af9dbff822488ad51bb36121cec0989c309858a42b"
-        ]
-      },
-      "source": {
-        "data_class": "synthetic",
-        "reference": "src/astro/data/slice1.py",
-        "retrieved_at": null,
-        "source": "astro-slice1-generator"
-      },
-      "status": "asserted"
-    },
-    {
-      "assertion_id": "REL-1713f60c61a814adbcf804dc2bb0dbfe7fea80c927e453f0139af92c8e77fc2c",
+      "assertion_id": "REL-0fa4d83f4728644d8ff8ea915a93c541f8b3d5f157cf963584c08008ae88c6cf",
       "confidence": 0.95,
       "evidence_ids": [
-        "EVD-737648a8ee2ee2d97e106d5b0908a0a7c65f3960b5364083f255845f4fbad1ea"
+        "EVD-e431346c9a13aad3217c07ce9743888bddf233ded0496a2d419c039d8d46b9f3"
       ],
       "literals": {},
       "relationship_type": "calibration_reference_for",
@@ -808,17 +735,19 @@
       "status": "asserted"
     },
     {
-      "assertion_id": "REL-4327339fbab9cf94b39dfc5f9b31dda2d75fabc6c94679087b9b84a3e7a7f365",
-      "confidence": 1.0,
-      "evidence_ids": [],
+      "assertion_id": "REL-15caf6571853ccf791b1b904abf97f004f8fda88ee2b0af8db736bfec40c4a6d",
+      "confidence": 0.96,
+      "evidence_ids": [
+        "EVD-2e0b77b4c4663336a3146590730fa52939dc482866f517660c5fbdbed8e0f623"
+      ],
       "literals": {},
-      "relationship_type": "comparison_star_for",
+      "relationship_type": "hosts",
       "roles": {
-        "comparison": [
-          "ENT-f413c328dcda802d92844a6b4498b2c4d60ee27afb40ea28fed3b7d358329ab9"
+        "companion": [
+          "ENT-07a2465931931094333e901c81da390e243f08191e4cb5b4b57c692a6eef8ce2"
         ],
-        "target": [
-          "ENT-76b6d39034612dbfc3a71093332a4c661cd779dad1a0f6e6977547d5c908ae9d"
+        "host": [
+          "ENT-4731315caa0f4b6e83f427af9dbff822488ad51bb36121cec0989c309858a42b"
         ]
       },
       "source": {
@@ -830,29 +759,7 @@
       "status": "asserted"
     },
     {
-      "assertion_id": "REL-59d354f05442ad92a8e43cede979b2d320a469e2f2c824cba055b86369d8f55d",
-      "confidence": 1.0,
-      "evidence_ids": [],
-      "literals": {},
-      "relationship_type": "located_at",
-      "roles": {
-        "instrument": [
-          "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72"
-        ],
-        "site": [
-          "ENT-aeaded15b94ace6dba82ebdf7286107585e941211a2860b4aa56b7aae7bb94b7"
-        ]
-      },
-      "source": {
-        "data_class": "synthetic",
-        "reference": "src/astro/data/slice1.py",
-        "retrieved_at": null,
-        "source": "astro-slice1-generator"
-      },
-      "status": "asserted"
-    },
-    {
-      "assertion_id": "REL-db83e52ad554a4f4625b3ff0931ed91db6bd9afebbaaf126a92acb79fc16cc83",
+      "assertion_id": "REL-26603e72e01feb9f8463f82ac6155473936a77f5cf0ca52469ccf82c6a86d00d",
       "confidence": 1.0,
       "evidence_ids": [],
       "literals": {},
@@ -874,10 +781,58 @@
       "status": "asserted"
     },
     {
-      "assertion_id": "REL-f311d7fb526b74a2f20769c39a0b94bbd654fe3896d73a984f300dffc48b5b28",
+      "assertion_id": "REL-3a4127dfcd34c63b53222be857dbb3be1bcfe0a626372004fc2460edad203271",
+      "confidence": 0.93,
+      "evidence_ids": [
+        "EVD-5ceb894693933773075c5bd1461e73309de9ee4e574197b5a1cfc3817d0f05d7"
+      ],
+      "literals": {},
+      "relationship_type": "member_of",
+      "roles": {
+        "group": [
+          "ENT-0d59b0555da3de11620d4342724cec8be20f61015b59f618f4d65bdc5e84ada6"
+        ],
+        "member": [
+          "ENT-e9682cba5bbd5ff1a04f1441e8177980dfa885bd10aef638582108c09b820d80"
+        ]
+      },
+      "source": {
+        "data_class": "synthetic",
+        "reference": "src/astro/data/slice1.py",
+        "retrieved_at": null,
+        "source": "astro-slice1-generator"
+      },
+      "status": "asserted"
+    },
+    {
+      "assertion_id": "REL-3d4aac423088cdbceb4a4f03115debb7e221200f5354210a6bcf1a0abd59d385",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "EVD-73ae406b76cd11db3414c07b21e5c320b2e128458886fdb5273dd1687a5149e0"
+      ],
+      "literals": {
+        "separation_arcsec": 2400
+      },
+      "relationship_type": "near",
+      "roles": {
+        "pair": [
+          "ENT-4731315caa0f4b6e83f427af9dbff822488ad51bb36121cec0989c309858a42b",
+          "ENT-66ee9ec91f1de5b9efd7e44d31750b8fe5f3a347dc1bd19a45afe0c0a3d4c757"
+        ]
+      },
+      "source": {
+        "data_class": "synthetic",
+        "reference": "src/astro/data/slice1.py",
+        "retrieved_at": null,
+        "source": "astro-slice1-generator"
+      },
+      "status": "asserted"
+    },
+    {
+      "assertion_id": "REL-500867cbc98cd52c67b00a0ccc20695041e4b806b8afc901d220668bebb3e15e",
       "confidence": 0.9,
       "evidence_ids": [
-        "EVD-95c8fd95de0e5f15bb43f9f373336a779835827e50f52fbe96c2027d702b1b8e"
+        "EVD-57639a4b618b1025a6d76ab3623af4311cf456b504e35ae44cf9c69ca7866858"
       ],
       "literals": {},
       "relationship_type": "hosts",
@@ -898,19 +853,64 @@
       "status": "asserted"
     },
     {
-      "assertion_id": "REL-f95e458b6ce7368fd1ca27bdb840ffb9e9e864e5bfc85c3e73a7b710a7ca8ebe",
-      "confidence": 0.93,
+      "assertion_id": "REL-8d49c6583f70c205327acae6d7c53608195bea02d9b202522d69199326db14dd",
+      "confidence": 0.8,
       "evidence_ids": [
-        "EVD-06e9c38d13cb4e163b86229298b89fce03c5d3c9912809b6bb2bb42565cc303a"
+        "EVD-86019a8c1a8d401bd9ff7c5d2f89fb001c0d10e401a8b3a8029f6b36d86309f8",
+        "EVD-f55ab4fae38ee256fc898ac33a4d78041eab8aef7536538ebb128e1f7fd4a89a"
       ],
       "literals": {},
-      "relationship_type": "member_of",
+      "relationship_type": "hosted_transient",
       "roles": {
-        "group": [
-          "ENT-0d59b0555da3de11620d4342724cec8be20f61015b59f618f4d65bdc5e84ada6"
+        "host": [
+          "ENT-78ec77a92d7a5e4bc015b5dc99dbb4b1811ce005a1e367498c1ddd27782561b2"
         ],
-        "member": [
-          "ENT-e9682cba5bbd5ff1a04f1441e8177980dfa885bd10aef638582108c09b820d80"
+        "transient": [
+          "ENT-8134933e0dd4384ead9608f67004f8b892b739c262f6c36438a015c8f4b255e5"
+        ]
+      },
+      "source": {
+        "data_class": "synthetic",
+        "reference": "src/astro/data/slice1.py",
+        "retrieved_at": null,
+        "source": "astro-slice1-generator"
+      },
+      "status": "asserted"
+    },
+    {
+      "assertion_id": "REL-d5b8b7e1878407fcad2ba29812cc32dd168bf22da819427d8fd1c0043c78b338",
+      "confidence": 1.0,
+      "evidence_ids": [],
+      "literals": {},
+      "relationship_type": "comparison_star_for",
+      "roles": {
+        "comparison": [
+          "ENT-f413c328dcda802d92844a6b4498b2c4d60ee27afb40ea28fed3b7d358329ab9"
+        ],
+        "target": [
+          "ENT-76b6d39034612dbfc3a71093332a4c661cd779dad1a0f6e6977547d5c908ae9d"
+        ]
+      },
+      "source": {
+        "data_class": "synthetic",
+        "reference": "src/astro/data/slice1.py",
+        "retrieved_at": null,
+        "source": "astro-slice1-generator"
+      },
+      "status": "asserted"
+    },
+    {
+      "assertion_id": "REL-f988cefafcfb7421f467afba9ba933e5cd0df21179df457432b56cea26cc5b9c",
+      "confidence": 1.0,
+      "evidence_ids": [],
+      "literals": {},
+      "relationship_type": "located_at",
+      "roles": {
+        "instrument": [
+          "ENT-243bcfe368a1126a1a5451c56fc2f7a2f0e84265b1ba6df20368b5f36bcd7f72"
+        ],
+        "site": [
+          "ENT-aeaded15b94ace6dba82ebdf7286107585e941211a2860b4aa56b7aae7bb94b7"
         ]
       },
       "source": {
@@ -946,7 +946,7 @@
       "as_of": "2026-09-03T08:00:00Z",
       "candidate_status": "none",
       "entity_id": "ENT-76b6d39034612dbfc3a71093332a4c661cd779dad1a0f6e6977547d5c908ae9d",
-      "last_observed_at": "2026-09-02T18:00:00Z",
+      "last_observed_at": "2026-08-28T18:00:00Z",
       "observation_status": "observed",
       "stale": false
     },
@@ -987,5 +987,5 @@
       "stale": false
     }
   ],
-  "universe_id": "UNI-2a018d613f2cdd289afeafe9783ad1e8baf4a2c108c5ee9c4c5455a5046ec9cc"
+  "universe_id": "UNI-acd79bc7cd7ad431f637b52fd3ffa334909b42637971a53cba2cd60468b8435c"
 }

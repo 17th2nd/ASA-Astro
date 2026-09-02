@@ -5,8 +5,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from astro.asa.adapter import RelationalSnapshot
 from astro.domain.identity import content_id
 from astro.objectives import Objective, ObservingContext
+from astro.objectives.context import parse_utc
 from astro.significance import SignificanceEvaluation
 
 
@@ -56,13 +58,34 @@ class Plan:
                 "skipped": [s.to_record() for s in self.skipped], "total_minutes": self.total_minutes}
 
 
-def plan_from_evaluation(evaluation: SignificanceEvaluation, objective: Objective, context: ObservingContext) -> Plan:
-    """Select the top-ranked eligible entities within the objective's target budget and the context's time budget."""
+def plan_from_evaluation(evaluation: SignificanceEvaluation, objective: Objective, context: ObservingContext,
+                         snapshot: RelationalSnapshot | None = None) -> Plan:
+    """Select the top-ranked eligible entities within the objective's budgets.
+
+    Declared plan policy (``objective.plan``): ``max_targets``, ``duration_minutes``, optional ``min_score``
+    (below it the work is not worth the telescope time for this objective) and optional
+    ``min_repeat_gap_hours`` (an entity whose ASA-registered state says it was observed more recently is
+    skipped). The context's ``available_minutes`` bounds the total.
+    """
     spec = objective.plan_map
     action, max_targets, duration = spec["action"], int(spec["max_targets"]), int(spec["duration_minutes"])
+    min_score = float(spec.get("min_score", 0.0))
+    repeat_gap = spec.get("min_repeat_gap_hours")
     budget = context.constraint_map.get("available_minutes")
     actions, skipped, total = [], [], 0
     for r in evaluation.results:
+        if r.status == "eligible" and (r.score or 0.0) < min_score:
+            skipped.append(SkippedEntity(r.entity_id, r.designation, r.status, f"score {r.score:.4f} below the objective's minimum {min_score}"))
+            continue
+        if r.status == "eligible" and repeat_gap is not None and snapshot is not None:
+            state = snapshot.state_of(r.entity_id)
+            last = dict(state.literals).get("last_observed_at") if state else None
+            if last:
+                gap_h = (context.now - parse_utc(last)).total_seconds() / 3600.0
+                if gap_h < float(repeat_gap):
+                    skipped.append(SkippedEntity(r.entity_id, r.designation, r.status,
+                                                 f"observed {gap_h:.1f} h ago; objective repeat gap is {float(repeat_gap):g} h"))
+                    continue
         if r.status != "eligible":
             fails = [e["detail"] for e in r.eligibility if not e["passed"]]
             unavailable = [c["feature"] for c in r.contributions if c["status"] != "available" and c["required"]]

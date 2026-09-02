@@ -39,7 +39,7 @@ def decide(universe: Universe, objective: Objective, context: ObservingContext, 
            commit: str | None = None, issued_at: str | None = None) -> Decision:
     snapshot = adapter.snapshot()
     evaluation = evaluate(universe, snapshot, objective, context)
-    plan = plan_from_evaluation(evaluation, objective, context)
+    plan = plan_from_evaluation(evaluation, objective, context, snapshot)
     receipt = build_receipt(universe=universe, snapshot=snapshot, objective=objective, context=context, evaluation=evaluation, plan=plan,
                             commit=commit, issued_at=issued_at)
     return Decision(snapshot, evaluation, plan, receipt)

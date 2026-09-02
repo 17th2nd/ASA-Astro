@@ -63,9 +63,10 @@ def _unavailable(name: str, reason: str, **trace: Any) -> FeatureValue:
 
 # ---- features ------------------------------------------------------------------------------------
 def transit_window_proximity(fi: FeatureInput, params: dict[str, Any]) -> FeatureValue:
-    """1.0 when a predicted transit falls inside the observing window, decaying to 0 over ``horizon_hours`` outside it."""
+    """1.0 when a predicted transit falls inside the observing window; 0 outside it unless the objective declares a
+    ``horizon_hours`` over which a near miss decays linearly (default 0: strictly this window)."""
     name = "transit_window_proximity"
-    horizon = float(params.get("horizon_hours", 48.0))
+    horizon = float(params.get("horizon_hours", 0.0))
     eph = fi.evidence("ephemeris")
     companions = [o for e in fi.edges("hosts") for o in e.others(fi.entity.entity_id)]
     for comp in companions:
@@ -89,7 +90,7 @@ def transit_window_proximity(fi: FeatureInput, params: dict[str, Any]) -> Featur
             score, outside = 1.0, 0.0
         else:
             outside = _hours(t_next, t1) if t_next > t1 else _hours(t0, t_next)
-            score = _clip(1.0 - outside / horizon)
+            score = _clip(1.0 - outside / horizon) if horizon > 0 else 0.0
         trace = {"evidence_id": rec.evidence_id, "period_days": float(v["period_days"]), "next_transit_utc": t_next.strftime("%Y-%m-%dT%H:%M:%SZ"),
                  "hours_outside_window": round(outside, 3), "horizon_hours": horizon}
         if best is None or score > best[0]:
