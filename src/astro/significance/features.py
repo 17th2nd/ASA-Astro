@@ -320,20 +320,33 @@ def coverage_gap_fraction(fi: FeatureInput, params: dict[str, Any]) -> FeatureVa
 def ephemeris_drift(fi: FeatureInput, params: dict[str, Any]) -> FeatureValue:
     """Predicted transit-time uncertainty now, relative to the transit duration: σ_T = sqrt(σ_T0² + (n·σ_P)²)."""
     name = "ephemeris_drift"
-    best = None
+    max_frac = float(params.get("max_period_fraction", 0.01))
+    best, rejected = None, []
     for rec in fi.evidence("ephemeris"):
         v, u = rec.value_map, rec.uncertainty_map
         if "period_days" not in v or "epoch_utc" not in v or ("period_days" not in u and "epoch_days" not in u):
             continue
-        n = abs((fi.context.now - parse_utc(v["epoch_utc"])).total_seconds() / 86400.0 / float(v["period_days"]))
-        sigma_days = math.sqrt(float(u.get("epoch_days", 0.0)) ** 2 + (n * float(u.get("period_days", 0.0))) ** 2)
+        period, sig_p = float(v["period_days"]), float(u.get("period_days", 0.0))
+        if period <= 0 or sig_p / period > max_frac:
+            # A tabulated period error above the cap (KOI-7892: 75.2 ± 38.9 d) is an undetermined period, not a
+            # drifting ephemeris; it is a different blank space and must not saturate this feature.
+            rejected.append({"evidence_id": rec.evidence_id, "period_days": period, "sigma_period_days": sig_p, "reason": f"sigma_P/P > {max_frac}"})
+            continue
+        n = abs((fi.context.now - parse_utc(v["epoch_utc"])).total_seconds() / 86400.0 / period)
+        sigma_days = math.sqrt(float(u.get("epoch_days", 0.0)) ** 2 + (n * sig_p) ** 2)
         dur_h = float(v.get("duration_hours", 2.0)) or 2.0
         ratio = sigma_days * 24.0 / dur_h
         if best is None or ratio > best[0]:
-            best = (ratio, {"evidence_id": rec.evidence_id, "cycles_since_epoch": round(n, 1), "sigma_transit_minutes": round(sigma_days * 1440.0, 1), "duration_hours": dur_h})
+            best = (ratio, {"evidence_id": rec.evidence_id, "cycles_since_epoch": round(n, 1), "sigma_transit_minutes": round(sigma_days * 1440.0, 1), "duration_hours": dur_h,
+                            "duration_source": v.get("duration_source", "tabulated")})
     if best is None:
+        if rejected:
+            return _unavailable(name, f"period uncertainty exceeds {max_frac} of the period (undetermined period, not drift)", rejected=rejected)
         return _unavailable(name, "no ephemeris with period/epoch uncertainties")
-    return FeatureValue(name, round(_clip(best[0]), 12), "available", best[1])
+    trace = dict(best[1])
+    if rejected:
+        trace["rejected"] = rejected
+    return FeatureValue(name, round(_clip(best[0]), 12), "available", trace)
 
 
 def evidence_staleness(fi: FeatureInput, params: dict[str, Any]) -> FeatureValue:

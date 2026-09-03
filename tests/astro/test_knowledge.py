@@ -95,6 +95,67 @@ class TestGeometry(unittest.TestCase):
         self.assertEqual({e.stance for e in snap.edges_of(tr.entity_id, "hosted_transient")}, {"endorsed"})
 
 
+    def test_cluster_membership_requires_proper_motion_agreement(self):
+        from astro.domain import RelationshipAssertion
+        from astro.knowledge.geometry import derive_geometry
+        cl = Entity.create("star_cluster", "CLX", catalogue_ids={"T": "cl"}, coordinates=Coordinates(200.0, 10.0), source=SYN,
+                           attributes={"r50_deg": 0.5, "parallax_mas": 2.0, "pmra_mas_yr": 5.0, "pmdec_mas_yr": -3.0})
+        cl_nopm = Entity.create("star_cluster", "CLY", catalogue_ids={"T": "cly"}, coordinates=Coordinates(220.0, 10.0), source=SYN,
+                                attributes={"r50_deg": 0.5, "parallax_mas": 2.0})
+        ents, ev, rels = [cl, cl_nopm], [], []
+        def host(name, ra, pm, ruwe=1.0):
+            h = Entity.create("star", name, catalogue_ids={"T": name}, coordinates=Coordinates(ra, 10.2), source=SYN, attributes={"magnitude_v": 11.0})
+            pl = Entity.create("exoplanet", name + " b", catalogue_ids={"T": name + "b"}, source=SYN)
+            eph = EvidenceRecord.create("ephemeris", h.entity_id, values={"period_days": 3.0, "epoch_utc": AS_OF, "duration_hours": 2}, source=SYN)
+            ast = EvidenceRecord.create("astrometry", h.entity_id, values={"parallax_mas": 2.01, "pmra_mas_yr": pm[0], "pmdec_mas_yr": pm[1], "ruwe": ruwe}, uncertainty={"parallax_mas": 0.02}, source=SYN)
+            ents.extend([h, pl]); ev.extend([eph, ast])
+            rels.append(RelationshipAssertion.create("hosts", {"host": h.entity_id, "companion": pl.entity_id}, evidence_ids=[eph.evidence_id], source=SYN))
+            return h
+        member = host("MEM", 200.0, (5.2, -3.1))            # Δv_tan ≈ 0.5 km/s
+        interloper = host("INT", 200.1, (11.0, -3.0))       # Δv_tan ≈ 14 km/s: same place, same parallax, wrong motion
+        untrusted = host("BAD", 200.2, (5.0, -3.0), ruwe=3.0)
+        nopm = host("NOPM", 220.0, (5.0, -3.0))
+        u = Universe.create("m", "synthetic", ents, ev, rels)
+        _, relationships, counts = derive_geometry(u)
+        by = {(dict(r.roles)["member"][0], r.status, bool(r.evidence_ids)): r for r in relationships if r.relationship_type == "member_of"}
+        self.assertEqual(counts["member_of"], 1)
+        self.assertEqual(counts["member_of_rejected_proper_motion"], 1)
+        self.assertEqual(counts["member_of_unevaluated"], 2)
+        self.assertIn((member.entity_id, "candidate", True), by)
+        self.assertNotIn(interloper.entity_id, {k[0] for k in by})
+        self.assertIn((untrusted.entity_id, "candidate", False), by)
+        self.assertIn((nopm.entity_id, "candidate", False), by)
+        f = derive_frontier(u, AS_OF, tiles=False)
+        a = AstroAdapter.in_memory(FACET, "members")
+        load_frontier(a, f.apply(u), f)
+        snap = a.snapshot()
+        self.assertEqual({e.stance for e in snap.edges_of(member.entity_id, "member_of")}, {"endorsed"})
+        self.assertEqual({e.stance for e in snap.edges_of(untrusted.entity_id, "member_of")}, {"unevaluated"})
+        self.assertEqual(snap.edges_of(interloper.entity_id, "member_of"), ())
+
+
+class TestEphemerisDriftCap(unittest.TestCase):
+    def test_undetermined_period_is_not_drift(self):
+        from types import SimpleNamespace
+        from astro.significance.features import ephemeris_drift
+        from astro.objectives.context import parse_utc
+        host = Entity.create("star", "DRIFT", catalogue_ids={"T": "dr"}, coordinates=Coordinates(1.0, 1.0), source=SYN)
+        absurd = EvidenceRecord.create("ephemeris", host.entity_id, values={"period_days": 75.2, "epoch_utc": "2013-02-26T09:51:50Z", "duration_hours": 2.0, "planet": "KOI-7892 c"},
+                                       uncertainty={"period_days": 38.9, "epoch_days": 0.02}, source=SYN)
+        sane = EvidenceRecord.create("ephemeris", host.entity_id, values={"period_days": 7.01, "epoch_utc": "2017-08-01T00:00:00Z", "duration_hours": 2.0, "planet": "K2-318 b"},
+                                     uncertainty={"period_days": 0.007}, source=SYN)
+        fi = SimpleNamespace(evidence=lambda *k: (absurd,), context=SimpleNamespace(now=parse_utc(AS_OF)))
+        only_absurd = ephemeris_drift(fi, {})
+        self.assertEqual(only_absurd.status, "unavailable")
+        self.assertEqual(len(only_absurd.trace["rejected"]), 1)
+        fi = SimpleNamespace(evidence=lambda *k: (absurd, sane), context=SimpleNamespace(now=parse_utc(AS_OF)))
+        both = ephemeris_drift(fi, {})
+        self.assertEqual(both.status, "available")
+        self.assertEqual(both.trace["evidence_id"], sane.evidence_id)          # the drift comes from the sane ephemeris
+        self.assertEqual(both.trace["rejected"][0]["evidence_id"], absurd.evidence_id)
+        self.assertEqual(ephemeris_drift(fi, {"max_period_fraction": 1.0}).trace["evidence_id"], absurd.evidence_id)
+
+
 class TestClaims(unittest.TestCase):
     def test_contradicting_claims_are_recorded_in_asa_and_drive_objective_f(self):
         star = Entity.create("star", "DISP", catalogue_ids={"T": "d"}, coordinates=Coordinates(330.0, -20.0), source=SYN, attributes={"magnitude_v": 9.0})
