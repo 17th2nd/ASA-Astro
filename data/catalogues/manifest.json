@@ -82,17 +82,17 @@
     "citation": "Hunt E.L., Reffert S., 2023, A&A 673, A114",
     "files": [
       {
-        "bytes": 629695,
+        "bytes": 796833,
         "path": "data/catalogues/raw/vizier_huntreffert_clusters.csv",
-        "sha256": "838a46792c6d0d259326e82f2f53e3ed7343f0f437530e425b637e6293abd556"
+        "sha256": "3fb5418ad1d8eccfb87ba4cf9bfe33316960749c1af7bc803cec5b9fa1646d43"
       }
     ],
     "licence": "CDS/VizieR terms; cite Hunt & Reffert 2023",
     "notes": "",
     "release": "2023 catalogue via VizieR",
-    "retrieved_at": "2026-09-02T22:42:44Z",
+    "retrieved_at": "2026-09-03T21:06:39Z",
     "title": "Hunt & Reffert 2023 open clusters, VizieR J/A+A/673/A114/clusters",
-    "url": "https://tapvizier.cds.unistra.fr/TAPVizieR/tap/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=csv&MAXREC=100000&QUERY=select+Name,Type,RA_ICRS,DE_ICRS,r50,N,Plx,dist50,logAge50+from+%22J/A%2BA/673/A114/clusters%22"
+    "url": "https://tapvizier.cds.unistra.fr/TAPVizieR/tap/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=csv&MAXREC=100000&QUERY=select+Name,Type,RA_ICRS,DE_ICRS,r50,N,Plx,pmRA,pmDE,dist50,logAge50+from+%22J/A%2BA/673/A114/clusters%22"
   },
   "mpc_sites": {
     "citation": "IAU Minor Planet Center, ObsCodes list",

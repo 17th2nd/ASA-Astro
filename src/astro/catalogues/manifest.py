@@ -55,7 +55,7 @@ SOURCES: dict[str, SourceSpec] = {s.key: s for s in (
                "MPC public data", "IAU Minor Planet Center, ObsCodes list", "html",
                "Parallax constants (longitude, ρcosφ', ρsinφ') converted to geodetic latitude and approximate elevation; recorded as derived."),
     SourceSpec("huntreffert_clusters", "Hunt & Reffert 2023 open clusters, VizieR J/A+A/673/A114/clusters",
-               "https://tapvizier.cds.unistra.fr/TAPVizieR/tap/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=csv&MAXREC=100000&QUERY=select+Name,Type,RA_ICRS,DE_ICRS,r50,N,Plx,dist50,logAge50+from+%22J/A%2BA/673/A114/clusters%22",
+               "https://tapvizier.cds.unistra.fr/TAPVizieR/tap/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=csv&MAXREC=100000&QUERY=select+Name,Type,RA_ICRS,DE_ICRS,r50,N,Plx,pmRA,pmDE,dist50,logAge50+from+%22J/A%2BA/673/A114/clusters%22",
                "vizier_huntreffert_clusters.csv", "2023 catalogue via VizieR", "CDS/VizieR terms; cite Hunt & Reffert 2023",
                "Hunt E.L., Reffert S., 2023, A&A 673, A114", "csv"),
     SourceSpec("gaia_hosts", "Gaia DR3 gaia_source_lite for NASA Exoplanet Archive host stars (by gaia_dr3_id)",

@@ -216,7 +216,7 @@ def parse_clusters(path: Path | None = None) -> Fragment:
             continue
         prov = _prov("huntreffert_clusters", name)
         attrs: dict[str, Any] = {"cluster_kind": {"o": "open_cluster", "m": "moving_group", "g": "globular_cluster"}.get(_s(row.get("Type")), _s(row.get("Type")))}
-        for col, key in (("r50", "r50_deg"), ("N", "member_count"), ("Plx", "parallax_mas"), ("dist50", "distance_pc"), ("logAge50", "log_age_yr")):
+        for col, key in (("r50", "r50_deg"), ("N", "member_count"), ("Plx", "parallax_mas"), ("pmRA", "pmra_mas_yr"), ("pmDE", "pmdec_mas_yr"), ("dist50", "distance_pc"), ("logAge50", "log_age_yr")):
             v = _f(row.get(col))
             if v is not None:
                 attrs[key] = v
