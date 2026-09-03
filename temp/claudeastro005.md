@@ -63,6 +63,12 @@ Yesterday's 422 = hosts (552 planets). Sane (σ_P/P ≤ 1%): **419 hosts / 546 p
 
 `astro store build --store var/astro-store3 --frontier --as-of 2026-09-04T08:00:00Z --evidence-fragment var/tess-fragment.json --universe-out var/universe-real-frontier-tess-v2.json` running at report time; §7 of the next report (or an addendum below) records its counts. Expected: member_of endorsed ≈ 41, unevaluated ≈ 20, rejected ≈ 183.
 
-## 7. Next
+## 7. Debug scope and navigator (afternoon, Brock: "settle for the debug scope of 50 pc … a graphic UI with visual navigation through the systems")
+
+- `tools/cut_universe.py --max-distance-pc 50` → `var/universe-50pc-dev.json` (from the store2 universe; re-cut from v2 when store3 lands): 613 stars, 959 planets, 4 clusters (Melotte 25 = Hyades, HSC_906, HSC_2846, FSR_1017); 2,689 MPC sites travel with the cut and are excluded from the UI. 51 disputed stars, 596 with gaps. ⚠ No `member_of` survives in this set: the Hyades hosts (K2-25, K2-136) fail the parallax window max(0.3 mas, 3σ) because a cluster 20 pc deep at 47 pc spans ≈8 mas — nearby extended clusters need a 3-D (distance-depth) test, not a parallax tolerance. Recorded as next work.
+- `astro ui` (commit ff8342a): `astro.ui.export` (nodes with evidence/claims/disputes/gaps, graph edges with stance+lifecycle, per-objective scores with contributions, findings verdicts) + `astro.ui.navigator.html` (D3 7.9 UMD; sky | system graph | detail; breadcrumbs; filters: disputed / gaps / members / rejected / drift / hosts). Built on the 50 pc set with A/E/F under Siding Spring 2026-09-04: 1,576 nodes, 967 edges, 3.4 MB. Artifact c7f52b3b-2330-4abd-b6e6-a43a70962a91. Top under F: GJ 887, K2-129, LTT 1445 A, GJ 674 (all M dwarfs — the GSP-Phot bias again); under A: HR 858, TOI-2427, TOI-198; under E: TOI-2194, K2-129, K2-116.
+- Benchmark E/F on the 50 pc set: see addendum.
+
+## 8. Next
 
 Tighten the drift cap / one-night flag and hand the 288-host list out; the six unconfirmed kinematic members to a Kepler-field astronomer; re-weight E with an astronomer and re-run the graded benchmark; cone benchmarks for A/B/C on real data; SIMBAD aliases; photometric-stability evidence; checkpointed kernel open; the three-pane visual.

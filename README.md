@@ -88,6 +88,16 @@ both candidate lists with these checks; `tools/cut_universe.py` cuts a cone of t
 Every universe load — store build, session cycle, benchmark bootstrap — records contradictions between registered
 claims and retires a lacks-evidence gap whose evidence has arrived.
 
+### Navigator and the debug scope
+
+`astro ui --universe … --objective … --context … --findings … --out var/ui/astro-navigator.html` builds one
+self-contained page (D3 from cdnjs, data embedded): a zoomable sky map sized by score under the chosen objective,
+a relationship graph you travel through by clicking (edges styled by ASA stance: endorsed, unevaluated, retired,
+contradicts; missing evidence and disputed claims drawn as ghost nodes), and a detail pane with feature
+contributions, evidence, claims and candidate-finding verdicts. The debug scope is the solar neighbourhood,
+`tools/cut_universe.py … --max-distance-pc 50` (Gaia parallax or catalogue distance): every object there has a
+literature answer and Gaia is clean, so an Astro verdict can be checked in minutes.
+
 All Astro data committed in this repository is **synthetic or simulated and labelled as such**; real catalogue rows are fetched, never committed, and every real record carries its source and licence. Nothing in Astro
 touches the frozen scientific instruments below or claims empirical validation of ASA.
 
