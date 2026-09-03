@@ -50,6 +50,24 @@ architectural demand on ASA main unless Astro has demonstrated it by implementat
 compact content store (one file per event does not scale); a bulk `submit` that batches persistence. Astro
 works without them; they decide how far the store can grow.
 
+## Scale facts from the frontier store (2026-09-03, later the same day)
+
+| Fact | Value |
+|---|---|
+| Universe | 95,659 entities · 187,554 evidence · 135,725 relationships (7 catalogues + knowledge frontier + 49 TESS light curves) |
+| Kernel events | **2,473,590**; load **4,477 s** (≈550 ev/s, down from ≈2,650 ev/s at 868k events) |
+| Disk | 12 GB under `var/astro-store2/` |
+| Contradictions | 439 `asa.core/contradicts` meta-claims between `astro/measures@1` UROs |
+
+**Cause of the throughput collapse (read in `kernel/asa_kernel/governor.py`, not inferred):** `Governor._supports_count(target)`
+iterates every URO in the projection on each `supports` proposal (`sum(1 for u in self.state.uros.values() if …)`), so
+loading *n* supports over a store of *m* UROs costs O(n·m). The frontier added 85,392 supports against ~135k UROs.
+Astro's own lookups are indexed and stayed flat.
+
+**Request (non-blocking, evidence above):** index supports by target in `State` (the derived relationship index from
+build003 already exists for participants — the same structure keyed by the `target` role would make `_supports_count` O(1)).
+Astro will not patch the kernel; until then frontier loads are batch jobs.
+
 ## Candidate generic capabilities (recorded only after Astro demonstrated them)
 
 | Date | Capability | Demonstrated by | Suggested ASA form |

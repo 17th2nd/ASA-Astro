@@ -45,8 +45,8 @@ def frontier_report(universe: Universe, snapshot: RelationalSnapshot, top: int =
                            "derived_endorsed": dict(endorsed_derived.most_common())},
         "disputes": {"contradictions": len(contradictions), "entities_disputed": len(disputed_entities), "by_quantity": dict(disputed_quantities.most_common()),
                      "examples": examples},
-        "sky": {"tiles": sum(1 for e in universe.entities if e.kind == "sky_region"),
-                "gap_tiles": sum(1 for v in universe.evidence if v.kind == "coverage_gap" and kinds.get(v.subject_id) == "sky_region")},
+        "sky": {"tiles": sum(1 for e in universe.entities if dict(e.catalogue_ids).get("ASTRO-TILE")),
+                "gap_tiles": sum(1 for v in universe.evidence if v.kind == "coverage_gap" and v.value_map.get("expectation_ref") == "EXP-tile-density")},
     }
 
 

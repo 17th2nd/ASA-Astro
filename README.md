@@ -68,6 +68,16 @@ ASA kernel (≈95k entities, ≈103k evidence records, ≈870k events; `BUILD.js
 `astro evaluate … --store var/astro-store --universe var/universe-real.json --context data/contexts/siding-spring-2026-09-03.json`
 then answers, for example, which known transiting planets transit tonight from Siding Spring.
 
+### Knowledge frontier
+
+`astro store build --frontier --as-of <UTC>` also derives what the store does *not* know and writes it into ASA:
+missing expected evidence as `lacks-evidence` relationships (retired when evidence arrives), measurement claims as
+`measures` relationships with `asa.core/contradicts` between disagreeing catalogues, geometry-derived `near`,
+`member_of` and `hosted_transient` relationships (evidenced) and comparison-star candidates (deliberately
+unevaluated), and 648 sky tiles with coverage gaps. `astro frontier --store … --universe …` summarises blank spaces,
+semantic edges and disputes; objectives E (knowledge-gap reduction) and F (dispute adjudication) rank them.
+`astro.catalogues.tess` fetches TESS light curves from MAST as `time_series` evidence.
+
 All Astro data committed in this repository is **synthetic or simulated and labelled as such**; real catalogue rows are fetched, never committed, and every real record carries its source and licence. Nothing in Astro
 touches the frozen scientific instruments below or claims empirical validation of ASA.
 
