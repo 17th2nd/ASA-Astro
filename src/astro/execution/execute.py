@@ -52,7 +52,17 @@ class SimulatedExecutor:
                                                  instrument_id=context.instrument_id, derived_from=[log.evidence_id],
                                                  values={"frames": max(1, minutes // 2), "simulated": True,
                                                          "note": "calibration frames obtained in simulation; no magnitude is derived"}))
-        if action.action in ("time_series_block", "observe_transit"):
+        elif action.action == "resolve_dispute":
+            records.append(EvidenceRecord.create("spectrum", action.entity_id, observed_at=action.end_utc, source=SIMULATED, quality=0.5,
+                                                 instrument_id=context.instrument_id, derived_from=[log.evidence_id],
+                                                 values={"exposure_minutes": minutes, "simulated": True,
+                                                         "note": "adjudicating spectrum obtained in simulation; no Teff or distance is derived, so the dispute stands until a real reduction"}))
+        elif action.action == "reduce_gap":
+            for kind, extra in (("photometry", {"frames": max(1, minutes // 2)}), ("spectrum", {"exposure_minutes": minutes})):
+                records.append(EvidenceRecord.create(kind, action.entity_id, observed_at=action.end_utc, source=SIMULATED, quality=0.5,
+                                                     instrument_id=context.instrument_id, derived_from=[log.evidence_id],
+                                                     values={**extra, "simulated": True, "note": "coverage facts of a simulated characterisation block; no measured value"}))
+        if action.action in ("time_series_block", "observe_transit", "reduce_gap"):
             records.append(EvidenceRecord.create("time_series", action.entity_id, observed_at=action.end_utc, source=SIMULATED, quality=0.5,
                                                  instrument_id=context.instrument_id, derived_from=[log.evidence_id],
                                                  values={"span_days": round(minutes / 1440.0, 6), "cadence_minutes": 2.0,

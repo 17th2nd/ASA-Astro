@@ -291,10 +291,32 @@ class AstroAdapter:
                 counts["evidence"] += 1
         for ev in universe.evidence:
             counts["status_updates"] += int(self.sync_evidence_status(ev))
+        # A lacks-evidence relationship whose evidence the universe now holds is not a gap: it is never
+        # (re)registered, and one already on record is retired. Every load path — store build, session
+        # cycle, benchmark bootstrap — must maintain derived knowledge the same way (2026-09-04).
+        stale_gaps = [rel for rel in universe.relationships if rel.relationship_type == "lacks_evidence"
+                      and any(e.status == "admissible" and e.kind == rel.literal_map.get("evidence_kind")
+                              for e in universe.evidence_for(rel.role_map["subject"][0]))]
+        stale = {rel.assertion_id for rel in stale_gaps}
         for rel in universe.relationships:
+            if rel.assertion_id in stale:
+                continue
             added, supports = self.register_relationship(rel)
             counts["relationships"] += int(added)
             counts["supports"] += supports
+        counts["gaps_retired"] = 0
+        for rel in stale_gaps:
+            key = self.find_relationship(rel)
+            if key is not None:
+                self.retire_relationship(key, "evidence-arrived")
+                counts["gaps_retired"] += 1
+        # Contradictions between registered measurement claims are kernel meta-claims; record them on every load.
+        from astro.knowledge.claims import contradicting_pairs
+        counts["contradictions"] = 0
+        for a, b in contradicting_pairs(universe):
+            ka, kb = self.find_relationship(a), self.find_relationship(b)
+            if ka and kb and self.propose_contradiction(ka, kb) is not None:
+                counts["contradictions"] += 1
         for st in universe.states:
             counts["states"] += int(self.register_state(st))
         return counts

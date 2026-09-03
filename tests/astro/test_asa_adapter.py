@@ -29,7 +29,7 @@ class TestAdapter(unittest.TestCase):
         u = small_universe()
         a = AstroAdapter.in_memory(FACET)
         counts = a.load_universe(u)
-        self.assertEqual(counts, {"entities": 4, "evidence": 2, "relationships": 2, "supports": 1, "states": 1, "status_updates": 0})
+        self.assertEqual(counts, {"entities": 4, "evidence": 2, "relationships": 2, "supports": 1, "states": 1, "status_updates": 0, "gaps_retired": 0, "contradictions": 0})
         d1, seq1 = a.digest(), a.k.head()["seq"]
         again = a.load_universe(u)
         self.assertEqual(again["entities"], 0)

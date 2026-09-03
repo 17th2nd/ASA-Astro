@@ -60,7 +60,7 @@ def load_frontier(adapter: AstroAdapter, universe_with_frontier: Universe, front
     """Register the frontier universe in ASA, then the contradictions between registered claims, then retire
     lacks-evidence relationships whose evidence has since arrived."""
     counts = adapter.load_universe(universe_with_frontier)
-    recorded = 0
+    recorded = counts.get("contradictions", 0)
     for a, b in frontier.contradictions:
         ka, kb = adapter.find_relationship(a), adapter.find_relationship(b)
         if ka and kb and adapter.propose_contradiction(ka, kb) is not None:

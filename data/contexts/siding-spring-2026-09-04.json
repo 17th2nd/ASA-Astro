@@ -1,0 +1,9 @@
+{
+  "label": "Siding Spring Observatory (MPC 413), night of 2026-09-04 AEST, 1 m class telescope",
+  "as_of": "2026-09-04T08:00:00Z",
+  "window_start": "2026-09-04T09:00:00Z",
+  "window_end": "2026-09-04T19:00:00Z",
+  "site_catalogue_id": {"MPC": "413"},
+  "constraints": {"limiting_magnitude": 14.0, "available_minutes": 540, "min_altitude_deg": 30},
+  "anchor_target_designations": []
+}

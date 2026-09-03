@@ -73,3 +73,28 @@ def derive_claims(universe: Universe) -> tuple[list[EvidenceRecord], list[Relati
                         contradictions.append((made[i][1], made[j][1]))
                         counts["contradictions"] += 1
     return evidence, claims, contradictions, counts
+
+
+def contradicting_pairs(universe: Universe) -> list[tuple[RelationshipAssertion, RelationshipAssertion]]:
+    """Contradictions among the ``measures`` claims a universe already carries (the same rule as
+    :func:`derive_claims`, applied to registered claims so that any load path — store build, session
+    cycle, benchmark bootstrap — records the same disputes in ASA)."""
+    by: dict[tuple[str, str], list[RelationshipAssertion]] = {}
+    for rel in universe.relationships:
+        if rel.relationship_type != "measures":
+            continue
+        lit = rel.literal_map
+        if "quantity" not in lit or "value" not in lit:
+            continue
+        by.setdefault((rel.role_map["subject"][0], str(lit["quantity"])), []).append(rel)
+    pairs = []
+    for (_, q), claims in by.items():
+        spec = QUANTITIES.get(q.split("[", 1)[0])
+        if spec is None or len(claims) < 2:
+            continue
+        for i in range(len(claims)):
+            for j in range(i + 1, len(claims)):
+                a, b = float(claims[i].literal_map["value"]), float(claims[j].literal_map["value"])
+                if max(abs(a), abs(b)) > 0 and abs(a - b) / max(abs(a), abs(b)) > spec["tolerance"]:
+                    pairs.append((claims[i], claims[j]))
+    return pairs
