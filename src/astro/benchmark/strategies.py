@@ -84,7 +84,8 @@ def oracle(universe: Universe, objective: Objective, context: ObservingContext, 
         kwargs = {"anchors": context.anchor_targets} if objective.name == "Calibration reference selection" else {}
         return fn(a, universe, **kwargs)
     cands = _candidates(universe, objective)
-    ordered = [e for e in cands if useful(e)]           # only useful actions are planned; the oracle wastes nothing it can see
+    scored = [(useful(e), e) for e in cands]
+    ordered = [e for g, e in sorted(((float(g), e) for g, e in scored if g), key=lambda t: (-t[0], t[1].entity_id))]  # highest gain first; the oracle wastes nothing it can see
     return _plan(ordered, objective, context, "oracle", universe)
 
 

@@ -78,6 +78,16 @@ unevaluated), and 648 sky tiles with coverage gaps. `astro frontier --store … 
 semantic edges and disputes; objectives E (knowledge-gap reduction) and F (dispute adjudication) rank them.
 `astro.catalogues.tess` fetches TESS light curves from MAST as `time_series` evidence.
 
+Checks added 2026-09-04 after the first candidate findings were taken to the literature: cluster membership is
+endorsed only when host and cluster proper motions agree to 3 km/s tangential velocity and the host's Gaia RUWE is
+≤ 1.4 (position and parallax alone admitted GPX-1/Trumpler 2, which its discovery paper had already ruled out on
+proper motion; 41 of 244 associations survive, and they are the known ones); `ephemeris_drift` treats a tabulated
+period error above 1% of the period as an undetermined period, not drift. `tools/candidate_findings.py` reproduces
+both candidate lists with these checks; `tools/cut_universe.py` cuts a cone of the real universe so the §18 benchmark
+(`astro benchmark`, now with independent oracles for objectives E and F and a graded gain column) can run on real data.
+Every universe load — store build, session cycle, benchmark bootstrap — records contradictions between registered
+claims and retires a lacks-evidence gap whose evidence has arrived.
+
 All Astro data committed in this repository is **synthetic or simulated and labelled as such**; real catalogue rows are fetched, never committed, and every real record carries its source and licence. Nothing in Astro
 touches the frozen scientific instruments below or claims empirical validation of ASA.
 

@@ -99,19 +99,18 @@ def _decayed_transit_in(action: ScheduledAction, universe: Universe, max_period_
     return False
 
 
-def knowledge_gap_reduction(action: ScheduledAction, universe: Universe) -> bool:
-    """Useful iff the target lacks an expected evidence kind that an observing block supplies (time series,
-    photometry, spectrum), or a decayed transit ephemeris has a transit inside the window; and it was not
-    observed in the prior 24 h."""
+def knowledge_gap_reduction(action: ScheduledAction, universe: Universe) -> int:
+    """Graded: the number of expected evidence kinds the block supplies (time series, photometry, spectrum)
+    that the target lacks, plus one when a decayed transit ephemeris has a transit inside the window.
+    Zero (not useful) when nothing is gained or the target was observed in the prior 24 h. Graded because
+    on real data almost every star lacks *something*, so a yes/no oracle cannot tell strategies apart."""
     from astro.knowledge.expectations import expected_kinds
     if _observed_within(action, universe, 24.0):
-        return False
+        return 0
     entity = universe.entity(action.entity_id)
     present = {e.kind for e in universe.evidence_for(action.entity_id) if e.status == "admissible"}
     missing = {x.evidence_kind for x in expected_kinds(entity, universe)} - present
-    if missing & set(_GAP_KINDS_A_BLOCK_CAN_FILL):
-        return True
-    return _decayed_transit_in(action, universe)
+    return len(missing & set(_GAP_KINDS_A_BLOCK_CAN_FILL)) + int(_decayed_transit_in(action, universe))
 
 
 def _source_of(rec) -> str:

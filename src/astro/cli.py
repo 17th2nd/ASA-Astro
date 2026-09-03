@@ -175,10 +175,10 @@ def cmd_benchmark(args) -> int:
         b = run_benchmark(universe, objective, context)
         records.append(b.to_record())
         print(f"{objective.name}  (universe {universe.universe_id[:16]}, benchmark {b.benchmark_id[:16]})")
-        print(f"  {'strategy':16} {'useful':>8} {'wasted':>12} {'first useful':>13}  executed")
+        print(f"  {'strategy':16} {'useful':>8} {'gain':>6} {'wasted':>12} {'first useful':>13}  executed")
         for r in b.results:
             first = f"{r.time_to_first_useful_minutes} min" if r.time_to_first_useful_minutes is not None else "never"
-            print(f"  {r.strategy:16} {r.useful_actions:>3}/{len(r.executed):<4} {r.wasted_minutes:>5}/{r.total_minutes:<5}min {first:>13}  " + ", ".join(f"{e['designation']}{'' if e['useful'] else ' ✗'}" for e in r.executed))
+            print(f"  {r.strategy:16} {r.useful_actions:>3}/{len(r.executed):<4} {r.total_gain:>6.1f} {r.wasted_minutes:>5}/{r.total_minutes:<5}min {first:>13}  " + ", ".join(f"{e['designation']}{'' if e['useful'] else ' ✗'}" for e in r.executed))
         print()
     print("Baselines apply only the kind filter and the objective's budgets; they never see evidence, relationships or significance.")
     print("`oracle` selects with the benchmark's ground-truth scorer and is an upper bound, not a runnable strategy.")
