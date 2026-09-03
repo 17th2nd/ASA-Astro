@@ -32,9 +32,15 @@ def _candidates(universe: Universe, objective: Objective) -> list:
     return [e for e in universe.entities if e.kind in objective.target_kinds]
 
 
+BASELINE_LIST_LENGTH = 50   # an observer working down a list: the scheduler takes the first feasible entry
+
+
 def _plan(ordered, objective: Objective, context: ObservingContext, strategy: str, universe: Universe) -> BaselineDecision:
+    """Baselines offer a longer list than the objective's target budget. A three-entry plan whose entries are
+    all below the horizon schedules nothing and ends the session after one cycle, which on an all-sky
+    universe (the 50 pc debug set) made every baseline look like it had stopped early (2026-09-04)."""
     spec = objective.plan_map
-    action, max_targets, duration = spec["action"], int(spec["max_targets"]), int(spec["duration_minutes"])
+    action, max_targets, duration = spec["action"], max(int(spec["max_targets"]), BASELINE_LIST_LENGTH), int(spec["duration_minutes"])
     repeat_gap = spec.get("min_repeat_gap_hours")
     actions, skipped = [], []
     for e in ordered:
