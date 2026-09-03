@@ -155,10 +155,6 @@ class TestFitsReader(unittest.TestCase):
         self.assertAlmostEqual(cols["PDCSAP_FLUX"][1], 1002.0, places=3)
 
 
-if __name__ == "__main__":
-
-
-
 class TestFrontierReport(unittest.TestCase):
     def test_report_counts_gaps_edges_and_disputes(self):
         from astro.frontier_report import frontier_report, render
