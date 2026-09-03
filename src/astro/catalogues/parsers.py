@@ -92,6 +92,10 @@ def parse_exoplanets(path: Path | None = None) -> Fragment:
             frag.entities.append(hosts[host_name])
             if attrs.get("magnitude_v") is not None:
                 frag.evidence.append(EvidenceRecord.create("catalogue_measurement", hosts[host_name].entity_id, values={"mag_v": attrs["magnitude_v"], "band": "V", "note": "system V magnitude as tabulated"}, source=prov, quality=0.8))
+            if attrs.get("teff_k") is not None:
+                frag.evidence.append(EvidenceRecord.create("derived_measurement", hosts[host_name].entity_id, values={"teff_k": attrs["teff_k"], "method": "st_teff as tabulated (composite of published values)"}, source=prov, quality=0.8))
+            if attrs.get("distance_pc") is not None:
+                frag.evidence.append(EvidenceRecord.create("catalogue_measurement", hosts[host_name].entity_id, values={"distance_pc": attrs["distance_pc"], "note": "sy_dist as tabulated"}, source=prov, quality=0.8))
         host = hosts[host_name]
         pattrs: dict[str, Any] = {}
         for col, key in (("pl_rade", "radius_earth"), ("pl_bmasse", "mass_earth"), ("discoverymethod", "discovery_method"), ("disc_year", "discovery_year"), ("disc_facility", "discovery_facility")):
@@ -154,6 +158,11 @@ def parse_gcvs(path: Path | None = None) -> Fragment:
         if epoch:
             values["epoch_jd"] = epoch + 2400000.0 if epoch < 2400000 else epoch
         frag.evidence.append(EvidenceRecord.create("classification", star.entity_id, values=values, source=prov, quality=0.85))
+        if mag_max is not None:
+            phot = {"mag_max": mag_max, "band": _s(row.get("flt")) or "unspecified", "note": "GCVS maximum-light magnitude; minimum in mag_min where given"}
+            if _f(row.get("Min1")) is not None:
+                phot["mag_min"] = _f(row.get("Min1"))
+            frag.evidence.append(EvidenceRecord.create("photometry", star.entity_id, values=phot, source=prov, quality=0.7))
     return frag
 
 

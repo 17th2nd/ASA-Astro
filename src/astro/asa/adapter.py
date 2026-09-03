@@ -38,6 +38,7 @@ from asa_kernel.storage import FileStorage, MemoryStorage  # noqa: E402
 NS = "astro"
 CANONICAL = "asa:persp:asa.core/canonical"
 SUPPORTS = "asa:type:asa.core/supports@1"
+CONTRADICTS = "asa:type:asa.core/contradicts@1"
 STREAM_PREFIX = "asa:log:astro/"
 ACTOR = "asa:uao:astro/adapter"
 POLICY = {
@@ -53,6 +54,7 @@ TYPE_ID = {name: f"asa:type:astro/{name.replace('_', '-')}@1" for name in RELATI
 TYPE_ID["evidence_of"] = "asa:type:astro/evidence-of@1"
 TYPE_ID["observation_state"] = "asa:type:astro/observation-state@1"
 TYPE_NAME = {v: k for k, v in TYPE_ID.items()}
+TYPE_NAME[CONTRADICTS] = "contradicts"
 DOMAIN_TYPES = sorted(TYPE_ID.values())
 
 
@@ -155,7 +157,12 @@ class RelationalSnapshot:
             for l in self.evidence_links:
                 links.setdefault(l.subject_id, []).append(l)
             states = {s.entity_id: s for s in self.states if s.lifecycle == "registered"}
-            idx = {"edges": edges, "links": links, "states": states}
+            disputes: dict[str, list[Edge]] = {}
+            for e in self.edges:
+                if e.type_name == "contradicts" and e.lifecycle == "registered":
+                    for k in e.participants():
+                        disputes.setdefault(k, []).append(e)
+            idx = {"edges": edges, "links": links, "states": states, "disputes": disputes}
             object.__setattr__(self, "_idx", idx)
         return idx
 
@@ -167,6 +174,14 @@ class RelationalSnapshot:
 
     def state_of(self, entity_id: str) -> StateLink | None:
         return self._index()["states"].get(entity_id)
+
+    def disputes_of(self, entity_id: str) -> tuple[tuple[Edge, Edge], ...]:
+        """(claim edge, contradiction edge) pairs for the entity's registered claims."""
+        out = []
+        for claim in self.edges_of(entity_id, "measures"):
+            for c in self._index()["disputes"].get(claim.key, ()):
+                out.append((claim, c))
+        return tuple(out)
 
     def to_record(self) -> dict[str, Any]:
         return {
@@ -182,6 +197,7 @@ class AstroAdapter:
         self.k = kernel
         self._astro_of: dict[str, str] = {}
         self._uro_index: dict[tuple, str] = {}
+        self._uro_index_lit: dict[tuple, str] = {}
         self._rebuild_index()
 
     @staticmethod
@@ -216,24 +232,35 @@ class AstroAdapter:
             attrs = uao.get("attributes") or {}
             if "astro_id" in attrs:
                 self._astro_of[uao["id"]] = attrs["astro_id"]
-        self._uro_index = {}
+        self._uro_index, self._uro_index_lit = {}, {}
         for key, u in self.k.state.uros.items():
             if u["lifecycle"] == "registered":
                 self._uro_index[self._uro_key(u["type"], u["bindings"])] = key
+                self._uro_index_lit[self._uro_key(u["type"], u["bindings"]) + (self._lit_key(u["literals"]),)] = key
 
     def _submit_uro(self, type_id: str, bindings: Mapping[str, list[str]], literals: Mapping[str, Any]) -> Receipt:
         r = self._submit("propose", type_id=type_id, bindings=bindings, literals=dict(literals), proposer=ACTOR)
         if r.key:
             self._uro_index[self._uro_key(type_id, bindings)] = r.key
+            self._uro_index_lit[self._uro_key(type_id, bindings) + (self._lit_key(literals),)] = r.key
         return r
+
+    @staticmethod
+    def _lit_key(literals: Mapping[str, Any] | None) -> tuple:
+        return tuple(sorted((k, str(v)) for k, v in (literals or {}).items()))
 
     def _find_uro(self, type_id: str, bindings: Mapping[str, list[str]], literals: Mapping[str, Any] | None = None) -> str | None:
         """Key of a registered URO with identical type, bindings and (when given) literals, else None.
 
         The kernel folds duplicates into a governed `merged` decision, which is itself an event;
         Astro therefore checks before proposing so that reloading a universe appends nothing.
+        Types whose identity includes literals (measures, lacks-evidence, observation-state) can hold
+        several UROs under one binding, so literal-qualified lookups use the literal-keyed index.
         """
-        key = self._uro_index.get(self._uro_key(type_id, bindings))
+        if literals is not None:
+            key = self._uro_index_lit.get(self._uro_key(type_id, bindings) + (self._lit_key(literals),))
+        else:
+            key = self._uro_index.get(self._uro_key(type_id, bindings))
         if key is None:
             return None
         u = self.k.uro(key)
@@ -318,6 +345,24 @@ class AstroAdapter:
                 supports += int(s.outcome == "admitted")
         return added, supports
 
+    def propose_contradiction(self, key_a: str, key_b: str) -> Receipt | None:
+        """Record that two registered claims (UROs) contradict each other. The kernel registers the meta-claim;
+        Astro reads it back as a dispute. Returns None when it already exists."""
+        bindings = {"claims": sorted([key_a, key_b])}
+        if self._find_uro(CONTRADICTS, bindings) is not None:
+            return None
+        return self._submit_uro(CONTRADICTS, bindings, {})
+
+    def retire_relationship(self, key: str, cause: str) -> None:
+        self._submit("retire_uro", key=key, cause=cause)
+        self._uro_index = {k: v for k, v in self._uro_index.items() if v != key}
+        self._uro_index_lit = {k: v for k, v in self._uro_index_lit.items() if v != key}
+
+    def find_relationship(self, rel: RelationshipAssertion) -> str | None:
+        bindings = {role: [uao_id(ref) for ref in refs] for role, refs in rel.roles}
+        literals = {k: decimal_text(v) if isinstance(v, (int, float)) and not isinstance(v, bool) else v for k, v in rel.literal_map.items()}
+        return self._find_uro(TYPE_ID[rel.relationship_type], bindings, literals)
+
     def register_state(self, state: EntityState) -> bool:
         subject = uao_id(state.entity_id)
         current = self._current_state_key(subject)
@@ -355,6 +400,9 @@ class AstroAdapter:
             if name is None:
                 continue
             bindings = tuple(sorted((role, tuple(self._astro_of.get(r, r) for r in refs)) for role, refs in u["bindings"].items()))
+            if name == "contradicts":
+                edges.append(Edge(key, name, u["lifecycle"], stance.get(key, "unevaluated"), bindings, (), ()))
+                continue
             if name == "evidence_of":
                 links.append(EvidenceLink(key, dict(bindings)["record"][0], dict(bindings)["subject"][0],
                                           u["literals"].get("evidence_kind", ""), u["literals"].get("status", ""), stance.get(key, "unevaluated")))

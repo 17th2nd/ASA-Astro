@@ -3,7 +3,7 @@
     "namespace": "astro",
     "owner": "asa:uao:astro/registry-owner",
     "status": "APPLICATION DOMAIN CANDIDATE — not asa.core; not Council-ratified; Astro-owned",
-    "admission_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+    "admission_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
     "traceability": [
       "CLAUDE-ASTRO-BUILD-001 §6",
       "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
@@ -432,6 +432,113 @@
           "identity": false
         }
       ],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/lacks-evidence@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "definitional",
+      "roles": [
+        {
+          "name": "subject",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [
+        {
+          "name": "evidence_kind",
+          "datatype": "string",
+          "identity": true
+        },
+        {
+          "name": "expectation_ref",
+          "datatype": "string",
+          "identity": false
+        },
+        {
+          "name": "as_of",
+          "datatype": "string",
+          "identity": false
+        }
+      ],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/measures@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "supported",
+      "roles": [
+        {
+          "name": "subject",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [
+        {
+          "name": "quantity",
+          "datatype": "string",
+          "identity": true
+        },
+        {
+          "name": "value",
+          "datatype": "decimal",
+          "identity": true
+        },
+        {
+          "name": "unit",
+          "datatype": "string",
+          "identity": false
+        },
+        {
+          "name": "source_key",
+          "datatype": "string",
+          "identity": true
+        }
+      ],
+      "provenance_roles": []
+    },
+    {
+      "id": "asa:type:astro/located-in@1",
+      "meta": false,
+      "symmetric": false,
+      "evidence": "definitional",
+      "roles": [
+        {
+          "name": "object",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        },
+        {
+          "name": "region",
+          "kind": "participant",
+          "binds": [
+            "uao"
+          ],
+          "min": 1,
+          "max": 1,
+          "identity": true
+        }
+      ],
+      "literals": [],
       "provenance_roles": []
     }
   ]

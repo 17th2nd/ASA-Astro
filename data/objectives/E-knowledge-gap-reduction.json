@@ -1,0 +1,24 @@
+{
+  "name": "Knowledge-gap reduction",
+  "version": "1.0",
+  "purpose_class": "discovery",
+  "question": "Which objects, if observed now, would most reduce what we do not know: missing expected evidence, drifting ephemerides, stale or uncertain records, empty sky?",
+  "authority": "CLAUDE-ASTRO-BUILD-001 knowledge-frontier programme (recommendations 1-2, 2026-09-03)",
+  "target_kinds": ["star", "variable_star", "transient", "sky_region"],
+  "required_evidence": [],
+  "eligible_relationship_types": ["lacks_evidence", "measures", "hosts", "near", "member_of"],
+  "unevaluated_relationships": "include",
+  "missingness_policy": "zero_with_trace",
+  "exclusions": ["apparent_brightness_as_relevance", "novelty_as_value_without_a_declared_gap"],
+  "explanation_threshold": 0.2,
+  "features": [
+    {"name": "coverage_gap_fraction", "weight": 3.0, "required": false, "params": {}, "rationale": "Missing evidence that the object's kind is expected to have is the most direct blank space."},
+    {"name": "ephemeris_drift", "weight": 3.0, "required": false, "params": {}, "rationale": "When the predicted transit-time uncertainty approaches the transit duration, one timed observation restores predictability for years."},
+    {"name": "evidence_staleness", "weight": 1.5, "required": false, "params": {"stale_after_days": 3650}, "rationale": "Old measurements may no longer describe the object."},
+    {"name": "classification_uncertainty", "weight": 1.5, "required": false, "params": {}, "rationale": "A catalogue's own uncertainty flag marks a semantic edge worth resolving."},
+    {"name": "region_coverage", "weight": 2.0, "required": false, "params": {}, "rationale": "Empty regions of sky are blank spaces by construction."},
+    {"name": "visibility", "weight": 2.0, "required": true, "params": {"min_altitude_deg": 30}, "rationale": "Only observable ignorance can be reduced tonight."},
+    {"name": "instrument_suitability", "weight": 1.0, "required": false, "params": {"magnitude_attribute": "magnitude_v"}, "rationale": "Feasibility only."}
+  ],
+  "plan": {"action": "reduce_gap", "max_targets": 3, "duration_minutes": 60, "min_score": 0.45, "min_repeat_gap_hours": 24}
+}

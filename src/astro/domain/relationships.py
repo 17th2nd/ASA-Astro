@@ -19,6 +19,10 @@ RELATIONSHIP_TYPES: dict[str, dict[str, Any]] = {
     "observed_with": {"roles": ("record", "instrument"), "symmetric": False, "evidence": "definitional"},
     "located_at": {"roles": ("instrument", "site"), "symmetric": False, "evidence": "definitional"},
     "candidate_of": {"roles": ("candidate", "survey"), "symmetric": False, "evidence": "definitional"},
+    # knowledge-frontier types: absence, claims and their disagreement, containment in a sky tile
+    "lacks_evidence": {"roles": ("subject",), "symmetric": False, "evidence": "definitional", "literals": ("evidence_kind", "expectation_ref", "as_of")},
+    "measures": {"roles": ("subject",), "symmetric": False, "evidence": "supported", "literals": ("quantity", "value", "unit", "source_key")},
+    "located_in": {"roles": ("object", "region"), "symmetric": False, "evidence": "definitional"},
 }
 
 

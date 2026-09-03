@@ -53,9 +53,10 @@ class TestParsers(unittest.TestCase):
 
     def test_gcvs_openngc_clusters(self):
         g = parse_gcvs(FIX / "gcvs.csv")
-        self.assertEqual(len(g.entities), len(g.evidence))
+        self.assertEqual(len(g.entities), len([v for v in g.evidence if v.kind == "classification"]))
         self.assertTrue(all(e.kind == "variable_star" for e in g.entities))
-        self.assertTrue(all(v.kind == "classification" and "class" in v.value_map for v in g.evidence))
+        self.assertTrue(all(v.kind in ("classification", "photometry") for v in g.evidence))
+        self.assertTrue(any(v.kind == "photometry" and "mag_max" in v.value_map for v in g.evidence))
         n = parse_openngc(FIX / "openngc.csv")
         self.assertTrue(n.entities)
         self.assertTrue(all(e.kind in ("galaxy", "nebula", "star_cluster", "star", "transient", "sky_region") for e in n.entities))

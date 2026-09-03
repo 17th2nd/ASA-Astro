@@ -303,10 +303,114 @@ def time_series_coverage_gap(fi: FeatureInput, params: dict[str, Any]) -> Featur
                         {"span_days": span, "required_span_days": required, "evidence_ids": [s.evidence_id for s in series]})
 
 
+# ---- knowledge-frontier features -----------------------------------------------------------------------------
+def coverage_gap_fraction(fi: FeatureInput, params: dict[str, Any]) -> FeatureValue:
+    """Fraction of the entity's declared evidence expectations that are unmet (from ASA lacks-evidence relationships)."""
+    from astro.knowledge.expectations import expected_kinds
+    name = "coverage_gap_fraction"
+    expected = expected_kinds(fi.entity, fi.universe)
+    if not expected:
+        return _unavailable(name, "no evidence expectations declared for this entity kind/condition")
+    gaps = [e for e in fi.snapshot.edges_of(fi.entity.entity_id, "lacks_evidence") if e.lifecycle == "registered"]
+    missing = sorted({dict(e.literals).get("evidence_kind") for e in gaps})
+    return FeatureValue(name, round(len(gaps) / len(expected), 12), "available",
+                        {"expected": [x.evidence_kind for x in expected], "missing": missing, "relationship_keys": [e.key for e in gaps]})
+
+
+def ephemeris_drift(fi: FeatureInput, params: dict[str, Any]) -> FeatureValue:
+    """Predicted transit-time uncertainty now, relative to the transit duration: σ_T = sqrt(σ_T0² + (n·σ_P)²)."""
+    name = "ephemeris_drift"
+    best = None
+    for rec in fi.evidence("ephemeris"):
+        v, u = rec.value_map, rec.uncertainty_map
+        if "period_days" not in v or "epoch_utc" not in v or ("period_days" not in u and "epoch_days" not in u):
+            continue
+        n = abs((fi.context.now - parse_utc(v["epoch_utc"])).total_seconds() / 86400.0 / float(v["period_days"]))
+        sigma_days = math.sqrt(float(u.get("epoch_days", 0.0)) ** 2 + (n * float(u.get("period_days", 0.0))) ** 2)
+        dur_h = float(v.get("duration_hours", 2.0)) or 2.0
+        ratio = sigma_days * 24.0 / dur_h
+        if best is None or ratio > best[0]:
+            best = (ratio, {"evidence_id": rec.evidence_id, "cycles_since_epoch": round(n, 1), "sigma_transit_minutes": round(sigma_days * 1440.0, 1), "duration_hours": dur_h})
+    if best is None:
+        return _unavailable(name, "no ephemeris with period/epoch uncertainties")
+    return FeatureValue(name, round(_clip(best[0]), 12), "available", best[1])
+
+
+def evidence_staleness(fi: FeatureInput, params: dict[str, Any]) -> FeatureValue:
+    """Age of the newest dated observational evidence against ``stale_after_days``."""
+    name = "evidence_staleness"
+    stale = float(params.get("stale_after_days", 3650.0))
+    kinds = tuple(params.get("evidence_kinds", OBSERVATIONAL_KINDS + ("alert",)))
+    stamps = [parse_utc(e.observed_at) for e in fi.evidence(*kinds) if e.observed_at]
+    if not stamps:
+        return FeatureValue(name, 1.0, "available", {"reason": "no dated observational evidence", "stale_after_days": stale})
+    age = (fi.context.now - max(stamps)).total_seconds() / 86400.0
+    return FeatureValue(name, round(_clip(age / stale), 12), "available", {"newest_utc": max(stamps).strftime("%Y-%m-%dT%H:%M:%SZ"), "age_days": round(age, 1), "stale_after_days": stale})
+
+
+def dispute_presence(fi: FeatureInput, params: dict[str, Any]) -> FeatureValue:
+    """1.0 when registered claims about this entity contradict each other in ASA; the disputed quantities are traced."""
+    name = "dispute_presence"
+    disputes = fi.snapshot.disputes_of(fi.entity.entity_id)
+    if not fi.snapshot.edges_of(fi.entity.entity_id, "measures"):
+        return _unavailable(name, "no measurement claims registered")
+    quantities = sorted({dict(c.literals).get("quantity") for c, _ in disputes})
+    return FeatureValue(name, 1.0 if disputes else 0.0, "available",
+                        {"disputed_quantities": quantities, "contradiction_keys": sorted({x.key for _, x in disputes}), "claim_keys": sorted({c.key for c, _ in disputes})})
+
+
+def classification_uncertainty(fi: FeatureInput, params: dict[str, Any]) -> FeatureValue:
+    """Catalogue-flagged uncertain classification (GCVS ':' suffix) or a low-confidence alert class."""
+    name = "classification_uncertainty"
+    recs = fi.evidence("classification", "alert")
+    if not recs:
+        return _unavailable(name, "no classification or alert evidence")
+    flagged, best = [], 0.0
+    for rec in recs:
+        cls = str(rec.value_map.get("class", rec.value_map.get("classification", "")))
+        if ":" in cls or cls.endswith("?"):
+            flagged.append(rec.evidence_id); best = max(best, 1.0)
+        elif "confidence" in rec.value_map:
+            best = max(best, 1.0 - _clip(rec.value_map["confidence"]))
+    return FeatureValue(name, round(best, 12), "available", {"flagged_evidence_ids": flagged})
+
+
+def boundary_proximity(fi: FeatureInput, params: dict[str, Any]) -> FeatureValue:
+    """Closeness of a companion's mass to the deuterium-burning boundary (13 M_Jup ≈ 4131 M_Earth), on a log scale."""
+    name = "boundary_proximity"
+    boundary = float(params.get("boundary_earth_masses", 4131.0))
+    width = float(params.get("log_width", 0.15))
+    masses = []
+    ids = [fi.entity.entity_id] + [o for e in fi.edges("hosts") for o in e.others(fi.entity.entity_id)]
+    for eid in ids:
+        try:
+            m = fi.universe.entity(eid).attribute_map.get("mass_earth")
+        except KeyError:
+            m = None
+        if m:
+            masses.append((eid, float(m)))
+    if not masses:
+        return _unavailable(name, "no companion mass available")
+    eid, m = max(masses, key=lambda t: -abs(math.log10(t[1] / boundary)))
+    value = math.exp(-abs(math.log10(m / boundary)) / width)
+    return FeatureValue(name, round(_clip(value), 12), "available", {"entity": eid, "mass_earth": m, "boundary_earth_masses": boundary})
+
+
+def region_coverage(fi: FeatureInput, params: dict[str, Any]) -> FeatureValue:
+    """For a sky region: 1 − density percentile (emptier is higher)."""
+    name = "region_coverage"
+    recs = [r for r in fi.evidence("catalogue_measurement") if "density_percentile" in r.value_map]
+    if not recs:
+        return _unavailable(name, "no density measurement for this region")
+    r = recs[-1]
+    return FeatureValue(name, round(1.0 - _clip(r.value_map["density_percentile"]), 12), "available", {"evidence_id": r.evidence_id, "entities": r.value_map.get("entities"), "evidence_records": r.value_map.get("evidence_records")})
+
+
 FEATURES: dict[str, Callable[[FeatureInput, dict[str, Any]], FeatureValue]] = {
     f.__name__: f for f in (
         transit_window_proximity, observation_gap, evidence_quality, evidence_scarcity, alert_freshness, alert_confidence,
         alert_rarity, visibility, instrument_suitability, calibration_suitability, proximity_to_anchor, relationship_support,
-        candidate_status, time_series_coverage_gap,
+        candidate_status, time_series_coverage_gap, coverage_gap_fraction, ephemeris_drift, evidence_staleness, dispute_presence,
+        classification_uncertainty, boundary_proximity, region_coverage,
     )
 }

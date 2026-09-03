@@ -1,0 +1,21 @@
+{
+  "name": "Dispute adjudication",
+  "version": "1.0",
+  "purpose_class": "characterisation",
+  "question": "Which objects carry contradicting measurement claims that one observation tonight could settle?",
+  "authority": "CLAUDE-ASTRO-BUILD-001 knowledge-frontier programme (recommendation 4, 2026-09-03)",
+  "target_kinds": ["star"],
+  "required_evidence": [],
+  "eligible_relationship_types": ["measures", "hosts"],
+  "unevaluated_relationships": "include",
+  "missingness_policy": "indeterminate",
+  "exclusions": ["apparent_brightness_as_relevance"],
+  "explanation_threshold": 0.2,
+  "features": [
+    {"name": "dispute_presence", "weight": 4.0, "required": true, "params": {}, "rationale": "Only objects with registered contradicting claims are candidates; the disputed quantity is traced."},
+    {"name": "evidence_quality", "weight": 1.0, "required": false, "params": {}, "rationale": "Better-characterised objects yield a cleaner adjudication."},
+    {"name": "visibility", "weight": 2.0, "required": true, "params": {"min_altitude_deg": 30}, "rationale": "Feasibility from the declared site."},
+    {"name": "instrument_suitability", "weight": 1.0, "required": false, "params": {"magnitude_attribute": "magnitude_v"}, "rationale": "Feasibility only."}
+  ],
+  "plan": {"action": "resolve_dispute", "max_targets": 3, "duration_minutes": 40, "min_score": 0.6, "min_repeat_gap_hours": 24}
+}

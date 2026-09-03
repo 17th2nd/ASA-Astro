@@ -6,7 +6,7 @@
     "subordination_clause_ack": true,
     "provenance_anchor": "PROPOSED",
     "css_schema_version": "2026.1",
-    "spec_authority": "ASA-SPEC-00X (proposed ASA-SPEC-0006); domain astro admitted by ASTRO-REGISTRY-CANDIDATE-2026-09-03 (application authority, not Council)"
+    "spec_authority": "ASA-SPEC-00X (proposed ASA-SPEC-0006); domain astro admitted by ASTRO-REGISTRY-CANDIDATE-2026-09-03b (application authority, not Council)"
   },
   "participant_kinds": [
     "perspective",
@@ -394,7 +394,7 @@
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -469,7 +469,7 @@
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -544,7 +544,7 @@
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -619,7 +619,7 @@
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -694,7 +694,7 @@
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -790,7 +790,7 @@
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -865,7 +865,7 @@
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -935,12 +935,93 @@
       ]
     },
     {
+      "id": "asa:type:astro/lacks-evidence@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/lacks-evidence@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "subject",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [
+          {
+            "name": "as_of",
+            "datatype": "string",
+            "identity": false
+          },
+          {
+            "name": "evidence_kind",
+            "datatype": "string",
+            "identity": true
+          },
+          {
+            "name": "expectation_ref",
+            "datatype": "string",
+            "identity": false
+          }
+        ],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:377b5fd0500f4aeaeb13b2cd55029e9ce2b29435d6198f685988bf71efccbed8",
+      "semantics": {
+        "participant_roles": [
+          "subject"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "subject"
+        ],
+        "identity_literals": [
+          "evidence_kind"
+        ],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
       "id": "asa:type:astro/located-at@1",
       "namespace": "astro",
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -1010,12 +1091,175 @@
       ]
     },
     {
+      "id": "asa:type:astro/located-in@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/located-in@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "definitional",
+        "roles": [
+          {
+            "name": "object",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          },
+          {
+            "name": "region",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:c5b1f67425e03f2f8c7d994b23577743d8cea2fcc72fa670682384518427b9b7",
+      "semantics": {
+        "participant_roles": [
+          "object",
+          "region"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "object",
+          "region"
+        ],
+        "identity_literals": [],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "definitional",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
+      "id": "asa:type:astro/measures@1",
+      "namespace": "astro",
+      "owner": "asa:uao:astro/registry-owner",
+      "admission": {
+        "state": "admitted",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
+        "admitted_registry_version": "2026.2",
+        "deprecated_registry_version": null,
+        "withdrawn_registry_version": null
+      },
+      "definition": {
+        "id": "asa:type:astro/measures@1",
+        "meta": false,
+        "symmetric": false,
+        "evidence": "supported",
+        "roles": [
+          {
+            "name": "subject",
+            "kind": "participant",
+            "binds": [
+              "uao"
+            ],
+            "min": 1,
+            "max": 1,
+            "identity": true
+          }
+        ],
+        "literals": [
+          {
+            "name": "quantity",
+            "datatype": "string",
+            "identity": true
+          },
+          {
+            "name": "source_key",
+            "datatype": "string",
+            "identity": true
+          },
+          {
+            "name": "unit",
+            "datatype": "string",
+            "identity": false
+          },
+          {
+            "name": "value",
+            "datatype": "decimal",
+            "identity": true
+          }
+        ],
+        "provenance_roles": []
+      },
+      "definition_hash": "sha256:d0fdc460b60b1dd656f03c9a2c68bf3ef4bcdc70eb276ac139dae3a82d6e3a3f",
+      "semantics": {
+        "participant_roles": [
+          "subject"
+        ],
+        "contextual_roles": [],
+        "provenance_roles": [],
+        "identity_roles": [
+          "subject"
+        ],
+        "identity_literals": [
+          "quantity",
+          "source_key",
+          "value"
+        ],
+        "symmetric": false,
+        "ordering": "role-named",
+        "meta": false,
+        "evidence": "supported",
+        "css_type_version_alias": null
+      },
+      "evolution": {
+        "supersedes": null,
+        "superseded_by": null,
+        "compatibility": {
+          "class": "unclassified",
+          "authority_track": "SPEC-0017"
+        },
+        "migration_contract_ref": null
+      },
+      "traceability": [
+        "CLAUDE-ASTRO-BUILD-001 §6",
+        "ASTRO-RELATIONSHIP-TAXONOMY-0001 §1",
+        "ADR-002 §7.5 (namespaces are governance T-1)"
+      ]
+    },
+    {
       "id": "asa:type:astro/member-of@1",
       "namespace": "astro",
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -1090,7 +1334,7 @@
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -1159,7 +1403,7 @@
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -1255,7 +1499,7 @@
       "owner": "asa:uao:astro/registry-owner",
       "admission": {
         "state": "admitted",
-        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03",
+        "decision_ref": "ASTRO-REGISTRY-CANDIDATE-2026-09-03b",
         "admitted_registry_version": "2026.2",
         "deprecated_registry_version": null,
         "withdrawn_registry_version": null
@@ -1325,5 +1569,5 @@
       ]
     }
   ],
-  "digest": "sha256:52f783616debf8925789a1d5007b5939659605412c28fb622724e335487f8db2"
+  "digest": "sha256:865e0ed40ea842736665666b5562ce3e0f9a47b52b84796e9f20b52b0f6b6c99"
 }

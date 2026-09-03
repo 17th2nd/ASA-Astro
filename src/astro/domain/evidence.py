@@ -9,7 +9,7 @@ from .identity import Provenance, content_id, forbid_intrinsic, freeze_mapping, 
 
 EVIDENCE_KINDS = (
     "photometry", "astrometry", "spectrum", "time_series", "ephemeris", "alert", "catalogue_measurement",
-    "observation_log", "derived_measurement", "calibration_assessment", "classification",
+    "observation_log", "derived_measurement", "calibration_assessment", "classification", "coverage_gap",
 )
 EVIDENCE_STATUSES = ("admissible", "limited", "contested", "superseded", "rejected")
 
