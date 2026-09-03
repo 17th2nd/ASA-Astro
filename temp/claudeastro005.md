@@ -67,7 +67,25 @@ Yesterday's 422 = hosts (552 planets). Sane (σ_P/P ≤ 1%): **419 hosts / 546 p
 
 - `tools/cut_universe.py --max-distance-pc 50` → `var/universe-50pc-dev.json` (from the store2 universe; re-cut from v2 when store3 lands): 613 stars, 959 planets, 4 clusters (Melotte 25 = Hyades, HSC_906, HSC_2846, FSR_1017); 2,689 MPC sites travel with the cut and are excluded from the UI. 51 disputed stars, 596 with gaps. ⚠ No `member_of` in this set, and the Hyades host K2-25 will not get one from store3 either: in the store2 snapshot Melotte 25 carried no parallax (VizieR row had Plx null in the earlier column set), so no test ran; with today's snapshot (Plx 21.23 mas, PM 104.1/−28.7) K2-25 (22.36 mas, PM 122.4/−18.6) fails both the parallax window (Δϖ 1.1 mas against max(0.3, 3σ)) and the flat proper-motion test (Δv_tan 4.4 km/s) — a cluster 20 pc deep at 47 pc spans ±4 mas, and perspective makes members' proper motions differ by tens of mas/yr. Nearby extended clusters need a 3-D space-velocity (convergent-point) test with a depth-aware parallax window. Recorded as next work; the current rule is right for clusters beyond ~200 pc, which is where all 244 candidates were.
 - `astro ui` (commit ff8342a): `astro.ui.export` (nodes with evidence/claims/disputes/gaps, graph edges with stance+lifecycle, per-objective scores with contributions, findings verdicts) + `astro.ui.navigator.html` (D3 7.9 UMD; sky | system graph | detail; breadcrumbs; filters: disputed / gaps / members / rejected / drift / hosts). Built on the 50 pc set with A/E/F under Siding Spring 2026-09-04: 1,576 nodes, 967 edges, 3.4 MB. Artifact c7f52b3b-2330-4abd-b6e6-a43a70962a91. Top under F: GJ 887, K2-129, LTT 1445 A, GJ 674 (all M dwarfs — the GSP-Phot bias again); under A: HR 858, TOI-2427, TOI-198; under E: TOI-2194, K2-129, K2-116.
-- Benchmark E/F on the 50 pc set: see addendum.
+- Benchmark E/F on the 50 pc set (`var/runs/benchmark-50pc-dev.json`, SSO 2026-09-04, V ≤ 14). First run exposed a harness flaw: baseline plans held only `max_targets` = 3 entries, all below the horizon on an all-sky universe, so the scheduler had nothing and the session ended after one cycle (oracle 1/1, fifo 4/4). Fixed (commit b1c4e96): baselines offer a 50-entry list, the scheduler takes the first feasible. Rerun:
+
+| 50 pc · F · Dispute adjudication | useful | wasted | first |
+|---|---|---|---|
+| fifo | 0/8 | 320/320 | never |
+| random | 1/8 | 280/320 | 160 |
+| static_priority (brightest) | 0/8 | 320/320 | never |
+| **asa** | **8/8** | **0/320** | 30 |
+| oracle | 8/8 | 0/320 | 0 |
+
+| 50 pc · E · Knowledge-gap reduction | useful | gain | wasted |
+|---|---|---|---|
+| fifo | 8/8 | 16 | 0 |
+| random | 8/8 | 16 | 0 |
+| static_priority (brightest) | 5/8 | 10 | 180 |
+| **asa** | 8/8 | **16** | 0 |
+| oracle | 8/8 | 18 | 0 |
+
+  **Reading:** F discriminates sharply in the neighbourhood (ASA = oracle; every baseline near zero — disputes are rare and invisible to a blind list). E does not discriminate at all here: fifo and random match ASA's gain, because almost every 50 pc host lacks the same two evidence kinds and any list of hosts scores. Brightest-first is the only strategy E beats, and only because bright giants (alf Tau, alf Ari, nu Oct A) have no declared expectations. Combined with the cone result (ASA = brightest-first), E as declared is not earning its weights anywhere on real data; it needs an astronomer's question, not a tuning pass.
 
 ## 8. Next
 
