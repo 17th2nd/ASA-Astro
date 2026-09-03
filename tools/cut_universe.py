@@ -3,6 +3,10 @@ relationships whose participants all remain, and their states. Real data stays l
 label records the cut so no one mistakes the piece for the whole.
 
     PYTHONPATH=src python3 tools/cut_universe.py var/universe-real-frontier-tess-v2.json 291.0 42.0 6.0 var/universe-kepler-cone.json
+    PYTHONPATH=src python3 tools/cut_universe.py var/universe-real-frontier-tess-v2.json --max-distance-pc 50 var/universe-50pc.json
+
+The distance cut keeps entities whose Gaia parallax (astrometry evidence) or catalogue distance places them within
+the limit: the solar-neighbourhood debug scope, where every object has a literature answer and Gaia is clean.
 """
 
 from __future__ import annotations
@@ -18,16 +22,30 @@ def sep_deg(ra1, dec1, ra2, dec2):
     return math.degrees(2 * math.asin(min(1.0, math.sqrt(a))))
 
 
-def main(src, ra, dec, radius, dst):
-    ra, dec, radius = float(ra), float(dec), float(radius)
+def main(src, *args):
+    if args[0] == "--max-distance-pc":
+        max_pc, dst, cone = float(args[1]), args[2], None
+        label = f"within {max_pc:g} pc"
+    else:
+        ra, dec, radius = float(args[0]), float(args[1]), float(args[2])
+        cone, max_pc, label = (ra, dec, radius), None, f"cone ra={ra} dec={dec} r={radius}deg"
     U = json.load(open(src))
+    plx = {}
+    for x in U["evidence"]:
+        if x["kind"] == "astrometry" and float(x.get("values", {}).get("parallax_mas", 0) or 0) > 0:
+            plx[x["subject_id"]] = float(x["values"]["parallax_mas"])
     keep = set()
     for e in U["entities"]:
         c = e.get("coordinates")
         if c is None or e["kind"] in ("observatory_site", "instrument", "site"):
             keep.add(e["entity_id"])          # sites, instruments and anything not on the sky travel with every cut
-        elif sep_deg(ra, dec, c["ra_deg"], c["dec_deg"]) <= radius:
-            keep.add(e["entity_id"])
+        elif cone is not None:
+            if sep_deg(cone[0], cone[1], c["ra_deg"], c["dec_deg"]) <= cone[2]:
+                keep.add(e["entity_id"])
+        else:
+            d = 1000.0 / plx[e["entity_id"]] if e["entity_id"] in plx else e.get("attributes", {}).get("distance_pc")
+            if d is not None and float(d) <= max_pc:
+                keep.add(e["entity_id"])
     # companions (planets carry the host's coordinates) follow their host
     for r in U["relationships"]:
         if r["relationship_type"] == "hosts" and any(i in keep for i in r["roles"].get("host", ())):
@@ -41,7 +59,7 @@ def main(src, ra, dec, radius, dst):
     evs = [x for x in U["evidence"] if x["subject_id"] in keep]
     sts = [s for s in U.get("states", []) if s["entity_id"] in keep]
     out = dict(U)
-    out.update(label=f"{U.get('label', 'universe')} | cone ra={ra} dec={dec} r={radius}deg", entities=ents, evidence=evs, relationships=rels, states=sts)
+    out.update(label=f"{U.get('label', 'universe')} | {label}", entities=ents, evidence=evs, relationships=rels, states=sts)
     for k in ("universe_id", "digest"):
         out.pop(k, None)
     json.dump(out, open(dst, "w"))
@@ -50,4 +68,4 @@ def main(src, ra, dec, radius, dst):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:6])
+    main(*sys.argv[1:])

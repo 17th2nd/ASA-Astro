@@ -1,0 +1,280 @@
+<title>Astro Navigator</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #0B1020; --panel: #111A2E; --panel-2: #172238; --ink: #E7EDF7; --muted: #8E9BB4; --rule: #263352; --rule-soft: #1C2740;
+    --accent: #6FB1FF; --accent-ink: #A9D0FF; --accent-soft: #14284A;
+    --star: #FFD166; --var: #FF9F5A; --planet: #7FD8BE; --cluster: #C79BFF; --galaxy: #9AB4FF; --transient: #FF7AA8; --region: #4E5D7A; --other: #8E9BB4;
+    --endorsed: #7FD8BE; --unevaluated: #8E9BB4; --retired: #4E5D7A; --contra: #FF6B6B; --gap: #FFB454;
+    --sky: #070C18; --grid: #16223A;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #F2F5FA; --panel: #FFFFFF; --panel-2: #F6F8FC; --ink: #15203A; --muted: #5B6880; --rule: #D5DCE8; --rule-soft: #E7ECF4;
+      --accent: #1F5FBF; --accent-ink: #164A99; --accent-soft: #E3EDFA;
+      --star: #B98300; --var: #C25E1C; --planet: #1F8F6A; --cluster: #7A4BC7; --galaxy: #3D63C9; --transient: #C7396B; --region: #B8C2D6; --other: #5B6880;
+      --endorsed: #1F8F6A; --unevaluated: #7A8699; --retired: #B8C2D6; --contra: #C43C3C; --gap: #B9751A;
+      --sky: #E9EEF7; --grid: #D5DCE8;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #F2F5FA; --panel: #FFFFFF; --panel-2: #F6F8FC; --ink: #15203A; --muted: #5B6880; --rule: #D5DCE8; --rule-soft: #E7ECF4;
+    --accent: #1F5FBF; --accent-ink: #164A99; --accent-soft: #E3EDFA;
+    --star: #B98300; --var: #C25E1C; --planet: #1F8F6A; --cluster: #7A4BC7; --galaxy: #3D63C9; --transient: #C7396B; --region: #B8C2D6; --other: #5B6880;
+    --endorsed: #1F8F6A; --unevaluated: #7A8699; --retired: #B8C2D6; --contra: #C43C3C; --gap: #B9751A;
+    --sky: #E9EEF7; --grid: #D5DCE8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Manrope", "Helvetica Neue", Arial, sans-serif; font-size: 14px; line-height: 1.45; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, Menlo, monospace; font-size: 0.86em; }
+  header { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; padding: 0.6rem 1rem; border-bottom: 1px solid var(--rule); background: var(--panel); }
+  header h1 { font-size: 1.05rem; font-weight: 700; margin: 0; letter-spacing: 0.01em; }
+  header .meta { color: var(--muted); font-size: 0.78rem; }
+  header select, header input { background: var(--panel-2); color: var(--ink); border: 1px solid var(--rule); border-radius: 4px; padding: 0.3rem 0.5rem; font: inherit; font-size: 0.85rem; }
+  header input { min-width: 14rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .chip { border: 1px solid var(--rule); background: var(--panel-2); color: var(--muted); border-radius: 999px; padding: 0.15rem 0.6rem; font-size: 0.76rem; cursor: pointer; font-family: inherit; }
+  .chip.on { color: var(--ink); border-color: var(--accent); background: var(--accent-soft); }
+  .chip:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .panes { display: grid; grid-template-columns: minmax(18rem, 1fr) minmax(20rem, 1.3fr) minmax(18rem, 1fr); gap: 0; height: calc(100vh - 3.6rem); min-height: 34rem; }
+  @media (max-width: 62rem) { .panes { grid-template-columns: 1fr; height: auto; } .pane { min-height: 22rem; } }
+  .pane { border-right: 1px solid var(--rule); display: flex; flex-direction: column; min-width: 0; }
+  .pane:last-child { border-right: 0; }
+  .pane-h { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; padding: 0.45rem 0.8rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--rule-soft); font-weight: 600; }
+  .pane-h span { letter-spacing: 0; text-transform: none; font-weight: 500; }
+  #skySvg { background: var(--sky); width: 100%; height: 100%; display: block; }
+  #graphSvg { width: 100%; height: 100%; display: block; background: var(--panel); }
+  .fill { flex: 1; min-height: 0; position: relative; }
+  .crumbs { display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0.4rem 0.8rem; border-bottom: 1px solid var(--rule-soft); font-size: 0.78rem; }
+  .crumbs button { background: none; border: 1px solid var(--rule); color: var(--muted); border-radius: 3px; padding: 0.1rem 0.45rem; font: inherit; font-size: 0.76rem; cursor: pointer; }
+  .crumbs button.cur { color: var(--ink); border-color: var(--accent); }
+  #detail { overflow: auto; padding: 0.8rem 0.9rem 2rem; }
+  #detail h2 { font-size: 1.25rem; margin: 0 0 0.1rem; font-weight: 700; text-wrap: balance; }
+  #detail h3 { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 1.1rem 0 0.4rem; font-weight: 600; }
+  .kind { display: inline-block; font-size: 0.72rem; padding: 0.05rem 0.45rem; border-radius: 3px; border: 1px solid var(--rule); color: var(--muted); }
+  .kv { display: grid; grid-template-columns: max-content 1fr; gap: 0.15rem 0.8rem; font-size: 0.85rem; }
+  .kv dt { color: var(--muted); } .kv dd { margin: 0; font-variant-numeric: tabular-nums; }
+  .score { display: flex; align-items: baseline; gap: 0.6rem; margin: 0.2rem 0 0.5rem; }
+  .score .n { font-size: 1.7rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .score .r { color: var(--muted); font-size: 0.82rem; }
+  .feat { display: grid; grid-template-columns: 9.5rem 1fr 3.2rem; gap: 0.25rem 0.5rem; align-items: center; font-size: 0.8rem; }
+  .feat .bar { height: 8px; background: var(--rule-soft); border-radius: 2px; position: relative; overflow: hidden; }
+  .feat .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
+  .feat .na { color: var(--muted); font-style: italic; }
+  .feat .v { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+  th { text-align: left; color: var(--muted); font-weight: 600; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0.4rem 0.25rem 0; border-bottom: 1px solid var(--rule); }
+  td { padding: 0.3rem 0.4rem 0.3rem 0; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+  .scroll { overflow-x: auto; }
+  .tag { display: inline-block; font-size: 0.7rem; padding: 0.02rem 0.4rem; border-radius: 3px; font-weight: 600; letter-spacing: 0.03em; }
+  .t-endorsed { color: var(--endorsed); background: color-mix(in srgb, var(--endorsed) 14%, transparent); }
+  .t-unevaluated { color: var(--unevaluated); background: color-mix(in srgb, var(--unevaluated) 14%, transparent); }
+  .t-retired { color: var(--retired); background: color-mix(in srgb, var(--retired) 20%, transparent); }
+  .t-contra { color: var(--contra); background: color-mix(in srgb, var(--contra) 14%, transparent); }
+  .t-gap { color: var(--gap); background: color-mix(in srgb, var(--gap) 14%, transparent); }
+  .t-ok { color: var(--endorsed); background: color-mix(in srgb, var(--endorsed) 14%, transparent); }
+  .rel { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.25rem 0; border-bottom: 1px solid var(--rule-soft); font-size: 0.82rem; }
+  .rel button { background: none; border: 0; color: var(--accent); font: inherit; cursor: pointer; padding: 0; text-align: left; }
+  .rel button:hover { text-decoration: underline; }
+  .legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; padding: 0.35rem 0.8rem; font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--rule-soft); }
+  .legend i { display: inline-block; width: 0.6rem; height: 0.6rem; border-radius: 50%; margin-right: 0.3rem; vertical-align: -1px; }
+  .legend .ln { display: inline-block; width: 1.1rem; border-top: 2px solid; vertical-align: 2px; margin-right: 0.3rem; }
+  .empty { color: var(--muted); padding: 1rem 0.9rem; font-size: 0.85rem; }
+  svg text { font-family: "Manrope", sans-serif; }
+  .tip { position: absolute; pointer-events: none; background: var(--panel-2); color: var(--ink); border: 1px solid var(--rule); border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.76rem; white-space: nowrap; display: none; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+<header>
+  <h1>Astro Navigator</h1>
+  <span class="meta" id="meta"></span>
+  <label class="meta">Objective <select id="objective"><option value="">none (structure only)</option></select></label>
+  <input id="search" list="names" placeholder="Find a system…" aria-label="Find a system">
+  <datalist id="names"></datalist>
+  <div class="chips" id="chips"></div>
+</header>
+<div class="panes">
+  <section class="pane">
+    <div class="pane-h">Sky <span id="skyInfo"></span></div>
+    <div class="fill"><svg id="skySvg" viewBox="0 0 720 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Sky map"></svg><div class="tip" id="skyTip"></div></div>
+    <div class="legend"><span><i style="background:var(--star)"></i>star</span><span><i style="background:var(--var)"></i>variable</span><span><i style="background:var(--planet)"></i>planet</span><span><i style="background:var(--cluster)"></i>cluster</span><span><i style="background:var(--galaxy)"></i>galaxy</span><span><i style="background:var(--transient)"></i>transient</span><span>· size = score under the chosen objective</span></div>
+  </section>
+  <section class="pane">
+    <div class="pane-h">System <span id="graphInfo"></span></div>
+    <div class="crumbs" id="crumbs"></div>
+    <div class="fill"><svg id="graphSvg" role="img" aria-label="Relationship graph"></svg><div class="tip" id="graphTip"></div></div>
+    <div class="legend"><span><span class="ln" style="border-color:var(--endorsed)"></span>endorsed</span><span><span class="ln" style="border-color:var(--unevaluated);border-top-style:dashed"></span>unevaluated</span><span><span class="ln" style="border-color:var(--retired);border-top-style:dotted"></span>retired</span><span><span class="ln" style="border-color:var(--contra)"></span>contradicts</span><span><i style="background:transparent;border:1px dashed var(--gap)"></i>missing evidence</span><span>· click a node to travel</span></div>
+  </section>
+  <aside class="pane" id="detail"><div class="empty">Pick a system on the sky or by name.</div></aside>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  const DATA = /*__ASTRO_DATA__*/null;
+  if (!DATA) { document.getElementById('detail').innerHTML = '<div class="empty">No data embedded. Build with <code>astro ui</code>.</div>'; return; }
+  const N = DATA.nodes, E = DATA.edges, OBJ = DATA.objectives, F = DATA.findings;
+  const KC = { star: 'var(--star)', variable_star: 'var(--var)', exoplanet: 'var(--planet)', star_cluster: 'var(--cluster)', galaxy: 'var(--galaxy)', transient: 'var(--transient)', sky_region: 'var(--region)' };
+  const kcol = k => KC[k] || 'var(--other)';
+  const byName = new Map(); N.forEach((n, i) => { byName.set(n.d.toLowerCase(), i); (n.aliases || []).forEach(a => byName.set(String(a).toLowerCase(), i)); });
+  const adj = N.map(() => []);
+  E.forEach((e, ei) => { const ids = [].concat(...Object.values(e.roles)); ids.forEach(a => adj[a].push(ei)); });
+  const fmt = v => (v === null || v === undefined) ? '—' : (typeof v === 'number' ? (Math.abs(v) >= 100 ? v.toFixed(0) : Math.abs(v) >= 10 ? v.toFixed(1) : v.toFixed(3)) : String(v));
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  let objective = '', selected = null, history = [], filters = new Set();
+
+  // header
+  const m = DATA.meta;
+  document.getElementById('meta').textContent = `${m.nodes.toLocaleString()} objects · ${m.edges.toLocaleString()} relationships · ${m.disputed} disputed · ${m.gapped} with gaps · ${m.data_class} · kernel ${String(m.kernel_digest).slice(7, 19)}`;
+  const sel = document.getElementById('objective');
+  Object.keys(OBJ).forEach(k => { const o = document.createElement('option'); o.value = k; o.textContent = `${k} (${OBJ[k].eligible} eligible)`; sel.appendChild(o); });
+  sel.addEventListener('change', () => { objective = sel.value; drawSky(); if (selected !== null) { drawGraph(); drawDetail(); } });
+  const dl = document.getElementById('names');
+  N.filter(n => n.k !== 'exoplanet' && n.k !== 'sky_region').slice(0, 4000).forEach(n => { const o = document.createElement('option'); o.value = n.d; dl.appendChild(o); });
+  document.getElementById('search').addEventListener('change', ev => { const i = byName.get(ev.target.value.trim().toLowerCase()); if (i !== undefined) select(i); });
+  const CHIPS = [['disputed', 'catalogues disagree', n => n.disputes.length > 0], ['gaps', 'missing evidence', n => n.gaps.length > 0],
+                 ['members', 'kinematic member', n => (F.associations[n.d] || []).some(a => a.verdict === 'kinematic member')],
+                 ['rejected', 'rejected association', n => (F.associations[n.d] || []).some(a => a.verdict !== 'kinematic member')],
+                 ['drift', 'drifted ephemeris', n => !!F.drift[n.d]], ['hosts', 'planet hosts', n => adj[N.indexOf(n)].some(ei => E[ei].t === 'hosts' && (E[ei].roles.host || []).includes(N.indexOf(n)))]];
+  const chipBox = document.getElementById('chips');
+  CHIPS.forEach(([key, label]) => { const b = document.createElement('button'); b.className = 'chip'; b.textContent = label; b.type = 'button';
+    b.addEventListener('click', () => { if (filters.has(key)) filters.delete(key); else filters.add(key); b.classList.toggle('on'); drawSky(); }); chipBox.appendChild(b); });
+  const passes = (n) => { if (!filters.size) return true; return [...filters].every(k => CHIPS.find(c => c[0] === k)[2](n)); };
+  const scoreOf = i => objective && OBJ[objective].scores[i] && OBJ[objective].scores[i].s !== null && OBJ[objective].scores[i].s !== undefined ? OBJ[objective].scores[i].s : null;
+
+  // sky
+  const sky = d3.select('#skySvg'), skyG = sky.append('g');
+  const sx = ra => (360 - ra) * 2, sy = dec => (90 - dec) * 2;
+  skyG.append('g').selectAll('line').data(d3.range(0, 361, 30)).join('line').attr('x1', d => sx(d)).attr('x2', d => sx(d)).attr('y1', 0).attr('y2', 360).attr('stroke', 'var(--grid)').attr('stroke-width', 0.5);
+  skyG.append('g').selectAll('line').data(d3.range(-60, 61, 30)).join('line').attr('y1', d => sy(d)).attr('y2', d => sy(d)).attr('x1', 0).attr('x2', 720).attr('stroke', 'var(--grid)').attr('stroke-width', 0.5);
+  skyG.append('g').selectAll('text').data([0, 6, 12, 18]).join('text').attr('x', d => sx(d * 15) + 3).attr('y', 352).attr('fill', 'var(--muted)').attr('font-size', 9).text(d => d + 'h');
+  const skyPts = skyG.append('g');
+  const skyTip = document.getElementById('skyTip');
+  sky.call(d3.zoom().scaleExtent([1, 40]).on('zoom', ev => skyG.attr('transform', ev.transform)));
+  function drawSky() {
+    const pts = N.map((n, i) => ({ n, i })).filter(d => d.n.ra !== null && d.n.k !== 'exoplanet' && d.n.k !== 'sky_region');
+    const on = pts.filter(d => passes(d.n));
+    document.getElementById('skyInfo').textContent = filters.size ? `${on.length} of ${pts.length} match` : `${pts.length} on the sky`;
+    skyPts.selectAll('circle').data(pts, d => d.i).join('circle')
+      .attr('cx', d => sx(d.n.ra)).attr('cy', d => sy(d.n.dec))
+      .attr('r', d => { const s = scoreOf(d.i); return d.i === selected ? 5 : (s !== null ? 1.6 + 5 * s : 1.8); })
+      .attr('fill', d => kcol(d.n.k)).attr('fill-opacity', d => passes(d.n) ? (scoreOf(d.i) !== null || !objective ? 0.85 : 0.25) : 0.08)
+      .attr('stroke', d => d.i === selected ? 'var(--accent)' : 'none').attr('stroke-width', 1.5)
+      .style('cursor', 'pointer')
+      .on('click', (ev, d) => select(d.i))
+      .on('mousemove', (ev, d) => { skyTip.style.display = 'block'; skyTip.style.left = (ev.offsetX + 12) + 'px'; skyTip.style.top = (ev.offsetY + 12) + 'px'; const s = scoreOf(d.i); skyTip.textContent = d.n.d + (s !== null ? ` · ${s.toFixed(3)}` : '') + (d.n.dist ? ` · ${fmt(d.n.dist)} pc` : ''); })
+      .on('mouseleave', () => { skyTip.style.display = 'none'; });
+  }
+
+  // graph
+  const gsvg = d3.select('#graphSvg'), gRoot = gsvg.append('g'), gLinks = gRoot.append('g'), gNodes = gRoot.append('g');
+  const graphTip = document.getElementById('graphTip');
+  gsvg.call(d3.zoom().scaleExtent([0.3, 4]).on('zoom', ev => gRoot.attr('transform', ev.transform)));
+  let sim = null;
+  function localGraph(i) {
+    const nodes = new Map(), links = [];
+    const add = (id, obj) => { if (!nodes.has(id)) nodes.set(id, obj); return nodes.get(id); };
+    add('n' + i, { id: 'n' + i, ni: i, label: N[i].d, kind: N[i].k, center: true });
+    const seen = new Set();
+    const expand = (j, depth) => {
+      adj[j].forEach(ei => { if (seen.has(ei)) return; seen.add(ei); const e = E[ei];
+        const ids = [].concat(...Object.values(e.roles));
+        ids.forEach(a => add('n' + a, { id: 'n' + a, ni: a, label: N[a].d, kind: N[a].k }));
+        if (ids.length === 2) links.push({ source: 'n' + ids[0], target: 'n' + ids[1], t: e.t, stance: e.stance, lc: e.lc, e });
+        else if (ids.length > 2) { for (let k = 1; k < ids.length; k++) links.push({ source: 'n' + ids[0], target: 'n' + ids[k], t: e.t, stance: e.stance, lc: e.lc, e }); }
+        if (depth > 0) ids.forEach(a => { if (a !== j && N[a].k === 'star') { adj[a].forEach(ei2 => { const e2 = E[ei2]; if (e2.t === 'hosts' && !seen.has(ei2)) { seen.add(ei2); const ids2 = [].concat(...Object.values(e2.roles)); ids2.forEach(b => add('n' + b, { id: 'n' + b, ni: b, label: N[b].d, kind: N[b].k })); if (ids2.length === 2) links.push({ source: 'n' + ids2[0], target: 'n' + ids2[1], t: e2.t, stance: e2.stance, lc: e2.lc, e: e2 }); } }); } });
+      });
+    };
+    expand(i, 1);
+    const n = N[i];
+    n.gaps.forEach((g, k) => { const id = `g${i}-${k}`; add(id, { id, ghost: true, label: 'no ' + g.replace('_', ' '), kind: 'gap' }); links.push({ source: 'n' + i, target: id, t: 'lacks_evidence', stance: 'gap', lc: 'registered' }); });
+    n.disputes.forEach((d, k) => { const a = `d${i}-${k}a`, b = `d${i}-${k}b`;
+      add(a, { id: a, claim: true, label: `${d.q} ${fmt(d.a.v)} ${d.unit || ''} · ${d.a.src}`, kind: 'claim' }); add(b, { id: b, claim: true, label: `${d.q} ${fmt(d.b.v)} ${d.unit || ''} · ${d.b.src}`, kind: 'claim' });
+      links.push({ source: 'n' + i, target: a, t: 'measures', stance: 'endorsed', lc: 'registered' }); links.push({ source: 'n' + i, target: b, t: 'measures', stance: 'endorsed', lc: 'registered' }); links.push({ source: a, target: b, t: 'contradicts', stance: 'contra', lc: 'registered' }); });
+    return { nodes: [...nodes.values()], links };
+  }
+  const lcol = l => l.t === 'contradicts' ? 'var(--contra)' : l.t === 'lacks_evidence' ? 'var(--gap)' : l.lc !== 'registered' ? 'var(--retired)' : l.stance === 'endorsed' ? 'var(--endorsed)' : 'var(--unevaluated)';
+  const ldash = l => l.t === 'lacks_evidence' ? '3 3' : l.lc !== 'registered' ? '1 3' : l.stance === 'endorsed' || l.t === 'contradicts' ? null : '5 4';
+  function drawGraph() {
+    const box = document.getElementById('graphSvg').getBoundingClientRect(), W = Math.max(320, box.width), H = Math.max(280, box.height);
+    gsvg.attr('viewBox', `0 0 ${W} ${H}`);
+    const g = localGraph(selected);
+    document.getElementById('graphInfo').textContent = `${g.nodes.filter(x => !x.ghost && !x.claim).length} objects · ${g.links.length} links`;
+    if (sim) sim.stop();
+    const link = gLinks.selectAll('line').data(g.links, (d, k) => k).join('line').attr('stroke', lcol).attr('stroke-dasharray', ldash).attr('stroke-width', d => d.t === 'contradicts' ? 2.2 : d.t === 'hosts' ? 1.6 : 1.2).attr('stroke-opacity', 0.9);
+    const node = gNodes.selectAll('g').data(g.nodes, d => d.id).join(enter => { const gg = enter.append('g'); gg.append('circle'); gg.append('text'); return gg; });
+    node.select('circle').attr('r', d => d.center ? 11 : d.ghost ? 7 : d.claim ? 5 : (d.kind === 'exoplanet' ? 5 : 8))
+      .attr('fill', d => d.ghost ? 'transparent' : d.claim ? 'var(--panel-2)' : kcol(d.kind))
+      .attr('stroke', d => d.ghost ? 'var(--gap)' : d.claim ? 'var(--contra)' : d.center ? 'var(--accent)' : 'var(--panel)').attr('stroke-dasharray', d => d.ghost ? '2 2' : null).attr('stroke-width', d => d.center ? 2.5 : 1.2)
+      .style('cursor', d => (d.ghost || d.claim) ? 'default' : 'pointer');
+    node.select('text').text(d => d.label).attr('x', d => (d.center ? 14 : 10)).attr('y', 4).attr('fill', d => d.ghost ? 'var(--gap)' : d.claim ? 'var(--muted)' : 'var(--ink)').attr('font-size', d => d.center ? 13 : d.claim ? 10 : 11).attr('font-weight', d => d.center ? 700 : 500);
+    node.on('click', (ev, d) => { if (!d.ghost && !d.claim && d.ni !== selected) select(d.ni); })
+      .on('mousemove', (ev, d) => { if (d.ghost || d.claim) return; graphTip.style.display = 'block'; graphTip.style.left = (ev.offsetX + 12) + 'px'; graphTip.style.top = (ev.offsetY + 12) + 'px'; const s = scoreOf(d.ni); graphTip.textContent = `${d.label} · ${d.kind.replace('_', ' ')}` + (s !== null ? ` · ${s.toFixed(3)}` : ''); })
+      .on('mouseleave', () => { graphTip.style.display = 'none'; })
+      .call(d3.drag().on('start', (ev, d) => { if (!ev.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }).on('drag', (ev, d) => { d.fx = ev.x; d.fy = ev.y; }).on('end', (ev, d) => { if (!ev.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }));
+    sim = d3.forceSimulation(g.nodes).force('link', d3.forceLink(g.links).id(d => d.id).distance(l => l.t === 'contradicts' ? 60 : l.t === 'hosts' ? 55 : 95)).force('charge', d3.forceManyBody().strength(-220)).force('center', d3.forceCenter(W / 2, H / 2)).force('collide', d3.forceCollide(18))
+      .on('tick', () => { link.attr('x1', d => d.source.x).attr('y1', d => d.source.y).attr('x2', d => d.target.x).attr('y2', d => d.target.y); node.attr('transform', d => `translate(${d.x},${d.y})`); });
+    const c = g.nodes.find(x => x.center); c.fx = W / 2; c.fy = H / 2;
+    link.append('title').text(d => `${d.t} · ${d.stance} · ${d.lc}`);
+  }
+
+  // detail
+  function drawDetail() {
+    const n = N[selected], o = objective ? OBJ[objective] : null, s = o ? o.scores[selected] : null;
+    let h = `<h2>${esc(n.d)}</h2><span class="kind">${esc(n.k.replace('_', ' '))}</span>` + (n.src ? ` <span class="kind">${esc(n.src.split(',')[0].slice(0, 40))}</span>` : '');
+    h += `<dl class="kv" style="margin-top:0.6rem">`;
+    if (n.ra !== null) h += `<dt>RA / Dec</dt><dd class="mono">${n.ra.toFixed(4)}° / ${n.dec.toFixed(4)}°</dd>`;
+    if (n.dist) h += `<dt>Distance</dt><dd>${fmt(n.dist)} pc</dd>`;
+    if (n.mag !== null && n.mag !== undefined) h += `<dt>Magnitude</dt><dd>${fmt(n.mag)}</dd>`;
+    Object.entries(n.attrs).forEach(([k, v]) => { if (k === 'magnitude_v' || k === 'distance_pc') return; h += `<dt>${esc(k.replace(/_/g, ' '))}</dt><dd>${esc(fmt(v))}</dd>`; });
+    if (n.aliases.length) h += `<dt>Also</dt><dd class="mono">${esc(n.aliases.slice(0, 4).join(' · '))}</dd>`;
+    h += `</dl>`;
+    if (o) {
+      h += `<h3>${esc(objective)}</h3>`;
+      if (s && s.s !== null && s.s !== undefined) {
+        h += `<div class="score"><span class="n">${s.s.toFixed(3)}</span><span class="r">rank ${s.rank} of ${o.eligible} eligible</span></div><div class="feat">`;
+        s.c.forEach(c => { const v = c.v === null || c.v === undefined ? null : c.v; h += `<span>${esc(c.f.replace(/_/g, ' '))}</span>` + (v === null ? `<span class="na">unavailable</span><span class="v">w ${c.w}</span>` : `<span class="bar"><i style="width:${Math.max(0, Math.min(100, v * 100))}%"></i></span><span class="v">${v.toFixed(2)}×${c.w}</span>`); });
+        h += `</div>`;
+      } else h += `<p class="empty" style="padding:0.2rem 0">Ineligible: ${esc(s ? s.why : 'not evaluated')}</p>`;
+    }
+    const fa = F.associations[n.d] || [], fd = F.drift[n.d] || [], fu = F.undetermined[n.d] || [];
+    if (fa.length || fd.length || fu.length) {
+      h += `<h3>Findings</h3>`;
+      fa.forEach(a => { const cls = a.verdict === 'kinematic member' ? 't-ok' : a.verdict === 'untrusted' ? 't-gap' : 't-contra'; h += `<div class="rel"><span>member of ${esc(a.cluster)}</span><span class="tag ${cls}" title="${esc(a.reason || '')}">${esc(a.verdict)}</span></div>`; });
+      fd.forEach(d => h += `<div class="rel"><span>${esc(d.planet)}: transit time ±${fmt(d.sigma_min / 60)} h after ${fmt(d.cycles)} cycles</span><span class="tag t-gap">drift ×${fmt(d.ratio)}</span></div>`);
+      fu.forEach(d => h += `<div class="rel"><span>${esc(d.planet)}: period ${fmt(d.period)} ± ${fmt(d.sigma_period)} d</span><span class="tag t-contra">undetermined</span></div>`);
+    }
+    if (n.disputes.length) { h += `<h3>Disputes</h3>`; n.disputes.forEach(d => h += `<div class="rel"><span>${esc(d.q)}: <b>${fmt(d.a.v)}</b> (${esc(d.a.src)}) vs <b>${fmt(d.b.v)}</b> (${esc(d.b.src)}) ${esc(d.unit || '')}</span><span class="tag t-contra">contradicts</span></div>`); }
+    if (n.gaps.length) { h += `<h3>Missing evidence</h3>` + n.gaps.map(g => `<span class="tag t-gap" style="margin:0 0.3rem 0.3rem 0">${esc(g.replace('_', ' '))}</span>`).join(''); }
+    const rels = adj[selected].map(ei => E[ei]);
+    if (rels.length) {
+      h += `<h3>Relationships (${rels.length})</h3>`;
+      rels.slice(0, 60).forEach(e => { const others = [].concat(...Object.values(e.roles)).filter(x => x !== selected); const role = Object.entries(e.roles).find(([r, ids]) => ids.includes(selected));
+        h += `<div class="rel"><span>${esc(e.t.replace(/_/g, ' '))}${role ? ` <span class="mono" style="color:var(--muted)">as ${esc(role[0])}</span>` : ''} → ${others.map(x => `<button type="button" data-go="${x}">${esc(N[x].d)}</button>`).join(', ') || '—'}${e.lit.separation_arcsec ? ` <span class="mono" style="color:var(--muted)">${fmt(e.lit.separation_arcsec)}″</span>` : ''}</span><span class="tag t-${e.lc !== 'registered' ? 'retired' : e.stance}">${esc(e.lc !== 'registered' ? e.lc : e.stance)}${e.nsup ? ` · ${e.nsup} ev` : ''}</span></div>`; });
+    }
+    if (n.claims.length) { h += `<h3>Claims (${n.claims.length})</h3><div class="scroll"><table><thead><tr><th>quantity</th><th>value</th><th>source</th><th>stance</th></tr></thead><tbody>`; n.claims.slice(0, 40).forEach(c => h += `<tr><td>${esc(c.q)}</td><td>${fmt(typeof c.v === 'string' ? parseFloat(c.v) : c.v)} ${esc(c.unit || '')}</td><td>${esc(c.src || '')}</td><td><span class="tag t-${c.stance}">${esc(c.stance)}</span></td></tr>`); h += `</tbody></table></div>`; }
+    if (n.ev.length) { h += `<h3>Evidence (${n.ev.length})</h3><div class="scroll"><table><thead><tr><th>kind</th><th>source</th><th>values</th><th>when</th></tr></thead><tbody>`;
+      n.ev.forEach(e => { const vals = Object.entries(e.v).filter(([k]) => !['planet', 'from', 'other', 'cluster', 'method', 'duration_source', 'epoch_bjd_tdb', 'frame', 'epoch'].includes(k)).slice(0, 6).map(([k, v]) => `${esc(k)} ${esc(fmt(typeof v === 'string' && !isNaN(parseFloat(v)) ? parseFloat(v) : v))}${e.u && e.u[k] !== undefined ? ' ±' + fmt(e.u[k]) : ''}`).join(', ');
+        h += `<tr><td>${esc(e.kind.replace('_', ' '))}${e.st !== 'admissible' ? ` <span class="tag t-retired">${esc(e.st)}</span>` : ''}</td><td class="mono">${esc(e.src)}<br><span style="color:var(--muted)">${esc(e.cls)}</span></td><td class="mono">${vals}</td><td class="mono">${e.at ? esc(String(e.at).slice(0, 10)) : '—'}</td></tr>`; });
+      h += `</tbody></table></div>`; }
+    const det = document.getElementById('detail'); det.innerHTML = h; det.scrollTop = 0;
+    det.querySelectorAll('button[data-go]').forEach(b => b.addEventListener('click', () => select(parseInt(b.dataset.go, 10))));
+  }
+  function drawCrumbs() {
+    const c = document.getElementById('crumbs'); c.innerHTML = '';
+    history.slice(-8).forEach((i, k, arr) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = N[i].d; if (k === arr.length - 1) b.className = 'cur'; b.addEventListener('click', () => { history = history.slice(0, history.length - (arr.length - 1 - k) - 1); select(i); }); c.appendChild(b); if (k < arr.length - 1) c.appendChild(document.createTextNode(' › ')); });
+  }
+  function select(i) {
+    selected = i; history.push(i); if (history.length > 40) history.shift();
+    drawCrumbs(); drawSky(); drawGraph(); drawDetail();
+    document.getElementById('search').value = '';
+  }
+  drawSky();
+  // open on the highest-scoring object of the first objective, else the first disputed host, else the first star
+  const firstObj = Object.keys(OBJ)[0];
+  let start = null;
+  if (firstObj) { sel.value = firstObj; objective = firstObj; const sc = OBJ[firstObj].scores; start = Object.keys(sc).map(Number).filter(i => sc[i].rank === 1)[0]; }
+  if (start === undefined || start === null) start = N.findIndex(n => n.disputes.length);
+  if (start < 0) start = N.findIndex(n => n.k === 'star');
+  if (start >= 0) select(start);
+  window.addEventListener('resize', () => { if (selected !== null) drawGraph(); });
+})();
+</script>
