@@ -156,4 +156,26 @@ class TestFitsReader(unittest.TestCase):
 
 
 if __name__ == "__main__":
+
+
+
+class TestFrontierReport(unittest.TestCase):
+    def test_report_counts_gaps_edges_and_disputes(self):
+        from astro.frontier_report import frontier_report, render
+        u = real_fixture_universe()
+        f = derive_frontier(u, AS_OF, tiles=True)
+        a = AstroAdapter.in_memory(FACET, "report")
+        u2 = f.apply(u)
+        load_frontier(a, u2, f)
+        rep = frontier_report(u2, a.snapshot())
+        self.assertEqual(rep["blank_spaces"]["lacks_evidence"], sum(1 for r in f.relationships if r.relationship_type == "lacks_evidence"))
+        self.assertEqual(rep["sky"]["tiles"], 648)
+        self.assertIn("comparison_star_for", rep["semantic_edges"]["by_type"] | {"comparison_star_for": 0})
+        self.assertEqual(rep["disputes"]["contradictions"], len(f.contradictions))
+        text = render(rep)
+        self.assertIn("Blank spaces", text)
+        self.assertIn("Disputes", text)
+
+
+if __name__ == "__main__":
     unittest.main()

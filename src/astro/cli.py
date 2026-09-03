@@ -208,7 +208,14 @@ def cmd_catalogues(args) -> int:
 def cmd_store(args) -> int:
     from astro.store import DEFAULT_SOURCES, build_store, store_status
     if args.action == "build":
-        r = build_store(args.store, tuple(args.source) if args.source else DEFAULT_SOURCES, universe_path=args.universe_out)
+        extra = None
+        if args.evidence_fragment:
+            from astro.domain import EvidenceRecord
+            extra = [EvidenceRecord.from_record(e) for e in json.loads(Path(args.evidence_fragment).read_text())["evidence"]]
+        r = build_store(args.store, tuple(args.source) if args.source else DEFAULT_SOURCES, universe_path=args.universe_out,
+                        frontier=args.frontier, as_of=args.as_of, extra_evidence=extra)
+        if r.get("frontier"):
+            print("frontier:", json.dumps(r["frontier"]))
         print(json.dumps({k: r[k] for k in ("universe_id", "entities", "evidence", "relationships", "kernel_seq", "kernel_digest", "timing_s", "loaded_this_build")}, indent=1))
         print("kinds:", r["kinds"])
         print(f"BUILD.json written in {args.store}")
@@ -218,6 +225,18 @@ def cmd_store(args) -> int:
     if st["build"]:
         b = st["build"]
         print(f"built {b['built_at']}  universe {b['universe_id']}  entities {b['entities']}  evidence {b['evidence']}  ASA {b['asa_baseline'][:12]}")
+    return 0
+
+
+def cmd_frontier(args) -> int:
+    from astro.frontier_report import frontier_report, render
+    universe = Universe.load(args.universe)
+    adapter = open_or_bootstrap(universe, args.store)
+    rep = frontier_report(universe, adapter.snapshot(), top=args.top)
+    print(render(rep))
+    if args.out:
+        _write(Path(args.out), rep)
+        print(f"written: {args.out}")
     return 0
 
 
@@ -264,7 +283,16 @@ def build_parser() -> argparse.ArgumentParser:
     st.add_argument("--source", nargs="*")
     st.add_argument("--universe-out", help="also save the merged universe JSON here")
     st.add_argument("--verify", action="store_true", help="status: run the Governor-less verifier and a replay")
+    st.add_argument("--frontier", action="store_true", help="build: derive and load the knowledge frontier (gaps, derived relationships, claims, contradictions, tiles)")
+    st.add_argument("--as-of", help="build: frontier as-of instant (ISO UTC)")
+    st.add_argument("--evidence-fragment", help="build: JSON file with extra evidence records to merge first (e.g. var/tess-fragment.json)")
     st.set_defaults(fn=cmd_store)
+    fr = sub.add_parser("frontier", help="summarise blank spaces, semantic edges and disputes from the store")
+    fr.add_argument("--universe", required=True)
+    fr.add_argument("--store")
+    fr.add_argument("--top", type=int, default=10)
+    fr.add_argument("--out")
+    fr.set_defaults(fn=cmd_frontier)
     return p
 
 

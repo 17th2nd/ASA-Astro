@@ -14,7 +14,9 @@ from astro.asa.locator import asa_baseline_sha
 from astro.catalogues import merge_fragments
 from astro.catalogues.manifest import load_manifest, verify_snapshots
 from astro.catalogues.parsers import PARSERS, gaia_host_map, parse_gaia_hosts
-from astro.domain import Universe
+from astro.domain import EvidenceRecord, Universe
+from astro.knowledge import derive_frontier
+from astro.knowledge.frontier import load_frontier
 from astro.pipeline import FACET
 
 DEFAULT_SOURCES = ("exoplanets", "gaia_hosts", "gcvs", "openngc", "huntreffert_clusters", "mpc_sites", "alerce_sn")
@@ -42,8 +44,13 @@ def build_universe(sources: tuple[str, ...] = DEFAULT_SOURCES, label: str = "ast
     return merge_fragments(label, *frags), summaries
 
 
-def build_store(store_dir: str | Path, sources: tuple[str, ...] = DEFAULT_SOURCES, universe_path: str | Path | None = None) -> dict[str, Any]:
-    """Build (or extend) the persistent kernel store from the raw snapshots and write BUILD.json."""
+def build_store(store_dir: str | Path, sources: tuple[str, ...] = DEFAULT_SOURCES, universe_path: str | Path | None = None,
+                *, frontier: bool = False, as_of: str | None = None, extra_evidence: list[EvidenceRecord] | None = None) -> dict[str, Any]:
+    """Build (or extend) the persistent kernel store from the raw snapshots and write BUILD.json.
+
+    With ``frontier=True`` the knowledge frontier (gaps, derived relationships, claims, contradictions, sky tiles)
+    is derived over the merged universe and loaded too; ``extra_evidence`` (e.g. TESS light curves) is merged first.
+    """
     store_dir = Path(store_dir)
     snapshots = verify_snapshots()
     missing = [k for k in sources if not snapshots.get(k)]
@@ -51,6 +58,13 @@ def build_store(store_dir: str | Path, sources: tuple[str, ...] = DEFAULT_SOURCE
         raise RuntimeError(f"raw snapshots missing or drifted for {missing}; run `astro catalogues fetch` first")
     t0 = time.time()
     universe, summaries = build_universe(sources)
+    if extra_evidence:
+        known = {e.entity_id for e in universe.entities}
+        universe = universe.with_evidence(*[e for e in extra_evidence if e.subject_id in known])
+    front = None
+    if frontier:
+        front = derive_frontier(universe, as_of or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
+        universe = front.apply(universe, label=universe.label + "+frontier")
     t_parse = time.time() - t0
     if universe_path:
         universe.save(universe_path)
@@ -60,7 +74,7 @@ def build_store(store_dir: str | Path, sources: tuple[str, ...] = DEFAULT_SOURCE
     else:
         store_dir.mkdir(parents=True, exist_ok=True)
         adapter = AstroAdapter.bootstrap(FileStorage(store_dir), FACET, "real")
-    counts = adapter.load_universe(universe)
+    counts = load_frontier(adapter, universe, front) if front else adapter.load_universe(universe)
     t_load = time.time() - t1
     head = adapter.k.head()
     manifest = load_manifest()
@@ -75,6 +89,8 @@ def build_store(store_dir: str | Path, sources: tuple[str, ...] = DEFAULT_SOURCE
         "sources": summaries, "snapshot_digests": {k: [f["sha256"] for f in manifest.entries[k]["files"]] for k in sources},
         "licences": {k: manifest.entries[k]["licence"] for k in sources},
         "loaded_this_build": counts, "kernel_seq": head["seq"], "kernel_head": head["head"], "kernel_digest": adapter.digest(),
+        "frontier": front.counts if front else None, "frontier_as_of": front.as_of if front else None,
+        "extra_evidence": len(extra_evidence or []),
         "timing_s": {"parse_and_merge": round(t_parse, 1), "kernel_load": round(t_load, 1)},
     }
     (store_dir / "BUILD.json").write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
