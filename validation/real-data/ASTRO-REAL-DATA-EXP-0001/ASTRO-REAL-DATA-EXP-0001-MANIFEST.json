@@ -1,0 +1,543 @@
+{
+ "acceptance": {
+  "FAIL": [
+   "rho(ASTRO) < rho(b) + 0.1 for any of brightness, degree, pagerank",
+   "bootstrap 95% CI of rho(ASTRO) includes 0",
+   "Spearman(ASTRO, PageRank) >= 0.8 and rho(ASTRO) <= rho(pagerank) + 0.05 (primarily reproduces topology)",
+   "a critical evidence-handling check fails: a registered contradiction is silently ignored, a missing required uncertainty is scored as if known, or an injected record changes a score without appearing in the trace"
+  ],
+  "INVALID": [
+   "the leakage exclusion cannot be evaluated",
+   "a frozen dataset digest or the manifest digest does not verify at run time",
+   "fewer than 40 candidates in the primary sample, or fewer than 5 candidates with grade >= 2 or fewer than 5 with grade 0",
+   "protocol deviation, or an implementation failure that cannot be repaired without a scientific choice"
+  ],
+  "MIXED": [
+   "rho(ASTRO) >= rho(b) + 0.1 for brightness, degree and pagerank and the CI lies above 0, but the sigma_period margin, the NDCG condition, the topology limit, or one bounded behavioural check fails"
+  ],
+  "PASS": [
+   "rho(ASTRO) >= rho(b) + 0.1 for every b in {brightness, sigma_period, degree, pagerank}",
+   "bootstrap 95% CI of rho(ASTRO) lies above 0",
+   "NDCG@25(ASTRO) >= NDCG@25(b) for every b in {brightness, sigma_period, degree, pagerank}",
+   "Spearman(ASTRO, PageRank) < 0.8 and Spearman(ASTRO, degree) < 0.8",
+   "every adversarial check with a pass criterion passes"
+  ]
+ },
+ "adversarial_checks": [
+  {
+   "expected": "ASA registers a contradicts meta-claim between the two per-planet period claims; ephemeris_drift's trace names the record it used; the score change is bounded by w_drift/W",
+   "id": "AC1",
+   "intervention": "add a second admissible ephemeris record (labelled simulated, source 'ASTRO-REAL-DATA-EXP-0001 adversarial') with period x 1.02 and the same uncertainties",
+   "name": "contradictory evidence",
+   "pass": "contradiction registered and visible via disputes_of; drift trace names an evidence id; |delta score| <= 4/7",
+   "subject": "ASTRO rank-1 candidate of the primary run"
+  },
+  {
+   "expected": "drift -> ~0 and the candidate drops toward the bottom; the trace names the superseding record and its sigma",
+   "id": "AC2",
+   "intervention": "supersede its ephemeris with a copy whose uncertainties are 1e-9 d",
+   "name": "high-confidence incorrect evidence",
+   "pass": "score change fully traced to the injected record (evidence id in the drift trace); recorded as a known limitation that stated uncertainty is trusted",
+   "subject": "ASTRO rank-1 candidate"
+  },
+  {
+   "expected": "status indeterminate for every one; none ranked",
+   "id": "AC3",
+   "intervention": "none (real missingness)",
+   "name": "missing evidence",
+   "pass": "all indeterminate with the required feature named in the trace",
+   "subject": "the held-out planets lacking a period or epoch uncertainty (real rows)"
+  },
+  {
+   "expected": "relationship excluded under the objective's policy; relationship_support -> 0; delta score = -1/7 * previous relationship_support value; recorded in eligibility.excluded",
+   "id": "AC4",
+   "intervention": "strip the evidence ids from its hosts relationship (stance becomes unevaluated)",
+   "name": "uncertain relationship",
+   "pass": "exclusion recorded and the score change equals the removed contribution",
+   "subject": "ASTRO rank-1 candidate"
+  },
+  {
+   "expected": "eligible and ranked (relationship_support 0), not indeterminate",
+   "id": "AC5",
+   "intervention": "add the entity and evidence",
+   "name": "isolated candidate",
+   "pass": "eligible with trace",
+   "subject": "a simulated copy of the rank-1 host with only its ephemeris and no relationships"
+  },
+  {
+   "expected": "ASTRO: ineligible (required ephemeris missing); degree and PageRank baselines rank it first",
+   "id": "AC6",
+   "intervention": "add it",
+   "name": "highly connected but irrelevant candidate",
+   "pass": "ASTRO ineligible; both graph baselines rank it 1",
+   "subject": "a simulated host with 30 evidenced near relationships and 30 measurement claims but no ephemeris"
+  },
+  {
+   "expected": "every drift value non-increasing (fewer elapsed cycles); ranking Spearman with the primary reported",
+   "id": "AC7a",
+   "intervention": "as_of = 2026-09-04T00:00:00Z (retrieval date) instead of 2029-01-01",
+   "name": "Context change: epoch",
+   "pass": "no drift value increases; every change traced to cycles_since_epoch",
+   "subject": "primary sample"
+  },
+  {
+   "expected": "instrument_suitability -> 0 for hosts fainter than V = 10; those scores fall by 1/7; others unchanged",
+   "id": "AC7b",
+   "intervention": "limiting_magnitude = 10",
+   "name": "Context change: feasibility",
+   "pass": "exactly that",
+   "subject": "primary sample"
+  },
+  {
+   "expected": "rho reported; delta rho = the value relationships add",
+   "id": "AC8",
+   "intervention": "objective variant with no relationship feature and no eligible relationship types",
+   "name": "relationship removal (ablation)",
+   "pass": null,
+   "subject": "primary sample"
+  },
+  {
+   "expected": "rho reported",
+   "id": "AC9",
+   "intervention": "every relationship's evidence stripped and the objective set to include unevaluated relationships (trust every assertion)",
+   "name": "stance removal (ablation)",
+   "pass": null,
+   "subject": "primary sample"
+  },
+  {
+   "expected": "(a) every candidate indeterminate - the engine abstains rather than ranking without uncertainty; (b) rho reported",
+   "id": "AC10",
+   "intervention": "strip every ephemeris uncertainty; (a) declared objective, (b) variant with missingness zero_with_trace",
+   "name": "uncertainty removal",
+   "pass": "(a) all indeterminate",
+   "subject": "primary sample"
+  },
+  {
+   "expected": "Spearman(ASTRO, degree) and Spearman(ASTRO, PageRank) both < 0.8",
+   "id": "AC11",
+   "intervention": "none",
+   "name": "topology alone",
+   "pass": "both < 0.8",
+   "subject": "primary sample"
+  },
+  {
+   "expected": "count of leakage-flagged planets reported; secondary run including them reported with the flag",
+   "id": "ACL",
+   "intervention": "none",
+   "name": "leakage report",
+   "pass": null,
+   "subject": "pool"
+  }
+ ],
+ "asa": {
+  "baseline_sha": "b855d4c730dc2553db7a693d91c7d4d0cf25d03c",
+  "kernel_status": "ENGINEERING ALPHA \u2014 NOT RATIFIED",
+  "kernel_version": "0.1.0-alpha10",
+  "registry_facet": "registry/relationship_types.astro.candidate.json",
+  "registry_facet_sha256": "6ccc3b438155011c0d72b17e36b0e072e5771412242989f044667f56ddfadf5b"
+ },
+ "authority": "CLAUDE ASTRO PROGRAMME \u2014 REAL-DATA VALIDATION 001 (founder brief, 2026-09-04). Engineering value evaluation of the Astro engine. Not an execution of ASTRO-EXP-0001; no ASTRO-CLM-* claim is tested; evidence level stays EH-0.",
+ "baselines": {
+  "brightness": "host magnitude_v (archive sy_vmag), brighter first; no value -> unranked",
+  "degree": "number of registered relational edges binding the host in the ASA snapshot plus its evidence-of links, larger first",
+  "objective_E_as_declared": "DIAGNOSTIC ONLY (non-decisive): data/objectives/E-knowledge-gap-reduction.json unchanged, evaluated under the same Context with visibility unavailable -> the required visibility feature makes every candidate indeterminate; reported as-is",
+  "pagerank": "PageRank (damping 0.85, 200 power iterations, uniform start) on the undirected ASA relational graph: nodes = entities, evidence records, UROs; links = entity-URO bindings, evidence-URO supports, evidence-subject links, claim-contradicts bindings; host node score, larger first",
+  "projected_uncertainty_formula": "DIAGNOSTIC ONLY (non-decisive): sqrt(sigma_T0^2 + (n sigma_P)^2) * 24 / duration_hours at 2029-01-01 computed directly from the frozen archive row, not through the engine; locates where any ASTRO value comes from",
+  "random": "uniform shuffle, seed 20260904; chance floor, descriptive",
+  "sigma_period": "tabulated period uncertainty pl_orbpererr1 (days) as carried on the ephemeris record, larger first"
+ },
+ "candidates": {
+  "candidates_json_sha256": "bfc6ea3f47c79ee1e130d8c8f86ce7b726dd8a667956836df775e8879964f875",
+  "counts": {
+   "exoclock_planets": 776,
+   "leakage_flagged": 61,
+   "matched": 772,
+   "missing_uncertainty_heldout": 10,
+   "pool": 527,
+   "pool_grade_counts": {
+    "alert": 24,
+    "high": 183,
+    "low": 210,
+    "medium": 110
+   },
+   "primary": 100,
+   "primary_grade_counts": {
+    "alert": 2,
+    "high": 40,
+    "low": 36,
+    "medium": 22
+   },
+   "single_host_with_uncertainties_pool_plus_flagged": 588,
+   "unmatched": 4
+  },
+  "hash_salt": "ASTRO-REAL-DATA-EXP-0001-v1",
+  "minimum_sample": 40,
+  "primary": [
+   "TOI-1685 b",
+   "pi Men c",
+   "TOI-2048 b",
+   "HAT-P-62 b",
+   "HATS-43 b",
+   "HATS-26 b",
+   "WASP-70 A b",
+   "KELT-16 b",
+   "CoRoT-10 b",
+   "WASP-6 b",
+   "HAT-P-45 b",
+   "WASP-13 b",
+   "Kepler-5 b",
+   "Kepler-14 b",
+   "GJ 357 b",
+   "HATS-45 b",
+   "GPX-1 b",
+   "TOI-172 b",
+   "WASP-145 A b",
+   "HATS-47 b",
+   "MASCARA-1 b",
+   "WASP-167 b",
+   "WASP-36 b",
+   "CoRoT-1 b",
+   "TOI-3235 b",
+   "LHS 3844 b",
+   "HATS-67 b",
+   "HATS-7 b",
+   "TOI-2207 b",
+   "NGTS-9 b",
+   "TOI-3785 b",
+   "WASP-44 b",
+   "K2-280 b",
+   "K2-79 b",
+   "TrES-5 b",
+   "HATS-65 b",
+   "WASP-42 b",
+   "TOI-1338 b",
+   "HAT-P-60 b",
+   "KELT-19 A b",
+   "TOI-1860 b",
+   "WASP-21 b",
+   "KELT-9 b",
+   "XO-7 b",
+   "HATS-33 b",
+   "Qatar-6 b",
+   "Wolf 503 b",
+   "WASP-7 b",
+   "WASP-182 b",
+   "HAT-P-12 b",
+   "WASP-18 b",
+   "Kepler-422 b",
+   "HAT-P-49 b",
+   "HAT-P-55 b",
+   "TOI-2025 b",
+   "HATS-61 b",
+   "TOI-2145 b",
+   "TOI-481 b",
+   "HATS-2 b",
+   "WASP-98 b",
+   "TOI-2158 b",
+   "TIC 257060897 b",
+   "K2-295 b",
+   "TOI-257 b",
+   "TOI-198 b",
+   "TOI-163 b",
+   "HATS-48 A b",
+   "TOI-1416 b",
+   "WASP-175 b",
+   "GJ 486 b",
+   "HAT-P-9 b",
+   "TOI-4603 b",
+   "Kepler-17 b",
+   "HAT-P-42 b",
+   "TOI-3629 b",
+   "WASP-92 b",
+   "WASP-178 b",
+   "K2-333 b",
+   "TOI-206 b",
+   "NGTS-2 b",
+   "K2-261 b",
+   "DS Tuc A b",
+   "TOI-1680 b",
+   "WASP-38 b",
+   "TOI-2498 b",
+   "HAT-P-32 b",
+   "K2-237 b",
+   "TOI-3082 b",
+   "TOI-674 b",
+   "TOI-778 b",
+   "WASP-77 A b",
+   "HD 17156 b",
+   "HD 89345 b",
+   "TOI-1478 b",
+   "WASP-17 b",
+   "TOI-3331 A b",
+   "K2-232 b",
+   "HATS-18 b",
+   "TOI-1231 b",
+   "Qatar-1 b"
+  ],
+  "primary_sample_size": 100,
+  "rules": [
+   "1. Planet present in the ExoClock database at retrieval with priority in {alert, high, medium, low}.",
+   "2. Exact name match to an archive pl_name after removing spaces and hyphens and case-folding; unmatched names listed.",
+   "3. Archive row has tran_flag = 1, pl_orbper, pl_tranmid, and both pl_orbpererr1 and pl_tranmiderr1; rows lacking either uncertainty are the missing-evidence adversarial set.",
+   "4. The host has exactly one transiting planet in the archive snapshot and exactly one ExoClock entry (unit of analysis = host star).",
+   "5. Leakage exclusion: either archive ephemeris reference link cites an ExoClock publication (refstr contains KOKORI), or the live reference-link row's ephemeris values differ from the 2026-09-02 snapshot.",
+   "6. Primary sample: the first 100 of the remaining pool ordered by SHA-256('ASTRO-REAL-DATA-EXP-0001-v1 | <pl_name>')."
+  ],
+  "secondary_analyses": [
+   "full remaining pool (non-decisive)",
+   "pool plus leakage-flagged planets with the flag reported (non-decisive)"
+  ]
+ },
+ "context": {
+  "context_id": "CTX-66365bb2c6665dd4de369caa45ddcfca85cedac8ac7f6a88931b48a8aa28eff8",
+  "declaration_file": "context-ephemeris-maintenance-2029.json",
+  "note": "Site-independent: ExoClock priority does not depend on an observatory. The Context epoch is the ExoClock definition epoch.",
+  "record": {
+   "anchor_targets": [],
+   "as_of": "2029-01-01T00:00:00Z",
+   "constraints": {
+    "limiting_magnitude": 14.0
+   },
+   "context_id": "CTX-66365bb2c6665dd4de369caa45ddcfca85cedac8ac7f6a88931b48a8aa28eff8",
+   "instrument_id": null,
+   "label": "Ephemeris maintenance, site-independent, epoch 2029-01-01 (ExoClock priority definition epoch); small-telescope feasibility V <= 14",
+   "site_id": null,
+   "window_end": "2029-01-02T00:00:00Z",
+   "window_start": "2029-01-01T00:00:00Z"
+  }
+ },
+ "dataset": {
+  "frozen_extract": {
+   "PROVENANCE.json": {
+    "bytes": 3709,
+    "sha256": "1bd4f76c8dda6890a2335585def57ddb6ddcbe519973be25a08f197eb7409ac9"
+   },
+   "input_gaia_rows.csv": {
+    "bytes": 109620,
+    "sha256": "e410860cf76933263d8e3636182373b4262e16202cfab2bbbb380fd1293ec504"
+   },
+   "input_pscomppars_rows.csv": {
+    "bytes": 194716,
+    "sha256": "fa66694d3fad6851a9943dffe777fdc2ba3b710b7eb0906494593e4fe64d8929"
+   },
+   "leakage_reflinks.csv": {
+    "bytes": 263547,
+    "sha256": "225df59f36e5c842ea392ec7ca4fe3143e65e6355700f1af0b2706e6a15878c0"
+   },
+   "reference_exoclock_priority.json": {
+    "bytes": 319248,
+    "sha256": "dabf3713d47f2f2f2554cb3db1472c9d798cb52978cf91f3c8963dd83a7cc0e4"
+   }
+  },
+  "record": "ASTRO-REAL-DATA-EXP-0001-DATASET-RECORD.md",
+  "separation": {
+   "astro_input": [
+    "input_pscomppars_rows.csv",
+    "input_gaia_rows.csv"
+   ],
+   "leakage_check": [
+    "leakage_reflinks.csv"
+   ],
+   "reference_truth": [
+    "reference_exoclock_priority.json"
+   ]
+  },
+  "sources": {
+   "exoclock": {
+    "bytes": 1672157,
+    "licence": "Public database offered for programmatic access on the ExoClock database page; cite Kokori et al. 2022 (ApJS 258, 40) and 2023 (ApJS 265, 4)",
+    "release": "live database",
+    "retrieved_at": "2026-09-04T09:25:16Z",
+    "role": "reference_truth",
+    "sha256": "fb76266941819aa3d228b399ce3545425471163fc6ebc4145fb7bc99184e0cf6",
+    "title": "ExoClock planet database (ephemeris priority)",
+    "url": "https://www.exoclock.space/database/planets_json"
+   },
+   "exoplanets": {
+    "bytes": null,
+    "files": [
+     {
+      "bytes": 1956312,
+      "path": "data/catalogues/raw/exoplanetarchive_pscomppars.csv",
+      "present": true,
+      "sha256": "efe8352882797b33ac36d5171b8fa9a8af6d67fe346a0dba39965af3d95556c6",
+      "sha256_verified": true
+     }
+    ],
+    "licence": "Public domain / NASA data policy; cite the archive (doi:10.26133/NEA13)",
+    "release": "live table (composite parameters; no versioned release)",
+    "retrieved_at": "2026-09-02T22:42:44Z",
+    "role": "astro_input",
+    "sha256": null,
+    "title": "NASA Exoplanet Archive \u2014 Planetary Systems Composite Parameters (pscomppars)",
+    "url": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name,hostname,ra,dec,sy_vmag,sy_gaiamag,sy_dist,st_spectype,st_teff,st_rad,st_mass,pl_orbper,pl_orbpererr1,pl_tranmid,pl_tranmiderr1,pl_trandur,pl_rade,pl_bmasse,tran_flag,discoverymethod,disc_year,disc_facility,gaia_dr2_id,gaia_dr3_id,tic_id,hd_name,hip_name+from+pscomppars&format=csv"
+   },
+   "gaia_hosts": {
+    "bytes": null,
+    "files": [
+     {
+      "bytes": 798527,
+      "path": "data/catalogues/raw/gaia_dr3_hosts.csv",
+      "present": true,
+      "sha256": "64f14a90ee2be1650a52bd38a5f12b1c71bcc3183ed4e8c0dc399ecf584cdb1a",
+      "sha256_verified": true
+     }
+    ],
+    "licence": "ESA Gaia data policy; cite Gaia Collaboration 2016, 2023",
+    "release": "Gaia DR3 (2022-06-13)",
+    "retrieved_at": "2026-09-02T22:53:43Z",
+    "role": "astro_input",
+    "sha256": null,
+    "title": "Gaia DR3 gaia_source_lite for NASA Exoplanet Archive host stars (by gaia_dr3_id)",
+    "url": "https://gea.esac.esa.int/tap-server/tap/sync (POST; ADQL: select source_id,ra,dec,parallax,parallax_error,pmra,pmdec,phot_g_mean_mag,phot_bp_mean_mag,phot_rp_mean_mag,radial_velocity,teff_gspphot,ruwe from gaiadr3.gaia_source_lite where source_id in (...); batches of 800)"
+   },
+   "reflinks": {
+    "bytes": 1665941,
+    "licence": "Public domain / NASA data policy; cite the archive (doi:10.26133/NEA13)",
+    "release": "live table",
+    "retrieved_at": "2026-09-04T09:25:22Z",
+    "role": "leakage_check",
+    "sha256": "7c7c9ef7a3d5819c132321e34afa228163934e99d739feb2faddebc0cbb1aafe",
+    "title": "NASA Exoplanet Archive pscomppars ephemeris reference links (tran_flag = 1)",
+    "url": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name,hostname,pl_orbper,pl_orbpererr1,pl_orbper_reflink,pl_tranmid,pl_tranmiderr1,pl_tranmid_reflink+from+pscomppars+where+tran_flag=1&format=csv"
+   }
+  }
+ },
+ "engineering_repair_rule": "An implementation defect in the experiment apparatus (src/astro/realdata, tools/realdata_exp0001.py) may be repaired; the repair is recorded in the report and the whole experiment is rerun. A defect in the engine itself is reported, not repaired, unless it prevents execution, in which case the repair and the rerun are recorded and distinguished from tuning.",
+ "experiment": "ASTRO-REAL-DATA-EXP-0001",
+ "manifest_schema": "astro-real-data-exp-manifest-v1",
+ "metrics": {
+  "grades": {
+   "alert": 3,
+   "high": 2,
+   "low": 0,
+   "medium": 1
+  },
+  "primary": "Spearman rank correlation rho between method score and label grade over the primary sample; tie-averaged ranks on both sides; a candidate the method does not rank (abstention / missing value) is placed below every ranked candidate, tied; abstention counts reported",
+  "secondary": [
+   "NDCG@25 with gain = grade (alert 3, high 2, medium 1, low 0), ties broken by entity_id ascending",
+   "Precision@25 for grade >= 2 (alert or high)"
+  ],
+  "topology_similarity": "Spearman rho between ASTRO score and each of degree and PageRank over the primary sample",
+  "uncertainty": "paired bootstrap over candidates, 2000 resamples, seed 20260904; 95% percentile CI for ASTRO's rho and for rho(ASTRO) - rho(baseline)"
+ },
+ "objective": {
+  "declaration_file": "objective-ephemeris-maintenance.json",
+  "feature_code_changed": false,
+  "note": "Declared from the existing feature library only. Weights, params, policies and thresholds are frozen here and never changed.",
+  "objective_id": "OBJ-63f56419c250487ff3fc8c94dd6da83e8d2c84564544df4b45aafbb2b49adf3c",
+  "record": {
+   "authority": "ASTRO-REAL-DATA-EXP-0001 pre-registered declaration, 2026-09-04; the Context epoch follows the ExoClock ephemeris-priority definition (target uncertainty = 1/12 of the transit duration in 2029). Existing feature library only; no feature code added or changed.",
+   "eligible_relationship_types": [
+    "hosts"
+   ],
+   "exclusions": [
+    "apparent_brightness_as_relevance",
+    "proximity_as_relevance"
+   ],
+   "explanation_threshold": 0.2,
+   "features": [
+    {
+     "name": "ephemeris_drift",
+     "params": {},
+     "rationale": "The predicted transit-time uncertainty at the Context epoch, sqrt(sigma_T0^2 + (n sigma_P)^2), relative to the transit duration, is the quantity a timing observation restores. A tabulated period error above 1% of the period is an undetermined period, not drift (feature default).",
+     "required": true,
+     "weight": 4.0
+    },
+    {
+     "name": "relationship_support",
+     "params": {
+      "types": [
+       "hosts"
+      ]
+     },
+     "rationale": "An endorsed host-companion relationship is what makes the star a transit target at all; an unevaluated one is a claim without evidence.",
+     "required": false,
+     "weight": 1.0
+    },
+    {
+     "name": "evidence_quality",
+     "params": {
+      "evidence_kinds": [
+       "ephemeris"
+      ]
+     },
+     "rationale": "An ephemeris with a tabulated duration (quality 0.9) supports a more trustworthy prediction than one whose duration had to be assumed (0.7).",
+     "required": false,
+     "weight": 1.0
+    },
+    {
+     "name": "instrument_suitability",
+     "params": {
+      "magnitude_attribute": "magnitude_v"
+     },
+     "rationale": "Feasibility only: the host must be within the Context's limiting magnitude. Brightness confers no relevance beyond feasibility.",
+     "required": false,
+     "weight": 1.0
+    }
+   ],
+   "missingness_policy": "indeterminate",
+   "name": "Ephemeris maintenance",
+   "objective_id": "OBJ-63f56419c250487ff3fc8c94dd6da83e8d2c84564544df4b45aafbb2b49adf3c",
+   "output_semantics": {
+    "comparable_across_objectives": false,
+    "direction": "higher_is_more_significant",
+    "meaning": "relevance to this objective's question in this context; not importance in general",
+    "range": "[0, 1]",
+    "tie_rule": "entity_id_ascending"
+   },
+   "plan": {
+    "action": "observe_transit",
+    "duration_minutes": 180,
+    "max_targets": 25,
+    "min_score": 0.0
+   },
+   "purpose_class": "monitoring",
+   "question": "Which transiting-planet host stars most need a new transit-timing observation so that their transit predictions remain usable at the declared epoch?",
+   "required_evidence": [
+    "ephemeris"
+   ],
+   "target_kinds": [
+    "star"
+   ],
+   "unevaluated_relationships": "exclude",
+   "version": "1.0",
+   "weighting_policy_ref": "WPOL-ed6f2160b9052594a3164263e46dc8e85543973fadf8479161e84380d47f914c"
+  },
+  "weighting_policy_ref": "WPOL-ed6f2160b9052594a3164263e46dc8e85543973fadf8479161e84380d47f914c"
+ },
+ "prohibited_after_results": [
+  "changing any weight, parameter, policy, threshold or feature of the declared objective",
+  "changing the Context",
+  "changing candidate rules, the sample, or the hash salt",
+  "replacing, adding or removing a baseline",
+  "changing a metric, K, margin or acceptance rule",
+  "removing inconvenient candidates or adversarial cases",
+  "any change to src/astro/significance, src/astro/asa, src/astro/knowledge or src/astro/catalogues"
+ ],
+ "relationship_types_in_scope": {
+  "contradicts": "asa.core/contradicts between claims disagreeing beyond tolerance (Teff 7%, distance 15%, period 1%)",
+  "hosts": "planet <-> host, supported by archive ephemeris/period evidence -> endorsed; without evidence -> unevaluated (excluded by the objective)",
+  "lacks_evidence": "declared expectations unmet (transiting hosts: spectrum, time_series, ... )",
+  "measures": "per-quantity claims (Teff, distance, per-planet period) from each source, supported by their evidence",
+  "near": "geometry-derived angular neighbours among universe entities, with separation evidence"
+ },
+ "research_question": "Under the Context 'transit-ephemeris maintenance in 2029', does the Astro engine's ranking of candidate host stars, computed from NASA Exoplanet Archive composite ephemerides, Gaia DR3 astrometry and ASA relational state, agree with the ExoClock project's independently assigned ephemeris priority better than a brightness baseline, a tabulated period-uncertainty baseline, and graph-topology baselines (degree, PageRank) over the same ASA relational state?",
+ "seeds": {
+  "bootstrap": 20260904,
+  "hash_salt": "ASTRO-REAL-DATA-EXP-0001-v1",
+  "random_baseline": 20260904
+ },
+ "software": {
+  "asa_baseline_sha": "b855d4c730dc2553db7a693d91c7d4d0cf25d03c",
+  "astro_commit_at_freeze": "00118ff1099ff65e59d27d08b2165b242e334071",
+  "astro_version": "0.1.0",
+  "kernel_version": "0.1.0-alpha10",
+  "python": "3.12.3",
+  "requirements_lock_sha256": "4925ac0a1610ff8c0d13b164001a358b44999ce966638c87c9c10d2167e0bb32"
+ },
+ "standing_inputs": "ASA relational state as read by RelationalSnapshot from an in-memory kernel at the pinned baseline: registered UROs, canonical-perspective stance (endorsed / unevaluated), supports links, evidence-of links, contradicts meta-claims. No Standing/centrality field exists in this engine; stance gating is the equivalent.",
+ "status": "PRE-REGISTERED; frozen before the first evaluation run",
+ "uncertainty_treatment": "The archive's 1-sigma upper errors pl_orbpererr1 and pl_tranmiderr1 enter the ephemeris record as period_days / epoch_days uncertainties; ephemeris_drift propagates them to the Context epoch and normalises by the tabulated (or assumed 2.0 h) transit duration, clipping at 1.0; sigma_P/P > 0.01 is treated as an undetermined period (feature unavailable). Missing required feature -> status indeterminate (abstain), never scored.",
+ "universe_construction": "parse_exoplanets(input_pscomppars_rows.csv) + parse_gaia_hosts(input_gaia_rows.csv) via the unchanged catalogue parsers; merged with merge_fragments; knowledge frontier derived with derive_frontier(tiles=False) at the Context epoch (gaps, geometry, claims, contradictions); loaded into an in-memory kernel with load_frontier. Universe label 'ASTRO-REAL-DATA-EXP-0001', data_class real."
+}

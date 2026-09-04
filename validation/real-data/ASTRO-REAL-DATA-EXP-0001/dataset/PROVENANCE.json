@@ -1,0 +1,66 @@
+{
+  "experiment": "ASTRO-REAL-DATA-EXP-0001",
+  "sources": {
+    "exoclock": {
+      "bytes": 1672157,
+      "citation": "Kokori A. et al., 2022, ApJS 258, 40; Kokori A. et al., 2023, ApJS 265, 4",
+      "licence": "Public database offered for programmatic access on the ExoClock database page; cite Kokori et al. 2022 (ApJS 258, 40) and 2023 (ApJS 265, 4)",
+      "path": "data/catalogues/raw/exoclock_planets.json",
+      "release": "live database",
+      "retrieved_at": "2026-09-04T09:25:16Z",
+      "role": "reference_truth",
+      "sha256": "fb76266941819aa3d228b399ce3545425471163fc6ebc4145fb7bc99184e0cf6",
+      "title": "ExoClock planet database (ephemeris priority)",
+      "url": "https://www.exoclock.space/database/planets_json"
+    },
+    "exoplanets": {
+      "citation": "NASA Exoplanet Archive, operated by Caltech under contract with NASA",
+      "files": [
+        {
+          "bytes": 1956312,
+          "path": "data/catalogues/raw/exoplanetarchive_pscomppars.csv",
+          "present": true,
+          "sha256": "efe8352882797b33ac36d5171b8fa9a8af6d67fe346a0dba39965af3d95556c6",
+          "sha256_verified": true
+        }
+      ],
+      "licence": "Public domain / NASA data policy; cite the archive (doi:10.26133/NEA13)",
+      "release": "live table (composite parameters; no versioned release)",
+      "retrieved_at": "2026-09-02T22:42:44Z",
+      "role": "astro_input",
+      "title": "NASA Exoplanet Archive \u2014 Planetary Systems Composite Parameters (pscomppars)",
+      "url": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name,hostname,ra,dec,sy_vmag,sy_gaiamag,sy_dist,st_spectype,st_teff,st_rad,st_mass,pl_orbper,pl_orbpererr1,pl_tranmid,pl_tranmiderr1,pl_trandur,pl_rade,pl_bmasse,tran_flag,discoverymethod,disc_year,disc_facility,gaia_dr2_id,gaia_dr3_id,tic_id,hd_name,hip_name+from+pscomppars&format=csv"
+    },
+    "gaia_hosts": {
+      "citation": "Gaia Collaboration, Vallenari et al. 2023, A&A 674, A1",
+      "files": [
+        {
+          "bytes": 798527,
+          "path": "data/catalogues/raw/gaia_dr3_hosts.csv",
+          "present": true,
+          "sha256": "64f14a90ee2be1650a52bd38a5f12b1c71bcc3183ed4e8c0dc399ecf584cdb1a",
+          "sha256_verified": true
+        }
+      ],
+      "licence": "ESA Gaia data policy; cite Gaia Collaboration 2016, 2023",
+      "release": "Gaia DR3 (2022-06-13)",
+      "retrieved_at": "2026-09-02T22:53:43Z",
+      "role": "astro_input",
+      "title": "Gaia DR3 gaia_source_lite for NASA Exoplanet Archive host stars (by gaia_dr3_id)",
+      "url": "https://gea.esac.esa.int/tap-server/tap/sync (POST; ADQL: select source_id,ra,dec,parallax,parallax_error,pmra,pmdec,phot_g_mean_mag,phot_bp_mean_mag,phot_rp_mean_mag,radial_velocity,teff_gspphot,ruwe from gaiadr3.gaia_source_lite where source_id in (...); batches of 800)"
+    },
+    "reflinks": {
+      "bytes": 1665941,
+      "citation": "NASA Exoplanet Archive, operated by Caltech under contract with NASA",
+      "licence": "Public domain / NASA data policy; cite the archive (doi:10.26133/NEA13)",
+      "path": "data/catalogues/raw/exoplanetarchive_pscomppars_reflinks.csv",
+      "release": "live table",
+      "retrieved_at": "2026-09-04T09:25:22Z",
+      "role": "leakage_check",
+      "sha256": "7c7c9ef7a3d5819c132321e34afa228163934e99d739feb2faddebc0cbb1aafe",
+      "title": "NASA Exoplanet Archive pscomppars ephemeris reference links (tran_flag = 1)",
+      "url": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+pl_name,hostname,pl_orbper,pl_orbpererr1,pl_orbper_reflink,pl_tranmid,pl_tranmiderr1,pl_tranmid_reflink+from+pscomppars+where+tran_flag=1&format=csv"
+    }
+  },
+  "written_at": "2026-09-04T09:25:11Z"
+}

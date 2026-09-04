@@ -1,0 +1,25 @@
+{
+  "name": "Ephemeris maintenance",
+  "version": "1.0",
+  "purpose_class": "monitoring",
+  "question": "Which transiting-planet host stars most need a new transit-timing observation so that their transit predictions remain usable at the declared epoch?",
+  "authority": "ASTRO-REAL-DATA-EXP-0001 pre-registered declaration, 2026-09-04; the Context epoch follows the ExoClock ephemeris-priority definition (target uncertainty = 1/12 of the transit duration in 2029). Existing feature library only; no feature code added or changed.",
+  "target_kinds": ["star"],
+  "required_evidence": ["ephemeris"],
+  "eligible_relationship_types": ["hosts"],
+  "unevaluated_relationships": "exclude",
+  "missingness_policy": "indeterminate",
+  "exclusions": ["apparent_brightness_as_relevance", "proximity_as_relevance"],
+  "explanation_threshold": 0.2,
+  "features": [
+    {"name": "ephemeris_drift", "weight": 4.0, "required": true, "params": {},
+     "rationale": "The predicted transit-time uncertainty at the Context epoch, sqrt(sigma_T0^2 + (n sigma_P)^2), relative to the transit duration, is the quantity a timing observation restores. A tabulated period error above 1% of the period is an undetermined period, not drift (feature default)."},
+    {"name": "relationship_support", "weight": 1.0, "required": false, "params": {"types": ["hosts"]},
+     "rationale": "An endorsed host-companion relationship is what makes the star a transit target at all; an unevaluated one is a claim without evidence."},
+    {"name": "evidence_quality", "weight": 1.0, "required": false, "params": {"evidence_kinds": ["ephemeris"]},
+     "rationale": "An ephemeris with a tabulated duration (quality 0.9) supports a more trustworthy prediction than one whose duration had to be assumed (0.7)."},
+    {"name": "instrument_suitability", "weight": 1.0, "required": false, "params": {"magnitude_attribute": "magnitude_v"},
+     "rationale": "Feasibility only: the host must be within the Context's limiting magnitude. Brightness confers no relevance beyond feasibility."}
+  ],
+  "plan": {"action": "observe_transit", "max_targets": 25, "duration_minutes": 180, "min_score": 0.0}
+}

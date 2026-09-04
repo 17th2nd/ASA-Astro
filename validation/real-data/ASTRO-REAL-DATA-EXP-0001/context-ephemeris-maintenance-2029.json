@@ -1,0 +1,8 @@
+{
+  "label": "Ephemeris maintenance, site-independent, epoch 2029-01-01 (ExoClock priority definition epoch); small-telescope feasibility V <= 14",
+  "as_of": "2029-01-01T00:00:00Z",
+  "window_start": "2029-01-01T00:00:00Z",
+  "window_end": "2029-01-02T00:00:00Z",
+  "constraints": {"limiting_magnitude": 14.0},
+  "anchor_target_designations": []
+}
