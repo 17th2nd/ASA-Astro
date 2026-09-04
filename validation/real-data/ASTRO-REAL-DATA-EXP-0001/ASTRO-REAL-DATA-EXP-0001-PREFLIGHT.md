@@ -33,7 +33,7 @@ preflight, not a result. Nothing in it is evidence for any ASA or ASTRO claim.
 | Astro engine | `… discover -s tests/astro -t .` | 65 tests, OK |
 | ASTRO-EXEC-002 skeleton | `… discover -s tests/exec -t .` | 38 tests, OK |
 | Legacy POC (unit / reasoning / integration) | `… discover -s tests/unit|tests/reasoning|tests/integration -t .` | 8 / 10 / 7 tests, OK |
-| Frozen artefacts | `PYTHONPATH=src .venv/bin/python -m astro_exec.cli.main validate-frozen` | 6 artefacts, `status: verified` |
+| Frozen artefacts | `.venv/bin/astro-exec validate-frozen --config config/astro-exec-phase2.toml` | `{"artefact_count":6,"status":"verified"}`, exit 0 (re-run after the experiment: unchanged) |
 
 The brief's "63/63 tests" is the Phase 2 engineering figure recorded in `reports/ASA-ASTRO-POC-VALIDATION-REPORT-0001.md`
 for the legacy pipeline; the suites as they stand today are the counts above. All pass. The baseline is not broken.
