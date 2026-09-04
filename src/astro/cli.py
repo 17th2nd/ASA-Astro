@@ -189,6 +189,25 @@ def cmd_benchmark(args) -> int:
     return 0
 
 
+def cmd_ui(args) -> int:
+    """Build the navigator: one HTML file with the universe, ASA stances, evidence, objective scores and findings embedded."""
+    from astro.ui.export import export_navigator, render_navigator
+    universe = Universe.load(args.universe)
+    adapter = open_or_bootstrap(universe, args.store)
+    snapshot = adapter.snapshot()
+    pairs = [(load_objective(p), load_context(args.context, universe)) for p in (args.objective or [])]
+    findings = json.loads(Path(args.findings).read_text()) if args.findings else None
+    data = export_navigator(universe, snapshot, pairs, findings)
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(render_navigator(data), encoding="utf-8")
+    if args.data_out:
+        _write(Path(args.data_out), data)
+    m = data["meta"]
+    print(f"navigator: {m['nodes']} nodes, {m['edges']} edges, {m['disputed']} disputed, {m['gapped']} with gaps, objectives {list(data['objectives'])} → {out} ({out.stat().st_size // 1024} KB)")
+    return 0
+
+
 def cmd_catalogues(args) -> int:
     from astro.catalogues.manifest import SOURCES, fetch_source, load_manifest, verify_snapshots
     if args.action == "fetch":
@@ -273,6 +292,15 @@ def build_parser() -> argparse.ArgumentParser:
     b.add_argument("--context", required=True)
     b.add_argument("--out")
     b.set_defaults(fn=cmd_benchmark)
+    ui = sub.add_parser("ui", help="build the navigator page: systems, relationships with ASA stance, evidence, objective scores, findings")
+    ui.add_argument("--universe", required=True)
+    ui.add_argument("--store", help="persistent store to read stances from (default: in-memory kernel over the universe)")
+    ui.add_argument("--objective", nargs="*", help="objective files to score every entity under")
+    ui.add_argument("--context", help="observing context for the objectives")
+    ui.add_argument("--findings", help="candidate-findings JSON from tools/candidate_findings.py")
+    ui.add_argument("--out", default="var/ui/astro-navigator.html")
+    ui.add_argument("--data-out", help="also write the embedded JSON here")
+    ui.set_defaults(fn=cmd_ui)
     c = sub.add_parser("catalogues", help="fetch or check raw catalogue snapshots (never runs inside an evaluation)")
     c.add_argument("action", choices=["fetch", "status"])
     c.add_argument("--source", nargs="*", help="source keys (default: all)")
