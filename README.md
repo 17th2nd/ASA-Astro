@@ -111,6 +111,7 @@ touches the frozen scientific instruments below or claims empirical validation o
 | `ASTRO-CLAIMS-0001` | Frozen |
 | `ASTRO-RESULTS-0001` | Frozen, evidence level `EH-0` |
 | Empirical validation | **Not commenced** |
+| `ASTRO-REAL-DATA-EXP-0001` (engine test, not `ASTRO-EXP-0001`) | **FAIL** 2026-09-04; D1/D2 open; claims hold — see `validation/real-data/ASTRO-REAL-DATA-EXP-0001/ASTRO-REAL-DATA-EXP-0001-FAILURE-NOTE.md` |
 
 The Version 1 theory freeze records verification of a formal mathematical object. It claims no empirical validation, no novelty, and no proof of any Part B enrichment. Freeze record: `docs/theory/ASTRO-THEORY-0001-V1-FREEZE-RECORD.md`.
 
