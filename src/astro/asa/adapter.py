@@ -40,7 +40,9 @@ CANONICAL = "asa:persp:asa.core/canonical"
 SUPPORTS = "asa:type:asa.core/supports@1"
 CONTRADICTS = "asa:type:asa.core/contradicts@1"
 STREAM_PREFIX = "asa:log:astro/"
-ACTOR = "asa:uao:astro/adapter"
+KERNEL_ACTOR = "asa:uao:astro/adapter-governor"  # EVT-ENVELOPE uao-shaped; T-11 never registered
+PROPOSER = "asa:uao:astro/adapter"  # RP-9 caller proposer; registered UAO before propose
+ACTOR = PROPOSER  # backward-compatible alias for receipts / tests
 POLICY = {
     "id": "asa:policy:astro/admission@1",
     "rules": {"version": 1, "definitional_types": "endorsed-after-schema-validation",
@@ -199,6 +201,7 @@ class AstroAdapter:
         self._uro_index: dict[tuple, str] = {}
         self._uro_index_lit: dict[tuple, str] = {}
         self._rebuild_index()
+        self._ensure_actor()
 
     @staticmethod
     def _uro_key(type_id: str, bindings: Mapping[str, list[str]]) -> tuple:
@@ -208,18 +211,27 @@ class AstroAdapter:
     @classmethod
     def bootstrap(cls, storage, registry_facet, stream_slug: str, clock=None) -> "AstroAdapter":
         k = Kernel.bootstrap(storage, registry_facet, STREAM_PREFIX + stream_slug, POLICY, PERSPECTIVES, DOMAIN_TYPES,
-                             clock=clock or deterministic_clock(), actor=ACTOR)
+                             clock=clock or deterministic_clock(), actor=KERNEL_ACTOR)
         return cls(k)
 
     @classmethod
     def open(cls, storage, registry_facet=None, clock=None) -> "AstroAdapter":
-        return cls(Kernel.open(storage, registry_facet, clock=clock or deterministic_clock(), actor=ACTOR))
+        return cls(Kernel.open(storage, registry_facet, clock=clock or deterministic_clock(), actor=KERNEL_ACTOR))
 
     @classmethod
     def in_memory(cls, registry_facet, stream_slug: str = "memory") -> "AstroAdapter":
         return cls.bootstrap(MemoryStorage(), registry_facet, stream_slug)
 
     # ---- helpers
+    def _ensure_actor(self) -> None:
+        """Register the adapter proposer UAO (SPEC-0001 [RP-9]). Distinct from KERNEL_ACTOR (T-11)."""
+        if self.k.query(PROPOSER) is None:
+            self._submit(
+                "register_entity",
+                uao_id=PROPOSER,
+                attributes={"astro_id": "adapter", "kind": "system_actor", "role": "astro_adapter"},
+            )
+
     def _submit(self, op: str, **args) -> Receipt:
         r = self.k.submit(op, **args)
         if r.outcome == "rejected":
@@ -239,7 +251,7 @@ class AstroAdapter:
                 self._uro_index_lit[self._uro_key(u["type"], u["bindings"]) + (self._lit_key(u["literals"]),)] = key
 
     def _submit_uro(self, type_id: str, bindings: Mapping[str, list[str]], literals: Mapping[str, Any]) -> Receipt:
-        r = self._submit("propose", type_id=type_id, bindings=bindings, literals=dict(literals), proposer=ACTOR)
+        r = self._submit("propose", type_id=type_id, bindings=bindings, literals=dict(literals), proposer=PROPOSER)
         if r.key:
             self._uro_index[self._uro_key(type_id, bindings)] = r.key
             self._uro_index_lit[self._uro_key(type_id, bindings) + (self._lit_key(literals),)] = r.key

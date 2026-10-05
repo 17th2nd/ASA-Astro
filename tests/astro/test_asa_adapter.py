@@ -104,5 +104,38 @@ class TestAdapter(unittest.TestCase):
         self.assertTrue(uao_id("ENT-x").startswith("asa:uao:astro/"))
 
 
+
+class TestCurrentDevPin(unittest.TestCase):
+    """Adapter must green against config/asa-baseline-current-dev.json (remediation-133 / RP-9)."""
+
+    def test_locator_selects_current_dev_pin(self):
+        import os
+        from astro.asa import locator
+        prev_kind = os.environ.get("ASTRO_ASA_PIN_KIND")
+        prev_cfg = os.environ.get("ASTRO_ASA_BASELINE_CONFIG")
+        try:
+            os.environ["ASTRO_ASA_PIN_KIND"] = "current_dev"
+            os.environ.pop("ASTRO_ASA_BASELINE_CONFIG", None)
+            self.assertTrue(str(locator.config_path()).endswith("asa-baseline-current-dev.json"))
+            self.assertTrue(locator.asa_baseline_sha().startswith("c2ccd7d"))
+        finally:
+            if prev_kind is None:
+                os.environ.pop("ASTRO_ASA_PIN_KIND", None)
+            else:
+                os.environ["ASTRO_ASA_PIN_KIND"] = prev_kind
+            if prev_cfg is None:
+                os.environ.pop("ASTRO_ASA_BASELINE_CONFIG", None)
+            else:
+                os.environ["ASTRO_ASA_BASELINE_CONFIG"] = prev_cfg
+
+    def test_adapter_proposer_registered_before_propose(self):
+        from astro.asa.adapter import PROPOSER
+        u = small_universe()
+        a = AstroAdapter.in_memory(FACET)
+        self.assertIsNotNone(a.k.query(PROPOSER))
+        a.load_universe(u)
+        hosts = a.snapshot().edges_of(u.find("SYN-HOST-1").entity_id, "hosts")
+        self.assertEqual(hosts[0].stance, "endorsed")
+
 if __name__ == "__main__":
     unittest.main()
