@@ -83,7 +83,7 @@ Optional multipart `metadata` JSON may declare a WCS / catalogue. The app **neve
 
 - **Objective `receipt_id` (`RCPT-…`)** identifies the thin Objective evaluation (synthetic universe path). Distinct uploads that produce the same Objective body intentionally share this digest.
 - **`run_id`** (`RCPT-…__src-<source-sha256>__meta-<metadata-sha256|none>`) is the **app storage key** that isolates upload run directories. It is not the scientific observation-claim identity.
-- **`observation_identity`** (when emitted by `process_observation`: `digest` + `source_sha256` / `metadata_sha256` / `wcs_digest`) is the content-addressed **observation claim key**. Until present, do **not** cite bare RCPT for observation artefacts; use filename + `__src-`/`__meta-` discriminators / full `run_id` for navigation only.
+- **`observation_identity`** (when emitted by `process_observation`: `binding`, `source_sha256` / `metadata_sha256` / `wcs_digest`, and primary `observation_claim_digest` / `observation_claim_id` (`obsclaim-…`)) is the content-addressed **observation claim key** — distinct from Objective RCPT. Until present, do **not** cite bare RCPT for observation artefacts; use filename + `__src-`/`__meta-` discriminators / full `run_id` for navigation only.
 
 ## Honesty rules implemented
 

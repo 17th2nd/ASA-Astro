@@ -636,11 +636,17 @@ def _list_run_discriminators(run_id: str, view: dict[str, Any]) -> dict[str, Any
         meta_sha = oid.get("metadata_sha256")
     else:
         meta_sha = parts["meta_sha256"]
-    # Primary upload display id: observation_identity.digest when present, else keyed run_id.
+    # Primary upload display id: observation_claim_id / observation_claim_digest
+    # (F-SCI-03 / HA-F-2 tip fields); legacy "digest" accepted for older bundles.
+    # Never bare Objective RCPT.
     obs_claim = None
-    if oid and oid.get("digest"):
-        obs_claim = oid["digest"]
-    elif parts["keyed"]:
+    if oid:
+        obs_claim = (
+            oid.get("observation_claim_id")
+            or oid.get("observation_claim_digest")
+            or oid.get("digest")
+        )
+    if obs_claim is None and parts["keyed"]:
         obs_claim = None  # no science claim id yet; UI must not imply bare RCPT
     return {
         "receipt_id": receipt_id,

@@ -496,7 +496,76 @@ class ListRunDiscriminators(_TempDataDir):
         self.assertNotEqual(listed[va["run_id"]]["source_sha256_short"], listed[vb["run_id"]]["source_sha256_short"])
 
 
+class ObservationClaimIdentityConsume(_TempDataDir):
+    """F-SCI-03: prefer pipeline observation_claim_digest / observation_claim_id."""
+
+    @NEEDS_PIN
+    def test_upload_surfaces_observation_claim_id_not_rcpt(self):
+        from app import slice as s
+
+        img = _fixture_ppm(Path(self._tmp.name) / "claim.ppm")
+        meta = {
+            "instrument": "synthetic-test",
+            "wcs": {
+                "frame": "ICRS",
+                "epoch": "J2000.0",
+                "crpix": [32.0, 32.0],
+                "crval_deg": [150.0, -30.0],
+                "cd_deg_per_pixel": [[1.0 / 3600.0, 0.0], [0.0, 1.0 / 3600.0]],
+                "pixel_origin": "0-based-image-pixel",
+                "source_reference": "app-upload-claim-test",
+            },
+        }
+        view = s.run_slice(
+            upload_bytes=img.read_bytes(),
+            upload_filename="claim.ppm",
+            metadata_bytes=(json.dumps(meta) + "\n").encode("utf-8"),
+        )
+        oid = view["observation_identity"]
+        self.assertIsInstance(oid, dict)
+        self.assertEqual(oid.get("binding"), "content-addressed-observation-claim")
+        self.assertRegex(oid["observation_claim_digest"], r"^[0-9a-f]{64}$")
+        self.assertEqual(oid["observation_claim_id"], f"obsclaim-{oid['observation_claim_digest']}")
+        self.assertTrue(oid["source_sha256"])
+        self.assertTrue(oid["metadata_sha256"])
+        self.assertTrue(oid["wcs_digest"])
+        self.assertNotEqual(oid["observation_claim_id"], view["receipt"]["receipt_id"])
+        self.assertFalse(oid["observation_claim_id"].startswith("RCPT-"))
+
+        listed = {item["run_id"]: item for item in s.list_runs()}
+        item = listed[view["run_id"]]
+        self.assertEqual(item["observation_claim_key"], oid["observation_claim_id"])
+        # Localisation honesty fields preferred from pipeline when present.
+        locs = [l for l in view["observation_evidence"]["localisations"] if l["status"] == "localised"]
+        self.assertTrue(locs)
+        for loc in locs:
+            self.assertEqual(loc["projection_model"], "local-linear-CD")
+            self.assertEqual(loc["coordinate_standing"], "image-space-projection-hypothesis")
+
+    def test_list_discriminator_prefers_claim_id_over_legacy_digest(self):
+        from app import slice as s
+
+        view = {
+            "receipt": {"receipt_id": "RCPT-" + ("a" * 64)},
+            "uploaded_source": {"present": True, "sha256": "b" * 64, "original_filename": "x.ppm"},
+            "observation_evidence": {"wcs": {"status": "declared"}},
+            "observation_identity": {
+                "binding": "content-addressed-observation-claim",
+                "source_sha256": "b" * 64,
+                "metadata_sha256": "c" * 64,
+                "wcs_digest": "d" * 64,
+                "observation_claim_digest": "e" * 64,
+                "observation_claim_id": "obsclaim-" + ("e" * 64),
+                "digest": "legacy-should-not-win",
+            },
+        }
+        run_id = "RCPT-" + ("a" * 64) + "__src-" + ("b" * 64) + "__meta-" + ("c" * 64)
+        disc = s._list_run_discriminators(run_id, view)
+        self.assertEqual(disc["observation_claim_key"], "obsclaim-" + ("e" * 64))
+
+
 class HonestyFlagPropagation(unittest.TestCase):
+
     """F-SCI-04: app must not overwrite pipeline coordinates_invented=True to False."""
 
     def test_coordinates_invented_true_is_not_forced_false(self):

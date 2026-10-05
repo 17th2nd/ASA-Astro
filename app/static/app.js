@@ -94,8 +94,9 @@ function render(v) {
     ["Universe", `${u.universe_id} (data class: ${u.data_class})`]]);
   const r = v.receipt;
   const oid = v.observation_identity;
+  const claimKey = observationClaimKey(oid);
   const oidLine = oid
-    ? (oid.digest || ["source=" + (oid.source_sha256 || "?"), "meta=" + (oid.metadata_sha256 != null ? oid.metadata_sha256 : "none"), "wcs=" + (oid.wcs_digest != null ? oid.wcs_digest : "absent")].join(" · "))
+    ? (claimKey || ["binding=" + (oid.binding || "content-addressed-observation-claim"), "source=" + (oid.source_sha256 || "?"), "meta=" + (oid.metadata_sha256 != null ? oid.metadata_sha256 : "none"), "wcs=" + (oid.wcs_digest != null ? oid.wcs_digest : "absent")].join(" · "))
     : (v.uploaded_source && v.uploaded_source.present ? "pending pipeline observation_identity — do not cite bare RCPT for observation artefacts" : "— (no upload)");
   kv($("#rcpt-dl"), [
     ["Run storage key (run_id)", id],
@@ -211,10 +212,16 @@ function formatRunDiscriminators(r) {
   return bits.length ? bits.join(" \u00b7 ") : null;
 }
 
+function observationClaimKey(oid) {
+  if (!oid) return null;
+  return oid.observation_claim_id || oid.observation_claim_digest || oid.digest || null;
+}
+
 function observationClaimLabel(r, v) {
   const oid = (v && v.observation_identity) || r.observation_identity;
   if (!oid) return null;
-  if (oid.digest) return "observation_identity " + oid.digest;
+  const key = observationClaimKey(oid);
+  if (key) return "observation_identity " + key;
   if (oid.source_sha256) {
     const meta = oid.metadata_sha256 != null ? String(oid.metadata_sha256) : "none";
     const wcs = oid.wcs_digest != null ? String(oid.wcs_digest) : "absent";
@@ -334,8 +341,9 @@ async function onUpload(ev) {
     if (!r.ok) throw new Error(body.error || `HTTP ${r.status}`);
     render(body);
     const oid = body.observation_identity;
+    const claimKey = observationClaimKey(oid);
     const oidBit = oid
-      ? (oid.digest ? `; observation_identity=${oid.digest}` : `; observation_identity source=${oid.source_sha256 || "?"} meta=${oid.metadata_sha256 != null ? oid.metadata_sha256 : "none"}`)
+      ? (claimKey ? `; observation_identity=${claimKey}` : `; observation_identity source=${oid.source_sha256 || "?"} meta=${oid.metadata_sha256 != null ? oid.metadata_sha256 : "none"}`)
       : "; observation_identity=pending (do not cite bare RCPT for observation)";
     statusEl.textContent = `Done. run_id=${body.run_id}; Objective receipt_id=${body.receipt.receipt_id}`
       + " (shared receipt_id across keyed uploads is intentional — thin Objective receipt is content-addressed; run_id isolates upload dirs)"

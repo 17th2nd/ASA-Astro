@@ -286,14 +286,27 @@ def run_process_observation(
     if observation_identity is None and isinstance(summary, dict):
         # Accept flat component digests on summary when Significance lands that shape.
         comps = {}
-        for k in ("source_sha256", "metadata_sha256", "wcs_digest"):
+        for k in ("source_sha256", "metadata_sha256", "wcs_digest", "binding",
+                  "observation_claim_digest", "observation_claim_id"):
             if k in summary:
                 comps[k] = summary[k]
         if "source_sha256" in comps:
+            claim = (
+                comps.get("observation_claim_digest")
+                or summary.get("observation_identity_digest")
+                or summary.get("digest")
+            )
             observation_identity = {
-                "digest": summary.get("observation_identity_digest") or summary.get("digest"),
-                **comps,
+                "binding": comps.get("binding") or "content-addressed-observation-claim",
+                "source_sha256": comps["source_sha256"],
+                "metadata_sha256": comps.get("metadata_sha256"),
+                "wcs_digest": comps.get("wcs_digest"),
             }
+            if claim:
+                observation_identity["observation_claim_digest"] = claim
+                observation_identity["observation_claim_id"] = (
+                    comps.get("observation_claim_id") or f"obsclaim-{claim}"
+                )
 
     return {
         "invoked": True,

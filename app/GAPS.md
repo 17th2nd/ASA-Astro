@@ -58,16 +58,17 @@ the UI shows the limitation or derives only from existing fields with a source l
   must not present RA/Dec-only ICRS copy (F-SCI-01).
 - **G-SIG-7 — observation claim identity ≠ Objective RCPT (F-SCI-03).** Thin Objective
   `receipt_id` does not bind upload source/metadata digests. App `run_id` isolates storage only.
-  Scientific observation-claim identity is pipeline `observation_identity` (source_sha256 +
-  metadata_sha256 + wcs_digest) when present; until Significance lands that artefact, UI/docs
-  forbid citing bare RCPT for observation artefacts and surface filename/`__src-`/`__meta-`/
-  full `run_id` as navigation discriminators.
-- **G-SIG-8 — INT-0015 morphology strings in on-disk bundles (F-SCI-05).** Upstream
-  `process_observation` bundle `graph.json` / `summary.md` may still contain provisional
-  morphology labels such as `likely_foreground_point_source`, `background_extended_object`,
-  `possible_companion_object`. These are **not** app scientific outputs and are **not** linked
-  from the thin-slice UI. Significance owns upstream rename; app discloses here and does not
-  surface them in labelled view claims.
+  Scientific observation-claim identity is pipeline `observation_identity` when present:
+  `binding`, `source_sha256` + `metadata_sha256` + `wcs_digest`, and primary
+  `observation_claim_digest` / `observation_claim_id` (`obsclaim-…`). UI/docs forbid citing
+  bare RCPT for observation artefacts and surface filename/`__src-`/`__meta-`/full `run_id`
+  as navigation discriminators when the claim id is absent.
+- **G-SIG-8 — INT-0015 morphology strings (F-SCI-05).** Tip pipeline emits image-region
+  `candidate_type` names (e.g. `compact_high_peak_image_region`, `separate_extended_image_region`).
+  Older on-disk bundles may still contain provisional morphology labels such as
+  `likely_foreground_point_source`, `background_extended_object`, `possible_companion_object`.
+  These are **not** app scientific outputs and are **not** linked from the thin-slice UI.
+  Interim disclosure for residual bundles OK; app does not surface them in labelled view claims.
 
 ## Deferred (by scope decision, not blocked)
 
