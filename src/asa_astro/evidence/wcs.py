@@ -14,9 +14,11 @@ from .models import ONTOLOGY_VERSION, SCHEMA_VERSION, record_metadata, stable_id
 
 REQUIRED_WCS_KEYS = ("frame", "epoch", "crpix", "crval_deg", "cd_deg_per_pixel")
 
-# F-SCI-01: this thin slice only supports local-linear CD (not spherical TAN/SIP).
+# Declared-metadata default remains local-linear-CD (labelled approximation).
+# FITS TAN/TAN-SIP are handled via asa_astro.evidence.fits_io + astropy.wcs (P2/S2).
 PROJECTION_MODEL = "local-linear-CD"
 COORDINATE_STANDING = "image-space-projection-hypothesis"
+FITS_PROJECTION_MODELS = frozenset({"TAN", "TAN-SIP", "other-fits-wcs"})
 
 
 class WcsUnavailable(ValueError):
@@ -70,6 +72,31 @@ def parse_declared_wcs(payload: Mapping[str, Any] | None) -> dict[str, Any]:
     if pixel_origin != "0-based-image-pixel":
         raise WcsUnavailable("Only pixel_origin=0-based-image-pixel is supported in this thin slice")
 
+    # Default for simple declared metadata remains local-linear-CD.
+    # FITS-extracted records may carry TAN/TAN-SIP + wcs_header_cards — preserve them.
+    model = str(payload.get("projection_model") or PROJECTION_MODEL)
+    standing = str(payload.get("coordinate_standing") or COORDINATE_STANDING)
+    if model in FITS_PROJECTION_MODELS:
+        cards = payload.get("wcs_header_cards")
+        if not isinstance(cards, Mapping) or not cards:
+            raise WcsUnavailable(
+                f"projection_model={model} requires wcs_header_cards; "
+                "refusing to coerce to local-linear-CD silently"
+            )
+        if standing == COORDINATE_STANDING:
+            standing = (
+                "fits-header-tan-sip-hypothesis"
+                if model == "TAN-SIP"
+                else "fits-header-tan-hypothesis"
+                if model == "TAN"
+                else "fits-header-wcs-hypothesis"
+            )
+    elif model != PROJECTION_MODEL:
+        raise WcsUnavailable(
+            f"unsupported projection_model {model!r} for declared metadata WCS "
+            f"(expected {PROJECTION_MODEL!r} or FITS TAN/SIP with wcs_header_cards)"
+        )
+
     record: dict[str, Any] = {
         **record_metadata("externally_supplied"),
         "status": "declared",
@@ -79,8 +106,8 @@ def parse_declared_wcs(payload: Mapping[str, Any] | None) -> dict[str, Any]:
         "crval_deg": [ra_deg, dec_deg],
         "cd_deg_per_pixel": [[cd[0][0], cd[0][1]], [cd[1][0], cd[1][1]]],
         "pixel_origin": "0-based-image-pixel",
-        "projection_model": PROJECTION_MODEL,
-        "coordinate_standing": COORDINATE_STANDING,
+        "projection_model": model,
+        "coordinate_standing": standing,
     }
     if "source_reference" in payload and payload["source_reference"] is not None:
         record["source_reference"] = str(payload["source_reference"])
@@ -88,14 +115,17 @@ def parse_declared_wcs(payload: Mapping[str, Any] | None) -> dict[str, Any]:
         if not isinstance(payload["notes"], list) or not all(isinstance(n, str) for n in payload["notes"]):
             raise WcsUnavailable("WCS notes must be an array of strings")
         record["notes"] = list(payload["notes"])
+    for key in ("fits_crpix_1based", "fits_ctype", "wcs_library", "wcs_header_cards", "solve_field"):
+        if key in payload and payload[key] is not None:
+            record[key] = payload[key]
     return record
 
 
-def pixel_to_sky(x: float, y: float, wcs: Mapping[str, Any]) -> dict[str, float | str]:
+def pixel_to_sky_local_linear_cd(x: float, y: float, wcs: Mapping[str, Any]) -> dict[str, float | str]:
     """Local linear CD transform: sky = CRVAL + CD · (pixel − CRPIX).
 
-    Uses a local flat-sky approximation (no spherical projection). Suitable for
-    small fields supplied with an already-solved CD matrix. Does not invent WCS.
+    Labelled approximation (projection_model=local-linear-CD). Not spherical TAN/SIP.
+    Does not invent WCS.
     """
 
     crpix = _as_pair(wcs["crpix"], "crpix")
@@ -115,6 +145,32 @@ def pixel_to_sky(x: float, y: float, wcs: Mapping[str, Any]) -> dict[str, float 
         "frame": str(wcs["frame"]),
         "epoch": str(wcs["epoch"]),
     }
+
+
+def pixel_to_sky(x: float, y: float, wcs: Mapping[str, Any]) -> dict[str, float | str]:
+    """Project pixel→sky using the WCS record's projection_model.
+
+    - ``local-linear-CD`` (default for declared metadata): flat-sky CD approximation.
+    - ``TAN`` / ``TAN-SIP`` / ``other-fits-wcs``: when ``wcs_header_cards`` are present,
+      project via ``astropy.wcs`` (pinned). Without cards, fail closed rather than
+      silently degrading to an unlabelled local-linear substitute.
+    """
+
+    model = str(wcs.get("projection_model") or PROJECTION_MODEL)
+    if model in FITS_PROJECTION_MODELS:
+        cards = wcs.get("wcs_header_cards")
+        if not isinstance(cards, Mapping) or not cards:
+            raise WcsUnavailable(
+                f"projection_model={model} requires wcs_header_cards for astropy.wcs "
+                "projection; refusing silent local-linear substitute (coords not invented)."
+            )
+        from .fits_io import FitsWcsUnavailable, pixel_to_sky_fits_wcs
+
+        try:
+            return pixel_to_sky_fits_wcs(float(x), float(y), cards)
+        except FitsWcsUnavailable as exc:
+            raise WcsUnavailable(str(exc)) from exc
+    return pixel_to_sky_local_linear_cd(x, y, wcs)
 
 
 def _unavailable_localisation(
@@ -152,6 +208,28 @@ def _unavailable_localisation(
     if candidate_id:
         record["candidate_id"] = candidate_id
     return record
+
+
+
+def _localisation_inference_basis(wcs: Mapping[str, Any]) -> list[str]:
+    model = str(wcs.get("projection_model") or PROJECTION_MODEL)
+    standing = str(wcs.get("coordinate_standing") or COORDINATE_STANDING)
+    if model == "local-linear-CD":
+        return [
+            "Pixel centroid projected through caller-declared local-linear-CD WCS "
+            "(image-space projection hypothesis; not spherical TAN/SIP sky truth).",
+            "sky.frame is the caller-declared label only; computational standing is local flat-sky CD, "
+            "not an ICRS spherical plate solution.",
+            "Sky position remains a hypothesis; not an established astronomical identity.",
+            "Source image bytes were not modified.",
+        ]
+    return [
+        f"Pixel centroid projected through FITS/header WCS with projection_model={model} via astropy.wcs.",
+        f"coordinate_standing={standing}; sky position remains a hypothesis.",
+        "sky.frame is the header/caller-declared label only; not established sky identity.",
+        "Source image bytes were not modified.",
+        "local-linear-CD remains a separately labelled approximation for simple metadata WCS.",
+    ]
 
 
 def localise_detection(
@@ -210,14 +288,9 @@ def localise_detection(
             "epoch": sky["epoch"],
         },
         "wcs_present": True,
-        "projection_model": PROJECTION_MODEL,
-        "coordinate_standing": COORDINATE_STANDING,
-        "inference_basis": [
-            "Pixel centroid projected through caller-declared local-linear-CD WCS (image-space projection hypothesis; not spherical TAN/SIP sky truth).",
-            "sky.frame is the caller-declared label only; computational standing is local flat-sky CD, not an ICRS spherical plate solution.",
-            "Sky position remains a hypothesis; not an established astronomical identity.",
-            "Source image bytes were not modified.",
-        ],
+        "projection_model": str(wcs.get("projection_model") or PROJECTION_MODEL),
+        "coordinate_standing": str(wcs.get("coordinate_standing") or COORDINATE_STANDING),
+        "inference_basis": _localisation_inference_basis(wcs),
     }
     if candidate_id:
         record["candidate_id"] = candidate_id
@@ -243,8 +316,10 @@ __all__ = [
     "WcsUnavailable",
     "PROJECTION_MODEL",
     "COORDINATE_STANDING",
+    "FITS_PROJECTION_MODELS",
     "parse_declared_wcs",
     "pixel_to_sky",
+    "pixel_to_sky_local_linear_cd",
     "localise_detection",
     "localise_detections",
     "compute_coordinates_invented",

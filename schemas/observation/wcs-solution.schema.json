@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://17th2nd.github.io/ASA-Astro/schemas/wcs-solution.schema.json",
   "title": "Declared WCS Solution (when present)",
-  "description": "Astrometric World Coordinate System parameters supplied by the caller. Never invented. Pixel origin matches detection centroids (0-based image pixels). Absent or incomplete WCS must fail closed \u2014 callers must not invent CRVAL/CD. This thin slice applies a local-linear CD flat-sky projection only (projection_model=local-linear-CD); it is not a spherical TAN/SIP solution. frame is the caller-declared label and must not be read as proof of an ICRS plate solve.",
+  "description": "Astrometric World Coordinate System parameters. Never invented. Pixel origin matches detection centroids (0-based image pixels). Absent or incomplete WCS must fail closed. projection_model distinguishes local-linear-CD (simple declared metadata approximation), TAN / TAN-SIP (FITS header via astropy.wcs), and other-fits-wcs. frame is a caller/header-declared label and must not be read as proof of an established plate solution.",
   "x-governing-document": "ASTRO-ONTOLOGY-0001",
   "type": "object",
   "additionalProperties": false,
@@ -93,12 +93,54 @@
       }
     },
     "projection_model": {
-      "const": "local-linear-CD",
-      "description": "This implementation projects pixels with a local linear CD matrix only."
+      "type": "string",
+      "enum": [
+        "local-linear-CD",
+        "TAN",
+        "TAN-SIP",
+        "other-fits-wcs"
+      ],
+      "description": "local-linear-CD: flat-sky CD approximation for simple declared metadata. TAN / TAN-SIP: spherical projection from FITS via astropy.wcs. other-fits-wcs: celestial FITS WCS with a non-TAN CTYPE."
     },
     "coordinate_standing": {
-      "const": "image-space-projection-hypothesis",
-      "description": "Declared WCS localisations remain image-space projection hypotheses."
+      "type": "string",
+      "enum": [
+        "image-space-projection-hypothesis",
+        "fits-header-tan-hypothesis",
+        "fits-header-tan-sip-hypothesis",
+        "fits-header-wcs-hypothesis"
+      ],
+      "description": "Epistemic standing of projected coordinates; never established sky truth by itself."
+    },
+    "fits_crpix_1based": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "number"
+      },
+      "description": "Original FITS CRPIX (1-based) before conversion to 0-based crpix."
+    },
+    "fits_ctype": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "string"
+      }
+    },
+    "wcs_library": {
+      "type": "string"
+    },
+    "wcs_header_cards": {
+      "type": "object",
+      "description": "Minimal FITS WCS cards for round-trip TAN/SIP projection via astropy.wcs (present-only).",
+      "additionalProperties": true
+    },
+    "solve_field": {
+      "type": "object",
+      "description": "Optional solve-field adapter provenance.",
+      "additionalProperties": true
     }
   }
 }

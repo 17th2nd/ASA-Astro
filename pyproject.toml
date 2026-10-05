@@ -12,6 +12,8 @@ dependencies = [
   "Pillow==10.2.0",
   "jsonschema==4.10.3",
   "pyrsistent==0.20.0",
+  "numpy>=2.0,<2.3",
+  "astropy==6.1.7",
 ]
 
 [project.scripts]
