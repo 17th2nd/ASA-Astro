@@ -79,14 +79,14 @@ class RelationshipTest(unittest.TestCase):
         candidates = [
             {
                 "id": "candidate-00000000000000000001",
-                "candidate_type": "background_extended_object",
+                "candidate_type": "separate_extended_image_region",
                 "detection_ids": [detections[0]["id"]],
                 "supporting_evidence_ids": ["evidence-00000000000000000001"],
                 "confidence": {"value": 0.4},
             },
             {
                 "id": "candidate-00000000000000000002",
-                "candidate_type": "background_extended_object",
+                "candidate_type": "separate_extended_image_region",
                 "detection_ids": [detections[1]["id"]],
                 "supporting_evidence_ids": ["evidence-00000000000000000002"],
                 "confidence": {"value": 0.35},

@@ -97,7 +97,7 @@ graph, provenance, manifest, and overlay files.
 | ICR-M03 | BLOCKER | No authorised astronomical input or Ground Truth exists | Image-derived and scientific validation cannot run |
 | ICR-M04 | MAJOR | Nested schema files declare flattened `$id` URIs such as `/schemas/candidate-entity.schema.json`, while the repository path is `schemas/entity/candidate-entity.schema.json` | External consumers following `$id` cannot resolve the canonical file layout unless they reproduce B's private preload registry |
 | ICR-M05 | MAJOR | A's schema-readiness criteria require stable identity/version and lifecycle predecessor/successor links for each term; embedded B Confidence and Uncertainty objects have no independent ID or direct provenance record, and record schemas do not encode predecessor/successor lineage | The current schemas cannot represent all lifecycle and audit states required by the ontology |
-| ICR-M06 | MAJOR | B maps encoded peak/shape/proximity to `likely_foreground_point_source`, `background_extended_object`, and `possible_companion_object` while its own documentation says depth and association are unavailable | Labels can be consumed as invented astronomical placement or identity despite caveats |
+| ICR-M06 | MAJOR | B maps encoded peak/shape/proximity to depth-like labels (historically `likely_foreground_point_source`, `background_extended_object`, `possible_companion_object`; INT-0015 rename targets: `compact_high_peak_image_region`, `separate_extended_image_region`, `nearby_separate_extended_image_region`) while its own documentation says depth and association are unavailable | Labels can be consumed as invented astronomical placement or identity despite caveats |
 | ICR-M07 | MAJOR | B's report cites `run-d50f4234b9d4f31bbcaa`; the documented command at canonical `59b1817` reproducibly emits `run-59e1a9f3c29ee9f5043c` | The manufacturing report is stale relative to its commit and cannot serve as the expected-output oracle |
 | ICR-M08 | MAJOR | B emits only a candidate Relationship Assertion contract; A assigns normalisation and reasoning to C, but no mapping/version exists | D cannot assume that B assertion types are established Relationships or scoring inputs |
 | ICR-M09 | MINOR | README and lock specify tested CPython 3.12.3, while `pyproject.toml` permits Python `>=3.11` | Supported versus merely syntactically permitted runtimes are ambiguous |
@@ -167,8 +167,8 @@ Remaining gaps:
 No physical relationship, object identity, Standing, Significance, or validation conclusion is
 asserted as established in the B documentation.
 
-The candidate labels `likely_foreground_point_source`, `background_extended_object`,
-`unresolved_background_object_candidate`, and `possible_companion_object` are nevertheless
+The historical candidate labels `likely_foreground_point_source`, `background_extended_object`,
+`unresolved_background_object_candidate`, and `possible_companion_object` (INT-0015) are nevertheless
 scientifically stronger than the encoded-image evidence. Their caveats and uncalibrated confidence
 reduce but do not remove the semantic risk. A downstream consumer must not treat those labels as
 depth, membership, or identity evidence.

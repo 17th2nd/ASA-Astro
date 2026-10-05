@@ -10,7 +10,7 @@
   "baseline_configuration": {
     "manual_class_priorities": {
       "internal_substructure": 1.0,
-      "likely_foreground_point_source": 0.05,
+      "compact_high_peak_image_region": 0.05,
       "primary_extended_object": 0.8
     }
   },

@@ -72,7 +72,7 @@ Consumers may rely on these tested invariants:
 
 ## 5. Provisional semantics
 
-Candidate labels are bounded representations of image morphology. `likely_foreground_point_source`, `possible_companion_object`, `background_extended_object`, and `unresolved_background_object_candidate` are hypotheses with capped confidence, not depth measurements or object identities. `primary_extended_object` means only the largest segmented extended image region in the run; it is not a dynamical or significance centre.
+Candidate labels are bounded representations of image morphology. `compact_high_peak_image_region`, `nearby_separate_extended_image_region`, `separate_extended_image_region`, and `unresolved_compact_image_region` are hypotheses with capped confidence, not depth measurements or object identities. `primary_extended_object` means only the largest segmented extended image region in the run; it is not a dynamical or significance centre.
 
 Canonical relationship types are limited to the applicable `spatial`, `containment`, `structural`, `observational`, and `occlusion` entries from `ASTRO-RELATIONSHIP-TAXONOMY-0001`. Each also carries one candidate-graph subtype from `proximity`, `overlap`, `containment`, `orientation_alignment`, `morphological_association`, `occlusion`, `shared_structural_region`, or `observational_dependency`. `occlusion`, morphological association, and shared-region assertions remain hypotheses. No physical relationship vocabulary is accepted.
 

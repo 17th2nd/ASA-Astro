@@ -69,13 +69,13 @@ def _candidate_type(
         peak = detection["features"]["peak_intensity"]["value"]
         if peak >= parameters.foreground_peak_min:
             return (
-                "likely_foreground_point_source",
+                "compact_high_peak_image_region",
                 "hypothesis",
                 min(confidence * 0.55, hypothesis_cap),
-                basis + ["Bright compact morphology is only a foreground-candidate heuristic; depth is unavailable."],
+                basis + ["Bright compact high-peak image morphology only; depth and astronomical identity are unavailable."],
             )
         return (
-            "unresolved_background_object_candidate",
+            "unresolved_compact_image_region",
             "hypothesis",
             min(confidence * 0.45, hypothesis_cap),
             basis + ["Unresolved image morphology does not establish identity or depth."],
@@ -84,16 +84,16 @@ def _candidate_type(
         distance = detection["features"]["distance_from_major_structure"]["value"]
         if distance is not None and distance <= parameters.proximity_radius_pixels * 2:
             return (
-                "possible_companion_object",
+                "nearby_separate_extended_image_region",
                 "hypothesis",
                 min(confidence * 0.55, hypothesis_cap),
                 basis + ["Image-space proximity to the major extended region does not establish a physical association."],
             )
         return (
-            "background_extended_object",
+            "separate_extended_image_region",
             "hypothesis",
             min(confidence * 0.4, hypothesis_cap),
-            basis + ["Separate extended morphology is present; background placement is not established from one image."],
+            basis + ["Separate extended image morphology is present; depth/placement is not established from one image."],
         )
     if observed == "diffuse_luminous_region":
         return (
@@ -358,7 +358,7 @@ def build_relationships(
             )
             other_candidate = right if dark_candidate is left else left
             if dark_candidate is not None and other_candidate["candidate_type"] in {
-                "primary_extended_object", "possible_companion_object", "background_extended_object", "diffuse_or_uncertain_region"
+                "primary_extended_object", "nearby_separate_extended_image_region", "separate_extended_image_region", "diffuse_or_uncertain_region"
             }:
                 edges.append(
                     _relationship(

@@ -17,6 +17,14 @@
 | Astro-only | Code under `src/asa_astro/evidence/`; schemas under `schemas/observation/` |
 | Disk hygiene | Catalogue rows are caller-supplied in-memory; no large dumps |
 
+
+## Coordinate standing (F-SCI-01)
+
+This thin slice applies a **local-linear-CD** flat-sky projection only (`projection_model=local-linear-CD`).
+Localised records carry `coordinate_standing=image-space-projection-hypothesis`.
+`sky.frame` / `wcs.frame` retain the **caller-declared** label (e.g. ICRS) and must not be read as proof of a spherical TAN/SIP plate solution.
+
+
 ## Contracts
 
 - `schemas/observation/wcs-solution.schema.json` — declared WCS (externally supplied)

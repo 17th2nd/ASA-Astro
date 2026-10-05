@@ -61,8 +61,8 @@ class PipelineIntegrationTest(unittest.TestCase):
         candidates = [node["payload"] for node in graph["nodes"] if node["node_type"] == "candidate_entity"]
         extended_types = {
             "primary_extended_object",
-            "possible_companion_object",
-            "background_extended_object",
+            "nearby_separate_extended_image_region",
+            "separate_extended_image_region",
             "diffuse_or_uncertain_region",
         }
         self.assertGreaterEqual(
@@ -70,7 +70,7 @@ class PipelineIntegrationTest(unittest.TestCase):
             self.expectations["minimum_extended_candidates"],
         )
         self.assertNotIn("system_central", {candidate["candidate_type"] for candidate in candidates})
-        point_candidates = [candidate for candidate in candidates if candidate["candidate_type"] == "likely_foreground_point_source"]
+        point_candidates = [candidate for candidate in candidates if candidate["candidate_type"] == "compact_high_peak_image_region"]
         self.assertTrue(point_candidates)
         self.assertTrue(all(candidate["classification_status"] == "hypothesis" for candidate in point_candidates))
 

@@ -13,7 +13,7 @@
     "epistemic_classification": {"const": "inferred"},
     "id": {"$ref": "common.schema.json#/$defs/identifier"},
     "provenance_record_id": {"$ref": "common.schema.json#/$defs/identifier"},
-    "candidate_type": {"enum": ["likely_foreground_point_source", "primary_extended_object", "internal_substructure", "possible_companion_object", "background_extended_object", "diffuse_or_uncertain_region", "unresolved_background_object_candidate", "dark_or_occluding_region", "unknown_image_region"]},
+    "candidate_type": {"enum": ["compact_high_peak_image_region", "primary_extended_object", "internal_substructure", "nearby_separate_extended_image_region", "separate_extended_image_region", "diffuse_or_uncertain_region", "unresolved_compact_image_region", "dark_or_occluding_region", "unknown_image_region"]},
     "classification_status": {"enum": ["provisional", "hypothesis", "unknown"]},
     "resolution_state": {"enum": ["unresolved", "contested", "rejected", "matched", "split", "merged"]},
     "representation_space": {"const": "image_region"},

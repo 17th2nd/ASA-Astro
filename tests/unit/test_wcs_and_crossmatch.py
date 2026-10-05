@@ -12,11 +12,15 @@ from asa_astro.evidence.crossmatch import (
 )
 from asa_astro.evidence.validation import load_schemas, validate_instance
 from asa_astro.evidence.wcs import (
+    COORDINATE_STANDING,
+    PROJECTION_MODEL,
     WcsUnavailable,
+    compute_coordinates_invented,
     localise_detection,
     localise_detections,
     parse_declared_wcs,
     pixel_to_sky,
+    wcs_content_digest,
 )
 
 
@@ -55,6 +59,9 @@ class WcsParseTest(unittest.TestCase):
         validate_instance("wcs_solution", record)
         self.assertEqual(record["status"], "declared")
         self.assertEqual(record["epistemic_classification"], "externally_supplied")
+        self.assertEqual(record["projection_model"], PROJECTION_MODEL)
+        self.assertEqual(record["coordinate_standing"], COORDINATE_STANDING)
+        self.assertIsNotNone(wcs_content_digest(record))
 
     def test_absent_wcs_fail_closed(self) -> None:
         with self.assertRaisesRegex(WcsUnavailable, "absent"):
@@ -95,6 +102,20 @@ class LocaliseTest(unittest.TestCase):
         self.assertEqual(result["classification_status"], "hypothesis")
         self.assertEqual(result["candidate_id"], "candidate-bbbbbbbbbbbbbbbbbbbb")
         self.assertAlmostEqual(result["sky"]["ra_deg"], 180.0, places=9)
+        self.assertEqual(result["projection_model"], "local-linear-CD")
+        self.assertEqual(result["coordinate_standing"], "image-space-projection-hypothesis")
+        self.assertFalse(compute_coordinates_invented([result]))
+
+    def test_compute_coordinates_invented_detects_escape(self) -> None:
+        """F-SCI-04: invented flag is computed, not hard-coded False."""
+        honest = localise_detection(_detection(), _wcs())
+        self.assertFalse(compute_coordinates_invented([honest]))
+        escaped = {
+            "status": "localised",
+            "wcs_present": False,
+            "sky": {"ra_deg": 1.0, "dec_deg": 2.0, "frame": "ICRS", "epoch": "J2000.0"},
+        }
+        self.assertTrue(compute_coordinates_invented([escaped]))
 
     def test_localise_many(self) -> None:
         dets = [

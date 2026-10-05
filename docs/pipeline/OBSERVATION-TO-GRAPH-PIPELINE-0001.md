@@ -114,10 +114,10 @@ The detector emits image regions; grouping emits candidate representations. Thes
 |---|---|
 | `primary_extended_object` | Largest segmented extended image region, not system centrality |
 | `internal_substructure` | High-threshold core inside an extended segmentation |
-| `likely_foreground_point_source` | Compact high-peak morphology; depth unavailable and confidence capped |
-| `possible_companion_object` | Separate extended region near the major region in image pixels; physical association not established |
-| `background_extended_object` | Separate extended morphology; background depth not established |
-| `unresolved_background_object_candidate` | Unresolved morphology with explicitly hypothetical depth label |
+| `compact_high_peak_image_region` | Compact high-peak morphology; depth unavailable and confidence capped |
+| `nearby_separate_extended_image_region` | Separate extended region near the major region in image pixels; physical association not established |
+| `separate_extended_image_region` | Separate extended morphology; background depth not established |
+| `unresolved_compact_image_region` | Unresolved morphology with explicitly hypothetical depth label |
 | `diffuse_or_uncertain_region` | Low-contrast extended segmentation retained without identity |
 | `dark_or_occluding_region` | Local intensity deficit with alternative explanations retained |
 | `unknown_image_region` | Evidence does not support a narrower bounded label or contamination is possible |
@@ -264,3 +264,14 @@ No catalogue is selected by this manufacturing unit.
 **For this bounded pipeline: yes.** Every emitted candidate-graph assertion can be followed to evidence IDs, pixel measurements, a provenance record, the complete parameter set, software versions, processing-run ID, and immutable source hash without relying on conversational memory.
 
 That answer is an auditability result for the software contract and synthetic fixture. It is not evidence that the candidate classifications or relationships are astronomically correct, and it does not declare ASA or ASA-Astro validated.
+
+## Observation claim identity (F-SCI-03)
+
+`process_observation` emits digest-bound `observation_identity` on the return receipt, `manifest.json`, `provenance.json`, and `sky_localisations.json`:
+
+- `source_sha256` — content hash of the preserved source image
+- `metadata_sha256` — content hash of associated metadata, or null when absent
+- `wcs_digest` — content hash of declared WCS geometric fields, or null when WCS absent
+- `observation_claim_digest` / `observation_claim_id` (`obsclaim-…`) — content-address of those parts
+
+This identity is **distinct from** the Objective `RCPT-…` receipt. Bare RCPT must not be cited as the observation claim id.

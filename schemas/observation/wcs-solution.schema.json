@@ -2,31 +2,67 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://17th2nd.github.io/ASA-Astro/schemas/wcs-solution.schema.json",
   "title": "Declared WCS Solution (when present)",
-  "description": "Astrometric World Coordinate System parameters supplied by the caller. Never invented. Pixel origin matches detection centroids (0-based image pixels). Absent or incomplete WCS must fail closed — callers must not invent CRVAL/CD.",
+  "description": "Astrometric World Coordinate System parameters supplied by the caller. Never invented. Pixel origin matches detection centroids (0-based image pixels). Absent or incomplete WCS must fail closed \u2014 callers must not invent CRVAL/CD. This thin slice applies a local-linear CD flat-sky projection only (projection_model=local-linear-CD); it is not a spherical TAN/SIP solution. frame is the caller-declared label and must not be read as proof of an ICRS plate solve.",
   "x-governing-document": "ASTRO-ONTOLOGY-0001",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "status", "frame", "epoch", "crpix", "crval_deg", "cd_deg_per_pixel", "pixel_origin"],
+  "required": [
+    "schema_version",
+    "ontology_version",
+    "record_status",
+    "epistemic_classification",
+    "status",
+    "frame",
+    "epoch",
+    "crpix",
+    "crval_deg",
+    "cd_deg_per_pixel",
+    "pixel_origin",
+    "projection_model",
+    "coordinate_standing"
+  ],
   "properties": {
-    "schema_version": {"const": "0.1.0"},
-    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
-    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
-    "epistemic_classification": {"const": "externally_supplied"},
-    "status": {"const": "declared"},
-    "frame": {"type": "string", "minLength": 1, "description": "Celestial reference frame, e.g. ICRS"},
-    "epoch": {"type": "string", "minLength": 1, "description": "Equinox/epoch label, e.g. J2000.0"},
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "ontology_version": {
+      "$ref": "common.schema.json#/$defs/ontology_version"
+    },
+    "record_status": {
+      "$ref": "common.schema.json#/$defs/record_status"
+    },
+    "epistemic_classification": {
+      "const": "externally_supplied"
+    },
+    "status": {
+      "const": "declared"
+    },
+    "frame": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Caller-declared celestial reference frame label (e.g. ICRS). Not evidence that this record is a spherical ICRS plate solution."
+    },
+    "epoch": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Equinox/epoch label, e.g. J2000.0"
+    },
     "crpix": {
       "type": "array",
       "minItems": 2,
       "maxItems": 2,
-      "items": {"type": "number"},
+      "items": {
+        "type": "number"
+      },
       "description": "Reference pixel (x, y) in the same 0-based pixel grid as detection centroids"
     },
     "crval_deg": {
       "type": "array",
       "minItems": 2,
       "maxItems": 2,
-      "items": {"type": "number"},
+      "items": {
+        "type": "number"
+      },
       "description": "Sky coordinates at CRPIX as [ra_deg, dec_deg]"
     },
     "cd_deg_per_pixel": {
@@ -37,12 +73,32 @@
         "type": "array",
         "minItems": 2,
         "maxItems": 2,
-        "items": {"type": "number"}
+        "items": {
+          "type": "number"
+        }
       },
-      "description": "2x2 CD matrix in degrees per pixel: [[cd1_1, cd1_2], [cd2_1, cd2_2]] mapping (dx, dy) to (dra, ddec) in a local linear approximation"
+      "description": "2x2 CD matrix in degrees per pixel: [[cd1_1, cd1_2], [cd2_1, cd2_2]] mapping (dx, dy) to (dra, ddec) in a local-linear-CD flat-sky approximation (not spherical TAN/SIP)."
     },
-    "pixel_origin": {"const": "0-based-image-pixel"},
-    "source_reference": {"type": "string", "description": "Optional citation for the WCS provenance (FITS header hash, plate-solve receipt, etc.)"},
-    "notes": {"type": "array", "items": {"type": "string"}}
+    "pixel_origin": {
+      "const": "0-based-image-pixel"
+    },
+    "source_reference": {
+      "type": "string",
+      "description": "Optional citation for the WCS provenance (FITS header hash, plate-solve receipt, etc.)"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "projection_model": {
+      "const": "local-linear-CD",
+      "description": "This implementation projects pixels with a local linear CD matrix only."
+    },
+    "coordinate_standing": {
+      "const": "image-space-projection-hypothesis",
+      "description": "Declared WCS localisations remain image-space projection hypotheses."
+    }
   }
 }

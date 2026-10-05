@@ -13,6 +13,7 @@ from typing import Any, Mapping, Sequence
 
 from asa_astro.evidence.crossmatch import angular_separation_arcsec
 from astro_exec.core.canonical_json import canonical_text
+from asa_astro.evidence.wcs import compute_coordinates_invented
 
 
 class ResidualsError(ValueError):
@@ -231,13 +232,15 @@ def compute_observed_vs_expected(
         )
 
     recommendations = _recommendations(residuals, missing_expected, localisations)
+    coordinates_invented = compute_coordinates_invented(localisations)
+
     unlocalised = sum(1 for r in residuals if r["status"] == "unlocalised")
     return {
         "schema": "asa-astro-observed-vs-expected-v1",
         "epistemic": {
             "residuals_are": "hypothesis",
             "established_identity_promoted": False,
-            "coordinates_invented": False,
+            "coordinates_invented": coordinates_invented,
             "catalogue_match_promotes_identity": False,
         },
         "parameters": {
@@ -266,7 +269,7 @@ def compute_observed_vs_expected(
             "honesty": {
                 "hypothesis_only": True,
                 "established_identity_promoted": False,
-                "coordinates_invented": False,
+                "coordinates_invented": coordinates_invented,
             },
         },
     }

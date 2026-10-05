@@ -51,7 +51,7 @@ def context(context_id: str = "context-structural-0001", mode: str = "structural
         "uncertainty_tolerance": 0.20,
         "normalization_method": "max",
         "explanation_requirements": {"include_excluded_evidence": True, "include_warnings": True, "maximum_pathways": 8},
-        "baseline_configuration": {"manual_class_priorities": {"internal_substructure": 1.0, "primary_extended_object": 0.8, "likely_foreground_point_source": 0.05}},
+        "baseline_configuration": {"manual_class_priorities": {"internal_substructure": 1.0, "primary_extended_object": 0.8, "compact_high_peak_image_region": 0.05}},
         "assumptions": ["All numeric weights are replaceable proof-of-concept hypotheses.", "Codex B relationships remain image-space assertions, not physical facts."],
     }
 

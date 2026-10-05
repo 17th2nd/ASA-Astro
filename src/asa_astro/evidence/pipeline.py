@@ -29,7 +29,13 @@ from .models import (
     stable_id,
 )
 from .validation import validate_generated_records, validate_instance
-from .wcs import WcsUnavailable, localise_detections, parse_declared_wcs
+from .wcs import (
+    WcsUnavailable,
+    compute_coordinates_invented,
+    localise_detections,
+    parse_declared_wcs,
+    wcs_content_digest,
+)
 
 
 def hash_file(path: Path) -> str:
@@ -39,6 +45,32 @@ def hash_file(path: Path) -> str:
             digest.update(chunk)
     return digest.hexdigest()
 
+
+
+def build_observation_identity(
+    source_sha256: str,
+    metadata_sha256: str | None,
+    wcs_digest: str | None,
+) -> dict[str, Any]:
+    """Digest-bound observation claim identity (F-SCI-03 / HA-F-2).
+
+    Distinct from Objective RCPT. Binds source + optional metadata + optional WCS.
+    """
+
+    parts = {
+        "source_sha256": source_sha256,
+        "metadata_sha256": metadata_sha256,
+        "wcs_digest": wcs_digest,
+    }
+    claim_digest = sha256(canonical_json(parts).encode("utf-8")).hexdigest()
+    return {
+        "binding": "content-addressed-observation-claim",
+        "source_sha256": source_sha256,
+        "metadata_sha256": metadata_sha256,
+        "wcs_digest": wcs_digest,
+        "observation_claim_digest": claim_digest,
+        "observation_claim_id": f"obsclaim-{claim_digest}",
+    }
 
 def _json_bytes(value: Any) -> bytes:
     return (json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8")
@@ -237,12 +269,12 @@ def _render_overlay(
     detection_by_id = {item["id"]: item for item in detections}
     colours = {
         "primary_extended_object": (0, 255, 255),
-        "likely_foreground_point_source": (255, 255, 0),
+        "compact_high_peak_image_region": (255, 255, 0),
         "internal_substructure": (0, 255, 0),
-        "possible_companion_object": (255, 128, 0),
-        "background_extended_object": (128, 128, 255),
+        "nearby_separate_extended_image_region": (255, 128, 0),
+        "separate_extended_image_region": (128, 128, 255),
         "diffuse_or_uncertain_region": (255, 0, 255),
-        "unresolved_background_object_candidate": (255, 255, 255),
+        "unresolved_compact_image_region": (255, 255, 255),
         "dark_or_occluding_region": (255, 0, 0),
         "unknown_image_region": (160, 160, 160),
     }
@@ -626,6 +658,15 @@ def process_observation(
     if wcs_record is not None:
         validate_instance("wcs_solution", wcs_record)
 
+    # F-SCI-03: digest-bound observation claim identity (distinct from Objective RCPT).
+    wcs_digest = wcs_content_digest(wcs_record)
+    observation_identity = build_observation_identity(source_sha256, metadata_sha256, wcs_digest)
+    # F-SCI-04: compute honesty flags (never hard-code False).
+    # coordinates_invented is True only if coords escaped without WCS (fail-closed should yield False).
+    coordinates_invented = compute_coordinates_invented(localisations)
+    # source_image_mutated is measured at content-addressed copy verification below.
+    source_image_mutated = False  # provisional; overwritten after copy hash compare
+
     sky_output_ids = [item["id"] for item in localisations]
     if crossmatches:
         sky_output_ids.extend(item["id"] for item in crossmatches)
@@ -708,10 +749,13 @@ def process_observation(
         "wcs_unavailable_reason": wcs_unavailable_reason,
         "sky_localisations": localisations,
         "catalogue_crossmatches": crossmatches,
+        "observation_identity": observation_identity,
         "sky_epistemic": {
             "wcs_present": wcs_record is not None,
-            "coordinates_invented": False,
-            "source_image_mutated": False,
+            "coordinates_invented": coordinates_invented,
+            "source_image_mutated": source_image_mutated,
+            "projection_model": (wcs_record or {}).get("projection_model"),
+            "coordinate_standing": (wcs_record or {}).get("coordinate_standing"),
             "localisation_classification": "hypothesis_when_localised_else_unknown",
             "catalogue_match_classification": "hypothesis_evidence_qualified_only",
             "established_identity_promoted": False,
@@ -727,7 +771,11 @@ def process_observation(
         source_directory.mkdir()
         source_copy = source_directory / f"{source_sha256}{_safe_suffix(input_path)}"
         shutil.copyfile(input_path, source_copy)
-        if hash_file(source_copy) != source_sha256:
+        copy_sha = hash_file(source_copy)
+        # F-SCI-04: measure mutation via hash compare (never hard-code False).
+        source_image_mutated = copy_sha != source_sha256
+        provenance_bundle["sky_epistemic"]["source_image_mutated"] = source_image_mutated
+        if source_image_mutated:
             raise OSError("content-addressed source copy failed hash verification")
 
         artifact_paths: list[tuple[Path, str, str]] = [
@@ -768,10 +816,13 @@ def process_observation(
             _json_bytes(
                 {
                     "processing_run_id": processing_run_id,
+                    "observation_identity": observation_identity,
                     "wcs_present": wcs_record is not None,
                     "wcs_unavailable_reason": wcs_unavailable_reason,
-                    "coordinates_invented": False,
-                    "source_image_mutated": False,
+                    "coordinates_invented": coordinates_invented,
+                    "source_image_mutated": source_image_mutated,
+                    "projection_model": (wcs_record or {}).get("projection_model"),
+                    "coordinate_standing": (wcs_record or {}).get("coordinate_standing"),
                     "localisations": localisations,
                 }
             )
@@ -807,6 +858,7 @@ def process_observation(
         manifest = {
             **record_metadata("computed"),
             "processing_run_id": processing_run_id,
+            "observation_identity": observation_identity,
             "source_sha256": source_sha256,
             "parameters_sha256": sha256(canonical_json(active_parameters.to_dict()).encode("utf-8")).hexdigest(),
             "software": software,
@@ -826,6 +878,7 @@ def process_observation(
         "processing_run_id": processing_run_id,
         "output_directory": str(output_directory),
         "source_sha256": source_sha256,
+        "observation_identity": observation_identity,
         "candidate_count": len(candidates),
         "relationship_count": len(edges),
         "wcs_present": wcs_record is not None,
@@ -833,6 +886,7 @@ def process_observation(
         "sky_localised_count": sum(1 for item in localisations if item.get("status") == "localised"),
         "sky_unavailable_count": sum(1 for item in localisations if item.get("status") == "unavailable"),
         "catalogue_crossmatch_count": 0 if crossmatches is None else len(crossmatches),
-        "coordinates_invented": False,
-        "source_image_mutated": False,
+        "coordinates_invented": coordinates_invented,
+        "source_image_mutated": source_image_mutated,
+        "sky_epistemic": provenance_bundle["sky_epistemic"],
     }

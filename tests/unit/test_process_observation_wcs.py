@@ -77,6 +77,16 @@ class ProcessObservationWcsWiringTest(unittest.TestCase):
         self.assertIsNone(provenance["wcs_solution"])
         self.assertFalse(provenance["sky_epistemic"]["coordinates_invented"])
         self.assertFalse(provenance["sky_epistemic"]["established_identity_promoted"])
+        # F-SCI-03: digest-bound observation identity distinct from Objective RCPT
+        oid = result["observation_identity"]
+        self.assertEqual(oid["binding"], "content-addressed-observation-claim")
+        self.assertEqual(oid["source_sha256"], before)
+        self.assertIsNone(oid["wcs_digest"])
+        self.assertTrue(oid["observation_claim_id"].startswith("obsclaim-"))
+        self.assertEqual(oid, provenance["observation_identity"])
+        self.assertEqual(oid, sky["observation_identity"])
+        manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(oid, manifest["observation_identity"])
         self.assertFalse((output / "wcs_solution.json").exists())
         self.assertFalse((output / "catalogue_crossmatches.json").exists())
         summary = (output / "summary.md").read_text(encoding="utf-8")
@@ -122,9 +132,14 @@ class ProcessObservationWcsWiringTest(unittest.TestCase):
         wcs = json.loads((output / "wcs_solution.json").read_text(encoding="utf-8"))
         validate_instance("wcs_solution", wcs)
         self.assertEqual(wcs["status"], "declared")
+        # F-SCI-01: projection honesty on declared WCS
+        self.assertEqual(wcs["projection_model"], "local-linear-CD")
+        self.assertEqual(wcs["coordinate_standing"], "image-space-projection-hypothesis")
 
         sky = json.loads((output / "sky_localisations.json").read_text(encoding="utf-8"))
         self.assertTrue(sky["wcs_present"])
+        self.assertEqual(sky["projection_model"], "local-linear-CD")
+        self.assertEqual(sky["coordinate_standing"], "image-space-projection-hypothesis")
         for item in sky["localisations"]:
             validate_instance("sky_localisation", item)
             self.assertEqual(item["status"], "localised")
@@ -132,6 +147,19 @@ class ProcessObservationWcsWiringTest(unittest.TestCase):
             self.assertIsNotNone(item["sky"]["ra_deg"])
             self.assertIsNotNone(item["sky"]["dec_deg"])
             self.assertIn("candidate_id", item)
+            self.assertEqual(item["projection_model"], "local-linear-CD")
+            self.assertEqual(item["coordinate_standing"], "image-space-projection-hypothesis")
+            basis = " ".join(item["inference_basis"]).lower()
+            self.assertIn("local-linear-cd", basis)
+            self.assertIn("image-space", basis)
+
+        # F-SCI-03: observation claim binds source+metadata+wcs
+        oid = result["observation_identity"]
+        self.assertEqual(oid["source_sha256"], before)
+        self.assertIsNotNone(oid["metadata_sha256"])
+        self.assertIsNotNone(oid["wcs_digest"])
+        self.assertTrue(oid["observation_claim_id"].startswith("obsclaim-"))
+        self.assertNotIn("RCPT", oid["observation_claim_id"])
 
         cross = json.loads((output / "catalogue_crossmatches.json").read_text(encoding="utf-8"))
         self.assertTrue(cross["evidence_qualified_only"])
@@ -149,6 +177,8 @@ class ProcessObservationWcsWiringTest(unittest.TestCase):
         provenance = json.loads((output / "provenance.json").read_text(encoding="utf-8"))
         self.assertTrue(provenance["sky_epistemic"]["wcs_present"])
         self.assertFalse(provenance["sky_epistemic"]["established_identity_promoted"])
+        self.assertEqual(provenance["observation_identity"], oid)
+        self.assertEqual(provenance["sky_epistemic"]["projection_model"], "local-linear-CD")
         self.assertEqual(before, provenance["observation_sources"][0]["sha256"])
         source_copies = [
             path

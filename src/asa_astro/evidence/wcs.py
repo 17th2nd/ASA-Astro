@@ -14,6 +14,10 @@ from .models import ONTOLOGY_VERSION, SCHEMA_VERSION, record_metadata, stable_id
 
 REQUIRED_WCS_KEYS = ("frame", "epoch", "crpix", "crval_deg", "cd_deg_per_pixel")
 
+# F-SCI-01: this thin slice only supports local-linear CD (not spherical TAN/SIP).
+PROJECTION_MODEL = "local-linear-CD"
+COORDINATE_STANDING = "image-space-projection-hypothesis"
+
 
 class WcsUnavailable(ValueError):
     """Raised when callers demand localisation but WCS is absent or incomplete."""
@@ -75,6 +79,8 @@ def parse_declared_wcs(payload: Mapping[str, Any] | None) -> dict[str, Any]:
         "crval_deg": [ra_deg, dec_deg],
         "cd_deg_per_pixel": [[cd[0][0], cd[0][1]], [cd[1][0], cd[1][1]]],
         "pixel_origin": "0-based-image-pixel",
+        "projection_model": PROJECTION_MODEL,
+        "coordinate_standing": COORDINATE_STANDING,
     }
     if "source_reference" in payload and payload["source_reference"] is not None:
         record["source_reference"] = str(payload["source_reference"])
@@ -204,9 +210,12 @@ def localise_detection(
             "epoch": sky["epoch"],
         },
         "wcs_present": True,
+        "projection_model": PROJECTION_MODEL,
+        "coordinate_standing": COORDINATE_STANDING,
         "inference_basis": [
-            "Pixel centroid projected through caller-declared WCS (local linear CD).",
-            "Sky position is a hypothesis derived from declared calibration; not an established identity.",
+            "Pixel centroid projected through caller-declared local-linear-CD WCS (image-space projection hypothesis; not spherical TAN/SIP sky truth).",
+            "sky.frame is the caller-declared label only; computational standing is local flat-sky CD, not an ICRS spherical plate solution.",
+            "Sky position remains a hypothesis; not an established astronomical identity.",
             "Source image bytes were not modified.",
         ],
     }
@@ -232,10 +241,50 @@ def localise_detections(
 
 __all__ = [
     "WcsUnavailable",
+    "PROJECTION_MODEL",
+    "COORDINATE_STANDING",
     "parse_declared_wcs",
     "pixel_to_sky",
     "localise_detection",
     "localise_detections",
+    "compute_coordinates_invented",
+    "wcs_content_digest",
     "SCHEMA_VERSION",
     "ONTOLOGY_VERSION",
 ]
+
+
+
+def compute_coordinates_invented(localisations: Sequence[Mapping[str, Any]]) -> bool:
+    """True only if sky coordinates were emitted without WCS (should never under fail-closed)."""
+
+    invented = False
+    for loc in localisations:
+        sky = loc.get("sky") if isinstance(loc.get("sky"), Mapping) else {}
+        has_coords = sky.get("ra_deg") is not None or sky.get("dec_deg") is not None
+        if has_coords and not loc.get("wcs_present"):
+            invented = True
+        if loc.get("status") == "localised" and not loc.get("wcs_present"):
+            invented = True
+    return invented
+
+
+def wcs_content_digest(wcs: Mapping[str, Any] | None) -> str | None:
+    """Content-address digest of declared WCS geometric fields; None when WCS absent."""
+
+    if not wcs:
+        return None
+    from hashlib import sha256
+
+    from .models import canonical_json
+
+    payload = {
+        "frame": wcs.get("frame"),
+        "epoch": wcs.get("epoch"),
+        "crpix": wcs.get("crpix"),
+        "crval_deg": wcs.get("crval_deg"),
+        "cd_deg_per_pixel": wcs.get("cd_deg_per_pixel"),
+        "pixel_origin": wcs.get("pixel_origin"),
+        "projection_model": wcs.get("projection_model", PROJECTION_MODEL),
+    }
+    return sha256(canonical_json(payload).encode("utf-8")).hexdigest()

@@ -119,6 +119,21 @@ def _crossmatch_by_detection(
     return {str(item["detection_id"]): dict(item) for item in crossmatches}
 
 
+
+def _coordinates_invented_from_localisations(localisations: Sequence[Mapping[str, Any]]) -> bool:
+    """Compute honesty flag: True only if sky coords emitted without WCS (F-SCI-04)."""
+
+    invented = False
+    for loc in localisations:
+        sky = loc.get("sky") if isinstance(loc.get("sky"), Mapping) else {}
+        has_coords = sky.get("ra_deg") is not None or sky.get("dec_deg") is not None
+        if has_coords and not loc.get("wcs_present"):
+            invented = True
+        if loc.get("status") == "localised" and not loc.get("wcs_present"):
+            invented = True
+    return invented
+
+
 def build_temporary_universe(
     localisations: Sequence[Mapping[str, Any]],
     *,
@@ -253,7 +268,7 @@ def build_temporary_universe(
         "hypothesis_entity_count": len(entity_epistemic),
         "entities": entity_epistemic,
         "established_identity_promoted": False,
-        "coordinates_invented": False,
+        "coordinates_invented": _coordinates_invented_from_localisations(localisations),
     }
     return universe, meta
 
@@ -312,14 +327,19 @@ def bridge_sky_localisations_to_objective(
     _write_json(out / "plan.json", decision.plan.to_record())
     decision.receipt.write(out)
 
+    coordinates_invented = _coordinates_invented_from_localisations(localisations)
+    # Measured: this bridge does not open observation source files for write.
+    source_paths_written = []  # no source paths are written by the bridge
+    source_image_mutated = len(source_paths_written) > 0
+
     bridge_manifest = {
         "bridge_schema": "asa-astro-sky-to-objective-bridge-v1",
         "status": "evaluated",
         "epistemic": {
             "sky_candidates_are": "hypothesis",
             "established_identity_promoted": False,
-            "coordinates_invented": False,
-            "source_image_mutated": False,
+            "coordinates_invented": coordinates_invented,
+            "source_image_mutated": source_image_mutated,
             "catalogue_match_promotes_identity": False,
         },
         "universe_id": universe.universe_id,
@@ -346,7 +366,8 @@ def bridge_sky_localisations_to_objective(
         "evaluation_id": decision.evaluation.evaluation_id,
         "hypothesis_entity_count": epistemic["hypothesis_entity_count"],
         "established_identity_promoted": False,
-        "coordinates_invented": False,
+        "coordinates_invented": coordinates_invented,
+        "source_image_mutated": source_image_mutated,
         "bridge_manifest": bridge_manifest,
     }
 
