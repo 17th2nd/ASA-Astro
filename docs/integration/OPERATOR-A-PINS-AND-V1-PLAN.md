@@ -69,3 +69,11 @@ ASA-Astro (application)
 
 ## Next action for Chief
 Confirm: (a) create/push `grok/asa-astro-v1-application` from `be2387f` (done locally), (b) accept remediation-133 @ `c2ccd7d` as the ASA consume target for V1 re-pin, (c) Idle Team task split.
+
+
+## Landed 2026-10-05 (Chief confirm)
+
+- `config/asa-baseline-current-dev.json` — current-dev pin @ `c2ccd7d…`
+- `config/asa-baseline.json` — historical, unchanged (`b855d4c`)
+- `tools/asa_baseline.py` — `--config` supported; rematerialise detach
+- `.asa/ASA` verified at `c2ccd7d55e34d7ffe03fd21d8b633cde69c152d2`

@@ -1,0 +1,15 @@
+{
+  "schema_version": "astro-asa-baseline-v1",
+  "pin_kind": "current_dev",
+  "repository": "https://github.com/17th2nd/ASA.git",
+  "ref": "agent/asa-v1-rc0-final-falsification-remediation-133",
+  "sha": "c2ccd7d55e34d7ffe03fd21d8b633cde69c152d2",
+  "kernel_subdir": "kernel",
+  "kernel_version": "unreleased-remediation-133",
+  "kernel_status": "CURRENT DEVELOPMENT COMPATIBILITY PIN — NOT A FROZEN FINAL V1 UNLESS REPO AUTHORITY RECORDS FREEZE",
+  "consumed_surface": ["asa_kernel.api", "asa_kernel.identity", "asa_kernel.storage", "asa_kernel.registry", "tools/build_registry.compose_domain"],
+  "checkout_dir": ".asa/ASA",
+  "historical_baseline_file": "config/asa-baseline.json",
+  "historical_sha_preserved": "b855d4c730dc2553db7a693d91c7d4d0cf25d03c",
+  "note": "Astro V1 application current-dev consume pin (Operator A / ASA Chief 2026-10-05). Does not rewrite historical experiment baselines or real-data-exp-0001. Re-pinning again is a deliberate recorded change."
+}
