@@ -61,7 +61,12 @@ class UploadPreserveAndReceipt(_TempDataDir):
             upload_filename="syn.ppm",
             upload_media_type="image/x-portable-pixmap",
         )
-        self.assertRegex(view["run_id"], r"^RCPT-[0-9a-f]{64}$")
+        self.assertRegex(
+            view["run_id"],
+            r"^RCPT-[0-9a-f]{64}__src-[0-9a-f]{64}__meta-(?:[0-9a-f]{64}|none)$",
+        )
+        self.assertRegex(view["receipt"]["receipt_id"], r"^RCPT-[0-9a-f]{64}$")
+        self.assertTrue(view["run_id"].startswith(view["receipt"]["receipt_id"] + "__src-"))
         self.assertTrue(view["receipt"]["receipt_id_verified"])
         self.assertEqual(view["receipt"]["asa_baseline"], pinmod.pin_record()["sha"])
         self.assertEqual(pinmod.pin_record()["sha"], "c2ccd7d55e34d7ffe03fd21d8b633cde69c152d2")
@@ -226,6 +231,238 @@ class UploadHttpTests(_TempDataDir):
         self.assertTrue(view["uploaded_source"]["present"])
         self.assertTrue(view["observation_evidence"]["present"])
         self.assertEqual(view["receipt"]["asa_baseline"], "c2ccd7d55e34d7ffe03fd21d8b633cde69c152d2")
+
+
+@NEEDS_PIN
+class DualUploadNoCrossContamination(_TempDataDir):
+    """R-INT-01: distinct uploads must not share/overwrite run dirs or leak artifacts."""
+
+    def _wcs_meta(self) -> bytes:
+        meta = {
+            "instrument": "synthetic-test",
+            "wcs": {
+                "frame": "ICRS",
+                "epoch": "J2000.0",
+                "crpix": [32.0, 32.0],
+                "crval_deg": [150.0, -30.0],
+                "cd_deg_per_pixel": [[1.0 / 3600.0, 0.0], [0.0, 1.0 / 3600.0]],
+                "pixel_origin": "0-based-image-pixel",
+                "source_reference": "app-upload-dual-a",
+            },
+            "catalogue": {
+                "match_radius_arcsec": 120.0,
+                "provenance": {
+                    "catalogue_name": "synthetic-app-catalogue",
+                    "release": "test-0",
+                    "query_description": "dual-upload regression A",
+                },
+                "entries": [
+                    {
+                        "catalogue_id": "SYN-APP-1",
+                        "catalogue_name": "synthetic-app-catalogue",
+                        "ra_deg": 150.0,
+                        "dec_deg": -30.0,
+                        "frame": "ICRS",
+                        "epoch": "J2000.0",
+                        "labels": ["synthetic"],
+                        "evidence_ids": ["ev-syn-1"],
+                    }
+                ],
+            },
+        }
+        return (json.dumps(meta, sort_keys=True) + "\n").encode("utf-8")
+
+    def _nowcs_meta(self) -> bytes:
+        meta = {
+            "instrument": "synthetic-test",
+            "catalogue": {
+                "match_radius_arcsec": 120.0,
+                "provenance": {
+                    "catalogue_name": "synthetic-app-catalogue",
+                    "release": "test-0",
+                    "query_description": "dual-upload regression B",
+                },
+                "entries": [
+                    {
+                        "catalogue_id": "SYN-APP-1",
+                        "catalogue_name": "synthetic-app-catalogue",
+                        "ra_deg": 150.0,
+                        "dec_deg": -30.0,
+                        "frame": "ICRS",
+                        "epoch": "J2000.0",
+                        "labels": ["synthetic"],
+                        "evidence_ids": ["ev-syn-1"],
+                    }
+                ],
+            },
+        }
+        return (json.dumps(meta, sort_keys=True) + "\n").encode("utf-8")
+
+    def test_wcs_then_nowcs_isolated_run_dirs_and_artifacts(self):
+        from app import slice as s
+
+        img_a = _fixture_ppm(Path(self._tmp.name) / "dual-a.ppm")
+        # Distinct source bytes for B.
+        data_a = img_a.read_bytes()
+        data_b = data_a + b"\n# dual-b-distinct\n"
+        sha_a = hashlib.sha256(data_a).hexdigest()
+        sha_b = hashlib.sha256(data_b).hexdigest()
+        self.assertNotEqual(sha_a, sha_b)
+
+        meta_a = self._wcs_meta()
+        meta_b = self._nowcs_meta()
+        self.assertNotEqual(hashlib.sha256(meta_a).hexdigest(), hashlib.sha256(meta_b).hexdigest())
+
+        view_a = s.run_slice(
+            upload_bytes=data_a,
+            upload_filename="dual-a.ppm",
+            metadata_bytes=meta_a,
+        )
+        view_b = s.run_slice(
+            upload_bytes=data_b,
+            upload_filename="dual-b.ppm",
+            metadata_bytes=meta_b,
+        )
+
+        # Same Objective receipt id is allowed (G-SIG-1) but run dirs must diverge.
+        self.assertEqual(view_a["receipt"]["receipt_id"], view_b["receipt"]["receipt_id"])
+        self.assertNotEqual(view_a["run_id"], view_b["run_id"])
+        self.assertIn(f"__src-{sha_a}__", view_a["run_id"])
+        self.assertIn(f"__src-{sha_b}__", view_b["run_id"])
+        self.assertFalse(view_b.get("reproduced"))
+
+        data_root = Path(os.environ["ASA_ASTRO_APP_DATA_DIR"])
+        dir_a = data_root / "runs" / view_a["run_id"]
+        dir_b = data_root / "runs" / view_b["run_id"]
+        self.assertTrue(dir_a.is_dir())
+        self.assertTrue(dir_b.is_dir())
+        self.assertNotEqual(dir_a, dir_b)
+
+        # A produced WCS; B must not inherit it on disk or in view.
+        self.assertTrue((dir_a / "observation_wcs.json").is_file())
+        self.assertFalse((dir_b / "observation_wcs.json").exists())
+        self.assertIsNotNone(view_a["observation_evidence"]["wcs"])
+        self.assertIsNone(view_b["observation_evidence"]["wcs"])
+
+        # run.json for B must not list observation_wcs among artifacts.
+        run_b = json.loads((dir_b / "run.json").read_text(encoding="utf-8"))
+        self.assertNotIn("observation_wcs.json", run_b.get("artifacts") or {})
+        run_a = json.loads((dir_a / "run.json").read_text(encoding="utf-8"))
+        self.assertIn("observation_wcs.json", run_a.get("artifacts") or {})
+
+        # A's uploaded_source record must remain A after B lands.
+        src_a = json.loads((dir_a / "uploaded_source.json").read_text(encoding="utf-8"))
+        src_b = json.loads((dir_b / "uploaded_source.json").read_text(encoding="utf-8"))
+        self.assertEqual(src_a["sha256"], sha_a)
+        self.assertEqual(src_b["sha256"], sha_b)
+
+        # Artifact resolution via the same keyed run id matches view honesty.
+        self.assertIsNotNone(s.artifact_path(view_a["run_id"], "observation_wcs.json"))
+        self.assertIsNone(s.artifact_path(view_b["run_id"], "observation_wcs.json"))
+        loaded_b = s.load_view(view_b["run_id"])
+        self.assertIsNotNone(loaded_b)
+        self.assertIsNone(loaded_b["observation_evidence"]["wcs"])
+
+        # Existing run dirs are never rewritten on identical re-upload.
+        mtime_a = (dir_a / "run.json").stat().st_mtime_ns
+        again_a = s.run_slice(
+            upload_bytes=data_a,
+            upload_filename="dual-a.ppm",
+            metadata_bytes=meta_a,
+        )
+        self.assertTrue(again_a["reproduced"])
+        self.assertEqual(again_a["run_id"], view_a["run_id"])
+        self.assertEqual((dir_a / "run.json").stat().st_mtime_ns, mtime_a)
+
+
+@NEEDS_PIN
+class DualUploadHttpIsolation(_TempDataDir):
+    def setUp(self):
+        super().setUp()
+        from app.server import make_server
+        self.httpd = make_server("127.0.0.1", 0, quiet=True)
+        self.base = f"http://127.0.0.1:{self.httpd.server_address[1]}"
+        self.thread = threading.Thread(target=self.httpd.serve_forever, daemon=True)
+        self.thread.start()
+
+    def tearDown(self):
+        self.httpd.shutdown()
+        self.httpd.server_close()
+        super().tearDown()
+
+    def _multipart(self, filename: str, data: bytes, metadata: bytes | None):
+        boundary = "----AsaAstroDualBoundary9"
+        body = b""
+        parts = [
+            ("objective", None, None, b"A-exoplanet-transit-followup"),
+            ("source", filename, "image/x-portable-pixmap", data),
+        ]
+        if metadata is not None:
+            parts.append(("metadata", "meta.json", "application/json", metadata))
+        for name, fname, ctype, payload in parts:
+            body += f"--{boundary}\r\n".encode()
+            if fname is None:
+                body += f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode()
+                body += payload + b"\r\n"
+            else:
+                body += (
+                    f'Content-Disposition: form-data; name="{name}"; filename="{fname}"\r\n'
+                    f"Content-Type: {ctype}\r\n\r\n"
+                ).encode()
+                body += payload + b"\r\n"
+        body += f"--{boundary}--\r\n".encode()
+        req = urllib.request.Request(
+            self.base + "/api/runs",
+            data=body,
+            headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=180) as r:
+            return r.status, json.loads(r.read())
+
+    def test_http_second_upload_null_wcs_does_not_serve_first_wcs(self):
+        img = _fixture_ppm(Path(self._tmp.name) / "http-dual.ppm")
+        data_a = img.read_bytes()
+        data_b = data_a + b"\n# http-dual-b\n"
+        meta_a = (json.dumps({
+            "instrument": "http-dual",
+            "wcs": {
+                "frame": "ICRS", "epoch": "J2000.0",
+                "crpix": [32.0, 32.0], "crval_deg": [150.0, -30.0],
+                "cd_deg_per_pixel": [[1.0 / 3600.0, 0.0], [0.0, 1.0 / 3600.0]],
+                "pixel_origin": "0-based-image-pixel",
+                "source_reference": "http-dual-a",
+            },
+        }, sort_keys=True) + "\n").encode()
+        meta_b = (json.dumps({"instrument": "http-dual"}, sort_keys=True) + "\n").encode()
+
+        status_a, view_a = self._multipart("a.ppm", data_a, meta_a)
+        status_b, view_b = self._multipart("b.ppm", data_b, meta_b)
+        self.assertEqual(status_a, 201)
+        self.assertEqual(status_b, 201)
+        self.assertNotEqual(view_a["run_id"], view_b["run_id"])
+        self.assertIsNotNone(view_a["observation_evidence"]["wcs"])
+        self.assertIsNone(view_b["observation_evidence"]["wcs"])
+
+        # GET artifact for B must 404; for A must 200 with declared WCS.
+        from urllib.parse import quote
+        url_a = f"{self.base}/api/runs/{quote(view_a['run_id'], safe='')}/artifacts/observation_wcs.json"
+        url_b = f"{self.base}/api/runs/{quote(view_b['run_id'], safe='')}/artifacts/observation_wcs.json"
+        with urllib.request.urlopen(url_a, timeout=60) as r:
+            self.assertEqual(r.status, 200)
+            body_a = json.loads(r.read())
+        self.assertEqual(body_a.get("status"), "declared")
+        with self.assertRaises(urllib.error.HTTPError) as ctx:
+            urllib.request.urlopen(url_b, timeout=60)
+        self.assertEqual(ctx.exception.code, 404)
+
+        # Plain receipt_id must not resolve to a sibling upload dir (refuse ambiguous serve).
+        plain = view_a["receipt"]["receipt_id"]
+        with self.assertRaises(urllib.error.HTTPError) as ctx:
+            urllib.request.urlopen(
+                f"{self.base}/api/runs/{plain}/artifacts/observation_wcs.json", timeout=60
+            )
+        self.assertEqual(ctx.exception.code, 404)
 
 
 if __name__ == "__main__":

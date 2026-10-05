@@ -26,7 +26,13 @@ from .observation_honesty import project_observation_evidence, project_action_re
 ROOT = pinmod.ROOT
 _LOCK = threading.Lock()
 SLUG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,80}$")
-RUN_ID = re.compile(r"^RCPT-[0-9a-f]{64}$")
+# Plain receipt dir (JSON-only / no-upload) OR content-keyed upload run dir.
+# Upload runs: RCPT-<64>__src-<source-sha256>__meta-<metadata-sha256|none>
+RUN_ID = re.compile(
+    r"^RCPT-[0-9a-f]{64}"
+    r"(?:__src-[0-9a-f]{64}__meta-(?:[0-9a-f]{64}|none))?$"
+)
+RECEIPT_ID = re.compile(r"^RCPT-[0-9a-f]{64}$")
 ARTIFACTS = ("pin.json", "snapshot.json", "objective.json", "context.json", "evaluation.json", "plan.json",
              "receipt.json", "receipt.sha256", "run.json", "view.json", "uploaded_source.json",
              "observation_wcs.json", "observation_localisations.json", "observation_crossmatches.json", "observed_vs_expected.json")
@@ -72,6 +78,34 @@ def _canon(value: Any) -> str:
 def _sha(text: str | bytes) -> str:
     return hashlib.sha256(text.encode("utf-8") if isinstance(text, str) else text).hexdigest()
 
+
+
+def _metadata_sha256(metadata_bytes: bytes | None) -> str:
+    """Stable metadata content key; 'none' when absent (matches observation-bundle naming)."""
+    return _sha(metadata_bytes) if metadata_bytes else "none"
+
+
+def run_storage_key(
+    receipt_id: str,
+    *,
+    uploaded_source: dict | None = None,
+    metadata_bytes: bytes | None = None,
+) -> str:
+    """Unique, append-only run directory name.
+
+    No upload → receipt_id alone (preserves prior JSON-only behaviour).
+    Upload → (receipt_id, source sha256, metadata sha256) so distinct uploads never
+    share a directory even when the Objective receipt id collides (R-INT-01).
+    """
+    if not RECEIPT_ID.match(receipt_id):
+        raise ValueError(f"invalid receipt_id {receipt_id!r}")
+    if uploaded_source is None:
+        return receipt_id
+    source_sha = uploaded_source.get("sha256")
+    if not isinstance(source_sha, str) or not re.fullmatch(r"[0-9a-f]{64}", source_sha):
+        raise ValueError("uploaded_source.sha256 must be a 64-hex digest")
+    meta_sha = _metadata_sha256(metadata_bytes)
+    return f"{receipt_id}__src-{source_sha}__meta-{meta_sha}"
 
 def _ref(artifact: str, pointer: str) -> dict[str, str]:
     return {"artifact": artifact, "pointer": pointer}
@@ -339,7 +373,12 @@ def _attach_upload_artifacts(
     uploaded_source: dict | None,
     observation_consume: dict | None,
 ) -> dict[str, Any]:
-    """Write upload / observation honesty artifacts and rebuild view.json in place."""
+    """Write upload / observation honesty artifacts and rebuild view.json in place.
+
+    Writes only artifacts this consume produced: absent WCS / empty crossmatches are
+    omitted (never left over from a sibling upload). Callers must pass a fresh target
+    directory — existing run dirs are append-only and must not be rewritten (R-INT-01).
+    """
     obs_wcs = None
     obs_locs = None
     obs_xm = None
@@ -455,10 +494,16 @@ def run_slice(
         verified = content_id("RCPT", body) == receipt["receipt_id"]
         from astro_exec.core.canonical_json import canonical_text
         receipt_text = canonical_text(receipt)
-        run_id = receipt["receipt_id"]
+        receipt_id = receipt["receipt_id"]
+        run_id = run_storage_key(
+            receipt_id,
+            uploaded_source=uploaded_source,
+            metadata_bytes=metadata_bytes,
+        )
         snap = _snapshot_detail(decision.snapshot, universe)
         run = {
             "run_schema": "asa-astro-app-run-v1", "app_version": APP_VERSION, "run_id": run_id,
+            "receipt_id": receipt_id,
             "slice": ["pin", "snapshot", "objective", "receipt"]
                      + (["upload", "process_observation"] if uploaded_source else []),
             "inputs": {"universe": str(universe_path.relative_to(ROOT)), "context": str(context_path.relative_to(ROOT)),
@@ -472,39 +517,35 @@ def run_slice(
             "receipt_file_sha256": _sha(receipt_text),
             "self_acceptance": "NO",
         }
+        if uploaded_source is not None:
+            run["upload_key"] = {
+                "source_sha256": uploaded_source["sha256"],
+                "metadata_sha256": _metadata_sha256(metadata_bytes),
+                "binding": "run directory keyed by (receipt_id, source sha256, metadata sha256); never rewritten",
+            }
         target = runs_dir() / run_id
-        invocation = {"issued_at": receipt["issued_at"], "receipt_id": run_id, "receipt_file_sha256": run["receipt_file_sha256"],
-                      "recorded_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+        invocation = {
+            "issued_at": receipt["issued_at"],
+            "receipt_id": receipt_id,
+            "run_id": run_id,
+            "receipt_file_sha256": run["receipt_file_sha256"],
+            "recorded_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        }
         if uploaded_source is not None:
             invocation["uploaded_source_sha256"] = uploaded_source["sha256"]
             invocation["uploaded_original_filename"] = uploaded_source["original_filename"]
+            invocation["metadata_sha256"] = _metadata_sha256(metadata_bytes)
             if observation_consume is not None:
                 invocation["process_observation_invoked"] = bool(observation_consume.get("invoked"))
                 invocation["observation_bundle_path"] = observation_consume.get("bundle_path")
 
         if target.exists():
+            # Append-only: never rewrite an existing run directory (R-INT-01).
             prior = json.loads((target / "receipt.json").read_text(encoding="utf-8"))
-            invocation["reproduced_identical_receipt_id"] = prior["receipt_id"] == run_id
+            invocation["reproduced_identical_receipt_id"] = prior["receipt_id"] == receipt_id
+            invocation["run_dir_mutated"] = False
             with (target / "invocations.jsonl").open("a", encoding="utf-8") as fh:
                 fh.write(json.dumps(invocation, sort_keys=True) + "\n")
-            if uploaded_source is not None:
-                # Attach / refresh preserved source + observation honesty on the reproduced receipt.
-                prior_run = json.loads((target / "run.json").read_text(encoding="utf-8"))
-                prior_run["receipt_id_verified"] = verified
-                prior_run["receipt_file_sha256"] = run["receipt_file_sha256"]
-                view = _attach_upload_artifacts(
-                    target,
-                    pin=json.loads((target / "pin.json").read_text(encoding="utf-8")),
-                    snap=json.loads((target / "snapshot.json").read_text(encoding="utf-8")),
-                    objective_record=json.loads((target / "objective.json").read_text(encoding="utf-8")),
-                    context_record=json.loads((target / "context.json").read_text(encoding="utf-8")),
-                    receipt=prior,
-                    run=prior_run,
-                    uploaded_source=uploaded_source,
-                    observation_consume=observation_consume,
-                )
-                view["reproduced"] = True
-                return view
             view = json.loads((target / "view.json").read_text(encoding="utf-8"))
             view["reproduced"] = True
             return view
@@ -522,7 +563,7 @@ def run_slice(
             for name, text_body in files.items():
                 (tmp / name).write_text(text_body, encoding="utf-8")
             (tmp / "invocations.jsonl").write_text(
-                json.dumps(invocation | {"reproduced_identical_receipt_id": None}, sort_keys=True) + "\n",
+                json.dumps(invocation | {"reproduced_identical_receipt_id": None, "run_dir_mutated": False}, sort_keys=True) + "\n",
                 encoding="utf-8",
             )
             # Provisional run.json before upload attach.
