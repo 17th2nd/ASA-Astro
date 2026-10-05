@@ -110,7 +110,10 @@ Fail closed when no `status=localised` records (or bundle `wcs_present=false`).
 ASTRO_ASA_PIN_KIND=current_dev .venv/bin/python -m unittest tests.unit.test_sky_to_objective_bridge -v
 ```
 
+## Observed-vs-expected residuals
+
+See `docs/pipeline/OBSERVED-VS-EXPECTED-RESIDUALS-0001.md` (`asa_astro.residuals`).
+
 ## Next gaps
 
 1. Optional FITS/`astropy.wcs` adapter behind the same declared-WCS contract (still fail closed).
-2. Observed-vs-expected residual evidence for Action UI.

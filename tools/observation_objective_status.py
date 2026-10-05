@@ -46,7 +46,7 @@ def main(argv: list[str]) -> int:
         blockers.append("wcs_absent_fail_closed")
     if not cross_path.exists():
         blockers.append("no_catalogue_crossmatch_from_detections")
-    blockers.append("no_observed_vs_expected_residual_path")
+    # Residuals module exists (asa_astro.residuals); not auto-attached to every bundle yet.
     # Sky→Objective harness exists (asa_astro.bridge); still not auto-bound from this report alone.
     # Never claim Objective-ready: sky hypothesis path is not entity promotion.
     report = {
