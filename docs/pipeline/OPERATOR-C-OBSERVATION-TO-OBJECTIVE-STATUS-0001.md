@@ -23,7 +23,7 @@ There is **no** automated bridge that turns an observation `graph.json` into an 
 | WCS-when-present localisation | **Done:** `wcs.py` + wired into `process_observation` (`sky_localisations.json`); fail closed when absent |
 | Catalogue cross-match from detections | **Done:** `crossmatch.py` + optional metadata `catalogue` → `catalogue_crossmatches.json`; evidence-qualified only |
 | Observed-vs-expected residual evidence | Gaps today are catalogue expectations, not observation residuals |
-| graph.json → temporary universe → Objective | Still missing |
+| graph.json / sky localisations → temporary universe → Objective | **Done (thin harness):** `asa_astro.bridge.sky_to_objective` — hypothesis-flagged entities + receipt |
 
 Promotion rules (non-negotiable): preserve source images; never silently fill missing values; distinguish **hypothesis** vs **established**. Candidate labels remain hypotheses until an explicit, evidenced resolution step exists. See `docs/pipeline/WCS-WHEN-PRESENT-CROSSMATCH-0001.md`.
 
@@ -32,6 +32,6 @@ Promotion rules (non-negotiable): preserve source images; never silently fill mi
 1. ~~Observation bundle → sky-candidate contract (WCS when present; else `unavailable`, never invented).~~ **Done** (`wcs.py` + schemas).
 2. ~~Cross-match interface emitting `matched` / `unresolved` / `contested` without collapsing representation→entity.~~ **Done** (`crossmatch.py` + schema).
 3. ~~Wire localisation/crossmatch into `process_observation`.~~ **Done** (fail closed when WCS absent; hypothesis labels; evidence-qualified matches).
-4. Thin harness: synthetic sky-localised candidates → temporary universe → one Objective evaluate (hypothesis flagged on every derived entity).
+4. ~~Thin harness: synthetic sky-localised candidates → temporary universe → one Objective evaluate.~~ **Done** (`asa_astro.bridge`).
 5. Observed-vs-expected residuals + missing-expected + next-evidence recommendation (Action UI fields).
 6. Optional: FITS/`astropy.wcs` → declared-WCS adapter (still fail closed; never invent).

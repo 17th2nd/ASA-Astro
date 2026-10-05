@@ -47,7 +47,7 @@ def main(argv: list[str]) -> int:
     if not cross_path.exists():
         blockers.append("no_catalogue_crossmatch_from_detections")
     blockers.append("no_observed_vs_expected_residual_path")
-    blockers.append("no_sky_candidate_to_objective_harness")
+    # Sky→Objective harness exists (asa_astro.bridge); still not auto-bound from this report alone.
     # Never claim Objective-ready: sky hypothesis path is not entity promotion.
     report = {
         "status": "observation_ready_objective_not_bound",

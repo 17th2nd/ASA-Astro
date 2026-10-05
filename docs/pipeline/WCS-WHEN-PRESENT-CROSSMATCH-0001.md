@@ -95,8 +95,22 @@ Source image bytes are never written; only content-addressed copies. Coordinates
 .venv/bin/python -m unittest tests.unit.test_process_observation_wcs -v
 ```
 
+## Sky → Objective bridge
+
+```python
+from asa_astro.bridge import bridge_sky_localisations_to_objective
+result = bridge_sky_localisations_to_objective(localisations, out_dir, crossmatches=crossmatches)
+# writes universe/objective/context/evaluation/plan/receipt + bridge_manifest.json
+# every sky entity: classification_status=hypothesis; established_identity_promoted=false
+```
+
+Fail closed when no `status=localised` records (or bundle `wcs_present=false`).
+
+```bash
+ASTRO_ASA_PIN_KIND=current_dev .venv/bin/python -m unittest tests.unit.test_sky_to_objective_bridge -v
+```
+
 ## Next gaps
 
 1. Optional FITS/`astropy.wcs` adapter behind the same declared-WCS contract (still fail closed).
-2. Thin harness: synthetic sky-localised candidates → temporary universe → one Objective evaluate (hypothesis flagged).
-3. Observed-vs-expected residual evidence for Action UI.
+2. Observed-vs-expected residual evidence for Action UI.
