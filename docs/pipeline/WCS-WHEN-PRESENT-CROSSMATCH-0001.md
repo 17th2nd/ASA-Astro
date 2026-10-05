@@ -78,8 +78,25 @@ xm = crossmatch_localisation(
 .venv/bin/python -m unittest tests.unit.test_wcs_and_crossmatch -v
 ```
 
+## `process_observation` wiring
+
+`process_observation` always emits `sky_localisations.json`:
+
+| Metadata | Behaviour |
+|---|---|
+| no `wcs` / `declared_wcs` | Fail closed: every localisation `status=unavailable`, sky coords null |
+| incomplete/invalid WCS | Fail closed (same); reason recorded in provenance |
+| complete declared WCS | Localise centroids; `classification_status=hypothesis`; write `wcs_solution.json` |
+| optional `catalogue` block | In-memory evidence-qualified crossmatch → `catalogue_crossmatches.json` |
+
+Source image bytes are never written; only content-addressed copies. Coordinates are never invented.
+
+```bash
+.venv/bin/python -m unittest tests.unit.test_process_observation_wcs -v
+```
+
 ## Next gaps
 
 1. Optional FITS/`astropy.wcs` adapter behind the same declared-WCS contract (still fail closed).
 2. Thin harness: synthetic sky-localised candidates → temporary universe → one Objective evaluate (hypothesis flagged).
-3. Wire localisation into `process_observation` only when metadata carries declared WCS (no silent path).
+3. Observed-vs-expected residual evidence for Action UI.

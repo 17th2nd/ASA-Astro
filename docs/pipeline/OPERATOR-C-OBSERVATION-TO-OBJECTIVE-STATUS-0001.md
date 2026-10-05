@@ -20,8 +20,8 @@ There is **no** automated bridge that turns an observation `graph.json` into an 
 | Missing / partial | Why it blocks Objective binding |
 |---|---|
 | FITS header / plate-solve → declared WCS | Thin slice accepts **caller-declared** WCS only (local linear CD); no FITS parser yet |
-| WCS-when-present localisation | **Done (thin slice):** `asa_astro.evidence.wcs` — fail closed when absent; hypothesis labels |
-| Catalogue cross-match from detections | **Done (thin slice):** `asa_astro.evidence.crossmatch` — matched/unresolved/contested; evidence-qualified only |
+| WCS-when-present localisation | **Done:** `wcs.py` + wired into `process_observation` (`sky_localisations.json`); fail closed when absent |
+| Catalogue cross-match from detections | **Done:** `crossmatch.py` + optional metadata `catalogue` → `catalogue_crossmatches.json`; evidence-qualified only |
 | Observed-vs-expected residual evidence | Gaps today are catalogue expectations, not observation residuals |
 | graph.json → temporary universe → Objective | Still missing |
 
@@ -29,8 +29,9 @@ Promotion rules (non-negotiable): preserve source images; never silently fill mi
 
 ## Next Astro-only steps (ordered)
 
-1. ~~Observation bundle → sky-candidate contract (WCS when present; else `unavailable`, never invented).~~ **Thin slice landed** (`wcs-solution` / `sky-localisation` schemas + `wcs.py`).
-2. ~~Cross-match interface emitting `matched` / `unresolved` / `contested` without collapsing representation→entity.~~ **Thin slice landed** (`catalogue-crossmatch` schema + `crossmatch.py`).
-3. Thin harness: synthetic sky-localised candidates → temporary universe → one Objective evaluate (hypothesis flagged on every derived entity).
-4. Optional: FITS/`astropy.wcs` → declared-WCS adapter (still fail closed; never invent).
-5. Optional: wire localisation into `process_observation` only when metadata carries declared WCS.
+1. ~~Observation bundle → sky-candidate contract (WCS when present; else `unavailable`, never invented).~~ **Done** (`wcs.py` + schemas).
+2. ~~Cross-match interface emitting `matched` / `unresolved` / `contested` without collapsing representation→entity.~~ **Done** (`crossmatch.py` + schema).
+3. ~~Wire localisation/crossmatch into `process_observation`.~~ **Done** (fail closed when WCS absent; hypothesis labels; evidence-qualified matches).
+4. Thin harness: synthetic sky-localised candidates → temporary universe → one Objective evaluate (hypothesis flagged on every derived entity).
+5. Observed-vs-expected residuals + missing-expected + next-evidence recommendation (Action UI fields).
+6. Optional: FITS/`astropy.wcs` → declared-WCS adapter (still fail closed; never invent).

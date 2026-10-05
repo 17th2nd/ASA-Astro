@@ -16,6 +16,7 @@ from typing import Any
 
 from PIL import Image, ImageDraw, __version__ as pillow_version
 
+from .crossmatch import crossmatch_localisations
 from .detection import detect_regions
 from .graph import build_candidates, build_graph, build_relationships
 from .models import (
@@ -27,7 +28,8 @@ from .models import (
     record_metadata,
     stable_id,
 )
-from .validation import validate_generated_records
+from .validation import validate_generated_records, validate_instance
+from .wcs import WcsUnavailable, localise_detections, parse_declared_wcs
 
 
 def hash_file(path: Path) -> str:
@@ -82,6 +84,122 @@ def _declared_string_list(metadata: dict[str, Any], key: str) -> list[str]:
     if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
         raise ValueError(f"declared metadata field {key} must be an array of strings")
     return value
+
+
+def _extract_declared_wcs(metadata: dict[str, Any]) -> dict[str, Any] | None:
+    """Return raw declared WCS payload from metadata, or None when absent.
+
+    Absence is fail-closed upstream: localisation emits unavailable and never
+    invents coordinates. Incomplete payloads are also fail-closed there.
+    """
+
+    for key in ("wcs", "declared_wcs"):
+        if key in metadata and metadata[key] is not None:
+            value = metadata[key]
+            if not isinstance(value, dict):
+                raise ValueError(f"declared metadata field {key} must be a JSON object")
+            return value
+    return None
+
+
+def _extract_catalogue_fragment(
+    metadata: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any], float] | None:
+    """Return in-memory catalogue rows + provenance + radius, or None.
+
+    Catalogue material stays caller-supplied and in-memory only (no disk dumps).
+    """
+
+    block = metadata.get("catalogue")
+    if block is None:
+        return None
+    if not isinstance(block, dict):
+        raise ValueError("declared metadata field catalogue must be a JSON object")
+    entries = block.get("entries")
+    provenance = block.get("provenance")
+    if not isinstance(entries, list):
+        raise ValueError("catalogue.entries must be an array")
+    if not isinstance(provenance, dict):
+        raise ValueError("catalogue.provenance must be an object")
+    radius = block.get("match_radius_arcsec", 2.0)
+    try:
+        radius_value = float(radius)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("catalogue.match_radius_arcsec must be numeric") from exc
+    if radius_value <= 0:
+        raise ValueError("catalogue.match_radius_arcsec must be > 0")
+    normalised_entries: list[dict[str, Any]] = []
+    for index, entry in enumerate(entries):
+        if not isinstance(entry, dict):
+            raise ValueError(f"catalogue.entries[{index}] must be an object")
+        normalised_entries.append(entry)
+    return normalised_entries, provenance, radius_value
+
+
+def _candidate_id_by_detection(candidates: list[dict[str, Any]]) -> dict[str, str]:
+    mapping: dict[str, str] = {}
+    for candidate in candidates:
+        for detection_id in candidate.get("detection_ids") or []:
+            mapping[str(detection_id)] = str(candidate["id"])
+    return mapping
+
+
+def _sky_summary_section(
+    localisations: list[dict[str, Any]],
+    crossmatches: list[dict[str, Any]] | None,
+    wcs_record: dict[str, Any] | None,
+) -> list[str]:
+    lines = [
+        "## Sky localisation (WCS-when-present)",
+        "",
+    ]
+    if wcs_record is None:
+        lines.append(
+            "- Declared WCS: **absent** — fail closed; sky coordinates were not invented."
+        )
+    else:
+        lines.append(
+            f"- Declared WCS: present (`{wcs_record.get('frame')}` / `{wcs_record.get('epoch')}`); "
+            "sky positions remain **hypothesis**, not established identity."
+        )
+    localised = sum(1 for item in localisations if item.get("status") == "localised")
+    unavailable = sum(1 for item in localisations if item.get("status") == "unavailable")
+    lines.extend(
+        [
+            f"- Localisations: {len(localisations)} (localised={localised}, unavailable={unavailable})",
+            "",
+            "| Detection | Status | Classification | RA / Dec |",
+            "|---|---|---|---|",
+        ]
+    )
+    for item in localisations:
+        sky = item.get("sky") or {}
+        if item.get("status") == "localised":
+            coords = f"{sky.get('ra_deg'):.6f} / {sky.get('dec_deg'):.6f}"
+        else:
+            coords = "null / null (fail closed)"
+        lines.append(
+            f"| `{item['detection_id']}` | `{item['status']}` | `{item['classification_status']}` | {coords} |"
+        )
+    if crossmatches is not None:
+        lines.extend(
+            [
+                "",
+                "## Catalogue crossmatch (evidence-qualified)",
+                "",
+                "| Detection | Resolution | Evidence-qualified | Classification | Candidates |",
+                "|---|---|---|---|---:|",
+            ]
+        )
+        for item in crossmatches:
+            lines.append(
+                f"| `{item['detection_id']}` | `{item['resolution_state']}` | "
+                f"{'yes' if item.get('evidence_qualified') else 'no'} | "
+                f"`{item['classification_status']}` | {len(item.get('candidates') or [])} |"
+            )
+    lines.append("")
+    return lines
+
 
 
 def _software_record() -> dict[str, str]:
@@ -148,6 +266,9 @@ def _summary_markdown(
     detections: list[dict[str, Any]],
     edges: list[dict[str, Any]],
     processing_run_id: str,
+    localisations: list[dict[str, Any]] | None = None,
+    crossmatches: list[dict[str, Any]] | None = None,
+    wcs_record: dict[str, Any] | None = None,
 ) -> str:
     detection_by_id = {item["id"]: item for item in detections}
     lines = [
@@ -189,12 +310,15 @@ def _summary_markdown(
         lines.append(
             f"| `{edge['id']}` | `{edge['edge_type']}` | `{assertion['relationship_classification']}` | {assertion['relationship_strength']['value']:.6f} | {assertion['confidence']['value']:.6f} (uncalibrated) | {len(assertion['evidence_ids'])} |"
         )
+    if localisations is not None:
+        lines.append("")
+        lines.extend(_sky_summary_section(localisations, crossmatches, wcs_record))
     lines.extend(
         [
             "",
             "## Scientific boundary",
             "",
-            "This output is a deterministic image-space candidate graph. A detection is not a confirmed astronomical entity; a relationship assertion is not an established physical relationship. Encoded brightness is neither physical luminosity nor significance. Unknown depth, calibration, identity, and causal structure remain unknown.",
+            "This output is a deterministic image-space candidate graph. A detection is not a confirmed astronomical entity; a relationship assertion is not an established physical relationship. Encoded brightness is neither physical luminosity nor significance. Unknown depth, calibration, identity, and causal structure remain unknown. Sky positions derived from declared WCS remain hypotheses; catalogue matches are evidence-qualified associations only and never silently established identity.",
             "",
         ]
     )
@@ -459,6 +583,88 @@ def process_observation(
         observation_source_id, candidates, detections, active_parameters
     )
     graph = build_graph(observation_source, processing_run_id, candidates, edges)
+
+    # WCS-when-present localisation + optional evidence-qualified crossmatch.
+    # Source image bytes are never mutated; centroids only. Fail closed when WCS absent.
+    raw_wcs = _extract_declared_wcs(declared_metadata)
+    wcs_record: dict[str, Any] | None = None
+    wcs_unavailable_reason: str | None = None
+    if raw_wcs is None:
+        wcs_unavailable_reason = "WCS absent: no declared astrometric solution was supplied"
+        wcs_payload = None
+    else:
+        try:
+            wcs_record = parse_declared_wcs(raw_wcs)
+            wcs_payload = wcs_record
+        except WcsUnavailable as exc:
+            # Incomplete/invalid declared WCS still fail closed — never invent coords.
+            wcs_unavailable_reason = str(exc)
+            wcs_payload = None
+
+    detection_to_candidate = _candidate_id_by_detection(candidates)
+    localisations = localise_detections(
+        detections,
+        wcs_payload,
+        candidate_ids=detection_to_candidate,
+    )
+    for localisation in localisations:
+        validate_instance("sky_localisation", localisation)
+
+    catalogue_fragment = _extract_catalogue_fragment(declared_metadata)
+    crossmatches: list[dict[str, Any]] | None = None
+    if catalogue_fragment is not None:
+        catalogue_entries, catalogue_provenance, match_radius = catalogue_fragment
+        crossmatches = crossmatch_localisations(
+            localisations,
+            catalogue_entries,
+            match_radius_arcsec=match_radius,
+            catalogue_provenance=catalogue_provenance,
+        )
+        for crossmatch in crossmatches:
+            validate_instance("catalogue_crossmatch", crossmatch)
+
+    if wcs_record is not None:
+        validate_instance("wcs_solution", wcs_record)
+
+    sky_output_ids = [item["id"] for item in localisations]
+    if crossmatches:
+        sky_output_ids.extend(item["id"] for item in crossmatches)
+    if wcs_record is not None:
+        # Stable id for provenance linkage only; schema itself has no id field.
+        wcs_link_id = stable_id("wcs", {
+            "frame": wcs_record["frame"],
+            "epoch": wcs_record["epoch"],
+            "crpix": wcs_record["crpix"],
+            "crval_deg": wcs_record["crval_deg"],
+            "cd_deg_per_pixel": wcs_record["cd_deg_per_pixel"],
+        })
+        sky_output_ids.append(wcs_link_id)
+    else:
+        wcs_link_id = None
+
+    provenance_record["transformations"].extend(
+        [
+            {
+                "name": "wcs_when_present_localisation",
+                "description": (
+                    "Project detection centroids through caller-declared WCS when present; "
+                    "fail closed with unavailable sky coordinates when absent or incomplete. "
+                    "Never invents coordinates; never mutates source image bytes."
+                ),
+            },
+            {
+                "name": "catalogue_crossmatch_evidence_qualified",
+                "description": (
+                    "Optional in-memory catalogue crossmatch. Matched requires catalogue evidence IDs; "
+                    "classification remains hypothesis; contested/unresolved retained explicitly."
+                ),
+            },
+        ]
+    )
+    if wcs_unavailable_reason:
+        provenance_record["warnings"].append(
+            f"Sky localisation fail-closed: {wcs_unavailable_reason}"
+        )
     provenance_record["output_identifiers"] = sorted(
         {
             observation_source_id,
@@ -470,6 +676,7 @@ def process_observation(
             *(evidence["id"] for evidence in evidence_records),
             *(candidate["id"] for candidate in candidates),
             *(edge["id"] for edge in edges),
+            *sky_output_ids,
         }
     )
     validate_generated_records(
@@ -497,6 +704,18 @@ def process_observation(
         "relationship_assertions": [edge["assertion"] for edge in edges],
         "processing_statistics": processing_statistics,
         "scientific_ground_truth_status": "unavailable",
+        "wcs_solution": wcs_record,
+        "wcs_unavailable_reason": wcs_unavailable_reason,
+        "sky_localisations": localisations,
+        "catalogue_crossmatches": crossmatches,
+        "sky_epistemic": {
+            "wcs_present": wcs_record is not None,
+            "coordinates_invented": False,
+            "source_image_mutated": False,
+            "localisation_classification": "hypothesis_when_localised_else_unknown",
+            "catalogue_match_classification": "hypothesis_evidence_qualified_only",
+            "established_identity_promoted": False,
+        },
     }
 
     output_directory.parent.mkdir(parents=True, exist_ok=True)
@@ -526,16 +745,37 @@ def process_observation(
         summary_path = temporary_root / "summary.md"
         graphml_path = temporary_root / "graph.graphml"
         overlay_path = temporary_root / "overlay.png"
+        sky_path = temporary_root / "sky_localisations.json"
         graph_path.write_bytes(_json_bytes(graph))
         provenance_path.write_bytes(_json_bytes(provenance_bundle))
         summary_path.write_text(
             _summary_markdown(
-                observation_source, image_metadata, candidates, detections, edges, processing_run_id
+                observation_source,
+                image_metadata,
+                candidates,
+                detections,
+                edges,
+                processing_run_id,
+                localisations=localisations,
+                crossmatches=crossmatches,
+                wcs_record=wcs_record,
             ),
             encoding="utf-8",
         )
         graphml_path.write_text(_graphml(graph), encoding="utf-8")
         overlay_path.write_bytes(_render_overlay(working_image, candidates, detections))
+        sky_path.write_bytes(
+            _json_bytes(
+                {
+                    "processing_run_id": processing_run_id,
+                    "wcs_present": wcs_record is not None,
+                    "wcs_unavailable_reason": wcs_unavailable_reason,
+                    "coordinates_invented": False,
+                    "source_image_mutated": False,
+                    "localisations": localisations,
+                }
+            )
+        )
         artifact_paths.extend(
             [
                 (graph_path, "canonical_candidate_graph", "application/json"),
@@ -543,8 +783,27 @@ def process_observation(
                 (summary_path, "human_readable_summary", "text/markdown"),
                 (graphml_path, "graph_exchange", "application/graphml+xml"),
                 (overlay_path, "diagnostic_overlay", "image/png"),
+                (sky_path, "sky_localisations", "application/json"),
             ]
         )
+        if wcs_record is not None:
+            wcs_path = temporary_root / "wcs_solution.json"
+            wcs_path.write_bytes(_json_bytes(wcs_record))
+            artifact_paths.append((wcs_path, "declared_wcs_solution", "application/json"))
+        if crossmatches is not None:
+            crossmatch_path = temporary_root / "catalogue_crossmatches.json"
+            crossmatch_path.write_bytes(
+                _json_bytes(
+                    {
+                        "processing_run_id": processing_run_id,
+                        "evidence_qualified_only": True,
+                        "classification_status_policy": "hypothesis",
+                        "established_identity_promoted": False,
+                        "crossmatches": crossmatches,
+                    }
+                )
+            )
+            artifact_paths.append((crossmatch_path, "catalogue_crossmatches", "application/json"))
         manifest = {
             **record_metadata("computed"),
             "processing_run_id": processing_run_id,
@@ -569,4 +828,11 @@ def process_observation(
         "source_sha256": source_sha256,
         "candidate_count": len(candidates),
         "relationship_count": len(edges),
+        "wcs_present": wcs_record is not None,
+        "sky_localisation_count": len(localisations),
+        "sky_localised_count": sum(1 for item in localisations if item.get("status") == "localised"),
+        "sky_unavailable_count": sum(1 for item in localisations if item.get("status") == "unavailable"),
+        "catalogue_crossmatch_count": 0 if crossmatches is None else len(crossmatches),
+        "coordinates_invented": False,
+        "source_image_mutated": False,
     }
