@@ -77,7 +77,7 @@ class SliceRoundTrip(_TempDataDir):
         from app import slice as s
         view = s.run_slice()
         run_dir = Path(os.environ["ASA_ASTRO_APP_DATA_DIR"]) / "runs" / view["run_id"]
-        for name in s.ARTIFACTS:
+        for name in s.CORE_ARTIFACTS:
             self.assertTrue((run_dir / name).is_file(), name)
         receipt_text = (run_dir / "receipt.json").read_text(encoding="utf-8")
         receipt = json.loads(receipt_text)
@@ -223,7 +223,7 @@ class HttpTests(_TempDataDir):
         self.assertTrue(p.controls)
         for control in p.controls:
             self.assertIn(control, p.label_for, f"form control {control} has no <label for>")
-        for section in ("pin", "snapshot", "receipt", "claims", "unknowns", "observation", "next", "runs"):
+        for section in ("pin", "upload", "snapshot", "receipt", "claims", "unknowns", "source", "observation", "action", "next", "runs"):
             self.assertIn(section, p.ids)
         for asset in ("/static/app.js", "/static/styles.css"):
             self.assertEqual(self.get(asset)[0], 200)

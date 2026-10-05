@@ -20,24 +20,20 @@ the UI shows the limitation or derives only from existing fields with a source l
 
 ## Significance / pipeline lane (what the app needs produced)
 
-- **G-SIG-0 — WCS / crossmatch honesty contract received (Significance / Operator C).** In-repo on tip `686ef626`:
-  `docs/pipeline/WCS-WHEN-PRESENT-CROSSMATCH-0001.md` + schemas
-  `schemas/observation/{wcs-solution,sky-localisation,catalogue-crossmatch}.schema.json` and transforms under
-  `src/asa_astro/evidence/{wcs,crossmatch}.py`. **Present NOW as observation evidence records only** — not yet on
-  universe / objective / receipt. App consume path: `app/observation_honesty.py` projects present-only fields with
-  honesty labels + source pointers (schema path + record id + optional source_reference / catalogue_provenance /
-  inference_basis). Display rules: surface only fields that are present; always show `classification_status` /
-  `resolution_state` when present; localisation+crossmatch `classification_status` ∈ {hypothesis, provisional, unknown}
-  only — **never established** from this slice; matched only if `evidence_qualified`; contested lists candidates without
-  a winner; absence of WCS = no WCS (do not invent). **Still pending Operator C freeze / wire-in:**
-  `process_observation` WCS path; Sky→candidates→Objective bridge; residual_summary / observed_vs_expected[] /
-  missing_expected[] / next_evidence_recommendation / honesty_status / unknowns[] on receipt. Until those land, the
-  thin-slice Objective run carries `observation_evidence.present=false`; unknowns/next_evidence stay derived from
-  receipt/snapshot fields only. Receipt verification is **not** blocked on missing WCS.
-- **G-SIG-1 — no image → Astro universe bridge.** The Codex B observe pipeline (`asa_astro.evidence`) emits an
-  image-space candidate graph (`graph.json`, `provenance.json`; `asa_dependency: unavailable_not_consumed`); the Astro
-  engine consumes a catalogue-style `Universe`. Nothing maps one into the other, so image upload cannot feed
-  pin → snapshot → objective → receipt. The slice uses the repo example `data/universe/slice1.json` (synthetic).
+- **G-SIG-0 — WCS / crossmatch / residuals / bridge (Significance FROZEN on tip `b785f22`).**
+  Tip artefacts: `process_observation` always writes `sky_localisations.json` (unavailable if no WCS), optional
+  `wcs_solution.json` / `catalogue_crossmatches.json`; `asa_astro.residuals` emits residuals / missing_expected /
+  next_evidence_recommendations / action_ui; `asa_astro.bridge` sky→Objective keeps entities as hypothesis.
+  **App upload bar (Operator D):** accept image/FITS → content-addressed preserve under `app/var/uploads/` → invoke
+  `process_observation` when Pillow-decodable → project `observation_evidence.present=true` when bundle artefacts
+  exist → project Action residual fields present-only → still run thin Objective path (synthetic universe) for the
+  primary receipt. Honesty: never established from this slice; null sky when unavailable; no invented values;
+  matched only if evidence_qualified. JSON-only runs (no upload) still have `observation_evidence.present=false`.
+  Receipt verification is **not** blocked on missing WCS.
+- **G-SIG-1 — image → Objective universe bridge is tip-available but not the primary app receipt.** Tip `4dfb4b8`
+  adds `asa_astro.bridge` (sky-localised → temporary hypothesis universe → Objective). The thin app's **primary**
+  receipt still uses `data/universe/slice1.json` (synthetic) after upload; upload preserves source and projects
+  observation/residuals honesty. Promoting the bridge receipt to the primary UI path is Assurance-owned.
 - **G-SIG-2 — no dedicated "next evidence" record.** The receipt carries a plan (selected actions) and failed eligibility
   rules; the app lists those, labelled hypothesis, with source pointers. A pipeline-produced next-evidence record (what to
   collect, why, expected effect on the objective) is needed for anything richer. The store-backed frontier
@@ -53,8 +49,10 @@ the UI shows the limitation or derives only from existing fields with a source l
 
 ## Deferred (by scope decision, not blocked)
 
-Image upload and observe-pipeline session flow, sky map, relationship graph view (`astro ui` navigator exists but uses
-D3 from a CDN), multi-objective comparison, session loop (`astro session`), real-catalogue store runs.
+Sky map, relationship graph view (`astro ui` navigator exists but uses D3 from a CDN), multi-objective comparison,
+session loop (`astro session`), real-catalogue store runs. **Upload bar landed** (preserve source + process_observation
+consume + Action residuals); auto-running the sky→Objective bridge receipt as the primary UI path remains optional
+(primary receipt stays the thin synthetic Objective path).
 
 ## Assurance
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ASA-Astro V1 — pin → snapshot → objective → receipt</title>
+  <title>ASA-Astro V1 — upload → pin → snapshot → objective → receipt</title>
   <link rel="stylesheet" href="/static/styles.css">
   <script src="/static/app.js" defer></script>
 </head>
@@ -11,18 +11,21 @@
   <a class="skip" href="#main">Skip to main content</a>
   <header class="site" role="banner">
     <h1>ASA-Astro <span class="muted">V1 thin slice</span></h1>
-    <p class="tagline">Pinned ASA kernel → kernel snapshot → one Objective → digest-identified receipt. Every claim is labelled; nothing here is empirical validation.</p>
+    <p class="tagline">Upload observation source (preserved) → pinned ASA kernel → snapshot → one Objective → receipt + honesty. Observation evidence and residuals are present-only; never established from this slice.</p>
   </header>
   <nav aria-label="Sections" class="sections">
     <ul>
       <li><a href="#pin">Pin</a></li>
+      <li><a href="#upload">Upload</a></li>
       <li><a href="#run">Run</a></li>
       <li><a href="#snapshot">Snapshot</a></li>
       <li><a href="#receipt">Receipt</a></li>
       <li><a href="#explanation">Explanation</a></li>
       <li><a href="#claims">Claims</a></li>
       <li><a href="#unknowns">Unknowns</a></li>
+      <li><a href="#source">Source</a></li>
       <li><a href="#observation">Observation evidence</a></li>
+      <li><a href="#action">Action residuals</a></li>
       <li><a href="#next">Next evidence</a></li>
       <li><a href="#runs">Runs</a></li>
     </ul>
@@ -32,6 +35,22 @@
       <h2 id="pin-h">1. ASA pin</h2>
       <p class="help">Read from <code>config/asa-baseline-current-dev.json</code> (commit 633f837a) and verified by <code>tools/asa_baseline.py</code>.</p>
       <dl id="pin-dl" class="kv"><dt>Status</dt><dd>loading…</dd></dl>
+    </section>
+
+
+    <section id="upload" aria-labelledby="up-h">
+      <h2 id="up-h">1b. Upload observation source</h2>
+      <p class="help">Accepts Pillow-decodable images (png/jpeg/ppm/…) for <code>process_observation</code>, or FITS for preserve-source storage only. Bytes are content-addressed under <code>app/var/uploads/</code> with sha256 integrity. Optional metadata JSON may declare WCS / catalogue (never invented by the app).</p>
+      <form id="upload-form" enctype="multipart/form-data">
+        <label for="source-file">Observation source file</label>
+        <input id="source-file" name="source" type="file" accept=".png,.jpg,.jpeg,.gif,.webp,.ppm,.bmp,.tif,.tiff,.fits,.fit,.fts,image/*">
+        <label for="meta-file">Optional metadata JSON (declared WCS / catalogue)</label>
+        <input id="meta-file" name="metadata" type="file" accept=".json,application/json">
+        <label for="upload-objective">Objective</label>
+        <select id="upload-objective" name="objective"></select>
+        <button type="submit" id="upload-btn">Upload → preserve → run thin path</button>
+      </form>
+      <p id="upload-status" class="status" role="status" aria-live="polite"></p>
     </section>
 
     <section id="run" aria-labelledby="run-h">
@@ -88,15 +107,36 @@
       <ul id="unknowns-list" class="cited"></ul>
     </section>
 
+
+    <section id="source" aria-labelledby="src-h" hidden>
+      <h2 id="src-h">Preserved observation source <span class="badge record">record</span></h2>
+      <p class="help">Uploaded bytes are kept. Path + digest + original filename are recorded; integrity verified by sha256.</p>
+      <dl id="src-dl" class="kv"></dl>
+      <p id="src-bridge" class="help"></p>
+    </section>
+
     <section id="observation" aria-labelledby="obs-h" hidden>
       <h2 id="obs-h">Observation evidence <span class="badge hypothesis">present-only</span></h2>
-      <p class="help">Operator C / Significance honesty contract. Surfaces only wcs-solution / sky-localisation / catalogue-crossmatch fields that are present. Classification is never established from this slice. Hidden when no observation evidence is attached to the run (current Objective path).</p>
+      <p class="help">Operator C / Significance honesty contract. Surfaces only wcs-solution / sky-localisation / catalogue-crossmatch fields that are present (from process_observation bundle artefacts). Classification is never established from this slice. Shown when artefacts exist for the run.</p>
       <p id="obs-gap" class="help"></p>
       <div id="obs-wcs"></div>
       <h3>Sky localisations</h3>
       <ul id="obs-loc-list" class="cited"></ul>
       <h3>Catalogue crossmatches</h3>
       <ul id="obs-xm-list" class="cited"></ul>
+    </section>
+
+
+    <section id="action" aria-labelledby="act-h" hidden>
+      <h2 id="act-h">Action residuals <span class="badge hypothesis">hypothesis</span></h2>
+      <p class="help">Present-only fields from tip <code>asa_astro.residuals</code> (OBSERVED-VS-EXPECTED-RESIDUALS-0001). Never promotes catalogue association to established identity; null sky when unavailable.</p>
+      <p id="act-headline" class="notice" hidden></p>
+      <h3>Residuals</h3>
+      <ul id="act-residuals" class="cited"></ul>
+      <h3>Missing expected</h3>
+      <ul id="act-missing" class="cited"></ul>
+      <h3>Next evidence recommendations</h3>
+      <ul id="act-recs" class="cited"></ul>
     </section>
 
     <section id="next" aria-labelledby="next-h">

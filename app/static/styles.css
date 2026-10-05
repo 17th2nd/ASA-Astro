@@ -34,3 +34,6 @@ ul.cited { padding-left:1.1rem; } ul.cited li { margin:.35rem 0; overflow-wrap:a
 th, td { text-align:left; padding:.35rem .5rem; border-bottom:1px solid var(--line); vertical-align:top; } caption { text-align:left; color:var(--muted); padding:.25rem 0; }
 .entity { border-top:1px solid var(--line); padding-top:.5rem; margin-top:.5rem; }
 @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+
+input[type=file] { width:100%; padding:.5rem; background:#0b101a; color:var(--text); border:1px solid #5a6a8c; border-radius:4px; font:inherit; }
+#upload, #source, #action { grid-column: 1 / -1; }

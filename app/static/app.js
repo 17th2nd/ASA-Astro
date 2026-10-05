@@ -58,13 +58,18 @@ async function loadPin() {
 
 async function loadObjectives() {
   const o = await api("/api/objectives");
+  const fill = (sel) => {
+    if (!sel) return;
+    sel.replaceChildren();
+    for (const ob of o.objectives) {
+      const opt = el("option", { text: `${ob.name} (${ob.slug})`, attrs: { value: ob.slug } });
+      if (ob.slug === o.default) opt.selected = true;
+      sel.append(opt);
+    }
+  };
   const sel = $("#objective");
-  sel.replaceChildren();
-  for (const ob of o.objectives) {
-    const opt = el("option", { text: `${ob.name} (${ob.slug})`, attrs: { value: ob.slug } });
-    if (ob.slug === o.default) opt.selected = true;
-    sel.append(opt);
-  }
+  fill(sel);
+  fill($("#upload-objective"));
   const describe = () => { const ob = o.objectives.find((x) => x.slug === sel.value); $("#objective-q").textContent = ob ? `${ob.question} — authority: ${ob.authority}` : ""; };
   sel.addEventListener("change", describe); describe();
 }
@@ -120,7 +125,9 @@ function render(v) {
   $("#claim-counts").textContent = `Established in ASA state: ${v.claim_counts["established-in-ASA-state"]} · Hypothesis: ${v.claim_counts.hypothesis}`;
   renderClaims();
   citedList($("#unknowns-list"), v.unknowns, id, (it) => el("li", {}, badge("unknown"), document.createTextNode(` ${it.text}`), srcLink(id, it.source)));
+  renderSource(v);
   renderObservation(v);
+  renderAction(v);
   citedList($("#next-list"), v.next_evidence, id, (it) => el("li", {}, badge(it.label), document.createTextNode(` ${it.text}`), srcLink(id, it.source)));
 }
 
@@ -203,8 +210,89 @@ async function onRun(ev) {
   } finally { btn.disabled = false; }
 }
 
+
+function renderSource(v) {
+  const sec = $("#source");
+  const us = v.uploaded_source;
+  if (!us || !us.present) { sec.hidden = true; return; }
+  sec.hidden = false;
+  kv($("#src-dl"), [
+    ["Original filename", us.original_filename],
+    ["SHA-256", us.sha256],
+    ["Byte size", String(us.byte_size)],
+    ["Media type", us.media_type],
+    ["Stored path", us.stored_path],
+    ["Integrity", us.integrity_status],
+    ["Registration", us.registration_policy],
+    ["process_observation invoked", String(!!us.process_observation_invoked)],
+    ["Observation bundle", us.observation_bundle_path || "—"],
+    ["Bundle source verified", String(us.bundle_source_sha256_verified)],
+  ]);
+  $("#src-bridge").textContent = us.objective_bridge || us.process_observation_reason || "";
+  // Also link uploaded_source.json artifact
+  const links = $("#rcpt-links");
+  if (links && v.run_id) {
+    const a = el("a", { href: `/api/runs/${encodeURIComponent(v.run_id)}/artifacts/uploaded_source.json`, text: "uploaded_source.json" });
+    links.append(document.createTextNode(" "), a);
+  }
+}
+
+function renderAction(v) {
+  const sec = $("#action");
+  const ove = v.observed_vs_expected;
+  if (!ove || !ove.present) { sec.hidden = true; return; }
+  sec.hidden = false;
+  const head = $("#act-headline");
+  if (ove.action_ui && ove.action_ui.headline) {
+    head.hidden = false;
+    head.textContent = ove.action_ui.headline
+      + (ove.action_ui.honesty ? ` — honesty: hypothesis_only=${ove.action_ui.honesty.hypothesis_only}; established_promoted=${ove.action_ui.honesty.established_identity_promoted}; coords_invented=${ove.action_ui.honesty.coordinates_invented}` : "");
+  } else { head.hidden = true; }
+  citedList($("#act-residuals"), ove.residuals || [], v.run_id, (it) =>
+    el("li", {}, badge(it.label || "hypothesis"), document.createTextNode(` [${it.status}] ${it.plain_language_short || it.plain_language || ""}`), srcLink(v.run_id, it.source)));
+  citedList($("#act-missing"), ove.missing_expected || [], v.run_id, (it) =>
+    el("li", {}, badge(it.label || "hypothesis"), document.createTextNode(` ${it.plain_language_short || it.plain_language || it.catalogue_id || ""}`), srcLink(v.run_id, it.source)));
+  citedList($("#act-recs"), ove.next_evidence_recommendations || [], v.run_id, (it) =>
+    el("li", {}, badge(it.label || "hypothesis"), document.createTextNode(` [${it.code || "?"}] ${it.plain_language || ""}`), srcLink(v.run_id, it.source)));
+}
+
+async function onUpload(ev) {
+  ev.preventDefault();
+  const btn = $("#upload-btn"); btn.disabled = true;
+  const statusEl = $("#upload-status");
+  const fileInput = $("#source-file");
+  if (!fileInput.files || !fileInput.files[0]) {
+    statusEl.textContent = "Choose an observation source file first.";
+    btn.disabled = false;
+    return;
+  }
+  for (const s of ["snapshot", "objective", "receipt"]) markStage(s, null);
+  statusEl.textContent = "Uploading: preserving source, optional process_observation, thin Objective path…";
+  try {
+    const fd = new FormData();
+    fd.append("source", fileInput.files[0], fileInput.files[0].name);
+    const meta = $("#meta-file");
+    if (meta.files && meta.files[0]) fd.append("metadata", meta.files[0], meta.files[0].name);
+    fd.append("objective", $("#upload-objective").value || $("#objective").value);
+    const r = await fetch("/api/runs", { method: "POST", body: fd });
+    const body = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
+    if (!r.ok) throw new Error(body.error || `HTTP ${r.status}`);
+    render(body);
+    statusEl.textContent = `Done. Receipt ${body.receipt.receipt_id}`
+      + (body.uploaded_source && body.uploaded_source.present ? `; source sha256=${body.uploaded_source.sha256}` : "")
+      + (body.observation_evidence && body.observation_evidence.present ? "; observation_evidence.present=true" : "; observation_evidence.present=false")
+      + (body.reproduced ? " (identical receipt id reproduced)" : "");
+    await loadRuns($("#q").value);
+    $("#receipt").scrollIntoView();
+  } catch (e) {
+    statusEl.textContent = `Upload run failed: ${e.message}`;
+    markStage("receipt", false);
+  } finally { btn.disabled = false; }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   $("#run-form").addEventListener("submit", onRun);
+  const uf = $("#upload-form"); if (uf) uf.addEventListener("submit", onUpload);
   $("#search-form").addEventListener("submit", (ev) => { ev.preventDefault(); loadRuns($("#q").value); });
   $("#claim-filter").addEventListener("input", renderClaims);
   await loadPin();

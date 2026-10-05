@@ -21,14 +21,17 @@ from typing import Any
 
 from . import APP_VERSION
 from . import pin as pinmod
-from .observation_honesty import project_observation_evidence
+from .observation_honesty import project_observation_evidence, project_action_residuals
 
 ROOT = pinmod.ROOT
 _LOCK = threading.Lock()
 SLUG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,80}$")
 RUN_ID = re.compile(r"^RCPT-[0-9a-f]{64}$")
 ARTIFACTS = ("pin.json", "snapshot.json", "objective.json", "context.json", "evaluation.json", "plan.json",
-             "receipt.json", "receipt.sha256", "run.json", "view.json")
+             "receipt.json", "receipt.sha256", "run.json", "view.json", "uploaded_source.json",
+             "observation_wcs.json", "observation_localisations.json", "observation_crossmatches.json", "observed_vs_expected.json")
+CORE_ARTIFACTS = ("pin.json", "snapshot.json", "objective.json", "context.json", "evaluation.json", "plan.json",
+                  "receipt.json", "receipt.sha256", "run.json", "view.json")
 
 LABEL_POLICY = {
     "id": "app-honesty-labels-v1",
@@ -124,10 +127,51 @@ def _label_link(link: dict[str, Any]) -> tuple[str, list[str]]:
     return ("established-in-ASA-state" if not reasons else "hypothesis"), reasons
 
 
+
+def _uploaded_source_view(uploaded_source: dict | None) -> dict[str, Any]:
+    """Honesty block for a preserved upload. Absent → present=false (JSON-only run)."""
+    if not uploaded_source:
+        return {
+            "present": False,
+            "note": "No observation source was uploaded for this run.",
+        }
+    obs = uploaded_source.get("process_observation") or {}
+    return {
+        "present": True,
+        "original_filename": uploaded_source.get("original_filename"),
+        "sha256": uploaded_source.get("sha256"),
+        "byte_size": uploaded_source.get("byte_size"),
+        "media_type": uploaded_source.get("media_type"),
+        "stored_path": uploaded_source.get("stored_path"),
+        "registration_policy": uploaded_source.get("registration_policy"),
+        "integrity_status": uploaded_source.get("integrity_status"),
+        "processable_by_process_observation": uploaded_source.get("processable_by_process_observation"),
+        "store_only": uploaded_source.get("store_only"),
+        "process_observation_invoked": bool(obs.get("invoked")),
+        "process_observation_reason": obs.get("reason"),
+        "observation_bundle_path": obs.get("bundle_path"),
+        "bundle_source_sha256_verified": obs.get("bundle_source_sha256_verified"),
+        "objective_bridge": obs.get("objective_bridge") or (
+            "absent — upload is preserved and optionally processed into an observation "
+            "bundle; the thin Objective path still uses the synthetic example universe "
+            "(G-SIG-1; Significance owns graph→universe wire-in)."
+        ),
+        "label": "record",
+        "source": _ref("uploaded_source.json", ""),
+        "pointers": {
+            "original_filename": _ref("uploaded_source.json", "/original_filename"),
+            "sha256": _ref("uploaded_source.json", "/sha256"),
+            "stored_path": _ref("uploaded_source.json", "/stored_path"),
+        },
+    }
+
+
 def build_view(run_id: str, pin: dict, snap: dict, objective: dict, context: dict, receipt: dict, run: dict,
                observation_wcs: dict | None = None,
                observation_localisations: list | None = None,
-               observation_crossmatches: list | None = None) -> dict[str, Any]:
+               observation_crossmatches: list | None = None,
+               uploaded_source: dict | None = None,
+               observed_vs_expected: dict | None = None) -> dict[str, Any]:
     data_class = snap["universe"]["data_class"]
     claims: list[dict[str, Any]] = []
     for i, e in enumerate(snap["edges"]):
@@ -193,6 +237,17 @@ def build_view(run_id: str, pin: dict, snap: dict, objective: dict, context: dic
                              "source": _ref("snapshot.json", f"/evidence_links/{i}")})
     unknowns.append({"kind": "data-class", "text": f"the evaluated universe is labelled '{data_class}'; no result here describes the real sky",
                      "source": _ref("snapshot.json", "/universe/data_class")})
+    if uploaded_source:
+        unknowns.append({
+            "kind": "observation-objective-bridge",
+            "text": (
+                "uploaded observation source is preserved"
+                + (f" (sha256={uploaded_source.get('sha256')})" if uploaded_source.get("sha256") else "")
+                + "; observation graph is not mapped into this Objective universe "
+                "(Significance-owned; see GAPS G-SIG-1)"
+            ),
+            "source": _ref("uploaded_source.json", "/sha256"),
+        })
 
     next_evidence: list[dict[str, Any]] = []
     for i, a in enumerate(receipt["selected_actions"]):
@@ -260,21 +315,124 @@ def build_view(run_id: str, pin: dict, snap: dict, objective: dict, context: dic
                         "note": "Summary sentences are filled only from the cited fields; per-entity lines are astro.significance.explain output carried in the receipt."},
         "results": results, "claims": claims, "claim_counts": counts,
         "unknowns": unknowns, "next_evidence": next_evidence,
+        "uploaded_source": _uploaded_source_view(uploaded_source),
         "observation_evidence": project_observation_evidence(
             wcs=observation_wcs,
             localisations=observation_localisations,
             crossmatches=observation_crossmatches,
         ),
+        "observed_vs_expected": project_action_residuals(observed_vs_expected),
         "compat_shims": run["compat_shims"],
     }
 
 
 # ---- run --------------------------------------------------------------------------------------
-def run_slice(objective_slug: str | None = None) -> dict[str, Any]:
+def _attach_upload_artifacts(
+    target: Path,
+    *,
+    pin: dict,
+    snap: dict,
+    objective_record: dict,
+    context_record: dict,
+    receipt: dict,
+    run: dict,
+    uploaded_source: dict | None,
+    observation_consume: dict | None,
+) -> dict[str, Any]:
+    """Write upload / observation honesty artifacts and rebuild view.json in place."""
+    obs_wcs = None
+    obs_locs = None
+    obs_xm = None
+    source_record = None
+    if uploaded_source is not None:
+        source_record = dict(uploaded_source)
+        if observation_consume is not None:
+            source_record["process_observation"] = {
+                k: observation_consume.get(k)
+                for k in (
+                    "invoked", "reason", "bundle_path", "bundle_source_sha256_verified",
+                    "sky_localisation_count", "wcs_present", "catalogue_crossmatch_count",
+                    "coordinates_invented", "source_image_mutated", "objective_bridge",
+                    "metadata_path", "summary",
+                )
+            }
+        (target / "uploaded_source.json").write_text(_canon(source_record), encoding="utf-8")
+        if observation_consume and observation_consume.get("invoked"):
+            obs_wcs = observation_consume.get("wcs")
+            obs_locs = observation_consume.get("localisations") or []
+            obs_xm = observation_consume.get("crossmatches") or []
+            if obs_wcs is not None:
+                (target / "observation_wcs.json").write_text(_canon(obs_wcs), encoding="utf-8")
+            (target / "observation_localisations.json").write_text(_canon({"localisations": obs_locs}), encoding="utf-8")
+            if obs_xm:
+                (target / "observation_crossmatches.json").write_text(_canon({"crossmatches": obs_xm}), encoding="utf-8")
+    ove = None
+    if observation_consume and isinstance(observation_consume.get("observed_vs_expected"), dict):
+        ove = observation_consume["observed_vs_expected"]
+        if ove.get("present"):
+            (target / "observed_vs_expected.json").write_text(_canon(ove), encoding="utf-8")
+    view = build_view(
+        run["run_id"], pin, snap, objective_record, context_record, receipt, run,
+        observation_wcs=obs_wcs,
+        observation_localisations=obs_locs,
+        observation_crossmatches=obs_xm,
+        uploaded_source=source_record,
+        observed_vs_expected=ove,
+    )
+    (target / "view.json").write_text(_canon(view), encoding="utf-8")
+    # Refresh run.json artifact digests for any files now present.
+    artifacts = {}
+    for name in ARTIFACTS:
+        p = target / name
+        if p.is_file():
+            artifacts[name] = _sha(p.read_bytes())
+    run = dict(run)
+    run["artifacts"] = artifacts
+    if source_record is not None:
+        run["uploaded_source"] = {
+            "original_filename": source_record.get("original_filename"),
+            "sha256": source_record.get("sha256"),
+            "stored_path": source_record.get("stored_path"),
+            "integrity_status": source_record.get("integrity_status"),
+            "process_observation_invoked": bool((source_record.get("process_observation") or {}).get("invoked")),
+        }
+    (target / "run.json").write_text(_canon(run), encoding="utf-8")
+    return view
+
+
+def run_slice(
+    objective_slug: str | None = None,
+    *,
+    upload_bytes: bytes | None = None,
+    upload_filename: str | None = None,
+    upload_media_type: str | None = None,
+    metadata_bytes: bytes | None = None,
+) -> dict[str, Any]:
+    """Pin → snapshot → one Objective → receipt.
+
+    Optional upload: preserve source under ``app/var/uploads/`` (sha256), optionally
+    invoke tip ``process_observation`` (Pillow-decodable images), project present-only
+    observation honesty into the view, then still run the thin Objective path on the
+    synthetic example universe (no graph→universe bridge).
+    """
     cfg = pinmod.app_config()
     slug = objective_slug or cfg["default_inputs"]["objective"]
     if not SLUG.match(slug) or slug not in {o["slug"] for o in list_objectives()}:
         raise ValueError(f"unknown objective {slug!r}")
+
+    uploaded_source = None
+    observation_consume = None
+    if upload_bytes is not None:
+        from . import upload as uploadmod
+        uploaded_source = uploadmod.store_bytes(
+            upload_bytes,
+            original_filename=upload_filename,
+            media_type=upload_media_type,
+        )
+        observation_consume = uploadmod.run_process_observation(
+            uploaded_source, metadata_bytes=metadata_bytes,
+        )
+
     with _LOCK:
         pin = pinmod.activate()
         from astro.domain import Universe
@@ -301,7 +459,8 @@ def run_slice(objective_slug: str | None = None) -> dict[str, Any]:
         snap = _snapshot_detail(decision.snapshot, universe)
         run = {
             "run_schema": "asa-astro-app-run-v1", "app_version": APP_VERSION, "run_id": run_id,
-            "slice": ["pin", "snapshot", "objective", "receipt"],
+            "slice": ["pin", "snapshot", "objective", "receipt"]
+                     + (["upload", "process_observation"] if uploaded_source else []),
             "inputs": {"universe": str(universe_path.relative_to(ROOT)), "context": str(context_path.relative_to(ROOT)),
                        "objective": str(objective_path.relative_to(ROOT)),
                        "universe_sha256": _sha(universe_path.read_bytes()), "context_sha256": _sha(context_path.read_bytes()),
@@ -316,14 +475,40 @@ def run_slice(objective_slug: str | None = None) -> dict[str, Any]:
         target = runs_dir() / run_id
         invocation = {"issued_at": receipt["issued_at"], "receipt_id": run_id, "receipt_file_sha256": run["receipt_file_sha256"],
                       "recorded_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+        if uploaded_source is not None:
+            invocation["uploaded_source_sha256"] = uploaded_source["sha256"]
+            invocation["uploaded_original_filename"] = uploaded_source["original_filename"]
+            if observation_consume is not None:
+                invocation["process_observation_invoked"] = bool(observation_consume.get("invoked"))
+                invocation["observation_bundle_path"] = observation_consume.get("bundle_path")
+
         if target.exists():
             prior = json.loads((target / "receipt.json").read_text(encoding="utf-8"))
             invocation["reproduced_identical_receipt_id"] = prior["receipt_id"] == run_id
             with (target / "invocations.jsonl").open("a", encoding="utf-8") as fh:
                 fh.write(json.dumps(invocation, sort_keys=True) + "\n")
+            if uploaded_source is not None:
+                # Attach / refresh preserved source + observation honesty on the reproduced receipt.
+                prior_run = json.loads((target / "run.json").read_text(encoding="utf-8"))
+                prior_run["receipt_id_verified"] = verified
+                prior_run["receipt_file_sha256"] = run["receipt_file_sha256"]
+                view = _attach_upload_artifacts(
+                    target,
+                    pin=json.loads((target / "pin.json").read_text(encoding="utf-8")),
+                    snap=json.loads((target / "snapshot.json").read_text(encoding="utf-8")),
+                    objective_record=json.loads((target / "objective.json").read_text(encoding="utf-8")),
+                    context_record=json.loads((target / "context.json").read_text(encoding="utf-8")),
+                    receipt=prior,
+                    run=prior_run,
+                    uploaded_source=uploaded_source,
+                    observation_consume=observation_consume,
+                )
+                view["reproduced"] = True
+                return view
             view = json.loads((target / "view.json").read_text(encoding="utf-8"))
             view["reproduced"] = True
             return view
+
         runs_dir().mkdir(parents=True, exist_ok=True)
         tmp = Path(tempfile.mkdtemp(prefix=".run-", dir=runs_dir()))
         try:
@@ -333,19 +518,33 @@ def run_slice(objective_slug: str | None = None) -> dict[str, Any]:
                 "plan.json": _canon(decision.plan.to_record()), "receipt.json": receipt_text + "\n",
                 "receipt.sha256": run["receipt_file_sha256"] + "  receipt.json\n",
             }
-            view = build_view(run_id, pin, snap, objective.to_record(), context.to_record(), receipt, run)
-            files["view.json"] = _canon(view)
-            run["artifacts"] = {name: _sha(text) for name, text in sorted(files.items())}
-            files["run.json"] = _canon(run)
-            for name, text in files.items():
-                (tmp / name).write_text(text, encoding="utf-8")
-            (tmp / "invocations.jsonl").write_text(json.dumps(invocation | {"reproduced_identical_receipt_id": None}, sort_keys=True) + "\n", encoding="utf-8")
+            # Write core files first so _attach_upload_artifacts can refresh digests.
+            for name, text_body in files.items():
+                (tmp / name).write_text(text_body, encoding="utf-8")
+            (tmp / "invocations.jsonl").write_text(
+                json.dumps(invocation | {"reproduced_identical_receipt_id": None}, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            # Provisional run.json before upload attach.
+            (tmp / "run.json").write_text(_canon(run), encoding="utf-8")
+            view = _attach_upload_artifacts(
+                tmp,
+                pin=pin,
+                snap=snap,
+                objective_record=objective.to_record(),
+                context_record=context.to_record(),
+                receipt=receipt,
+                run=run,
+                uploaded_source=uploaded_source,
+                observation_consume=observation_consume,
+            )
             tmp.replace(target)
         except Exception:
             shutil.rmtree(tmp, ignore_errors=True)
             raise
         view["reproduced"] = False
         return view
+
 
 
 def list_runs(query: str | None = None) -> list[dict[str, Any]]:

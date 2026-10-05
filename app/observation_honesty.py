@@ -225,3 +225,110 @@ def project_observation_evidence(
             "absence_of_wcs": "no WCS (do not invent)",
         },
     }
+
+
+CONTRACT_RESIDUALS = "docs/pipeline/OBSERVED-VS-EXPECTED-RESIDUALS-0001.md"
+CONTRACT_BRIDGE = "docs/pipeline/SKY-TO-OBJECTIVE-BRIDGE-0001.md"
+
+
+def project_action_residuals(report: dict[str, Any] | None) -> dict[str, Any]:
+    """Present-only Action UI fields from tip residuals module. Never invents values."""
+    if not isinstance(report, dict) or not report.get("present"):
+        return {
+            "present": False,
+            "contract": CONTRACT_RESIDUALS,
+            "note": "No observed-vs-expected residuals attached to this run.",
+            "residuals": [],
+            "missing_expected": [],
+            "next_evidence_recommendations": [],
+            "action_ui": None,
+        }
+    epistemic = report.get("epistemic") if isinstance(report.get("epistemic"), dict) else {}
+    action_ui_raw = report.get("action_ui") if isinstance(report.get("action_ui"), dict) else {}
+    honesty = action_ui_raw.get("honesty") if isinstance(action_ui_raw.get("honesty"), dict) else {}
+    residuals = []
+    for i, item in enumerate(report.get("residuals") or []):
+        if not isinstance(item, dict):
+            continue
+        residuals.append({
+            "status": item.get("status"),
+            "classification_status": item.get("classification_status") or "hypothesis",
+            "plain_language": item.get("plain_language") or item.get("plain_language_short"),
+            "plain_language_short": item.get("plain_language_short"),
+            "detection_id": item.get("detection_id"),
+            "separation_arcsec": item.get("separation_arcsec"),
+            "established_identity": False,  # never promote
+            "label": "hypothesis",
+            "source": {
+                "artifact": "observed_vs_expected.json",
+                "pointer": f"/residuals/{i}",
+                "contract": CONTRACT_RESIDUALS,
+            },
+        })
+    missing = []
+    for i, item in enumerate(report.get("missing_expected") or []):
+        if not isinstance(item, dict):
+            continue
+        missing.append({
+            "catalogue_id": item.get("catalogue_id"),
+            "plain_language": item.get("plain_language") or item.get("plain_language_short"),
+            "plain_language_short": item.get("plain_language_short"),
+            "label": "hypothesis",
+            "source": {
+                "artifact": "observed_vs_expected.json",
+                "pointer": f"/missing_expected/{i}",
+                "contract": CONTRACT_RESIDUALS,
+            },
+        })
+    recommendations = []
+    for i, item in enumerate(report.get("next_evidence_recommendations") or []):
+        if not isinstance(item, dict):
+            continue
+        recommendations.append({
+            "code": item.get("code"),
+            "priority": item.get("priority"),
+            "plain_language": item.get("plain_language"),
+            "reason": item.get("reason"),
+            "label": "hypothesis",
+            "source": {
+                "artifact": "observed_vs_expected.json",
+                "pointer": f"/next_evidence_recommendations/{i}",
+                "contract": CONTRACT_RESIDUALS,
+            },
+        })
+    action_ui = {
+        "headline": action_ui_raw.get("headline"),
+        "lines": list(action_ui_raw.get("residual_lines") or [])
+                 + list(action_ui_raw.get("missing_lines") or [])
+                 + list(action_ui_raw.get("recommendation_lines") or []),
+        "residual_lines": list(action_ui_raw.get("residual_lines") or []),
+        "missing_lines": list(action_ui_raw.get("missing_lines") or []),
+        "recommendation_lines": list(action_ui_raw.get("recommendation_lines") or []),
+        "honesty": {
+            "hypothesis_only": bool(honesty.get("hypothesis_only", True)),
+            "established_identity_promoted": False,
+            "coordinates_invented": bool(honesty.get("coordinates_invented", False)),
+        },
+        "source": {"artifact": "observed_vs_expected.json", "pointer": "/action_ui", "contract": CONTRACT_RESIDUALS},
+    }
+    return {
+        "present": True,
+        "contract": CONTRACT_RESIDUALS,
+        "epistemic": {
+            "residuals_are": epistemic.get("residuals_are", "hypothesis"),
+            "established_identity_promoted": False,
+            "coordinates_invented": bool(epistemic.get("coordinates_invented", False)),
+            "catalogue_match_promotes_identity": False,
+        },
+        "summary": report.get("summary"),
+        "residuals": residuals,
+        "missing_expected": missing,
+        "next_evidence_recommendations": recommendations,
+        "action_ui": action_ui,
+        "display_rules": {
+            "never_established_from_this_slice": True,
+            "null_sky_when_unavailable": True,
+            "no_invented_values": True,
+            "surface_only_fields_that_are_present": True,
+        },
+    }

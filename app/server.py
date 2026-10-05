@@ -1,15 +1,15 @@
 """Stdlib HTTP server for the ASA-Astro V1 thin slice. No third-party web framework.
 
-    PYTHONPATH=src:. python3 -m app.server            # http://127.0.0.1:8765/
+    PYTHONPATH=src:. ASTRO_ASA_PIN_KIND=current_dev python3 -m app.server
 
 API
   GET  /api/health
-  GET  /api/pin                      verified ASA pin (633f837a current-dev pin file)
-  GET  /api/objectives               objectives available to evaluate (one per run)
-  POST /api/runs  {"objective": slug} run pin → snapshot → ONE objective → receipt
-  GET  /api/runs?q=text              list / search persisted runs
-  GET  /api/runs/<RCPT-…>            labelled view of one run
-  GET  /api/runs/<RCPT-…>/artifacts/<name>   raw artifact (receipt.json, snapshot.json, …)
+  GET  /api/pin
+  GET  /api/objectives
+  POST /api/runs                 JSON {"objective": slug}  OR multipart upload
+  GET  /api/runs?q=text
+  GET  /api/runs/<RCPT-…>
+  GET  /api/runs/<RCPT-…>/artifacts/<name>
 """
 
 from __future__ import annotations
@@ -18,7 +18,6 @@ import argparse
 import json
 import mimetypes
 import traceback
-from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -26,9 +25,13 @@ from urllib.parse import parse_qs, urlparse
 from . import APP_VERSION
 from . import pin as pinmod
 from . import slice as slicemod
+from . import upload as uploadmod
+from .multipart import parse_multipart
+from .upload import UploadError
 
 STATIC = Path(__file__).resolve().parent / "static"
-MAX_BODY = 4096
+MAX_JSON_BODY = 4096
+MAX_MULTIPART_BODY = uploadmod.MAX_UPLOAD_BYTES + 256 * 1024  # upload + metadata overhead
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -44,12 +47,19 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
         self.send_header("X-Content-Type-Options", "nosniff")
-        self.send_header("Content-Security-Policy", "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'")
+        self.send_header(
+            "Content-Security-Policy",
+            "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'",
+        )
         self.end_headers()
         self.wfile.write(body)
 
     def _json(self, status: int, value) -> None:
-        self._send(status, (json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8"), "application/json; charset=utf-8")
+        self._send(
+            status,
+            (json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode("utf-8"),
+            "application/json; charset=utf-8",
+        )
 
     def _error(self, status: int, message: str) -> None:
         self._json(status, {"error": message, "status": status})
@@ -67,7 +77,13 @@ class Handler(BaseHTTPRequestHandler):
             if url.path == "/api/pin":
                 return self._json(200, pinmod.activate())
             if url.path == "/api/objectives":
-                return self._json(200, {"objectives": slicemod.list_objectives(), "default": pinmod.app_config()["default_inputs"]["objective"]})
+                return self._json(
+                    200,
+                    {
+                        "objectives": slicemod.list_objectives(),
+                        "default": pinmod.app_config()["default_inputs"]["objective"],
+                    },
+                )
             if url.path == "/api/runs":
                 q = parse_qs(url.query).get("q", [""])[0]
                 return self._json(200, {"runs": slicemod.list_runs(q), "query": q})
@@ -83,7 +99,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._error(404, "not found")
         except pinmod.PinError as exc:
             return self._error(503, f"ASA pin not verified: {exc}")
-        except Exception as exc:  # pragma: no cover - surfaced to the client honestly
+        except Exception as exc:  # pragma: no cover
             traceback.print_exc()
             return self._error(500, f"{type(exc).__name__}: {exc}")
 
@@ -92,9 +108,32 @@ class Handler(BaseHTTPRequestHandler):
         if url.path != "/api/runs":
             return self._error(404, "not found")
         length = int(self.headers.get("Content-Length") or 0)
-        if length > MAX_BODY:
-            return self._error(413, "request body too large")
+        ctype = self.headers.get("Content-Type") or ""
         try:
+            if "multipart/form-data" in ctype:
+                if length > MAX_MULTIPART_BODY:
+                    return self._error(413, "request body too large")
+                raw = self.rfile.read(length) if length else b""
+                form = parse_multipart(ctype, raw)
+                objective = form.fields.get("objective") or None
+                meta_file = form.files.get("metadata")
+                metadata_bytes = meta_file.data if meta_file and meta_file.data else None
+                if metadata_bytes is None and "metadata_json" in form.fields and form.fields["metadata_json"].strip():
+                    metadata_bytes = form.fields["metadata_json"].encode("utf-8")
+                upload = form.files.get("source") or form.files.get("file") or form.files.get("upload")
+                if upload is None or not upload.data:
+                    return self._error(400, "multipart run requires a source file field (source|file|upload)")
+                view = slicemod.run_slice(
+                    objective,
+                    upload_bytes=upload.data,
+                    upload_filename=upload.filename,
+                    upload_media_type=upload.content_type,
+                    metadata_bytes=metadata_bytes,
+                )
+                return self._json(201 if not view.get("reproduced") else 200, view)
+
+            if length > MAX_JSON_BODY:
+                return self._error(413, "request body too large")
             body = json.loads(self.rfile.read(length) or b"{}") if length else {}
             if not isinstance(body, dict):
                 return self._error(400, "body must be a JSON object")
@@ -102,6 +141,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(201 if not view.get("reproduced") else 200, view)
         except json.JSONDecodeError:
             return self._error(400, "invalid JSON")
+        except UploadError as exc:
+            return self._error(400, str(exc))
         except ValueError as exc:
             return self._error(400, str(exc))
         except pinmod.PinError as exc:
@@ -134,7 +175,11 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     pin = pinmod.activate()  # fail fast if the pin does not verify
     httpd = make_server(args.host, args.port)
-    print(f"ASA-Astro app {APP_VERSION} on http://{args.host}:{args.port}/  ASA pin {pin['pinned_sha']}  data {slicemod.data_dir()}", flush=True)
+    print(
+        f"ASA-Astro app {APP_VERSION} on http://{args.host}:{args.port}/  "
+        f"ASA pin {pin['pinned_sha']}  data {slicemod.data_dir()}",
+        flush=True,
+    )
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

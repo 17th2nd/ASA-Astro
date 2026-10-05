@@ -2,8 +2,8 @@
 
 **Scope (ASA Chief, 2026-10-05):** pin → kernel snapshot → exactly one Objective → digest-identified
 receipt, shown in an API and a browser UI with honesty labels (hypothesis vs established),
-unknowns and next evidence listed separately. Broad panels (image upload, sky maps, graph view)
-are deferred. Status: **SELF_ACCEPTANCE=NO. LOCAL_ONLY.**
+unknowns and next evidence listed separately. Upload bar (preserve source → process_observation consume → thin Objective receipt + honesty) is landed;
+sky maps / graph view remain deferred. Status: **SELF_ACCEPTANCE=NO. LOCAL_ONLY.**
 
 ## Run (one command)
 
@@ -48,6 +48,7 @@ Artifacts per run: `pin.json snapshot.json objective.json context.json evaluatio
 | GET | `/api/pin` | verified pin record |
 | GET | `/api/objectives` | objectives available (one per run) |
 | POST | `/api/runs` `{"objective": "<slug>"}` | run the slice; 201 new, 200 reproduced |
+| POST | `/api/runs` multipart (`source` file, optional `metadata`, `objective`) | upload → preserve source (sha256) → optional `process_observation` → thin Objective receipt |
 | GET | `/api/runs?q=` | list / search runs |
 | GET | `/api/runs/<RCPT-…>` | labelled view |
 | GET | `/api/runs/<RCPT-…>/artifacts/<name>` | raw artifact (traceability target of every cited field) |
