@@ -10,18 +10,17 @@ the UI shows the limitation or derives only from existing fields with a source l
   `AsaBaselineUnavailable`. `a200dda` added `ASTRO_ASA_BASELINE_CONFIG` / `ASTRO_ASA_PIN_KIND=current_dev`; the app now
   sets `ASTRO_ASA_BASELINE_CONFIG` to the pin file (`app/pin.py`) — no monkeypatching. Still open for the pin owner:
   the default remains historical, so `tests/astro` run without the env var still fail to import (see report).
-- **G-PIN-2 — adapter proposer rejected by the pinned kernel.** Kernel `0.1.0-alpha13` (c2ccd7d) enforces SPEC-0001
-  [RP-9]: a URO proposer must be a registered UAO (`URO-PARTICIPANT-UNKNOWN`), and it refuses to register the Governor
-  actor id as an entity (`EVT-STATE`). `AstroAdapter` uses `ACTOR = asa:uao:astro/adapter` for both. So the unmodified
-  adapter cannot load any universe at this pin. The app subclasses the adapter (`app/compat.py`): registers
-  `asa:uao:astro/proposer` and proposes with it. This changes the event stream and therefore the kernel digest; every
-  run records the shim (`run.json:compat_shims`, shown in the UI). Needed: the real adapter fix + compat-gate test run.
+- **G-PIN-2 — adapter RP-9 (partially landed on tip `24bd352`).** Tip now sets `GOVERNOR_ACTOR=asa:uao:asa.core/governor-v1`
+  distinct from propose proposer `asa:uao:astro/adapter` (RP-9). The thin-slice app still records its pre-tip
+  `app/compat.py` shim (`asa:uao:astro/proposer`) on every run for honesty of the prior path; digest therefore
+  still reflects the shim. Compat-gate / Assurance still owns accepting either path.
 - **G-PIN-3 — declared vs reported kernel version.** The pin file declares `kernel_version: unreleased-remediation-133`;
   the kernel reports `0.1.0-alpha13`, status `ENGINEERING ALPHA — NOT RATIFIED`. Shown as an unknown.
 - **G-PIN-4 — pin status.** The pin is `CURRENT DEVELOPMENT COMPATIBILITY PIN — NOT A FROZEN FINAL V1`. Shown as an unknown.
 
 ## Significance / pipeline lane (what the app needs produced)
 
+- **G-SIG-0 — WCS / crossmatch owned by Significance.** The thin-slice universe/objective/receipt path exposes no WCS or crossmatch fields; Significance owns those surfaces. App does not invent values; receipt verification is not blocked on their absence.
 - **G-SIG-1 — no image → Astro universe bridge.** The Codex B observe pipeline (`asa_astro.evidence`) emits an
   image-space candidate graph (`graph.json`, `provenance.json`; `asa_dependency: unavailable_not_consumed`); the Astro
   engine consumes a catalogue-style `Universe`. Nothing maps one into the other, so image upload cannot feed
