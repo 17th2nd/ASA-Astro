@@ -21,6 +21,7 @@ from typing import Any
 
 from . import APP_VERSION
 from . import pin as pinmod
+from .observation_honesty import project_observation_evidence
 
 ROOT = pinmod.ROOT
 _LOCK = threading.Lock()
@@ -123,7 +124,10 @@ def _label_link(link: dict[str, Any]) -> tuple[str, list[str]]:
     return ("established-in-ASA-state" if not reasons else "hypothesis"), reasons
 
 
-def build_view(run_id: str, pin: dict, snap: dict, objective: dict, context: dict, receipt: dict, run: dict) -> dict[str, Any]:
+def build_view(run_id: str, pin: dict, snap: dict, objective: dict, context: dict, receipt: dict, run: dict,
+               observation_wcs: dict | None = None,
+               observation_localisations: list | None = None,
+               observation_crossmatches: list | None = None) -> dict[str, Any]:
     data_class = snap["universe"]["data_class"]
     claims: list[dict[str, Any]] = []
     for i, e in enumerate(snap["edges"]):
@@ -256,6 +260,11 @@ def build_view(run_id: str, pin: dict, snap: dict, objective: dict, context: dic
                         "note": "Summary sentences are filled only from the cited fields; per-entity lines are astro.significance.explain output carried in the receipt."},
         "results": results, "claims": claims, "claim_counts": counts,
         "unknowns": unknowns, "next_evidence": next_evidence,
+        "observation_evidence": project_observation_evidence(
+            wcs=observation_wcs,
+            localisations=observation_localisations,
+            crossmatches=observation_crossmatches,
+        ),
         "compat_shims": run["compat_shims"],
     }
 

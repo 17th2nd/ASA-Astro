@@ -90,6 +90,8 @@ class SliceRoundTrip(_TempDataDir):
         self.assertEqual(snap["summary"]["digest"], receipt["kernel_digest"])
         self.assertEqual(receipt["objective_name"], json.loads((run_dir / "objective.json").read_text())["name"])
         self.assertEqual(view["compat_shims"][0]["id"], "app-compat-proposer-uao")
+        self.assertIn("observation_evidence", view)
+        self.assertFalse(view["observation_evidence"]["present"], "Objective path has no observation evidence yet")
 
     def test_every_displayed_item_cites_an_existing_field(self):
         from app import slice as s
@@ -221,7 +223,7 @@ class HttpTests(_TempDataDir):
         self.assertTrue(p.controls)
         for control in p.controls:
             self.assertIn(control, p.label_for, f"form control {control} has no <label for>")
-        for section in ("pin", "snapshot", "receipt", "claims", "unknowns", "next", "runs"):
+        for section in ("pin", "snapshot", "receipt", "claims", "unknowns", "observation", "next", "runs"):
             self.assertIn(section, p.ids)
         for asset in ("/static/app.js", "/static/styles.css"):
             self.assertEqual(self.get(asset)[0], 200)

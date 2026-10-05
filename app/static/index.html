@@ -22,6 +22,7 @@
       <li><a href="#explanation">Explanation</a></li>
       <li><a href="#claims">Claims</a></li>
       <li><a href="#unknowns">Unknowns</a></li>
+      <li><a href="#observation">Observation evidence</a></li>
       <li><a href="#next">Next evidence</a></li>
       <li><a href="#runs">Runs</a></li>
     </ul>
@@ -85,6 +86,17 @@
       <h2 id="unk-h">Unknowns</h2>
       <p class="help">Only fields that exist in the run artifacts and record something unavailable, missing, contested or unevaluated.</p>
       <ul id="unknowns-list" class="cited"></ul>
+    </section>
+
+    <section id="observation" aria-labelledby="obs-h" hidden>
+      <h2 id="obs-h">Observation evidence <span class="badge hypothesis">present-only</span></h2>
+      <p class="help">Operator C / Significance honesty contract. Surfaces only wcs-solution / sky-localisation / catalogue-crossmatch fields that are present. Classification is never established from this slice. Hidden when no observation evidence is attached to the run (current Objective path).</p>
+      <p id="obs-gap" class="help"></p>
+      <div id="obs-wcs"></div>
+      <h3>Sky localisations</h3>
+      <ul id="obs-loc-list" class="cited"></ul>
+      <h3>Catalogue crossmatches</h3>
+      <ul id="obs-xm-list" class="cited"></ul>
     </section>
 
     <section id="next" aria-labelledby="next-h">

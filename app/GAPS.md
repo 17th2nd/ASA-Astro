@@ -20,7 +20,20 @@ the UI shows the limitation or derives only from existing fields with a source l
 
 ## Significance / pipeline lane (what the app needs produced)
 
-- **G-SIG-0 — WCS / crossmatch owned by Significance.** The thin-slice universe/objective/receipt path exposes no WCS or crossmatch fields; Significance owns those surfaces. App does not invent values; receipt verification is not blocked on their absence.
+- **G-SIG-0 — WCS / crossmatch honesty contract received (Significance / Operator C).** In-repo on tip `686ef626`:
+  `docs/pipeline/WCS-WHEN-PRESENT-CROSSMATCH-0001.md` + schemas
+  `schemas/observation/{wcs-solution,sky-localisation,catalogue-crossmatch}.schema.json` and transforms under
+  `src/asa_astro/evidence/{wcs,crossmatch}.py`. **Present NOW as observation evidence records only** — not yet on
+  universe / objective / receipt. App consume path: `app/observation_honesty.py` projects present-only fields with
+  honesty labels + source pointers (schema path + record id + optional source_reference / catalogue_provenance /
+  inference_basis). Display rules: surface only fields that are present; always show `classification_status` /
+  `resolution_state` when present; localisation+crossmatch `classification_status` ∈ {hypothesis, provisional, unknown}
+  only — **never established** from this slice; matched only if `evidence_qualified`; contested lists candidates without
+  a winner; absence of WCS = no WCS (do not invent). **Still pending Operator C freeze / wire-in:**
+  `process_observation` WCS path; Sky→candidates→Objective bridge; residual_summary / observed_vs_expected[] /
+  missing_expected[] / next_evidence_recommendation / honesty_status / unknowns[] on receipt. Until those land, the
+  thin-slice Objective run carries `observation_evidence.present=false`; unknowns/next_evidence stay derived from
+  receipt/snapshot fields only. Receipt verification is **not** blocked on missing WCS.
 - **G-SIG-1 — no image → Astro universe bridge.** The Codex B observe pipeline (`asa_astro.evidence`) emits an
   image-space candidate graph (`graph.json`, `provenance.json`; `asa_dependency: unavailable_not_consumed`); the Astro
   engine consumes a catalogue-style `Universe`. Nothing maps one into the other, so image upload cannot feed

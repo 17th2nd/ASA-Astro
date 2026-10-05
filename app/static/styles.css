@@ -25,7 +25,7 @@ button[disabled] { opacity:.6; cursor:progress; }
 .stages li.failed { border-color:#ff8f8f; color:#ff8f8f; } .stages li.failed::before { content:"✗ "; }
 .status { min-height:1.5em; }
 .badge { display:inline-block; font-size:.75rem; padding:.05rem .45rem; border-radius:999px; color:#000; vertical-align:middle; font-weight:700; }
-.badge.hypothesis { background:var(--hyp); } .badge.established-in-ASA-state { background:var(--est); } .badge.record { background:var(--rec); } .badge.unknown { background:#9fb2d1; }
+.badge.hypothesis { background:var(--hyp); } .badge.established-in-ASA-state { background:var(--est); } .badge.record { background:var(--rec); } .badge.unknown { background:#9fb2d1; } .badge.provisional { background:#ffb86b; } .badge.present-only { background:#9fd3ff; }
 ul.cited { padding-left:1.1rem; } ul.cited li { margin:.35rem 0; overflow-wrap:anywhere; }
 .src { font-size:.8rem; color:var(--muted); margin-left:.35rem; }
 .reasons { display:block; font-size:.85rem; color:var(--muted); }

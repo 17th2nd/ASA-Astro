@@ -120,7 +120,52 @@ function render(v) {
   $("#claim-counts").textContent = `Established in ASA state: ${v.claim_counts["established-in-ASA-state"]} · Hypothesis: ${v.claim_counts.hypothesis}`;
   renderClaims();
   citedList($("#unknowns-list"), v.unknowns, id, (it) => el("li", {}, badge("unknown"), document.createTextNode(` ${it.text}`), srcLink(id, it.source)));
+  renderObservation(v);
   citedList($("#next-list"), v.next_evidence, id, (it) => el("li", {}, badge(it.label), document.createTextNode(` ${it.text}`), srcLink(id, it.source)));
+}
+
+function obsSrc(ref) {
+  if (!ref) return null;
+  const bits = [`schema: ${ref.schema}`];
+  if (ref.record_id) bits.push(`id=${ref.record_id}`);
+  if (ref.source_reference) bits.push(`source_reference=${ref.source_reference}`);
+  if (ref.catalogue_provenance) {
+    const p = ref.catalogue_provenance;
+    bits.push(`catalogue=${p.catalogue_name || "?"}@${p.release || "?"}`);
+  }
+  if (ref.inference_basis && ref.inference_basis.length) bits.push(`basis=${ref.inference_basis.join(",")}`);
+  return el("span", { cls: "src", text: `source: ${bits.join(" · ")}` });
+}
+
+function renderObservation(v) {
+  const sec = $("#observation");
+  const oe = v.observation_evidence;
+  if (!oe || !oe.present) {
+    sec.hidden = true;
+    return;
+  }
+  sec.hidden = false;
+  $("#obs-gap").textContent = oe.contract_note || "";
+  const wcsBox = $("#obs-wcs");
+  wcsBox.replaceChildren();
+  if (oe.wcs) {
+    wcsBox.append(
+      el("p", {}, badge(oe.wcs.label || "record"), document.createTextNode(` ${oe.wcs.text}`), obsSrc(oe.wcs.source))
+    );
+  } else {
+    wcsBox.append(el("p", { cls: "help", text: "No WCS (field absent — not invented)." }));
+  }
+  citedList($("#obs-loc-list"), oe.localisations || [], null, (it) => {
+    const li = el("li", {}, badge(it.classification_status || it.label), document.createTextNode(` [${it.status}] ${it.text}`));
+    li.append(obsSrc(it.source));
+    return li;
+  });
+  citedList($("#obs-xm-list"), oe.crossmatches || [], null, (it) => {
+    const li = el("li", {}, badge(it.classification_status || it.label),
+      document.createTextNode(` [${it.resolution_state}] ${it.text}`));
+    li.append(obsSrc(it.source));
+    return li;
+  });
 }
 
 function renderClaims() {
