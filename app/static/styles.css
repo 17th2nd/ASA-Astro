@@ -37,3 +37,11 @@ th, td { text-align:left; padding:.35rem .5rem; border-bottom:1px solid var(--li
 
 input[type=file] { width:100%; padding:.5rem; background:#0b101a; color:var(--text); border:1px solid #5a6a8c; border-radius:4px; font:inherit; }
 #upload, #source, #action { grid-column: 1 / -1; }
+
+#runs-list { list-style: none; padding: 0; }
+#runs-list li { margin: .65rem 0; padding: .5rem 0; border-bottom: 1px solid var(--line); }
+#runs-list .run-title { font-weight: 600; }
+#runs-list .run-id, .sample-json { display: block; font-family: ui-monospace, Menlo, monospace; font-size: .78rem; overflow-wrap: anywhere; color: var(--muted); margin-top: .2rem; white-space: pre-wrap; }
+#runs-list .run-disc { display: block; font-size: .85rem; color: var(--accent); margin-top: .15rem; overflow-wrap: anywhere; }
+.sample-meta { margin: .5rem 0; padding: .5rem .75rem; border: 1px solid var(--line); border-radius: 6px; background: #0b101a; }
+.sample-meta summary { cursor: pointer; font-weight: 600; color: var(--accent); }

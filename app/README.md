@@ -53,6 +53,38 @@ Artifacts per run: `pin.json snapshot.json objective.json context.json evaluatio
 | GET | `/api/runs/<RCPT-…>` | labelled view |
 | GET | `/api/runs/<RCPT-…>/artifacts/<name>` | raw artifact (traceability target of every cited field) |
 
+
+## Upload metadata / declared WCS (first-time users)
+
+Optional multipart `metadata` JSON may declare a WCS / catalogue. The app **never invents** WCS.
+
+- Schema: [`schemas/observation/wcs-solution.schema.json`](../schemas/observation/wcs-solution.schema.json)
+- Contract: [`docs/pipeline/WCS-WHEN-PRESENT-CROSSMATCH-0001.md`](../docs/pipeline/WCS-WHEN-PRESENT-CROSSMATCH-0001.md)
+- Copy-paste fixture (also served at `/static/sample-upload-metadata-wcs.json`):
+
+```json
+{
+  "instrument": "example-first-time-user",
+  "wcs": {
+    "frame": "ICRS",
+    "epoch": "J2000.0",
+    "crpix": [32.0, 32.0],
+    "crval_deg": [150.0, -30.0],
+    "cd_deg_per_pixel": [[0.0002777777777777778, 0.0], [0.0, 0.0002777777777777778]],
+    "pixel_origin": "0-based-image-pixel",
+    "source_reference": "copy-paste fixture for declared WCS (never invented by the app)"
+  }
+}
+```
+
+`frame` remains the caller-declared celestial label (often the string `ICRS`). Localisation through that declared WCS uses a **local-linear CD** flat-sky projection only — not a spherical FITS TAN/SIP solution (see G-SIG-6).
+
+## Upload identity vs Objective receipt (F-SCI-03 / U-NOTE-RECEIPT-SHARED-01)
+
+- **Objective `receipt_id` (`RCPT-…`)** identifies the thin Objective evaluation (synthetic universe path). Distinct uploads that produce the same Objective body intentionally share this digest.
+- **`run_id`** (`RCPT-…__src-<source-sha256>__meta-<metadata-sha256|none>`) is the **app storage key** that isolates upload run directories. It is not the scientific observation-claim identity.
+- **`observation_identity`** (when emitted by `process_observation`: `digest` + `source_sha256` / `metadata_sha256` / `wcs_digest`) is the content-addressed **observation claim key**. Until present, do **not** cite bare RCPT for observation artefacts; use filename + `__src-`/`__meta-` discriminators / full `run_id` for navigation only.
+
 ## Honesty rules implemented
 
 - Every displayed item carries `source: {artifact, pointer}` (JSON pointer into a run artifact); tests resolve every pointer.

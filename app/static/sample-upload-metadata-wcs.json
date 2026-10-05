@@ -1,0 +1,32 @@
+{
+  "instrument": "example-first-time-user",
+  "wcs": {
+    "frame": "ICRS",
+    "epoch": "J2000.0",
+    "crpix": [32.0, 32.0],
+    "crval_deg": [150.0, -30.0],
+    "cd_deg_per_pixel": [[0.0002777777777777778, 0.0], [0.0, 0.0002777777777777778]],
+    "pixel_origin": "0-based-image-pixel",
+    "source_reference": "copy-paste fixture for declared WCS (never invented by the app)"
+  },
+  "catalogue": {
+    "match_radius_arcsec": 120.0,
+    "provenance": {
+      "catalogue_name": "example-catalogue",
+      "release": "demo-0",
+      "query_description": "optional expected catalogue for residuals"
+    },
+    "entries": [
+      {
+        "catalogue_id": "EX-1",
+        "catalogue_name": "example-catalogue",
+        "ra_deg": 150.0,
+        "dec_deg": -30.0,
+        "frame": "ICRS",
+        "epoch": "J2000.0",
+        "labels": ["example"],
+        "evidence_ids": ["ev-ex-1"]
+      }
+    ]
+  }
+}

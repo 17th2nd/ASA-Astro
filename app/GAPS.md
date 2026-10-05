@@ -48,6 +48,27 @@ the UI shows the limitation or derives only from existing fields with a source l
 - **G-SIG-5 — no calibrated confidence.** Scores are Astro-derived under a declared weighting policy; the app never shows
   a confidence number the pipeline does not emit.
 
+
+- **G-SIG-6 — local-linear CD ≠ spherical FITS TAN (F-SCI-02).** Declared-WCS localisation
+  (`src/asa_astro/evidence/wcs.py` `pixel_to_sky`) applies a local flat-sky CD matrix only
+  (`sky ≈ CRVAL + CD · (pixel − CRPIX)`). It is **not** a spherical TAN/SIP projection.
+  Measured residual vs FITS TAN on Assurance IN-07 can reach ~6.57″. Treat projected RA/Dec as
+  **computational hypotheses** with standing `image-space-projection-hypothesis` /
+  `projection_model=local-linear-CD`. Disclosed here and in README; primary localisation UI text
+  must not present RA/Dec-only ICRS copy (F-SCI-01).
+- **G-SIG-7 — observation claim identity ≠ Objective RCPT (F-SCI-03).** Thin Objective
+  `receipt_id` does not bind upload source/metadata digests. App `run_id` isolates storage only.
+  Scientific observation-claim identity is pipeline `observation_identity` (source_sha256 +
+  metadata_sha256 + wcs_digest) when present; until Significance lands that artefact, UI/docs
+  forbid citing bare RCPT for observation artefacts and surface filename/`__src-`/`__meta-`/
+  full `run_id` as navigation discriminators.
+- **G-SIG-8 — INT-0015 morphology strings in on-disk bundles (F-SCI-05).** Upstream
+  `process_observation` bundle `graph.json` / `summary.md` may still contain provisional
+  morphology labels such as `likely_foreground_point_source`, `background_extended_object`,
+  `possible_companion_object`. These are **not** app scientific outputs and are **not** linked
+  from the thin-slice UI. Significance owns upstream rename; app discloses here and does not
+  surface them in labelled view claims.
+
 ## Deferred (by scope decision, not blocked)
 
 Sky map, relationship graph view (`astro ui` navigator exists but uses D3 from a CDN), multi-objective comparison,

@@ -40,17 +40,34 @@
 
     <section id="upload" aria-labelledby="up-h">
       <h2 id="up-h">1b. Upload observation source</h2>
-      <p class="help">Accepts Pillow-decodable images (png/jpeg/ppm/…) for <code>process_observation</code>, or FITS for preserve-source storage only. Bytes are content-addressed under <code>app/var/uploads/</code> with sha256 integrity. Optional metadata JSON may declare WCS / catalogue (never invented by the app).</p>
+      <p class="help">Accepts Pillow-decodable images (png/jpeg/ppm/…) for <code>process_observation</code>, or FITS for preserve-source storage only. Bytes are content-addressed under <code>app/var/uploads/</code> with sha256 integrity. Optional metadata JSON may declare WCS / catalogue (never invented by the app). Schema: <a href="/static/sample-upload-metadata-wcs.json"><code>sample-upload-metadata-wcs.json</code></a>; repo paths <code>schemas/observation/wcs-solution.schema.json</code> and <code>docs/pipeline/WCS-WHEN-PRESENT-CROSSMATCH-0001.md</code>.</p>
       <form id="upload-form" enctype="multipart/form-data">
         <label for="source-file">Observation source file</label>
         <input id="source-file" name="source" type="file" accept=".png,.jpg,.jpeg,.gif,.webp,.ppm,.bmp,.tif,.tiff,.fits,.fit,.fts,image/*">
         <label for="meta-file">Optional metadata JSON (declared WCS / catalogue)</label>
-        <input id="meta-file" name="metadata" type="file" accept=".json,application/json">
+        <input id="meta-file" name="metadata" type="file" accept=".json,application/json" aria-describedby="meta-help">
+        <details id="meta-help" class="sample-meta">
+          <summary>Sample metadata (declared WCS) — download or copy-paste</summary>
+          <p class="help">Minimal fixture that yields declared WCS when uploaded with a Pillow-decodable image. Download: <a href="/static/sample-upload-metadata-wcs.json">sample-upload-metadata-wcs.json</a>. Catalogue block is optional.</p>
+          <pre id="sample-meta-json" class="sample-json">{
+  "instrument": "example-first-time-user",
+  "wcs": {
+    "frame": "ICRS",
+    "epoch": "J2000.0",
+    "crpix": [32.0, 32.0],
+    "crval_deg": [150.0, -30.0],
+    "cd_deg_per_pixel": [[0.0002777777777777778, 0.0], [0.0, 0.0002777777777777778]],
+    "pixel_origin": "0-based-image-pixel",
+    "source_reference": "copy-paste fixture for declared WCS (never invented by the app)"
+  }
+}</pre>
+        </details>
         <label for="upload-objective">Objective</label>
         <select id="upload-objective" name="objective"></select>
         <button type="submit" id="upload-btn">Upload → preserve → run thin path</button>
       </form>
       <p id="upload-status" class="status" role="status" aria-live="polite"></p>
+      <p class="help" id="upload-id-note">Upload identity: content-addressed <code>observation_identity</code> (source+metadata digests, when present) identifies the observation; Objective <code>receipt_id</code> (RCPT-…) is shared across distinct uploads that produce the same thin Objective receipt — intentional. Storage key <code>run_id</code> isolates run directories (<code>RCPT-…__src-…__meta-…</code>). Do not cite bare RCPT for observation artefacts.</p>
     </section>
 
     <section id="run" aria-labelledby="run-h">
@@ -117,7 +134,7 @@
 
     <section id="observation" aria-labelledby="obs-h" hidden>
       <h2 id="obs-h">Observation evidence <span class="badge hypothesis">present-only</span></h2>
-      <p class="help">Operator C / Significance honesty contract. Surfaces only wcs-solution / sky-localisation / catalogue-crossmatch fields that are present (from process_observation bundle artefacts). Classification is never established from this slice. Shown when artefacts exist for the run.</p>
+      <p class="help">Operator C / Significance honesty contract. Surfaces only wcs-solution / sky-localisation / catalogue-crossmatch fields that are present (from process_observation bundle artefacts). Classification is never established from this slice. Localised sky coords are image-space projections via declared local-linear CD (not spherical FITS TAN); see G-SIG-6. Shown when artefacts exist for the run.</p>
       <p id="obs-gap" class="help"></p>
       <div id="obs-wcs"></div>
       <h3>Sky localisations</h3>
@@ -147,9 +164,10 @@
 
     <section id="runs" aria-labelledby="runs-h">
       <h2 id="runs-h">Runs</h2>
+      <p class="help">Each list entry shows filename and <code>__src-</code>/<code>__meta-</code> discriminators (or full <code>run_id</code>) so multi-uploads sharing an Objective RCPT prefix stay visually distinct. Bare RCPT is not the observation-claim key.</p>
       <form id="search-form" role="search">
         <label for="q">Search runs</label>
-        <input id="q" name="q" type="search" placeholder="receipt id, objective, entity">
+        <input id="q" name="q" type="search" placeholder="run_id, filename, receipt id, objective">
         <button type="submit">Search</button>
       </form>
       <ul id="runs-list"></ul>

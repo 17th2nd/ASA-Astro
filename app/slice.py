@@ -205,7 +205,8 @@ def build_view(run_id: str, pin: dict, snap: dict, objective: dict, context: dic
                observation_localisations: list | None = None,
                observation_crossmatches: list | None = None,
                uploaded_source: dict | None = None,
-               observed_vs_expected: dict | None = None) -> dict[str, Any]:
+               observed_vs_expected: dict | None = None,
+               observation_identity: dict | None = None) -> dict[str, Any]:
     data_class = snap["universe"]["data_class"]
     claims: list[dict[str, Any]] = []
     for i, e in enumerate(snap["edges"]):
@@ -350,6 +351,8 @@ def build_view(run_id: str, pin: dict, snap: dict, objective: dict, context: dic
         "results": results, "claims": claims, "claim_counts": counts,
         "unknowns": unknowns, "next_evidence": next_evidence,
         "uploaded_source": _uploaded_source_view(uploaded_source),
+        # F-SCI-03: present-only pipeline observation_identity (never invent; never = Objective RCPT).
+        "observation_identity": observation_identity if isinstance(observation_identity, dict) else None,
         "observation_evidence": project_observation_evidence(
             wcs=observation_wcs,
             localisations=observation_localisations,
@@ -392,7 +395,7 @@ def _attach_upload_artifacts(
                     "invoked", "reason", "bundle_path", "bundle_source_sha256_verified",
                     "sky_localisation_count", "wcs_present", "catalogue_crossmatch_count",
                     "coordinates_invented", "source_image_mutated", "objective_bridge",
-                    "metadata_path", "summary",
+                    "metadata_path", "summary", "observation_identity",
                 )
             }
         (target / "uploaded_source.json").write_text(_canon(source_record), encoding="utf-8")
@@ -410,6 +413,9 @@ def _attach_upload_artifacts(
         ove = observation_consume["observed_vs_expected"]
         if ove.get("present"):
             (target / "observed_vs_expected.json").write_text(_canon(ove), encoding="utf-8")
+    obs_identity = None
+    if observation_consume and isinstance(observation_consume.get("observation_identity"), dict):
+        obs_identity = observation_consume["observation_identity"]
     view = build_view(
         run["run_id"], pin, snap, objective_record, context_record, receipt, run,
         observation_wcs=obs_wcs,
@@ -417,6 +423,7 @@ def _attach_upload_artifacts(
         observation_crossmatches=obs_xm,
         uploaded_source=source_record,
         observed_vs_expected=ove,
+        observation_identity=obs_identity,
     )
     (target / "view.json").write_text(_canon(view), encoding="utf-8")
     # Refresh run.json artifact digests for any files now present.
@@ -588,6 +595,70 @@ def run_slice(
 
 
 
+
+def parse_run_storage_key(run_id: str) -> dict[str, Any]:
+    """Split keyed upload run_id into receipt_id + src/meta discriminators (U-RUN-LIST-01)."""
+    m = re.fullmatch(
+        r"(RCPT-[0-9a-f]{64})(?:__src-([0-9a-f]{64})__meta-([0-9a-f]{64}|none))?",
+        run_id,
+    )
+    if not m:
+        return {"receipt_id": None, "source_sha256": None, "meta_sha256": None, "keyed": False}
+    return {
+        "receipt_id": m.group(1),
+        "source_sha256": m.group(2),
+        "meta_sha256": m.group(3),
+        "keyed": m.group(2) is not None,
+    }
+
+
+def _list_run_discriminators(run_id: str, view: dict[str, Any]) -> dict[str, Any]:
+    """Human + content-addressed discriminators for Runs list (U-RUN-LIST-01).
+
+    F-SCI-03: science observation-claim identity is observation_identity (when present),
+    never bare Objective RCPT and never app-only run_id. run_id remains the storage key.
+    """
+    parts = parse_run_storage_key(run_id)
+    us = view.get("uploaded_source") or {}
+    oe = view.get("observation_evidence") or {}
+    oid = view.get("observation_identity") if isinstance(view.get("observation_identity"), dict) else None
+    receipt_id = (view.get("receipt") or {}).get("receipt_id") or parts["receipt_id"] or run_id
+    present = bool(us.get("present"))
+    src_sha = None
+    if oid and isinstance(oid.get("source_sha256"), str):
+        src_sha = oid["source_sha256"]
+    elif present:
+        src_sha = us.get("sha256")
+    else:
+        src_sha = parts["source_sha256"]
+    meta_sha = None
+    if oid and "metadata_sha256" in oid:
+        meta_sha = oid.get("metadata_sha256")
+    else:
+        meta_sha = parts["meta_sha256"]
+    # Primary upload display id: observation_identity.digest when present, else keyed run_id.
+    obs_claim = None
+    if oid and oid.get("digest"):
+        obs_claim = oid["digest"]
+    elif parts["keyed"]:
+        obs_claim = None  # no science claim id yet; UI must not imply bare RCPT
+    return {
+        "receipt_id": receipt_id,
+        "original_filename": us.get("original_filename") if present else None,
+        "source_sha256": src_sha,
+        "source_sha256_short": (src_sha[:12] if isinstance(src_sha, str) else None),
+        "meta_sha256": meta_sha,
+        "meta_sha256_short": (
+            None if meta_sha in (None, "none")
+            else (meta_sha[:12] if isinstance(meta_sha, str) and meta_sha != "none" else None)
+        ),
+        "keyed_upload": bool(parts["keyed"]),
+        "wcs_declared": bool(oe.get("wcs")),
+        "observation_identity": oid,
+        "observation_claim_key": obs_claim,
+    }
+
+
 def list_runs(query: str | None = None) -> list[dict[str, Any]]:
     out = []
     if not runs_dir().exists():
@@ -597,10 +668,12 @@ def list_runs(query: str | None = None) -> list[dict[str, Any]]:
         if not RUN_ID.match(d.name) or not (d / "view.json").exists():
             continue
         view = json.loads((d / "view.json").read_text(encoding="utf-8"))
+        disc = _list_run_discriminators(d.name, view)
         item = {"run_id": d.name, "objective": view["objective"]["name"], "context": view["objective"]["context_label"],
                 "kernel_digest": view["receipt"]["kernel_digest"], "asa_baseline": view["receipt"]["asa_baseline"],
                 "issued_at": view["receipt"]["issued_at"], "data_class": view["receipt"]["universe_data_class"],
-                "top": [c["text"] for c in view["claims"] if c["group"] == "objective-result"][:1]}
+                "top": [c["text"] for c in view["claims"] if c["group"] == "objective-result"][:1],
+                **disc}
         haystack = json.dumps(item).lower()
         if not q or q in haystack:
             out.append(item)

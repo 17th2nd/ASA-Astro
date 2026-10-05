@@ -67,6 +67,30 @@ class LocalisationProjection(unittest.TestCase):
         self.assertEqual(view["classification_status"], "hypothesis")
         self.assertIn(view["label"], ALLOWED_CLASSIFICATION)
         self.assertEqual(view["source"]["schema"], "schemas/observation/sky-localisation.schema.json")
+        # F-SCI-01: primary text must label image-space / linear-CD / hypothesis (not RA/Dec-only).
+        low = view["text"].lower()
+        self.assertIn("image-space", low)
+        self.assertTrue("linear-cd" in low or "local-linear" in low)
+        self.assertIn("hypothesis", low)
+        self.assertNotRegex(view["text"], r"^localised detection .+ → ra=")
+        self.assertEqual(view["projection_model"], "local-linear-CD")
+        self.assertEqual(view["coordinate_standing"], "image-space-projection-hypothesis")
+
+    def test_localised_prefers_pipeline_projection_fields(self):
+        view = project_localisation({
+            "id": "loc-2b",
+            "detection_id": "det-2b",
+            "status": "localised",
+            "classification_status": "hypothesis",
+            "wcs_present": True,
+            "pixel_centroid": {"x": 1, "y": 2},
+            "sky": {"ra_deg": 1.0, "dec_deg": 2.0, "frame": "ICRS", "epoch": "J2000.0"},
+            "projection_model": "local-linear-CD",
+            "coordinate_standing": "image-space-projection-hypothesis",
+            "inference_basis": ["pipeline-emitted-standing"],
+        })
+        self.assertEqual(view["projection_model"], "local-linear-CD")
+        self.assertIn("pipeline-emitted-standing", view["text"])
 
     def test_rejects_established_classification(self):
         view = project_localisation({

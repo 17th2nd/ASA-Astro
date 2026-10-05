@@ -112,10 +112,22 @@ def project_localisation(record: dict[str, Any]) -> dict[str, Any] | None:
             "frame": sky.get("frame"),
             "epoch": sky.get("epoch"),
         }
+        # F-SCI-01: prefer pipeline honesty fields when present; interim defaults otherwise.
+        proj = record.get("projection_model") or "local-linear-CD"
+        standing = record.get("coordinate_standing") or "image-space-projection-hypothesis"
+        item["projection_model"] = proj
+        item["coordinate_standing"] = standing
+        basis0 = basis[0] if basis else (
+            "Pixel centroid projected through caller-declared WCS (local linear CD)."
+        )
         item["text"] = (
-            f"localised detection {detection_id} → "
+            f"image-space projection via declared {proj} WCS "
+            f"({standing}; hypothesis; not spherical/TAN sky truth) "
+            f"for detection {detection_id}: "
             f"ra={sky.get('ra_deg')} deg, dec={sky.get('dec_deg')} deg "
-            f"({sky.get('frame')}/{sky.get('epoch')})"
+            f"(frame label {sky.get('frame')}/{sky.get('epoch')} from declared WCS; "
+            f"computational standing: local flat-sky CD ≠ ICRS spherical/FITS TAN). "
+            f"Basis: {basis0}"
         )
     else:  # rejected
         reason = record.get("unavailable_reason")
@@ -307,7 +319,12 @@ def project_action_residuals(report: dict[str, Any] | None) -> dict[str, Any]:
         "honesty": {
             "hypothesis_only": bool(honesty.get("hypothesis_only", True)),
             "established_identity_promoted": False,
-            "coordinates_invented": bool(honesty.get("coordinates_invented", False)),
+            # F-SCI-04: propagate when present; else unknown (do not hard-code False).
+            "coordinates_invented": (
+                honesty["coordinates_invented"]
+                if "coordinates_invented" in honesty
+                else epistemic.get("coordinates_invented", "unknown")
+            ),
         },
         "source": {"artifact": "observed_vs_expected.json", "pointer": "/action_ui", "contract": CONTRACT_RESIDUALS},
     }
@@ -317,7 +334,11 @@ def project_action_residuals(report: dict[str, Any] | None) -> dict[str, Any]:
         "epistemic": {
             "residuals_are": epistemic.get("residuals_are", "hypothesis"),
             "established_identity_promoted": False,
-            "coordinates_invented": bool(epistemic.get("coordinates_invented", False)),
+            "coordinates_invented": (
+                epistemic["coordinates_invented"]
+                if "coordinates_invented" in epistemic
+                else "unknown"
+            ),
             "catalogue_match_promotes_identity": False,
         },
         "summary": report.get("summary"),

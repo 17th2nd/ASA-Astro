@@ -179,6 +179,19 @@ def _compute_residuals(bundle_dir: Path, metadata_path: Path | None) -> dict | N
     return report
 
 
+
+def _honesty_flag(summary: dict | None, sky_payload: dict | None, key: str):
+    """Propagate pipeline honesty flag when present; else unknown (F-SCI-04).
+
+    Never hard-code False. Prefer sky_localisations.json / summary.sky_epistemic /
+    summary top-level keys when Significance emits them; until then return "unknown".
+    """
+    for src in (sky_payload, summary, (summary or {}).get("sky_epistemic") if isinstance(summary, dict) else None):
+        if isinstance(src, dict) and key in src:
+            return src[key]
+    return "unknown"
+
+
 def run_process_observation(
     source: dict[str, Any],
     *,
@@ -244,14 +257,15 @@ def run_process_observation(
     wcs = None
     localisations: list[dict[str, Any]] = []
     crossmatches: list[dict[str, Any]] = []
+    sky_payload: dict[str, Any] | None = None
     wcs_path = bundle_dir / "wcs_solution.json"
     sky_path = bundle_dir / "sky_localisations.json"
     xm_path = bundle_dir / "catalogue_crossmatches.json"
     if wcs_path.is_file():
         wcs = _load_json(wcs_path)
     if sky_path.is_file():
-        sky = _load_json(sky_path)
-        localisations = list(sky.get("localisations") or [])
+        sky_payload = _load_json(sky_path)
+        localisations = list(sky_payload.get("localisations") or [])
     if xm_path.is_file():
         xm = _load_json(xm_path)
         crossmatches = list(xm.get("crossmatches") or [])
@@ -263,20 +277,39 @@ def run_process_observation(
             if child.is_file() and child.name.startswith(source["sha256"]):
                 bundle_source_sha = _sha256(child.read_bytes())
                 break
+    # F-SCI-03: present-only observation_identity from pipeline (never invent digests).
+    observation_identity = None
+    for src in (summary if isinstance(summary, dict) else None, sky_payload, wcs if isinstance(wcs, dict) else None):
+        if isinstance(src, dict) and isinstance(src.get("observation_identity"), dict):
+            observation_identity = src["observation_identity"]
+            break
+    if observation_identity is None and isinstance(summary, dict):
+        # Accept flat component digests on summary when Significance lands that shape.
+        comps = {}
+        for k in ("source_sha256", "metadata_sha256", "wcs_digest"):
+            if k in summary:
+                comps[k] = summary[k]
+        if "source_sha256" in comps:
+            observation_identity = {
+                "digest": summary.get("observation_identity_digest") or summary.get("digest"),
+                **comps,
+            }
+
     return {
         "invoked": True,
         "reason": None,
         "wcs": wcs,
         "localisations": localisations,
         "crossmatches": crossmatches,
+        "observation_identity": observation_identity,
         "bundle_path": str(bundle_dir.relative_to(_data_dir())),
         "summary": summary,
         "bundle_source_sha256_verified": bundle_source_sha == source["sha256"],
         "sky_localisation_count": len(localisations),
         "wcs_present": wcs is not None,
         "catalogue_crossmatch_count": len(crossmatches),
-        "coordinates_invented": False,
-        "source_image_mutated": False,
+        "coordinates_invented": _honesty_flag(summary if isinstance(summary, dict) else None, sky_payload, "coordinates_invented"),
+        "source_image_mutated": _honesty_flag(summary if isinstance(summary, dict) else None, sky_payload, "source_image_mutated"),
         "objective_bridge": (
             "absent — observation graph is NOT mapped into the Objective universe "
             "(G-SIG-1; Significance-owned). Thin Objective path still uses the "

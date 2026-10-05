@@ -93,7 +93,15 @@ function render(v) {
     ["ASA baseline", s.asa_baseline], ["Kernel version", s.kernel_version], ["Edges / evidence links / states", `${s.edges} / ${s.evidence_links} / ${s.states}`],
     ["Universe", `${u.universe_id} (data class: ${u.data_class})`]]);
   const r = v.receipt;
-  kv($("#rcpt-dl"), [["Receipt digest", r.receipt_id], ["Digest verified by app", String(r.receipt_id_verified)], ["receipt.json sha256", r.receipt_file_sha256],
+  const oid = v.observation_identity;
+  const oidLine = oid
+    ? (oid.digest || ["source=" + (oid.source_sha256 || "?"), "meta=" + (oid.metadata_sha256 != null ? oid.metadata_sha256 : "none"), "wcs=" + (oid.wcs_digest != null ? oid.wcs_digest : "absent")].join(" · "))
+    : (v.uploaded_source && v.uploaded_source.present ? "pending pipeline observation_identity — do not cite bare RCPT for observation artefacts" : "— (no upload)");
+  kv($("#rcpt-dl"), [
+    ["Run storage key (run_id)", id],
+    ["Observation claim identity", oidLine],
+    ["Objective receipt digest (shared across keyed uploads is intentional)", r.receipt_id],
+    ["Digest verified by app", String(r.receipt_id_verified)], ["receipt.json sha256", r.receipt_file_sha256],
     ["Schema", r.receipt_schema], ["Objective", `${v.objective.name} v${v.objective.version} (${v.objective.objective_id})`],
     ["Weighting policy", v.objective.weighting_policy_ref], ["Context", `${v.objective.context_label} (${v.objective.context_id})`],
     ["Evaluation / plan", `${r.evaluation_id} / ${r.plan_id}`], ["Astro commit", r.astro_commit],
@@ -183,14 +191,61 @@ function renderClaims() {
     c.reasons.length ? el("span", { cls: "reasons", text: `why ${c.label}: ${c.reasons.join("; ")}` }) : null, srcLink(current.run_id, c.source)));
 }
 
+
+/** U-RUN-LIST-01: never truncate before __src-/__meta-; show filename + short discriminators. */
+function formatRunDiscriminators(r) {
+  const bits = [];
+  if (r.original_filename) bits.push(r.original_filename);
+  if (r.source_sha256_short) bits.push("__src-" + r.source_sha256_short + "\u2026");
+  else if (r.run_id && r.run_id.includes("__src-")) {
+    const m = r.run_id.match(/__src-([0-9a-f]{12})/);
+    if (m) bits.push("__src-" + m[1] + "\u2026");
+  }
+  if (r.meta_sha256_short) bits.push("__meta-" + r.meta_sha256_short + "\u2026");
+  else if (r.meta_sha256 === "none" || (r.run_id && /__meta-none$/.test(r.run_id))) bits.push("__meta-none");
+  else if (r.run_id && r.run_id.includes("__meta-")) {
+    const m = r.run_id.match(/__meta-([0-9a-f]{12}|none)/);
+    if (m) bits.push(m[1] === "none" ? "__meta-none" : "__meta-" + m[1] + "\u2026");
+  }
+  if (r.wcs_declared) bits.push("WCS declared");
+  return bits.length ? bits.join(" \u00b7 ") : null;
+}
+
+function observationClaimLabel(r, v) {
+  const oid = (v && v.observation_identity) || r.observation_identity;
+  if (!oid) return null;
+  if (oid.digest) return "observation_identity " + oid.digest;
+  if (oid.source_sha256) {
+    const meta = oid.metadata_sha256 != null ? String(oid.metadata_sha256) : "none";
+    const wcs = oid.wcs_digest != null ? String(oid.wcs_digest) : "absent";
+    return "source " + String(oid.source_sha256).slice(0, 12) + "\u2026 \u00b7 meta " + meta.slice(0, 12) + " \u00b7 wcs " + wcs.slice(0, 12);
+  }
+  return null;
+}
+
 async function loadRuns(q = "") {
   const data = await api(`/api/runs?q=${encodeURIComponent(q)}`);
   const ul = $("#runs-list"); ul.replaceChildren();
   if (!data.runs.length) { ul.append(el("li", { text: q ? `No runs match “${q}”.` : "No runs yet." })); return; }
   for (const r of data.runs) {
-    const a = el("a", { href: `#run-${r.run_id}`, text: `${r.objective} — ${r.run_id.slice(0, 21)}…` });
-    a.addEventListener("click", async (ev) => { ev.preventDefault(); render(await api(`/api/runs/${encodeURIComponent(r.run_id)}`)); status(`Loaded run ${r.run_id}.`); $("#receipt").scrollIntoView(); });
-    ul.append(el("li", {}, a, el("span", { cls: "src", text: ` ${r.issued_at} · data ${r.data_class} · kernel ${r.kernel_digest.slice(0, 19)}…` })));
+    const disc = formatRunDiscriminators(r);
+    const title = disc ? `${r.objective} — ${disc}` : `${r.objective} — ${r.run_id}`;
+    const a = el("a", { href: `#run-${r.run_id}`, cls: "run-title", text: title });
+    a.addEventListener("click", async (ev) => {
+      ev.preventDefault();
+      render(await api(`/api/runs/${encodeURIComponent(r.run_id)}`));
+      status(`Loaded run_id ${r.run_id}` + (r.receipt_id ? ` (Objective receipt_id ${r.receipt_id}; shared RCPT across keyed uploads is intentional).` : "."));
+      $("#receipt").scrollIntoView();
+    });
+    const kids = [a];
+    if (disc) kids.push(el("span", { cls: "run-disc", text: disc }));
+    kids.push(el("span", { cls: "run-id", text: `run_id ${r.run_id}` }));
+    const claim = observationClaimLabel(r);
+    if (claim) kids.push(el("span", { cls: "run-disc", text: `observation claim: ${claim}` }));
+    else if (r.keyed_upload) kids.push(el("span", { cls: "src", text: " observation claim: pending pipeline observation_identity (do not cite bare RCPT)" }));
+    const rcptShort = r.receipt_id ? `${r.receipt_id.slice(0, 21)}…` : "—";
+    kids.push(el("span", { cls: "src", text: ` ${r.issued_at} · data ${r.data_class} · Objective receipt ${rcptShort} · kernel ${r.kernel_digest.slice(0, 19)}…` }));
+    ul.append(el("li", {}, ...kids));
   }
 }
 
@@ -278,10 +333,16 @@ async function onUpload(ev) {
     const body = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
     if (!r.ok) throw new Error(body.error || `HTTP ${r.status}`);
     render(body);
-    statusEl.textContent = `Done. Receipt ${body.receipt.receipt_id}`
+    const oid = body.observation_identity;
+    const oidBit = oid
+      ? (oid.digest ? `; observation_identity=${oid.digest}` : `; observation_identity source=${oid.source_sha256 || "?"} meta=${oid.metadata_sha256 != null ? oid.metadata_sha256 : "none"}`)
+      : "; observation_identity=pending (do not cite bare RCPT for observation)";
+    statusEl.textContent = `Done. run_id=${body.run_id}; Objective receipt_id=${body.receipt.receipt_id}`
+      + " (shared receipt_id across keyed uploads is intentional — thin Objective receipt is content-addressed; run_id isolates upload dirs)"
+      + oidBit
       + (body.uploaded_source && body.uploaded_source.present ? `; source sha256=${body.uploaded_source.sha256}` : "")
       + (body.observation_evidence && body.observation_evidence.present ? "; observation_evidence.present=true" : "; observation_evidence.present=false")
-      + (body.reproduced ? " (identical receipt id reproduced)" : "");
+      + (body.reproduced ? " (identical Objective receipt id reproduced)" : "");
     await loadRuns($("#q").value);
     $("#receipt").scrollIntoView();
   } catch (e) {

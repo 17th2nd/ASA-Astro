@@ -465,5 +465,67 @@ class DualUploadHttpIsolation(_TempDataDir):
         self.assertEqual(ctx.exception.code, 404)
 
 
+
+@NEEDS_PIN
+class ListRunDiscriminators(_TempDataDir):
+    """U-RUN-LIST-01: list payload carries filename + src/meta discriminators (no bare-RCPT-only identity)."""
+
+    def test_list_runs_shows_src_meta_discriminators(self):
+        from app import slice as s
+
+        img_a = _fixture_ppm(Path(self._tmp.name) / "alpha.ppm")
+        img_b_path = Path(self._tmp.name) / "beta.ppm"
+        img_b = _fixture_ppm(img_b_path)
+        # Distinct bytes so source sha256 (and run_id) differs from alpha.
+        b = bytearray(img_b.read_bytes()); b[-1] = (b[-1] + 1) % 256; img_b.write_bytes(bytes(b))
+        # Same objective path → shared receipt_id likely; distinct sources → distinct run_ids.
+        va = s.run_slice(upload_bytes=img_a.read_bytes(), upload_filename="alpha.ppm")
+        vb = s.run_slice(upload_bytes=img_b.read_bytes(), upload_filename="beta.ppm")
+        self.assertNotEqual(va["run_id"], vb["run_id"])
+        listed = {item["run_id"]: item for item in s.list_runs()}
+        for view, name in ((va, "alpha.ppm"), (vb, "beta.ppm")):
+            item = listed[view["run_id"]]
+            self.assertEqual(item["original_filename"], name)
+            self.assertTrue(item["keyed_upload"])
+            self.assertIn("__src-", item["run_id"])
+            self.assertIn("__meta-", item["run_id"])
+            self.assertTrue(item["source_sha256_short"])
+            # Must not collapse to identical display keys solely on receipt prefix.
+            self.assertNotEqual(item["run_id"][:21], item["run_id"])  # run_id longer than truncated RCPT
+            self.assertEqual(item["receipt_id"], view["receipt"]["receipt_id"])
+        self.assertNotEqual(listed[va["run_id"]]["source_sha256_short"], listed[vb["run_id"]]["source_sha256_short"])
+
+
+class HonestyFlagPropagation(unittest.TestCase):
+    """F-SCI-04: app must not overwrite pipeline coordinates_invented=True to False."""
+
+    def test_coordinates_invented_true_is_not_forced_false(self):
+        from app import upload as u
+
+        # Unit-level: _honesty_flag prefers payload over hard-coded safety.
+        self.assertIs(u._honesty_flag({"coordinates_invented": True}, None, "coordinates_invented"), True)
+        self.assertIs(u._honesty_flag(None, {"coordinates_invented": True}, "coordinates_invented"), True)
+        self.assertEqual(u._honesty_flag({}, None, "coordinates_invented"), "unknown")
+        self.assertEqual(u._honesty_flag(None, None, "source_image_mutated"), "unknown")
+
+
+class DocClaimSurfaces(unittest.TestCase):
+    """F-SCI-02 / U-DOC: README + GAPS disclose linear-CD; sample WCS fixture exists."""
+
+    def test_gaps_and_readme_disclose_linear_cd(self):
+        root = Path(__file__).resolve().parents[2]
+        gaps = (root / "app" / "GAPS.md").read_text(encoding="utf-8")
+        readme = (root / "app" / "README.md").read_text(encoding="utf-8")
+        self.assertIn("G-SIG-6", gaps)
+        self.assertTrue("linear" in gaps.lower() and "cd" in gaps.lower())
+        self.assertIn("TAN", gaps)
+        self.assertTrue("linear" in readme.lower() or "G-SIG-6" in readme)
+        fixture = root / "app" / "static" / "sample-upload-metadata-wcs.json"
+        self.assertTrue(fixture.is_file())
+        meta = json.loads(fixture.read_text(encoding="utf-8"))
+        self.assertIn("wcs", meta)
+        self.assertEqual(meta["wcs"]["pixel_origin"], "0-based-image-pixel")
+
+
 if __name__ == "__main__":
     unittest.main()
