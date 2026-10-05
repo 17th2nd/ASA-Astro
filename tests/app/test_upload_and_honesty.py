@@ -51,57 +51,24 @@ def _fixture_ppm(path: Path) -> Path:
 @NEEDS_PIN
 class UploadPreserveAndReceipt(_TempDataDir):
     def test_image_upload_preserves_source_and_sets_observation_present(self):
+        """No declared WCS → bridge fail-closed; must not silently use slice1 (R1)."""
         from app import slice as s
+        from app import upload as uploadmod
 
         img = _fixture_ppm(Path(self._tmp.name) / "syn.ppm")
         data = img.read_bytes()
-        digest = hashlib.sha256(data).hexdigest()
-        view = s.run_slice(
-            upload_bytes=data,
-            upload_filename="syn.ppm",
-            upload_media_type="image/x-portable-pixmap",
+        with self.assertRaisesRegex(ValueError, r"fail-closed|refusing silent slice1"):
+            s.run_slice(
+                upload_bytes=data,
+                upload_filename="syn.ppm",
+                upload_media_type="image/x-portable-pixmap",
+            )
+        stored = uploadmod.store_bytes(
+            data, original_filename="syn.ppm", media_type="image/x-portable-pixmap"
         )
-        self.assertRegex(
-            view["run_id"],
-            r"^RCPT-[0-9a-f]{64}__src-[0-9a-f]{64}__meta-(?:[0-9a-f]{64}|none)$",
-        )
-        self.assertRegex(view["receipt"]["receipt_id"], r"^RCPT-[0-9a-f]{64}$")
-        self.assertTrue(view["run_id"].startswith(view["receipt"]["receipt_id"] + "__src-"))
-        self.assertTrue(view["receipt"]["receipt_id_verified"])
-        self.assertEqual(view["receipt"]["asa_baseline"], pinmod.pin_record()["sha"])
-        self.assertEqual(pinmod.pin_record()["sha"], "c2ccd7d55e34d7ffe03fd21d8b633cde69c152d2")
+        self.assertEqual(stored["sha256"], hashlib.sha256(data).hexdigest())
+        self.assertTrue((Path(os.environ["ASA_ASTRO_APP_DATA_DIR"]) / stored["stored_path"]).is_file())
 
-        us = view["uploaded_source"]
-        self.assertTrue(us["present"])
-        self.assertEqual(us["sha256"], digest)
-        self.assertEqual(us["original_filename"], "syn.ppm")
-        self.assertEqual(us["integrity_status"], "verified_sha256")
-        self.assertTrue(us["process_observation_invoked"])
-        stored = Path(os.environ["ASA_ASTRO_APP_DATA_DIR"]) / us["stored_path"]
-        self.assertTrue(stored.is_file())
-        self.assertEqual(hashlib.sha256(stored.read_bytes()).hexdigest(), digest)
-
-        run_dir = Path(os.environ["ASA_ASTRO_APP_DATA_DIR"]) / "runs" / view["run_id"]
-        src_art = json.loads((run_dir / "uploaded_source.json").read_text(encoding="utf-8"))
-        self.assertEqual(src_art["sha256"], digest)
-        self.assertEqual(src_art["original_filename"], "syn.ppm")
-
-        oe = view["observation_evidence"]
-        self.assertTrue(oe["present"], "process_observation always emits sky_localisations.json")
-        self.assertIsNone(oe["wcs"], "no declared WCS in this case")
-        self.assertTrue(oe["localisations"])
-        for loc in oe["localisations"]:
-            self.assertEqual(loc["status"], "unavailable")
-            self.assertNotEqual(loc.get("classification_status"), "established")
-            self.assertNotEqual(loc.get("label"), "established")
-
-        # Residuals present (fail-closed unlocalised path) with hypothesis honesty
-        ove = view["observed_vs_expected"]
-        self.assertTrue(ove["present"])
-        self.assertFalse(ove["epistemic"]["established_identity_promoted"])
-        self.assertFalse(ove["epistemic"]["coordinates_invented"])
-        self.assertTrue(ove["action_ui"]["honesty"]["hypothesis_only"])
-        self.assertIn("WCS", ove["action_ui"]["headline"] or "")
 
     def test_image_upload_with_declared_wcs_localises_hypothesis_only(self):
         from app import slice as s
@@ -166,22 +133,18 @@ class UploadPreserveAndReceipt(_TempDataDir):
         self.assertTrue((run_dir / "observation_wcs.json").is_file())
         self.assertTrue((run_dir / "observation_localisations.json").is_file())
         self.assertTrue((run_dir / "observed_vs_expected.json").is_file())
+        prov = view["universe_provenance"]
+        self.assertEqual(prov["bridge_path"], "observation_bundle_to_objective")
+        self.assertFalse(prov.get("slice1_substituted"))
 
     def test_fits_store_only_preserves_source_without_observation_present(self):
+        """Store-only FITS cannot bridge; refuse silent slice1 (R1)."""
         from app import slice as s
 
-        # Minimal non-image bytes with .fits suffix — store-only until FITS adapter.
-        data = b"SIMPLE  =                    T / ASA-Astro preserve-source placeholder\nEND"
-        digest = hashlib.sha256(data).hexdigest()
-        view = s.run_slice(upload_bytes=data, upload_filename="placeholder.fits")
-        us = view["uploaded_source"]
-        self.assertTrue(us["present"])
-        self.assertEqual(us["sha256"], digest)
-        self.assertTrue(us["store_only"])
-        self.assertFalse(us["process_observation_invoked"])
-        self.assertFalse(view["observation_evidence"]["present"])
-        self.assertFalse(view["observed_vs_expected"]["present"])
-        self.assertTrue(any(u["kind"] == "observation-objective-bridge" for u in view["unknowns"]))
+        data = b"SIMPLE  =                    T / ASA-Astro preserve-source placeholder" + bytes([10]) + b"END"
+        with self.assertRaisesRegex(ValueError, r"refusing silent slice1|fail-closed|did not yield"):
+            s.run_slice(upload_bytes=data, upload_filename="placeholder.fits")
+
 
 
 @NEEDS_PIN
@@ -202,10 +165,22 @@ class UploadHttpTests(_TempDataDir):
     def test_multipart_upload_round_trip(self):
         img = _fixture_ppm(Path(self._tmp.name) / "http.ppm")
         boundary = "----AsaAstroBoundary7"
+        meta = {
+            "instrument": "http-roundtrip",
+            "wcs": {
+                "frame": "ICRS", "epoch": "J2000.0",
+                "crpix": [32.0, 32.0], "crval_deg": [150.0, -30.0],
+                "cd_deg_per_pixel": [[1.0 / 3600.0, 0.0], [0.0, 1.0 / 3600.0]],
+                "pixel_origin": "0-based-image-pixel",
+                "source_reference": "http-roundtrip",
+            },
+            "site": {"designation": "TEST-SITE", "latitude_deg": -31.27, "longitude_deg": 149.06, "elevation_m": 1165.0},
+        }
         body = b""
         for name, filename, ctype, data in (
             ("objective", None, None, b"A-exoplanet-transit-followup"),
             ("source", "http.ppm", "image/x-portable-pixmap", img.read_bytes()),
+            ("metadata", "meta.json", "application/json", (json.dumps(meta) + "\n").encode()),
         ):
             body += f"--{boundary}\r\n".encode()
             if filename is None:
@@ -230,6 +205,7 @@ class UploadHttpTests(_TempDataDir):
         self.assertIn(status, (200, 201))
         self.assertTrue(view["uploaded_source"]["present"])
         self.assertTrue(view["observation_evidence"]["present"])
+        self.assertEqual(view["universe_provenance"]["bridge_path"], "observation_bundle_to_objective")
         self.assertEqual(view["receipt"]["asa_baseline"], "c2ccd7d55e34d7ffe03fd21d8b633cde69c152d2")
 
 
@@ -299,10 +275,10 @@ class DualUploadNoCrossContamination(_TempDataDir):
         return (json.dumps(meta, sort_keys=True) + "\n").encode("utf-8")
 
     def test_wcs_then_nowcs_isolated_run_dirs_and_artifacts(self):
+        """WCS upload succeeds via bridge; no-WCS upload fail-closes without touching A (R1)."""
         from app import slice as s
 
         img_a = _fixture_ppm(Path(self._tmp.name) / "dual-a.ppm")
-        # Distinct source bytes for B.
         data_a = img_a.read_bytes()
         data_b = data_a + b"\n# dual-b-distinct\n"
         sha_a = hashlib.sha256(data_a).hexdigest()
@@ -318,52 +294,28 @@ class DualUploadNoCrossContamination(_TempDataDir):
             upload_filename="dual-a.ppm",
             metadata_bytes=meta_a,
         )
-        view_b = s.run_slice(
-            upload_bytes=data_b,
-            upload_filename="dual-b.ppm",
-            metadata_bytes=meta_b,
-        )
+        self.assertEqual(view_a["universe_provenance"]["bridge_path"], "observation_bundle_to_objective")
+        with self.assertRaisesRegex(ValueError, r"fail-closed|refusing silent slice1"):
+            s.run_slice(
+                upload_bytes=data_b,
+                upload_filename="dual-b.ppm",
+                metadata_bytes=meta_b,
+            )
 
-        # Same Objective receipt id is allowed (G-SIG-1) but run dirs must diverge.
-        self.assertEqual(view_a["receipt"]["receipt_id"], view_b["receipt"]["receipt_id"])
-        self.assertNotEqual(view_a["run_id"], view_b["run_id"])
-        self.assertIn(f"__src-{sha_a}__", view_a["run_id"])
-        self.assertIn(f"__src-{sha_b}__", view_b["run_id"])
-        self.assertFalse(view_b.get("reproduced"))
-
-        data_root = Path(os.environ["ASA_ASTRO_APP_DATA_DIR"])
-        dir_a = data_root / "runs" / view_a["run_id"]
-        dir_b = data_root / "runs" / view_b["run_id"]
+        dir_a = Path(os.environ["ASA_ASTRO_APP_DATA_DIR"]) / "runs" / view_a["run_id"]
         self.assertTrue(dir_a.is_dir())
-        self.assertTrue(dir_b.is_dir())
-        self.assertNotEqual(dir_a, dir_b)
-
-        # A produced WCS; B must not inherit it on disk or in view.
         self.assertTrue((dir_a / "observation_wcs.json").is_file())
-        self.assertFalse((dir_b / "observation_wcs.json").exists())
-        self.assertIsNotNone(view_a["observation_evidence"]["wcs"])
-        self.assertIsNone(view_b["observation_evidence"]["wcs"])
-
-        # run.json for B must not list observation_wcs among artifacts.
-        run_b = json.loads((dir_b / "run.json").read_text(encoding="utf-8"))
-        self.assertNotIn("observation_wcs.json", run_b.get("artifacts") or {})
-        run_a = json.loads((dir_a / "run.json").read_text(encoding="utf-8"))
-        self.assertIn("observation_wcs.json", run_a.get("artifacts") or {})
-
-        # A's uploaded_source record must remain A after B lands.
+        self.assertTrue((dir_a / "uploaded_source.json").is_file())
         src_a = json.loads((dir_a / "uploaded_source.json").read_text(encoding="utf-8"))
-        src_b = json.loads((dir_b / "uploaded_source.json").read_text(encoding="utf-8"))
         self.assertEqual(src_a["sha256"], sha_a)
-        self.assertEqual(src_b["sha256"], sha_b)
+        self.assertEqual(src_a["original_filename"], "dual-a.ppm")
 
-        # Artifact resolution via the same keyed run id matches view honesty.
-        self.assertIsNotNone(s.artifact_path(view_a["run_id"], "observation_wcs.json"))
-        self.assertIsNone(s.artifact_path(view_b["run_id"], "observation_wcs.json"))
-        loaded_b = s.load_view(view_b["run_id"])
-        self.assertIsNotNone(loaded_b)
-        self.assertIsNone(loaded_b["observation_evidence"]["wcs"])
+        # No run dir for B (fail-closed before write).
+        runs = Path(os.environ["ASA_ASTRO_APP_DATA_DIR"]) / "runs"
+        for d in runs.iterdir() if runs.exists() else []:
+            if d.is_dir() and d.name != view_a["run_id"] and not d.name.startswith("."):
+                self.fail(f"unexpected run dir after B fail-closed: {d.name}")
 
-        # Existing run dirs are never rewritten on identical re-upload.
         mtime_a = (dir_a / "run.json").stat().st_mtime_ns
         again_a = s.run_slice(
             upload_bytes=data_a,
@@ -373,6 +325,7 @@ class DualUploadNoCrossContamination(_TempDataDir):
         self.assertTrue(again_a["reproduced"])
         self.assertEqual(again_a["run_id"], view_a["run_id"])
         self.assertEqual((dir_a / "run.json").stat().st_mtime_ns, mtime_a)
+
 
 
 @NEEDS_PIN
@@ -437,26 +390,22 @@ class DualUploadHttpIsolation(_TempDataDir):
         meta_b = (json.dumps({"instrument": "http-dual"}, sort_keys=True) + "\n").encode()
 
         status_a, view_a = self._multipart("a.ppm", data_a, meta_a)
-        status_b, view_b = self._multipart("b.ppm", data_b, meta_b)
         self.assertEqual(status_a, 201)
-        self.assertEqual(status_b, 201)
-        self.assertNotEqual(view_a["run_id"], view_b["run_id"])
         self.assertIsNotNone(view_a["observation_evidence"]["wcs"])
-        self.assertIsNone(view_b["observation_evidence"]["wcs"])
+        self.assertEqual(view_a["universe_provenance"]["bridge_path"], "observation_bundle_to_objective")
 
-        # GET artifact for B must 404; for A must 200 with declared WCS.
+        # B has no WCS → bridge fail-closed → HTTP 400; must not create a silent slice1 run.
+        with self.assertRaises(urllib.error.HTTPError) as ctx:
+            self._multipart("b.ppm", data_b, meta_b)
+        self.assertEqual(ctx.exception.code, 400)
+
         from urllib.parse import quote
         url_a = f"{self.base}/api/runs/{quote(view_a['run_id'], safe='')}/artifacts/observation_wcs.json"
-        url_b = f"{self.base}/api/runs/{quote(view_b['run_id'], safe='')}/artifacts/observation_wcs.json"
         with urllib.request.urlopen(url_a, timeout=60) as r:
             self.assertEqual(r.status, 200)
             body_a = json.loads(r.read())
         self.assertEqual(body_a.get("status"), "declared")
-        with self.assertRaises(urllib.error.HTTPError) as ctx:
-            urllib.request.urlopen(url_b, timeout=60)
-        self.assertEqual(ctx.exception.code, 404)
 
-        # Plain receipt_id must not resolve to a sibling upload dir (refuse ambiguous serve).
         plain = view_a["receipt"]["receipt_id"]
         with self.assertRaises(urllib.error.HTTPError) as ctx:
             urllib.request.urlopen(
@@ -479,8 +428,20 @@ class ListRunDiscriminators(_TempDataDir):
         # Distinct bytes so source sha256 (and run_id) differs from alpha.
         b = bytearray(img_b.read_bytes()); b[-1] = (b[-1] + 1) % 256; img_b.write_bytes(bytes(b))
         # Same objective path → shared receipt_id likely; distinct sources → distinct run_ids.
-        va = s.run_slice(upload_bytes=img_a.read_bytes(), upload_filename="alpha.ppm")
-        vb = s.run_slice(upload_bytes=img_b.read_bytes(), upload_filename="beta.ppm")
+        meta = {
+            "instrument": "list-disc",
+            "wcs": {
+                "frame": "ICRS", "epoch": "J2000.0",
+                "crpix": [32.0, 32.0], "crval_deg": [150.0, -30.0],
+                "cd_deg_per_pixel": [[1.0 / 3600.0, 0.0], [0.0, 1.0 / 3600.0]],
+                "pixel_origin": "0-based-image-pixel",
+                "source_reference": "list-disc",
+            },
+            "site": {"designation": "TEST-SITE", "latitude_deg": -31.27, "longitude_deg": 149.06, "elevation_m": 1165.0},
+        }
+        meta_bytes = (json.dumps(meta) + "\n").encode("utf-8")
+        va = s.run_slice(upload_bytes=img_a.read_bytes(), upload_filename="alpha.ppm", metadata_bytes=meta_bytes)
+        vb = s.run_slice(upload_bytes=img_b.read_bytes(), upload_filename="beta.ppm", metadata_bytes=meta_bytes)
         self.assertNotEqual(va["run_id"], vb["run_id"])
         listed = {item["run_id"]: item for item in s.list_runs()}
         for view, name in ((va, "alpha.ppm"), (vb, "beta.ppm")):

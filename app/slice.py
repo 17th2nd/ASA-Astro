@@ -35,7 +35,7 @@ RUN_ID = re.compile(
 RECEIPT_ID = re.compile(r"^RCPT-[0-9a-f]{64}$")
 ARTIFACTS = ("pin.json", "snapshot.json", "objective.json", "context.json", "evaluation.json", "plan.json",
              "receipt.json", "receipt.sha256", "run.json", "view.json", "uploaded_source.json",
-             "observation_wcs.json", "observation_localisations.json", "observation_crossmatches.json", "observed_vs_expected.json")
+             "observation_wcs.json", "observation_localisations.json", "observation_crossmatches.json", "observed_vs_expected.json", "bridge_manifest.json")
 CORE_ARTIFACTS = ("pin.json", "snapshot.json", "objective.json", "context.json", "evaluation.json", "plan.json",
                   "receipt.json", "receipt.sha256", "run.json", "view.json")
 
@@ -186,9 +186,8 @@ def _uploaded_source_view(uploaded_source: dict | None) -> dict[str, Any]:
         "observation_bundle_path": obs.get("bundle_path"),
         "bundle_source_sha256_verified": obs.get("bundle_source_sha256_verified"),
         "objective_bridge": obs.get("objective_bridge") or (
-            "absent — upload is preserved and optionally processed into an observation "
-            "bundle; the thin Objective path still uses the synthetic example universe "
-            "(G-SIG-1; Significance owns graph→universe wire-in)."
+            "absent — upload preserved; primary Objective path requires "
+            "asa_astro.bridge.observation_bundle_to_objective (G-SIG-1)."
         ),
         "label": "record",
         "source": _ref("uploaded_source.json", ""),
@@ -272,14 +271,18 @@ def build_view(run_id: str, pin: dict, snap: dict, objective: dict, context: dic
                              "source": _ref("snapshot.json", f"/evidence_links/{i}")})
     unknowns.append({"kind": "data-class", "text": f"the evaluated universe is labelled '{data_class}'; no result here describes the real sky",
                      "source": _ref("snapshot.json", "/universe/data_class")})
-    if uploaded_source:
+    bridge_path = (run.get("universe_provenance") or {}).get("bridge_path")
+    if uploaded_source and bridge_path not in (
+        "observation_bundle_to_objective",
+        "sky_to_objective_primary",
+    ):
         unknowns.append({
             "kind": "observation-objective-bridge",
             "text": (
                 "uploaded observation source is preserved"
                 + (f" (sha256={uploaded_source.get('sha256')})" if uploaded_source.get("sha256") else "")
-                + "; observation graph is not mapped into this Objective universe "
-                "(Significance-owned; see GAPS G-SIG-1)"
+                + "; observation graph was not mapped into this Objective universe "
+                "(see GAPS G-SIG-1)"
             ),
             "source": _ref("uploaded_source.json", "/sha256"),
         })
@@ -359,6 +362,12 @@ def build_view(run_id: str, pin: dict, snap: dict, objective: dict, context: dic
             crossmatches=observation_crossmatches,
         ),
         "observed_vs_expected": project_action_residuals(observed_vs_expected),
+        "universe_provenance": run.get("universe_provenance") or {
+            "bridge_path": "synthetic_demo_slice1",
+            "data_class": data_class,
+            "universe_id": snap["universe"]["universe_id"],
+            "label": "synthetic/demo",
+        },
         "compat_shims": run["compat_shims"],
     }
 
@@ -453,13 +462,15 @@ def run_slice(
     upload_filename: str | None = None,
     upload_media_type: str | None = None,
     metadata_bytes: bytes | None = None,
+    demo: bool = False,
 ) -> dict[str, Any]:
     """Pin → snapshot → one Objective → receipt.
 
-    Optional upload: preserve source under ``app/var/uploads/`` (sha256), optionally
-    invoke tip ``process_observation`` (Pillow-decodable images), project present-only
-    observation honesty into the view, then still run the thin Objective path on the
-    synthetic example universe (no graph→universe bridge).
+    Paths (R1 / G-SIG-1):
+    - **Upload + localised rows** → primary Objective via
+      ``asa_astro.bridge.observation_bundle_to_objective`` (never silent ``slice1.json``).
+    - **Upload + bridge fail-closed** → raise; no silent synthetic substitute.
+    - **No-upload / explicit demo** → ``data/universe/slice1.json``, labelled synthetic/demo.
     """
     cfg = pinmod.app_config()
     slug = objective_slug or cfg["default_inputs"]["objective"]
@@ -483,23 +494,198 @@ def run_slice(
         pin = pinmod.activate()
         from astro.domain import Universe
         from astro.objectives.loaders import load_context, load_objective
-        from astro.pipeline import FACET, decide
+        from astro.pipeline import FACET, decide, open_or_bootstrap
         from astro.domain.identity import content_id
+        from asa_astro.bridge import SkyToObjectiveBridgeError, observation_bundle_to_objective
         from .compat import PinnedAdapter, SHIM_RECORD
 
         universe_path = ROOT / cfg["default_inputs"]["universe"]
         context_path = ROOT / cfg["default_inputs"]["context"]
         objective_path = ROOT / cfg["objectives_dir"] / f"{slug}.json"
-        universe = Universe.load(universe_path)
-        objective = load_objective(objective_path)
-        context = load_context(context_path, universe)
-        adapter = PinnedAdapter.in_memory_registered(FACET, "astro")
-        adapter.load_universe(universe)
-        decision = decide(universe, objective, context, adapter)   # snapshot → evaluate ONE objective → plan → receipt
-        receipt = decision.receipt.to_record()
-        body = {k: v for k, v in receipt.items() if k not in ("receipt_id", "issued_at", "issued_at_classification")}
+
+        bridge_result = None
+        bridge_out: Path | None = None
+
+        if uploaded_source is not None and not demo:
+            if not observation_consume or not observation_consume.get("invoked"):
+                raise ValueError(
+                    "Upload did not yield a process_observation bundle; refusing silent "
+                    "slice1.json substitute (sky→Objective fail-closed / honesty)."
+                )
+            bundle_rel = observation_consume.get("bundle_path")
+            if not bundle_rel:
+                raise ValueError(
+                    "process_observation produced no bundle_path; refusing silent "
+                    "slice1.json substitute."
+                )
+            bundle_dir = data_dir() / bundle_rel
+            if not bundle_dir.is_dir():
+                raise ValueError(
+                    f"observation bundle missing at {bundle_rel}; refusing silent slice1.json."
+                )
+            site = None
+            instrument = None
+            if metadata_bytes:
+                try:
+                    meta_obj = json.loads(metadata_bytes.decode("utf-8"))
+                except (UnicodeDecodeError, json.JSONDecodeError):
+                    meta_obj = None
+                if isinstance(meta_obj, dict):
+                    if isinstance(meta_obj.get("site"), dict):
+                        site = meta_obj["site"]
+                    if isinstance(meta_obj.get("instrument"), dict):
+                        instrument = meta_obj["instrument"]
+                    elif isinstance(meta_obj.get("instrument"), str):
+                        instrument = {"designation": meta_obj["instrument"]}
+            runs_dir().mkdir(parents=True, exist_ok=True)
+            bridge_staging = Path(tempfile.mkdtemp(prefix=".bridge-", dir=runs_dir()))
+            try:
+                bridge_out = bridge_staging / "out"
+                bridge_result = observation_bundle_to_objective(
+                    bundle_dir,
+                    bridge_out,
+                    site=site,
+                    instrument=instrument,
+                    allow_synthetic_demo_site=False,
+                    commit="app-r1-observation-bundle",
+                )
+            except SkyToObjectiveBridgeError as exc:
+                shutil.rmtree(bridge_staging, ignore_errors=True)
+                raise ValueError(
+                    f"sky→Objective bridge fail-closed (no silent slice1): {exc}"
+                ) from exc
+            except Exception:
+                shutil.rmtree(bridge_staging, ignore_errors=True)
+                raise
+
+            universe = Universe.load(bridge_out / "universe.json")
+            objective = load_objective(bridge_out / "objective.json")
+            context = load_context(bridge_out / "context.json", universe)
+            adapter = open_or_bootstrap(universe)
+            decision_snapshot = adapter.snapshot()
+            evaluation_record = json.loads((bridge_out / "evaluation.json").read_text(encoding="utf-8"))
+            plan_record = json.loads((bridge_out / "plan.json").read_text(encoding="utf-8"))
+            receipt = json.loads((bridge_out / "receipt.json").read_text(encoding="utf-8"))
+
+            class _Rec:
+                def __init__(self, record):
+                    self._record = record
+
+                def to_record(self):
+                    return self._record
+
+            decision = type("DecisionShim", (), {})()
+            decision.snapshot = decision_snapshot
+            decision.evaluation = _Rec(evaluation_record)
+            decision.plan = _Rec(plan_record)
+
+            observation_consume = dict(observation_consume)
+            observation_consume["objective_bridge"] = (
+                "primary — asa_astro.bridge.observation_bundle_to_objective "
+                f"(universe_id={bridge_result.get('universe_id')}; "
+                f"slice1_substituted={bridge_result.get('slice1_substituted')})"
+            )
+            if bridge_result.get("observation_identity") and not observation_consume.get(
+                "observation_identity"
+            ):
+                observation_consume["observation_identity"] = bridge_result["observation_identity"]
+            engine_call = (
+                "asa_astro.bridge.observation_bundle_to_objective("
+                "bundle_directory, out_directory, allow_synthetic_demo_site=False)"
+            )
+            slice_steps = [
+                "pin",
+                "upload",
+                "process_observation",
+                "observation_bundle_to_objective",
+                "receipt",
+            ]
+            inputs = {
+                "universe": f"bridge:{bridge_result.get('universe_id')}",
+                "context": f"bridge:{bridge_result.get('context_id')}",
+                "objective": f"bridge:{bridge_result.get('objective_id')}",
+                "universe_sha256": _sha((bridge_out / "universe.json").read_bytes()),
+                "context_sha256": _sha((bridge_out / "context.json").read_bytes()),
+                "objective_sha256": _sha((bridge_out / "objective.json").read_bytes()),
+                "observation_bundle": bundle_rel,
+                "bridge_api": "asa_astro.bridge.observation_bundle_to_objective",
+            }
+            oid = bridge_result.get("observation_identity") or observation_consume.get(
+                "observation_identity"
+            )
+            universe_provenance = {
+                "bridge_path": "observation_bundle_to_objective",
+                "api": "asa_astro.bridge.observation_bundle_to_objective",
+                "universe_id": bridge_result.get("universe_id") or universe.universe_id,
+                "data_class": universe.data_class,
+                "slice1_substituted": bool(bridge_result.get("slice1_substituted")),
+                "site_standing": bridge_result.get("site_standing"),
+                "site_demo_only": bridge_result.get("site_demo_only"),
+                "source_sha256": (
+                    (oid or {}).get("source_sha256")
+                    if isinstance(oid, dict)
+                    else uploaded_source.get("sha256")
+                ),
+                "observation_claim_id": (
+                    (oid or {}).get("observation_claim_id") if isinstance(oid, dict) else None
+                ),
+                "observation_claim_digest": (
+                    (oid or {}).get("observation_claim_digest") if isinstance(oid, dict) else None
+                ),
+                "label": "observation+bridge",
+            }
+            shim_note = dict(SHIM_RECORD)
+            shim_note["applied_on_this_run"] = False
+            shim_note["path_note"] = (
+                "primary bridge uses tip open_or_bootstrap inside "
+                "observation_bundle_to_objective; app PinnedAdapter shim not applied on this path"
+            )
+            compat_shims = [shim_note]
+        else:
+            universe = Universe.load(universe_path)
+            objective = load_objective(objective_path)
+            context = load_context(context_path, universe)
+            adapter = PinnedAdapter.in_memory_registered(FACET, "astro")
+            adapter.load_universe(universe)
+            decision = decide(universe, objective, context, adapter)
+            receipt = decision.receipt.to_record()
+            engine_call = "astro.pipeline.decide(universe, objective, context, adapter)"
+            slice_steps = ["pin", "snapshot", "objective", "receipt"]
+            if demo and uploaded_source is not None:
+                slice_steps = ["pin", "upload", "demo_slice1", "objective", "receipt"]
+            inputs = {
+                "universe": str(universe_path.relative_to(ROOT)),
+                "context": str(context_path.relative_to(ROOT)),
+                "objective": str(objective_path.relative_to(ROOT)),
+                "universe_sha256": _sha(universe_path.read_bytes()),
+                "context_sha256": _sha(context_path.read_bytes()),
+                "objective_sha256": _sha(objective_path.read_bytes()),
+            }
+            universe_provenance = {
+                "bridge_path": "synthetic_demo_slice1",
+                "universe_id": universe.universe_id,
+                "data_class": universe.data_class,
+                "slice1_substituted": False,
+                "source_path": str(universe_path.relative_to(ROOT)),
+                "label": "synthetic/demo",
+                "demo": bool(demo) or uploaded_source is None,
+            }
+            compat_shims = [SHIM_RECORD]
+            if observation_consume is not None and demo:
+                observation_consume = dict(observation_consume)
+                observation_consume["objective_bridge"] = (
+                    "demo — explicit demo=True; primary receipt uses synthetic slice1.json "
+                    "(labelled synthetic/demo; not a silent upload substitute)"
+                )
+
+        body = {
+            k: v
+            for k, v in receipt.items()
+            if k not in ("receipt_id", "issued_at", "issued_at_classification")
+        }
         verified = content_id("RCPT", body) == receipt["receipt_id"]
         from astro_exec.core.canonical_json import canonical_text
+
         receipt_text = canonical_text(receipt)
         receipt_id = receipt["receipt_id"]
         run_id = run_storage_key(
@@ -509,18 +695,19 @@ def run_slice(
         )
         snap = _snapshot_detail(decision.snapshot, universe)
         run = {
-            "run_schema": "asa-astro-app-run-v1", "app_version": APP_VERSION, "run_id": run_id,
+            "run_schema": "asa-astro-app-run-v1",
+            "app_version": APP_VERSION,
+            "run_id": run_id,
             "receipt_id": receipt_id,
-            "slice": ["pin", "snapshot", "objective", "receipt"]
-                     + (["upload", "process_observation"] if uploaded_source else []),
-            "inputs": {"universe": str(universe_path.relative_to(ROOT)), "context": str(context_path.relative_to(ROOT)),
-                       "objective": str(objective_path.relative_to(ROOT)),
-                       "universe_sha256": _sha(universe_path.read_bytes()), "context_sha256": _sha(context_path.read_bytes()),
-                       "objective_sha256": _sha(objective_path.read_bytes())},
-            "engine_call": "astro.pipeline.decide(universe, objective, context, adapter)",
-            "compat_shims": [SHIM_RECORD],
+            "slice": slice_steps,
+            "inputs": inputs,
+            "engine_call": engine_call,
+            "compat_shims": compat_shims,
+            "universe_provenance": universe_provenance,
             "receipt_id_verified": verified,
-            "receipt_id_verification": "content_id('RCPT', receipt body without receipt_id/issued_at) recomputed by the app",
+            "receipt_id_verification": (
+                "content_id('RCPT', receipt body without receipt_id/issued_at) recomputed by the app"
+            ),
             "receipt_file_sha256": _sha(receipt_text),
             "self_acceptance": "NO",
         }
@@ -528,7 +715,10 @@ def run_slice(
             run["upload_key"] = {
                 "source_sha256": uploaded_source["sha256"],
                 "metadata_sha256": _metadata_sha256(metadata_bytes),
-                "binding": "run directory keyed by (receipt_id, source sha256, metadata sha256); never rewritten",
+                "binding": (
+                    "run directory keyed by (receipt_id, source sha256, metadata sha256); "
+                    "never rewritten"
+                ),
             }
         target = runs_dir() / run_id
         invocation = {
@@ -537,6 +727,7 @@ def run_slice(
             "run_id": run_id,
             "receipt_file_sha256": run["receipt_file_sha256"],
             "recorded_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "bridge_path": universe_provenance.get("bridge_path"),
         }
         if uploaded_source is not None:
             invocation["uploaded_source_sha256"] = uploaded_source["sha256"]
@@ -547,7 +738,6 @@ def run_slice(
                 invocation["observation_bundle_path"] = observation_consume.get("bundle_path")
 
         if target.exists():
-            # Append-only: never rewrite an existing run directory (R-INT-01).
             prior = json.loads((target / "receipt.json").read_text(encoding="utf-8"))
             invocation["reproduced_identical_receipt_id"] = prior["receipt_id"] == receipt_id
             invocation["run_dir_mutated"] = False
@@ -555,25 +745,39 @@ def run_slice(
                 fh.write(json.dumps(invocation, sort_keys=True) + "\n")
             view = json.loads((target / "view.json").read_text(encoding="utf-8"))
             view["reproduced"] = True
+            if bridge_out is not None:
+                shutil.rmtree(bridge_out.parent, ignore_errors=True)
             return view
 
         runs_dir().mkdir(parents=True, exist_ok=True)
         tmp = Path(tempfile.mkdtemp(prefix=".run-", dir=runs_dir()))
         try:
             files = {
-                "pin.json": _canon(pin), "snapshot.json": _canon(snap), "objective.json": _canon(objective.to_record()),
-                "context.json": _canon(context.to_record()), "evaluation.json": _canon(decision.evaluation.to_record()),
-                "plan.json": _canon(decision.plan.to_record()), "receipt.json": receipt_text + "\n",
+                "pin.json": _canon(pin),
+                "snapshot.json": _canon(snap),
+                "objective.json": _canon(objective.to_record()),
+                "context.json": _canon(context.to_record()),
+                "evaluation.json": _canon(decision.evaluation.to_record()),
+                "plan.json": _canon(decision.plan.to_record()),
+                "receipt.json": receipt_text + "\n",
                 "receipt.sha256": run["receipt_file_sha256"] + "  receipt.json\n",
             }
-            # Write core files first so _attach_upload_artifacts can refresh digests.
             for name, text_body in files.items():
                 (tmp / name).write_text(text_body, encoding="utf-8")
+            if bridge_out is not None and (bridge_out / "bridge_manifest.json").is_file():
+                (tmp / "bridge_manifest.json").write_text(
+                    (bridge_out / "bridge_manifest.json").read_text(encoding="utf-8"),
+                    encoding="utf-8",
+                )
             (tmp / "invocations.jsonl").write_text(
-                json.dumps(invocation | {"reproduced_identical_receipt_id": None, "run_dir_mutated": False}, sort_keys=True) + "\n",
+                json.dumps(
+                    invocation
+                    | {"reproduced_identical_receipt_id": None, "run_dir_mutated": False},
+                    sort_keys=True,
+                )
+                + "\n",
                 encoding="utf-8",
             )
-            # Provisional run.json before upload attach.
             (tmp / "run.json").write_text(_canon(run), encoding="utf-8")
             view = _attach_upload_artifacts(
                 tmp,
@@ -590,11 +794,11 @@ def run_slice(
         except Exception:
             shutil.rmtree(tmp, ignore_errors=True)
             raise
+        finally:
+            if bridge_out is not None:
+                shutil.rmtree(bridge_out.parent, ignore_errors=True)
         view["reproduced"] = False
         return view
-
-
-
 
 def parse_run_storage_key(run_id: str) -> dict[str, Any]:
     """Split keyed upload run_id into receipt_id + src/meta discriminators (U-RUN-LIST-01)."""

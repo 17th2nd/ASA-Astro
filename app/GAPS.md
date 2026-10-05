@@ -31,10 +31,12 @@ the UI shows the limitation or derives only from existing fields with a source l
   primary receipt. Honesty: never established from this slice; null sky when unavailable; no invented values;
   matched only if evidence_qualified. JSON-only runs (no upload) still have `observation_evidence.present=false`.
   Receipt verification is **not** blocked on missing WCS.
-- **G-SIG-1 — image → Objective universe bridge is tip-available but not the primary app receipt.** Tip `4dfb4b8`
-  adds `asa_astro.bridge` (sky-localised → temporary hypothesis universe → Objective). The thin app's **primary**
-  receipt still uses `data/universe/slice1.json` (synthetic) after upload; upload preserves source and projects
-  observation/residuals honesty. Promoting the bridge receipt to the primary UI path is Assurance-owned.
+- **G-SIG-1 — image → Objective universe bridge is the primary app receipt for uploads (R1).** Tip `9c2157a`
+  exports `asa_astro.bridge.observation_bundle_to_objective` (Runtime handoff A). Upload + successful
+  `status=localised` rows → primary Objective via that API (never silent `data/universe/slice1.json`).
+  Upload + fail-closed (no WCS / no localised rows / missing bundle) → error/honesty; no silent synthetic.
+  No-upload / explicit `demo=True` → `slice1.json` OK, labelled `synthetic/demo` in `view.universe_provenance`.
+  `view.json` records bridge path, universe_id, data_class, source sha, and observation claim ids when present.
 - **G-SIG-2 — no dedicated "next evidence" record.** The receipt carries a plan (selected actions) and failed eligibility
   rules; the app lists those, labelled hypothesis, with source pointers. A pipeline-produced next-evidence record (what to
   collect, why, expected effect on the objective) is needed for anything richer. The store-backed frontier
@@ -74,8 +76,8 @@ the UI shows the limitation or derives only from existing fields with a source l
 
 Sky map, relationship graph view (`astro ui` navigator exists but uses D3 from a CDN), multi-objective comparison,
 session loop (`astro session`), real-catalogue store runs. **Upload bar landed** (preserve source + process_observation
-consume + Action residuals); auto-running the sky→Objective bridge receipt as the primary UI path remains optional
-(primary receipt stays the thin synthetic Objective path).
+consume + Action residuals). **R1:** upload+localised uses `observation_bundle_to_objective` as the primary receipt;
+no-upload/demo still uses synthetic `slice1.json` (labelled).
 
 ## Assurance
 

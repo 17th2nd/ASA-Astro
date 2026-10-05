@@ -324,9 +324,9 @@ def run_process_observation(
         "coordinates_invented": _honesty_flag(summary if isinstance(summary, dict) else None, sky_payload, "coordinates_invented"),
         "source_image_mutated": _honesty_flag(summary if isinstance(summary, dict) else None, sky_payload, "source_image_mutated"),
         "objective_bridge": (
-            "absent — observation graph is NOT mapped into the Objective universe "
-            "(G-SIG-1; Significance-owned). Thin Objective path still uses the "
-            "synthetic example universe."
+            "pending — process_observation complete; primary Objective path is "
+            "asa_astro.bridge.observation_bundle_to_objective in run_slice (G-SIG-1). "
+            "This consume record alone does not substitute slice1.json."
         ),
         "metadata_path": str(meta_path.relative_to(_data_dir())) if meta_path and meta_path.exists() else None,
         "observed_vs_expected": _compute_residuals(bundle_dir, meta_path),
