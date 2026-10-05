@@ -194,7 +194,8 @@ class TestProvenance(unittest.TestCase):
         u, obj, ctx, adapter = setup()
         d = decide(u, obj["A"], ctx, adapter, **FIXED)
         body = d.receipt.body
-        self.assertEqual(body["asa_baseline"], json.loads((ROOT / "config" / "asa-baseline.json").read_text())["sha"])
+        from astro.asa.locator import asa_baseline_sha
+        self.assertEqual(body["asa_baseline"], asa_baseline_sha())
         self.assertEqual(body["kernel_digest"], d.snapshot.digest)
         self.assertEqual(body["universe_id"], u.universe_id)
         evidence_ids = {e.evidence_id for e in u.evidence}

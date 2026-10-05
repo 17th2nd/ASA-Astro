@@ -129,10 +129,10 @@ class TestCurrentDevPin(unittest.TestCase):
                 os.environ["ASTRO_ASA_BASELINE_CONFIG"] = prev_cfg
 
     def test_adapter_proposer_registered_before_propose(self):
-        from astro.asa.adapter import PROPOSER
+        from astro.asa.adapter import ACTOR
         u = small_universe()
         a = AstroAdapter.in_memory(FACET)
-        self.assertIsNotNone(a.k.query(PROPOSER))
+        self.assertIsNotNone(a.k.query(ACTOR))
         a.load_universe(u)
         hosts = a.snapshot().edges_of(u.find("SYN-HOST-1").entity_id, "hosts")
         self.assertEqual(hosts[0].stance, "endorsed")
