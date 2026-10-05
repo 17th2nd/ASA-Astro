@@ -13,15 +13,30 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-CONFIG = ROOT / "config" / "asa-baseline.json"
+HISTORICAL_CONFIG = ROOT / "config" / "asa-baseline.json"
+CURRENT_DEV_CONFIG = ROOT / "config" / "asa-baseline-current-dev.json"
 
 
 class AsaBaselineUnavailable(RuntimeError):
     """The pinned ASA checkout is missing or not at the pinned SHA."""
 
 
+def config_path() -> Path:
+    """Resolve pin file. Default historical; set ASTRO_ASA_BASELINE_CONFIG or ASTRO_ASA_PIN_KIND=current_dev for V1."""
+    import os
+    override = os.environ.get("ASTRO_ASA_BASELINE_CONFIG")
+    if override:
+        path = Path(override)
+        return path if path.is_absolute() else ROOT / path
+    if os.environ.get("ASTRO_ASA_PIN_KIND", "").strip().lower() in {"current_dev", "current-dev", "dev"}:
+        if not CURRENT_DEV_CONFIG.exists():
+            raise AsaBaselineUnavailable(f"current-dev pin missing: {CURRENT_DEV_CONFIG}")
+        return CURRENT_DEV_CONFIG
+    return HISTORICAL_CONFIG
+
+
 def baseline() -> dict:
-    return json.loads(CONFIG.read_text(encoding="utf-8"))
+    return json.loads(config_path().read_text(encoding="utf-8"))
 
 
 def kernel_dir() -> Path:
@@ -39,7 +54,7 @@ def ensure_importable() -> Path:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     try:
-        module.verify()
+        module.verify(config_path=config_path())
     except RuntimeError as exc:
         raise AsaBaselineUnavailable(str(exc)) from exc
     kdir = kernel_dir()
