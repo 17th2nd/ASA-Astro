@@ -1,0 +1,14 @@
+{
+  "schema": "asa-astro-app-config-v1",
+  "asa_pin_file": "config/asa-baseline-current-dev.json",
+  "asa_pin_file_note": "The ASA pin itself is the `sha` field of this file, landed by 633f837a (Operator A, current-dev pin at remediation-133). The app never duplicates the SHA; it reads it from here and refuses to run unless tools/asa_baseline.py verifies the .asa/ASA checkout at exactly that SHA.",
+  "default_inputs": {
+    "universe": "data/universe/slice1.json",
+    "context": "data/contexts/night-2026-09-03.json",
+    "objective": "A-exoplanet-transit-followup"
+  },
+  "objectives_dir": "data/objectives",
+  "host": "127.0.0.1",
+  "port": 8765,
+  "data_dir": "app/var"
+}

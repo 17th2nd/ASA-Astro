@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASA-Astro V1 — pin → snapshot → objective → receipt</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="site" role="banner">
+    <h1>ASA-Astro <span class="muted">V1 thin slice</span></h1>
+    <p class="tagline">Pinned ASA kernel → kernel snapshot → one Objective → digest-identified receipt. Every claim is labelled; nothing here is empirical validation.</p>
+  </header>
+  <nav aria-label="Sections" class="sections">
+    <ul>
+      <li><a href="#pin">Pin</a></li>
+      <li><a href="#run">Run</a></li>
+      <li><a href="#snapshot">Snapshot</a></li>
+      <li><a href="#receipt">Receipt</a></li>
+      <li><a href="#explanation">Explanation</a></li>
+      <li><a href="#claims">Claims</a></li>
+      <li><a href="#unknowns">Unknowns</a></li>
+      <li><a href="#next">Next evidence</a></li>
+      <li><a href="#runs">Runs</a></li>
+    </ul>
+  </nav>
+  <main id="main" tabindex="-1">
+    <section id="pin" aria-labelledby="pin-h">
+      <h2 id="pin-h">1. ASA pin</h2>
+      <p class="help">Read from <code>config/asa-baseline-current-dev.json</code> (commit 633f837a) and verified by <code>tools/asa_baseline.py</code>.</p>
+      <dl id="pin-dl" class="kv"><dt>Status</dt><dd>loading…</dd></dl>
+    </section>
+
+    <section id="run" aria-labelledby="run-h">
+      <h2 id="run-h">2. Evaluate one Objective</h2>
+      <form id="run-form">
+        <label for="objective">Objective</label>
+        <select id="objective" name="objective" aria-describedby="objective-q"></select>
+        <p id="objective-q" class="help"></p>
+        <button type="submit" id="run-btn">Run slice</button>
+      </form>
+      <ol id="stages" class="stages" aria-label="Slice stages">
+        <li data-stage="pin">Pin verified</li>
+        <li data-stage="snapshot">Kernel snapshot</li>
+        <li data-stage="objective">Objective evaluated</li>
+        <li data-stage="receipt">Receipt issued</li>
+      </ol>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="snapshot" aria-labelledby="snap-h">
+      <h2 id="snap-h">3. Kernel snapshot <span class="badge record">record</span></h2>
+      <dl id="snap-dl" class="kv"><dt>Snapshot</dt><dd>No run yet.</dd></dl>
+    </section>
+
+    <section id="receipt" aria-labelledby="rcpt-h">
+      <h2 id="rcpt-h">4. Receipt <span class="badge record">record</span></h2>
+      <dl id="rcpt-dl" class="kv"><dt>Receipt</dt><dd>No run yet.</dd></dl>
+      <p id="rcpt-links" class="links"></p>
+      <div id="shims" class="notice" hidden></div>
+    </section>
+
+    <section id="explanation" aria-labelledby="exp-h">
+      <h2 id="exp-h">Plain-language explanation <span class="badge hypothesis">hypothesis</span></h2>
+      <ul id="exp-summary" class="cited"></ul>
+      <div id="exp-entities"></div>
+      <h3>All evaluated entities</h3>
+      <div class="table-wrap"><table id="results-table"><caption>Objective results from the receipt</caption>
+        <thead><tr><th scope="col">Entity</th><th scope="col">Kind</th><th scope="col">Status</th><th scope="col">Rank</th><th scope="col">Score</th><th scope="col">Failed rules</th><th scope="col">Source</th></tr></thead>
+        <tbody></tbody></table></div>
+    </section>
+
+    <section id="claims" aria-labelledby="claims-h">
+      <h2 id="claims-h">Claims — hypothesis or established</h2>
+      <details class="policy"><summary>Label policy</summary><dl id="policy-dl" class="kv"></dl></details>
+      <p id="claim-counts"></p>
+      <label for="claim-filter">Filter claims</label>
+      <input id="claim-filter" type="search" placeholder="e.g. hosts, SYN-HOST-A, evidence">
+      <ul id="claims-list" class="cited"></ul>
+    </section>
+
+    <section id="unknowns" aria-labelledby="unk-h">
+      <h2 id="unk-h">Unknowns</h2>
+      <p class="help">Only fields that exist in the run artifacts and record something unavailable, missing, contested or unevaluated.</p>
+      <ul id="unknowns-list" class="cited"></ul>
+    </section>
+
+    <section id="next" aria-labelledby="next-h">
+      <h2 id="next-h">Next evidence to collect <span class="badge hypothesis">hypothesis</span></h2>
+      <p class="help">Derived only from the plan and from failed eligibility / contested-evidence fields. The pipeline does not yet produce a dedicated next-evidence record (see GAPS.md).</p>
+      <ul id="next-list" class="cited"></ul>
+    </section>
+
+    <section id="runs" aria-labelledby="runs-h">
+      <h2 id="runs-h">Runs</h2>
+      <form id="search-form" role="search">
+        <label for="q">Search runs</label>
+        <input id="q" name="q" type="search" placeholder="receipt id, objective, entity">
+        <button type="submit">Search</button>
+      </form>
+      <ul id="runs-list"></ul>
+    </section>
+  </main>
+  <footer class="site" role="contentinfo">
+    <p>ASA-Astro application slice — SELF_ACCEPTANCE=NO. Data in the default slice are labelled synthetic.</p>
+  </footer>
+</body>
+</html>
