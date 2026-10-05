@@ -25,6 +25,9 @@ SCHEMA_BY_RECORD = {
     "graph_edge": "candidate-graph-edge.schema.json",
     "candidate_graph": "candidate-graph.schema.json",
     "confidence": "confidence.schema.json",
+    "wcs_solution": "wcs-solution.schema.json",
+    "sky_localisation": "sky-localisation.schema.json",
+    "catalogue_crossmatch": "catalogue-crossmatch.schema.json",
 }
 
 

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://17th2nd.github.io/ASA-Astro/schemas/sky-localisation.schema.json",
+  "title": "Sky Localisation Result (WCS-when-present)",
+  "description": "Pixel→sky localisation for one detection. Fail closed when WCS is absent: status=unavailable and sky coordinates remain null. Coordinates are never invented.",
+  "x-governing-document": "ASTRO-ONTOLOGY-0001",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_version", "record_status", "epistemic_classification", "id", "detection_id", "status", "classification_status", "pixel_centroid", "sky", "wcs_present", "inference_basis"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "ontology_version": {"$ref": "common.schema.json#/$defs/ontology_version"},
+    "record_status": {"$ref": "common.schema.json#/$defs/record_status"},
+    "epistemic_classification": {"enum": ["computed", "inferred"]},
+    "id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "detection_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "candidate_id": {"$ref": "common.schema.json#/$defs/identifier"},
+    "status": {"enum": ["localised", "unavailable", "rejected"]},
+    "classification_status": {"enum": ["hypothesis", "provisional", "unknown"], "description": "Sky positions derived from declared WCS remain hypotheses; never established identity"},
+    "pixel_centroid": {"$ref": "common.schema.json#/$defs/centroid"},
+    "sky": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ra_deg", "dec_deg", "frame", "epoch"],
+      "properties": {
+        "ra_deg": {"type": ["number", "null"]},
+        "dec_deg": {"type": ["number", "null"]},
+        "frame": {"type": ["string", "null"]},
+        "epoch": {"type": ["string", "null"]}
+      }
+    },
+    "wcs_present": {"type": "boolean"},
+    "unavailable_reason": {"type": "string"},
+    "inference_basis": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

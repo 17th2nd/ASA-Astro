@@ -25,6 +25,9 @@ class ModelsAndSchemasTest(unittest.TestCase):
             "candidate-relationship-assertion.schema.json",
             "source-image-metadata.schema.json",
             "uncertainty.schema.json",
+            "wcs-solution.schema.json",
+            "sky-localisation.schema.json",
+            "catalogue-crossmatch.schema.json",
         }
         self.assertTrue(expected <= set(schemas))
 
