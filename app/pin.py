@@ -1,16 +1,17 @@
 """Load and verify the ASA pin landed by 633f837a, then make the pinned kernel importable.
 
 The pin is the ``sha`` field of the file named by ``app/config.json:asa_pin_file``
-(``config/asa-baseline-current-dev.json``). ``src/astro/asa/locator.py`` still reads the
-historical ``config/asa-baseline.json`` (b855d4c); rather than edit src/, the app points the
-locator at the current-dev pin file *before* ``astro.asa.adapter`` is imported. This is an
-app-layer integration seam, recorded in app/GAPS.md (G-PIN-1).
+(``config/asa-baseline-current-dev.json``). Commit a200dda taught ``src/astro/asa/locator.py``
+to honour ``ASTRO_ASA_BASELINE_CONFIG``; the app sets that variable to the pin file before the
+adapter is imported, so the locator itself verifies and loads the pinned kernel. No src/ edit,
+no monkeypatching.
 """
 
 from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -53,32 +54,28 @@ def verify_pin() -> dict[str, Any]:
 
 
 _ACTIVATED: dict[str, Any] | None = None
+ENV = "ASTRO_ASA_BASELINE_CONFIG"
 
 
 def activate() -> dict[str, Any]:
-    """Verify the pin and wire the Astro locator to it. Idempotent. Must run before importing astro.asa.adapter."""
+    """Verify the pin and select it for the Astro locator. Idempotent. Must run before importing astro.asa.adapter."""
     global _ACTIVATED
     if _ACTIVATED is not None:
         return _ACTIVATED
     receipt = verify_pin()
     record = pin_record()
-    kernel_dir = Path(receipt["kernel_dir"])
-    if str(kernel_dir) not in sys.path:
-        sys.path.insert(0, str(kernel_dir))
+    wanted = str(pin_file())
+    existing = os.environ.get(ENV)
+    if existing and Path(existing if Path(existing).is_absolute() else ROOT / existing).resolve() != pin_file().resolve():
+        raise PinError(f"{ENV}={existing} conflicts with app pin file {wanted}")
+    os.environ[ENV] = wanted
     import astro.asa.locator as locator
 
-    locator.CONFIG = pin_file()
-
-    def ensure_importable() -> Path:
-        verify_pin()
-        if str(kernel_dir) not in sys.path:
-            sys.path.insert(0, str(kernel_dir))
-        return kernel_dir
-
-    locator.ensure_importable = ensure_importable
-    if "astro.asa.adapter" in sys.modules:  # already imported elsewhere; re-bind the imported names
-        adapter = sys.modules["astro.asa.adapter"]
-        adapter.ensure_importable = ensure_importable
+    if not hasattr(locator, "config_path"):
+        raise PinError("astro.asa.locator has no config_path(); this app needs the a200dda locator (ASTRO_ASA_BASELINE_CONFIG)")
+    if locator.config_path().resolve() != pin_file().resolve():
+        raise PinError(f"locator resolves {locator.config_path()} instead of {wanted}")
+    kernel_dir = locator.ensure_importable()  # the locator's own verify against the pin file
     from asa_kernel.version import version_record
 
     kernel_reported = version_record()
@@ -92,8 +89,11 @@ def activate() -> dict[str, Any]:
         "kernel_version_reported_by_kernel": kernel_reported.get("kernel"),
         "kernel_status_reported_by_kernel": kernel_reported.get("status"),
         "historical_sha_preserved": record.get("historical_sha_preserved"),
+        "locator_baseline_sha": locator.asa_baseline_sha(),
         "verify_receipt": {k: v for k, v in receipt.items() if k != "kernel_dir"},
         "checkout_dir": record["checkout_dir"],
-        "verified_by": "tools/asa_baseline.py verify(config_path=<pin file>)",
+        "kernel_dir": str(Path(kernel_dir).relative_to(ROOT)),
+        "selected_via": f"{ENV} (src/astro/asa/locator.py config_path, commit a200dda)",
+        "verified_by": "tools/asa_baseline.py verify(config_path=<pin file>) — called by the app and by the locator",
     }
     return _ACTIVATED

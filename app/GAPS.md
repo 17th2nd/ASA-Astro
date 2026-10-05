@@ -5,12 +5,11 @@ the UI shows the limitation or derives only from existing fields with a source l
 
 ## Pin / adapter (Operator A pin, adapter compat-gate lane)
 
-- **G-PIN-1 — locator reads the historical pin.** `src/astro/asa/locator.py` hard-codes `config/asa-baseline.json`
-  (b855d4c) and calls `tools/asa_baseline.verify()` without `config_path`. With `.asa/ASA` at the current-dev SHA
-  (c2ccd7d) every `import astro.asa.adapter` raises `AsaBaselineUnavailable`. Consequence at base `633f837a`: 6 of 8
-  `tests/astro` modules fail to import. The app works around it *without editing src/* by pointing `locator.CONFIG`
-  at `config/asa-baseline-current-dev.json` before importing the adapter (`app/pin.py`). Needed: an accepted locator
-  change (e.g. honour `--config` / an env var / make current-dev the active pin) by the pin owner.
+- **G-PIN-1 — locator default is still the historical pin (resolved for the app).** At `633f837a` the locator
+  hard-coded `config/asa-baseline.json` (b855d4c); with `.asa/ASA` at c2ccd7d every `import astro.asa.adapter` raised
+  `AsaBaselineUnavailable`. `a200dda` added `ASTRO_ASA_BASELINE_CONFIG` / `ASTRO_ASA_PIN_KIND=current_dev`; the app now
+  sets `ASTRO_ASA_BASELINE_CONFIG` to the pin file (`app/pin.py`) — no monkeypatching. Still open for the pin owner:
+  the default remains historical, so `tests/astro` run without the env var still fail to import (see report).
 - **G-PIN-2 — adapter proposer rejected by the pinned kernel.** Kernel `0.1.0-alpha13` (c2ccd7d) enforces SPEC-0001
   [RP-9]: a URO proposer must be a registered UAO (`URO-PARTICIPANT-UNKNOWN`), and it refuses to register the Governor
   actor id as an entity (`EVT-STATE`). `AstroAdapter` uses `ACTOR = asa:uao:astro/adapter` for both. So the unmodified

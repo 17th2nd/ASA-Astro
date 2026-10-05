@@ -30,8 +30,8 @@ never duplicated in app code or config. The historical `config/asa-baseline.json
 
 ## What a run does
 
-1. **Pin** — `tools/asa_baseline.py verify(config_path=…)` checks `.asa/ASA` is clean and at the pinned SHA; the kernel
-   directory is put on `sys.path` and `astro.asa.locator` is pointed at the current-dev pin file (see GAPS G-PIN-1).
+1. **Pin** — `tools/asa_baseline.py verify(config_path=…)` checks `.asa/ASA` is clean and at the pinned SHA; the app sets
+   `ASTRO_ASA_BASELINE_CONFIG` to the pin file so `astro.asa.locator` (a200dda) verifies and loads the same pin.
 2. **Snapshot** — the repo example universe `data/universe/slice1.json` (labelled *synthetic*) is loaded into an in-memory
    pinned kernel via `AstroAdapter` (+ the app compat shim, GAPS G-PIN-2); `adapter.snapshot()` gives the kernel digest/head/seq.
 3. **One Objective** — `astro.pipeline.decide(universe, objective, context, adapter)` evaluates the chosen objective
