@@ -10,10 +10,11 @@ the UI shows the limitation or derives only from existing fields with a source l
   `AsaBaselineUnavailable`. `a200dda` added `ASTRO_ASA_BASELINE_CONFIG` / `ASTRO_ASA_PIN_KIND=current_dev`; the app now
   sets `ASTRO_ASA_BASELINE_CONFIG` to the pin file (`app/pin.py`) — no monkeypatching. Still open for the pin owner:
   the default remains historical, so `tests/astro` run without the env var still fail to import (see report).
-- **G-PIN-2 — adapter RP-9 (partially landed on tip `24bd352`).** Tip now sets `GOVERNOR_ACTOR=asa:uao:asa.core/governor-v1`
-  distinct from propose proposer `asa:uao:astro/adapter` (RP-9). The thin-slice app still records its pre-tip
-  `app/compat.py` shim (`asa:uao:astro/proposer`) on every run for honesty of the prior path; digest therefore
-  still reflects the shim. Compat-gate / Assurance still owns accepting either path.
+- **G-PIN-2 — adapter RP-9 (tip native; app residual shim).** Tip adapter sets `GOVERNOR_ACTOR=asa:uao:asa.core/governor-v1`
+  distinct from propose proposer `asa:uao:astro/adapter` (SPEC-0001 RP-9). The thin-slice app still applies its
+  pre-tip `app/compat.py` shim (`asa:uao:astro/proposer`) on every run — honesty of the path taken, not a claim
+  that tip lacks RP-9; digest therefore still reflects the shim. Pin semantics unchanged (current_dev / c2ccd7d).
+  Compat-gate / Assurance still owns accepting removal of the residual shim.
 - **G-PIN-3 — declared vs reported kernel version.** The pin file declares `kernel_version: unreleased-remediation-133`;
   the kernel reports `0.1.0-alpha13`, status `ENGINEERING ALPHA — NOT RATIFIED`. Shown as an unknown.
 - **G-PIN-4 — pin status.** The pin is `CURRENT DEVELOPMENT COMPATIBILITY PIN — NOT A FROZEN FINAL V1`. Shown as an unknown.

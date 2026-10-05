@@ -1,18 +1,21 @@
 """App-layer compatibility shim between the current-dev ASA kernel (c2ccd7d) and the Astro adapter.
 
-Observed on 2026-10-05 against the pinned kernel (0.1.0-alpha13, remediation-133):
+Honesty note (G-PIN-2, refreshed 2026-10-05 after tip RP-9 land):
 
-* ``AstroAdapter`` proposes every URO with ``proposer = ACTOR = "asa:uao:astro/adapter"``,
-  which is also the Governor actor id passed to ``Kernel.bootstrap``.
-* The pinned kernel enforces SPEC-0001 [RP-9]: a proposer must be a registered, active UAO
-  (``URO-PARTICIPANT-UNKNOWN: proposer is not a registered UAO``), and it refuses to register
-  the Governor actor id as an entity (``EVT-STATE``).
+* Tip adapter (`src/astro/asa/adapter.py`) now implements SPEC-0001 [RP-9] natively:
+  stream writer ``GOVERNOR_ACTOR = "asa:uao:asa.core/governor-v1"`` is distinct from
+  propose proposer ``ACTOR = "asa:uao:astro/adapter"`` (registered UAO). That tip path
+  no longer needs an app-layer workaround for the old Governor-as-proposer collision.
 
-So the unmodified adapter cannot load any universe at this pin. Without editing src/, the app
-registers a distinct proposer UAO and proposes with it. This changes the kernel event stream
-(one extra ``register_entity`` event, proposer id on every proposal) and therefore the kernel
-digest. It is NOT an accepted Astro adapter change: the real fix belongs to the adapter /
-compat-gate lane (GAPS.md G-PIN-2). Every run records that this shim was applied.
+* This app still applies an **additional** pre-tip shim: it registers
+  ``asa:uao:astro/proposer`` and proposes with that id instead of the tip adapter's
+  ``asa:uao:astro/adapter``. That changes the kernel event stream (extra
+  ``register_entity`` + different proposer id on proposals) and therefore the kernel
+  digest vs an unshimmed tip adapter run.
+
+* Pin semantics are unchanged (still current_dev / c2ccd7d). The shim is recorded on
+  every run for honesty of the path actually taken; accepting removal of the shim
+  (align digests with tip adapter) remains Assurance / compat-gate owned (GAPS.md G-PIN-2).
 """
 
 from __future__ import annotations
@@ -26,12 +29,11 @@ PROPOSER = "asa:uao:astro/proposer"
 SHIM_RECORD = {
     "id": "app-compat-proposer-uao",
     "applied": True,
-    "status": "app-layer workaround — not accepted into src/astro; owned by adapter/compat-gate lane",
-    "reason": "pinned kernel enforces SPEC-0001 [RP-9] (proposer must be a registered UAO) and refuses to register the Governor actor id; AstroAdapter uses its Governor actor id as proposer",
-    "effect": f"registers UAO {PROPOSER} before loading the universe and proposes URO with it; the kernel digest therefore differs from what an unshimmed adapter would produce",
+    "status": "app-layer residual shim — tip already has native RP-9 (governor ≠ adapter proposer); not accepted into src/astro; owned by adapter/compat-gate lane",
+    "reason": "tip RP-9 is landed (GOVERNOR_ACTOR=asa:uao:asa.core/governor-v1, propose proposer=asa:uao:astro/adapter); this app still proposes as asa:uao:astro/proposer for continuity with the pre-tip thin-slice path — residual honesty, not a claim that tip still lacks RP-9",
+    "effect": f"registers UAO {PROPOSER} before loading the universe and proposes URO with it; the kernel digest therefore differs from an unshimmed tip adapter run",
     "source": "app/compat.py",
 }
-
 
 class PinnedAdapter(AstroAdapter):
     """AstroAdapter with a registered proposer UAO distinct from the Governor actor."""
